@@ -1,0 +1,38 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS    800
+  ELEMENTS        399
+  BOUNDARIES      800
+  SPACE_DIMENSIONS=         2
+  NODES=                    4
+  INCLUDE ./Fields_ndime.alya
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  GROUPS:                    20
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  mesh1d.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+  ON_BOUNDARIES
+    INCLUDE mesh1d.fix.bou   
+  END_ON_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  BOUNDARIES
+    INCLUDE mesh1d.fix.bou 
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+   INCLUDE ./Fields_name.alya
+END_FIELDS
+$-------------------------------------------------

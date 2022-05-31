@@ -1,0 +1,33 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   1D_FLAME
+  LIVE_INFO:              Screen
+  RUN_TYPE:               NOCONTI,PRELIMINARY,FREQUENCY=200
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, PRESCRIBED
+  NUMBER_OF_STEPS:        100
+  TIMESTEP:               1.5e-7
+
+  MAXIMUM_NUMBER_GLOBAL:  1
+
+  CHEMIC_PROBLEM:         ON
+  END_CHEMIC
+
+  PARALL_SERVICE:         ON
+    METHOD:               METIS
+    PARTITION_TYPE:       FACES
+    OPENMP:
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: OFF
+  RESTART: ON
+  POSTPROCESS: OFF
+END_MPI_IO
+$-------------------------------------------------------------------

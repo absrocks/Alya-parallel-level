@@ -1,0 +1,23 @@
+$------------------------------------------------------------
+  PHYSICAL_PROBLEM
+     PROPERTIES: 
+         DENSITY:       CONSTANT,  PARAMETERS= 1.205           $ air 20C
+         VISCOSITY:     CONSTANT,  PARAMETERS= 1.823e-05       $ air 20C
+     END_PROPERTIES:
+  END_PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+  NUMERICAL_TREATMENT
+  OPTIMIZATION
+    OPTFUNCTIONAL: ON
+    COSTTYPE: 5
+    DVARTYPE: 5
+    ADJOINT: ON
+  END_OPTIMIZATION
+  $HESSIAN: OFF
+  END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+  OUTPUT_&_POST_PROCESS
+    STEPS:         1000
+  END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

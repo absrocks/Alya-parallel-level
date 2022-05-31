@@ -1,0 +1,2 @@
+#!/bin/bash
+git log $1..HEAD --grep "#" --cherry-pick --left-right --oneline | grep -o "\#[0-9]*" | sort | uniq

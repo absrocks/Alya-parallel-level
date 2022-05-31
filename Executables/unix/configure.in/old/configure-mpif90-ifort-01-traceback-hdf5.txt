@@ -1,0 +1,15 @@
+# implicit none para toni
+
+f90==     mpif90 -O1 -traceback -module $O -c -I/apps/HDF5/1.8.10-mpi/INTEL/include
+f77==     mpif90 -O1 -traceback -module $O -c -I/apps/HDF5/1.8.10-mpi/INTEL/include
+fpp90==   mpif90 -O1 -traceback -module $O -c  -fpp -I/apps/HDF5/1.8.10-mpi/INTEL/include
+fpp77==   mpif90 -O1 -traceback -module $O -c  -fpp -I/apps/HDF5/1.8.10-mpi/INTEL/include
+cpp==     mpicc -no-multibyte-chars -c -I/apps/HDF5/1.8.10-mpi/INTEL/include
+link==    mpif90 -O1 -traceback 
+
+libs==    -L../../Thirdparties/metis-4.0 -lmetis /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5_fortran.a /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5.a /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5hl_fortran.a /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5_hl.a   -L/apps/SZIP/2.1/lib -lsz -L/user/lib64 -lz -lgpfs
+
+#libs==    -L../../Thirdparties/metis-4.0 -lmetis -L/apps/HDF5/1.8.10-mpi/INTEL/lib -lhdf5_fortran -lhdf5 -L/apps/SZIP/2.1/lib -lsz
+#libs==    -L../../Thirdparties/metis-4.0 -lmetis -L/apps/HDF5/1.8.10/lib -lhdf5_fortran -lhdf5_f90cstub -lhdf5 -L/apps/SZIP/2.1/lib -lszip
+
+fa2p== mpif90 -module ../../Utils/user/alya2pos -c  -fpp 

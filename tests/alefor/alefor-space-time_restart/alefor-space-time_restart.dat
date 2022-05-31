@@ -1,0 +1,37 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   alefor-space-time
+  LIVE_INFO:              screen
+$  RUN_TYPE:               PRELIMINARY, FREQUENCY=1e6
+$   RUN_TYPE:               CONTINUE
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0,-20.0
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        10
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    OPENMP
+      COLORING: MINCO
+    END_OPENMP
+   PARTITIONING
+    METHOD: SFC
+    EXECUTION_MODE= PARALLEL
+   END_PARTITIONING
+  END_PARALL_SERVICE
+  ALEFOR_MODULE:         ON
+  END_ALEFOR_MODULE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:         On
+  GEOMETRY:     On
+  RESTART:      On 
+  POSTPPROCESS: On
+  MERGE:        On
+  END_MERGE              
+END_MPI_IO
+$-------------------------------------------------------------------
+

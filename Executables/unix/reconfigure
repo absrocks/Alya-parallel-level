@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+
+###############
+# 
+# --| Alya reconfigure |--
+# 
+# --| Read the conf.log and repeat the last configure done
+# 
+######################################################
+
+
+print "\n";
+print "--| Alya reconfigure |-- \n";
+print "--| \n";
+print "--| Read the conf.log and repeat the last configure done. \n";
+print "--| \n";	
+
+open(LOGFI,"conf.log");
+$ifounlast=	 "n";
+while (<LOGFI>) {
+    @fields=split(/--->/,$_);	    
+    if ($_ =~ /--->/) {     
+	$ifounlast= "y";
+	$msg= "$fields[1]";
+	print "--| \n";
+	print "--| Executing $msg\n";
+	print "--| ..... \n";
+	print "--| ..... \n";
+	print "--| ..... \n";
+	system ($msg);
+    }
+}
+if ($ifounlast =~ /n/) {         
+    print "--| \n";
+    print "--| No conf.log was found. Do a complete configure first.\n";
+    print "--| Type configure to see the available options.\n";
+    print "--| \n";
+    print "--| Bye.\n";
+    print "--| \n";
+    die;
+} else {
+}    

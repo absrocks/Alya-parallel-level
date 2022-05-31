@@ -1,0 +1,32 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   Sgo-solidz-go 
+  LIVE_INFO:              screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  MAXIMUM_NUMBER_GLOBAL=  1
+  NUMBER_OF_STEPS=        1
+  ALEFOR_MODULE:          ON
+    SOLVE: AT_BEGINNING
+  END_ALEFOR_MODULE
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    OPENMP
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL_SERVICE
+$-------------------------------------------------------------------
+  PHYSICAL_PROBLEM
+  END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+  NUMERICAL_TREATMENT 
+  END_NUMERICAL_TREATMENT 
+$-------------------------------------------------------------------
+  OUTPUT_&_POST_PROCESS 
+  END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+ 

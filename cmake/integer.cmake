@@ -1,0 +1,6 @@
+if (INTEGER_SIZE MATCHES "4")
+  set(CMAKE_Fortran_FLAGS "${CUSTOM_Fortran_FLAGS_I4}" PARENT_SCOPE)
+elseif (INTEGER_SIZE MATCHES "8")
+  add_definitions(-DI8)
+  set(CMAKE_Fortran_FLAGS "${CUSTOM_Fortran_FLAGS_I8}" PARENT_SCOPE)
+endif()

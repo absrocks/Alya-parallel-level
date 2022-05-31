@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source_dir=$1
+shift
+binary_dir=$1
+shift
+alya=$1
+shift
+case=$1
+shift
+
+rm -fr $binary_dir
+mkdir -p $binary_dir
+cd $binary_dir
+cp -r $source_dir/* .
+
+$alya $case

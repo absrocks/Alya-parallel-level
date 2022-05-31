@@ -1,0 +1,30 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                    Box
+  RUN_TYPE:                NOCONTI,PRELIMINARY,FREQUENCY=10
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA 
+  TIME_COUPLING:          GLOBAL, PRESCRRIBED
+  TIME_INTERVAL=          0.0, 3000
+  TIME_STEP_SIZE=         3.0e-4
+  NUMBER_OF_STEPS=        0
+
+  CHEMIC_MODULE:          ON
+  END_CHEMIC_MODULE
+  
+  PARALL_SERVICE:         ON
+    METHOD:               METIS
+    PARTITION_TYPE:       FACES
+    OPENMP:
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+$  GEOMETRY: EXPORT
+  GEOMETRY: ON
+  RESTART: ON
+  POSTPROCESS: ON
+END_MPI_IO

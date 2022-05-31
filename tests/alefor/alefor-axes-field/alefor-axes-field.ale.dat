@@ -1,0 +1,31 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT 
+    DEFORMATION:             ISOTROPIC, STEPS=1
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-10
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+       OPTION                FIXITY
+    END_ALGEBRAIC_SOLVER        
+END_NUMERICAL_TREATMENT 
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+   POSTPROCESS DISPM
+   POSTPROCESS VELOM
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES
+        1  11  1.0 1.0, AXES:FROM_FIELD=1 , SPACE_TIME=DISPLACEMENT
+    1 & 2  11  1.0 1.0, AXES:FROM_FIELD=1 , SPACE_TIME=DISPLACEMENT
+        2  10  0.0 0.0
+    2 & 3  11  0.0 0.0
+        3  11  0.0 0.0
+  END_CODES 
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+ 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- -*- coding: utf-8;-*- -->
+<Infoproblemtype version="1.0">
+    <Program>
+        <Name>Alya</Name>
+        <Version>1.0</Version>        
+        <MinimumGiDVersion>9.0</MinimumGiDVersion>
+        <ImageFileBrowser>images/Alya.ppm</ImageFileBrowser>
+        <Description>GiD-Alya interface between GiD and the Alya HPCM system</Description>
+        <NewsInVersion>First version</NewsInVersion>
+    </Program>
+</Infoproblemtype>

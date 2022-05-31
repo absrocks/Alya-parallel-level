@@ -1,0 +1,42 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   fensap
+$  RUN_TYPE:               PRELIMINARY, FREQUENCY=1e6
+$  RUN_TYPE:               CONTINUE
+END_RUN_DATA 
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1e6
+  TIME_STEP_SIZE=         0.2
+  NUMBER_OF_STEPS=        10
+  MAXIMUM_NUMBER_GLOBAL=  1
+
+
+  NASTIN_MODULE:          ON
+  END_NASTIN_MODULE
+
+  ALEFOR_MODULE:          On
+    $ DELAY, STEPS=10
+  END_ALEFOR_MODULE
+
+  BLOCK, 1
+     1 ALEFOR NASTIN
+  END_BLOCK
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:         Off  
+  GEOMETRY:     Off
+  RESTART:      Off
+  POSTPPROCESS: Off 
+  MERGE:        Off
+  END_MERGE              
+END_MPI_IO
+$-------------------------------------------------------------------

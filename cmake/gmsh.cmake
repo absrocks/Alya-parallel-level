@@ -1,0 +1,8 @@
+function(gmsh)
+  if (NOT WITH_GMSH MATCHES "OFF")
+    add_dependencies(${PROJECT_NAME} gmsh)
+    add_definitions(-DALYA_GMSH)
+    include_directories(${GMSH_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/external/gmsh/libgmsh.so)
+  endif()
+endfunction()

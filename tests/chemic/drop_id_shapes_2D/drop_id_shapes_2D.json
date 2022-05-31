@@ -1,0 +1,37 @@
+{
+    "authors": [
+        "margarida.moragues@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "drop_id_shapes_2D-droplet.chm.res",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        }
+
+
+    ],
+    "description": "Droplet and cluster identification given a group of shapes in 2D.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 4,
+            "openmp": 0
+        },
+        {
+            "mpi": 4,
+            "openmp": 4
+        }
+    ],
+    "modules": [
+        "chemic"
+    ],
+    "name": "drop_id_shapes_2D",
+    "postprocess": "mpio2txt"
+}

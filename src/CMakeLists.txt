@@ -1,0 +1,8 @@
+add_subdirectory(alya-info)
+add_subdirectory(alya-core)
+add_subdirectory(modules)
+add_subdirectory(alya-module-interface)
+if (NOT WITH_LIBRARIES_ONLY)
+  add_subdirectory(alya)
+  add_subdirectory(alya2pos)
+endif()

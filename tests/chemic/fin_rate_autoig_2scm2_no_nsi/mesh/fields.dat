@@ -1,0 +1,36 @@
+  FIELD=1
+    INCLUDE ./mesh/Fields/VELOC.alya
+  END_FIELD
+
+  FIELD=2
+    INCLUDE ./mesh/Fields/ENTHA.alya
+  END_FIELD
+
+  FIELD=3
+    INCLUDE ./mesh/Fields/TEMPE.alya
+  END_FIELD
+
+  FIELD=4
+    INCLUDE ./mesh/Fields/CON01.alya
+  END_FIELD
+
+  FIELD=5
+    INCLUDE ./mesh/Fields/CON02.alya
+  END_FIELD
+
+  FIELD=6
+    INCLUDE ./mesh/Fields/CON03.alya
+  END_FIELD
+
+  FIELD=7
+    INCLUDE ./mesh/Fields/CON04.alya
+  END_FIELD
+
+  FIELD=8
+    INCLUDE ./mesh/Fields/CON05.alya
+  END_FIELD
+
+  FIELD=9
+    INCLUDE ./mesh/Fields/CON06.alya
+  END_FIELD
+

@@ -1,0 +1,29 @@
+# 
+# 
+# List of registered modules and services
+# 
+# DO NOT TOUCH THIS FILE: IT IS READ BY THE MAKEFILE BUILDER.
+# 
+# 
+# MODULES (numbered 1 - 49):
+# --------------------------
+# 
+nastin        1        NAVIER-STOKES INCOMPRESSIBLE
+temper        2        TEMPERATURE
+turbul        4        TURBULENCE MODELS (RANS)
+exmedi        5        EXCITABLE MEDIA (CARDIAC ELECTROSTATIC IMPULSE)
+nastal        6        NAVIER-STOKES IN / COMPRESSIBLE 
+alefor        7        ALE
+latbol        8        LATTICE BOLTZMANN
+apelme        9        DISCRETE ELEMENTS
+solidz       10        SOLID
+levels       14        LEVEL SET
+magnet       16        MAGNETO DYNAMICS (INDUCTION EQUATION)
+partis       17        PARTICLE CONCENTRATION
+chemic       19        CHEMICAL REACTIONS
+helmoz       20        HELMHOLTZ EQUATIONS
+casimi       23        CASIMIR EFFECT
+xxxxxx       25        GENERIC MODULE
+neutro       26        NEUTRON TRANSPORT
+insitu       27        INSITU VISUALIZATION
+solfe2       28        FE2 COMPOSITES

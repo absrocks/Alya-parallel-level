@@ -1,0 +1,6 @@
+foreach(MOD ${MODULES})
+  string(TOUPPER ${MOD} UPMOD)
+  if(WITH_MODULE_${UPMOD})
+    add_subdirectory(${MOD})
+  endif()
+endforeach()

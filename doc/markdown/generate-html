@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+  echo "No argument 1 supplied, using input default directory"
+  md=md
+else
+  md="$1"
+fi
+if [ -z "$2" ]
+then
+  echo "No argument 2 supplied, using output default directory"
+  html=html
+else
+  html="$2"
+fi
+rm -fr $html
+rm -fr $md/html
+cd $md
+for dir in *
+do
+  echo "Processing $dir directory"
+  mkdir -p html/$dir
+  cd $dir
+  for file in *.md
+  do
+    gitlab-markup $file > ${file%.md}.html
+  done
+  cd ..
+  mv $dir/*.html html/$dir
+done
+cd ..
+mv $md/html $html

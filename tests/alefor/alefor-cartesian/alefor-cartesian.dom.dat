@@ -1,0 +1,26 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          256
+  ELEMENTS=              225
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=   QUA04
+  BOUNDARIES=              0
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  GROUPS=20
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  alefor-cartesian.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  alefor-cartesian.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

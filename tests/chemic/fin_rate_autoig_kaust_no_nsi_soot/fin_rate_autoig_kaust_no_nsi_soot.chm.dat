@@ -1,0 +1,98 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            FINITE_RATE, LAMINAR 
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        ON
+    MECHANISM:        CANTERA
+      KaustMech2.xml
+    END_MECHANISM
+
+    $$ e.g.: finite rate with soot:
+    $EQUATIONS
+    $  SPECIES      NVAR= CANTERA  $ from 1             to  ns_cantera 
+    $  SOOT_SECTION NVAR= 60       $ from ns_cantera+1  to  ns_cantera+60
+    $END_EQUATIONS
+
+    $$ e.g.: finite rate alone:
+    $EQUATIONS
+    $  SPECIES      NVAR= CANTERA  $ from 1             to  ns_cantera 
+    $END_EQUATIONS
+
+    $$ e.g.: finite rate with passive scalar for whatever reason:
+    $EQUATIONS
+    $  SPECIES      NVAR= CANTERA  $ from 1             to  ns_cantera 
+    $  ZMEAN                       $ one variable at ns_cantera+1 
+    $END_EQUATIONS
+
+    $$ e.g.: flamelet 
+    $EQUATIONS
+    $  ZMEAN                       $ one variable at 1 
+    $  ZVAR                        $ one variable at 2
+    $  CMEAN                       $ one variable at 3 (we can spare calculating CVAR)
+    $END_EQUATIONS
+
+    $$ e.g.: flamelet with transported pollutants 
+    $EQUATIONS
+    $  ZMEAN                                  $ one variable at 1 
+    $  ZVAR          [ZZ]                     $ one variable at 2 (this option can take the place of the part where we decide if we transport Zv or ZZ)
+    $  CMEAN                                  $ one variable at 3 (we can spare calculating CVAR)
+    $  SPECIES       NVAR=3   FRAMEWORK = nfw $ from 4 to 6, source terms are looked up from a lookup framework defined in kernel  
+    $END_EQUATIONS
+
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    THERMODYN_PRESSURE = 101325.0
+    TRANSPORT          = CANTERA             
+    KINETICS           = CANTERA             
+  END_PROPERTIES
+ 
+  SOOT_MODEL
+    MODEL:          SECTIONAL
+    SECTIONS:       60
+    DENSITY:        1860
+    VMAX_SOOT:      5.23e-16
+    RAD_PARAM:      0.85
+    GAS_COUPLING:   ON
+    VALIDATION:     CHEM1D 
+  END_SOOT_MODEL
+ 
+
+ 
+  FIELDS: TEMPE= 3, SPECI = 4
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           OFF 
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE,  ORDER: 3
+  SAFETY_FACTOR=           1.0
+
+  SPLITTING:               ORDER = 1
+
+  STEADY_STATE_TOLERANCE  = 1e-8
+  NORM_OF_CONVERGENCE     = L2
+  CONVERGENCE_TOLERANCE   = 1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS CONCE
+  WITNESS
+    CONCE
+  END_WITNESS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+$  INCLUDE  mesh/speciesBoundary.dat
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

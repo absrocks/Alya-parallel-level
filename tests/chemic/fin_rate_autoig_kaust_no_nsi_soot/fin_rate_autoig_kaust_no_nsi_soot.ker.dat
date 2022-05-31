@@ -1,0 +1,41 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL = 1
+      DENSITY       = LOWMA, GPLOOKUP,       UPDP1=ENDSTE, UPDP2=NEVER $ density strategy
+      VISCOSITY     = MUGPT,                 UPDP1=ENDSTE, UPDP2=NEVER
+      SPECIFIC_HEAT = CPGPT,                 UPDP1=ENDSTE, UPDP2=NEVER
+      CONDUCTIVITY  = KGPTA,                 UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES
+
+  GAS_CONSTANT    = 8.3144621
+
+  COUPLING
+    TEMPER, CHEMIC = 1 1
+    CHEMIC, TEMPER = 1 1
+  END_COUPLING
+
+  VELOCITY: FIELD= 1
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+  
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_ORIGINAL_MESH
+  STEPS=30
+
+  WITNESS_POINTS, NUMBER= 1
+     0.0  0.0   0.0
+  END_WITNESS_POINTS
+
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

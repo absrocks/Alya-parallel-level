@@ -1,0 +1,52 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  mesh/mesh3d.dims.dat
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=       HEX08
+  
+  INCLUDE mesh/field_size.dat
+  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN  
+  DOMAIN_INTEGRATION_POINTS: 0 
+  GROUPS:                    10, SEQUENTIAL
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF   
+  PERIODICITY:               MATRIX
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  $
+  $ gx  = 0.0031415926535897934;       
+  $ gy  = 0.0031415926535897934;       
+  $ gz  = 0.0031415926535897934;       
+  $ nGapx = 4;
+  $ nGapy = 4;
+  $ nGapz = 4;
+  $
+  INCLUDE mesh/mesh3d.geo.dat
+
+  LMAST
+     INCLUDE mesh/mesh3d.per
+  END_LMAST
+
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE  mesh/mesh3d.fix.bou
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITION
+  ON_BOUNDARIES
+    INCLUDE mesh/mesh3d.fix.bou.real
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  INCLUDE mesh/fields.dat
+END_FIELDS
+$--------------------------------------------------

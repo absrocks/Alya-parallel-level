@@ -1,0 +1,146 @@
+#include <stdlib.h> 
+#include <stdio.h>
+#include <math.h>
+
+// Use clock_gettime by default
+#define CLOCK_GETTIME
+
+
+/*
+ * Use it in Fortran as follows
+ * c------------------------------------------------------------- 
+ *
+ *       program testtimers
+ * c
+ * c  This program measures wall clock time 
+ * c
+ * c  wdiff returns the time elapsed between the call to wdiff
+ * c  and the previous call to wtime.  
+ * c  wdiff requires that the same vector time used in the 
+ * c  call to wtime 
+ * c  wdiff and wtime are C functions calling gettimeofday 
+ * c 
+ * 
+ *       real*8 sum, tim(2), elapsed , smax 
+ *       integer i, ierr, ierr2
+ *       reaL*8 wdiff
+ *
+ *       i = 1
+ *       sum = 0.d0 
+ *       print*,' input max for sum'
+ *       print*,' suggest numbers around 10 to 20' 
+ *       read*, smax
+ *       call wtime(tim, ierr)
+ *       do while (sum .lt. smax)
+ *         sum = sum + 1./i
+ *         i = i+1
+ *       end do
+ *       elapsed = wdiff(tim,ierr2) 
+ *       print*,' elapsed time is ', elapsed,' mseconds' 
+ *       stop 
+ *       end 
+ *
+ * c----------------------------------------------------------
+ */
+
+#ifdef GETTIMEOFDAY
+#include <sys/time.h>
+/* 
+ *    This timer returns wall clock time.   
+ *       The first entry is current time in seconds.
+ *          The second entry is microseconds. 
+ *          */ 
+void wtime_(double tim[2], int *ierr2)
+{
+  struct timeval time1; 
+  int ierr; 
+  double elap; 
+  ierr = gettimeofday(&time1, NULL) ; 
+  *ierr2 = ierr; 
+  if (ierr != 0 ) printf("bad return of gettimeofday, ierr = %d \n",ierr);  
+  tim[0] = time1.tv_sec;
+  tim[1] = time1.tv_usec; 
+}
+
+/* 
+ *    This timer returns the difference between current
+ *       wall clock time and the one returned by wtime_ and 
+ *          returns a double precision number 
+ *          */ 
+double wdiff_(double tim[2], int *ierr2)
+{
+  struct timeval time1;
+  int ierr; 
+  double wdiff; 
+  ierr = gettimeofday(&time1, NULL); 
+  *ierr2 = ierr; 
+  if (ierr != 0 ) printf("bad return of gettime of day, ierr = %d \n", ierr); 
+
+  if ((time1.tv_usec-tim[1])<0) {
+    tim[0] = time1.tv_sec-tim[0]-1;
+    tim[1] = 1.e6+time1.tv_usec-tim[1];
+  } else {
+    tim[0] = time1.tv_sec-tim[0];
+    tim[1] = time1.tv_usec-tim[1];
+  }
+  wdiff = 1.e6*tim[0] + tim[1];
+  return (wdiff/1.e3);   
+}   
+#endif
+
+#ifdef CLOCK_GETTIME
+#include <time.h>
+
+void wtime_(double tim[2], int *ierr2)
+{
+  struct timespec time1;
+  int ierr;
+
+  ierr = clock_gettime(CLOCK_REALTIME, &time1);
+  if (ierr != 0 ) printf("bad return of gettimeofday, ierr = %d \n",ierr);  
+  tim[0] = time1.tv_sec;
+  tim[1] = time1.tv_nsec; 
+}
+
+
+double wdiff_(double tim[2], int *ierr2)
+{
+  struct timespec time1;
+  int ierr;
+  double wdiff;
+
+  ierr = clock_gettime(CLOCK_REALTIME, &time1);
+  if (ierr != 0 ) printf("bad return of gettimeofday, ierr = %d \n",ierr);
+
+  if ((time1.tv_nsec-tim[1])<0) {
+    tim[0] = time1.tv_sec-tim[0]-1;
+    tim[1] = 1.e9+time1.tv_nsec-tim[1];
+  } else {
+    tim[0] = time1.tv_sec-tim[0];
+    tim[1] = time1.tv_nsec-tim[1];
+  }
+  wdiff = 1.e9*tim[0] + tim[1];
+  return (wdiff/1.e6);
+}
+#endif
+
+/* 
+ * This timer returns the wall clock time of the program
+ * since it was started ( User + System = Real ).
+ * In order to do so, the initial time (cpu_initi)
+ * must be substracted from the double precision time
+ * returned by this routine.
+ * Returns a double precision number 
+ */
+void wall_time_( double *rtime )
+{
+  int ierr;
+  struct timespec time;
+
+  ierr = clock_gettime(CLOCK_REALTIME, &time);
+  if (ierr != 0 )
+    printf("Bad return of clock_gettime, ierr = %d \n", ierr);
+
+  *rtime = time.tv_sec + (time.tv_nsec * 1e-9);
+}
+

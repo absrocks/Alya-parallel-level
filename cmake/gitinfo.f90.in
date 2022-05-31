@@ -1,0 +1,16 @@
+#define GIT_REMOTE "@_git_remote@"
+#define GIT_REVISION "@_git_revision@"
+#define GIT_BRANCH "@_git_branch@"
+#define GIT_DIRTY "@_git_dirty@"
+#define BUILD_TIMESTAMP "@_time_stamp@"
+
+module gitinfo
+
+  character(100), parameter :: git_remote = GIT_REMOTE
+  character(100), parameter :: git_revision = GIT_REVISION
+  character(100), parameter :: git_branch = GIT_BRANCH
+  character(100), parameter :: git_dirty = GIT_DIRTY
+
+public :: git_remote, git_revision, git_branch, git_dirty
+
+end module

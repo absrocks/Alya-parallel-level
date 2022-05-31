@@ -1,0 +1,32 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL = 1
+      DENSITY       = SPRAY, PARAMETER = 1000.0 1.0,   UPDP1=ENDSTE, UPDP2=NEVER
+      VISCOSITY     = SPRAY, PARAMETER = 0.001 1.7e-5, UPDP1=ENDSTE, UPDP2=NEVER
+      SPECIFIC_HEAT = CONST, PARAMETER = 4180.0,       UPDP1=ENDSTE, UPDP2=NEVER
+      CONDUCTIVITY  = CONST, PARAMETER = 5.91e-13,     UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES
+  
+  VELOCITY: FIELD = 5
+
+  GRAVITY: NORM=9.81, GX=1.0,GY=0.0
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  ELSEST: ON
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  $STEPS=2
+  POSTPROCESS DENSI
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+

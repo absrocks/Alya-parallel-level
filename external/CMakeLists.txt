@@ -1,0 +1,7 @@
+if (WITH_GMSH MATCHES "auto")
+  set (ENABLE_BUILD_DYNAMIC 1 CACHE INTERNAL "")
+  set(GMSH_PATH "gmsh" CACHE INTERNAL "Path of Gmsh")
+  add_subdirectory(${GMSH_PATH})
+  set(GMSH_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${GMSH_PATH}/api" CACHE INTERNAL "GMSH: include directory" FORCE)
+  message("${GMSH_INCLUDE_DIR}")
+endif()

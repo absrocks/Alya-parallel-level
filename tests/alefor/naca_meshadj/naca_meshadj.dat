@@ -1,0 +1,28 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   naca 
+  RUN_TYPE:               NOCONTINU
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          local, Galerkin
+  TIME_INTERVAL=          0.0, 1e6
+  NUMBER_OF_STEPS=        10000
+  MAXIMUM_NUMBER_GLOBAL=  1
+
+  ALEFOR_MODULE:         ON
+$$    DELAY, STEP = 100
+  END_ALEFOR_MODULE
+
+  ZONES
+     ALEFOR 1
+  END_ZONES
+
+  HDFPOS_SERVICE:         OFF
+  END_HDFPOS_SERVICE
+
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

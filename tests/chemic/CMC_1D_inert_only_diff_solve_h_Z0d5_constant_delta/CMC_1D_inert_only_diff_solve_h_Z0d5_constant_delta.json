@@ -1,0 +1,68 @@
+{
+    "authors": [
+        "eduardo.perez@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.DENSI-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.VISCO-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.ENTUN-000002",
+            "method": "absolute",
+            "tolerance": "1.0e+00"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.TEMUN-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.CO-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.CO2-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.H2O-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.O2-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta.ensi.CH4-000002",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "1D diffusion problem with no chemistry by solving CMC model (species and enthalpy) transport equations",
+    "enabled": true,
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "cantera"
+    ],
+    "modules": [
+        "chemic"
+    ],
+    "name": "CMC_1D_inert_only_diff_solve_h_Z0d5_constant_delta",
+    "postprocess": "alya2pos"
+}

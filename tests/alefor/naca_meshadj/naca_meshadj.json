@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "naca_meshadj.ensi.DISPM-000001",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Este ejemplo tiene mesh adjoint para naca que corre con alefor.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "alefor"
+    ],
+    "name": "naca_meshadj",
+    "postprocess": "alya2pos"
+}

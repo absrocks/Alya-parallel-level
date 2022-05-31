@@ -1,0 +1,24 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+    ],
+    "description": "Autoigniting box with finite rate chemistry testing the soot model.",
+    "enabled": true,
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "cantera"
+    ],
+    "modules": [
+        "temper",
+        "chemic"
+    ],
+    "name": "fin_rate_autoig_kaust_no_nsi_soot",
+    "postprocess": "mpio2txt"
+}

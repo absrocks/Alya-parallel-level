@@ -1,0 +1,26 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT 
+      SMOOTHING:             STEPS=1, RELAXATION=1.0
+$      SMOOTHING:             GAUSS_SEIDEL, STEPS=100, RELAXATION=0.1
+    ALGEBRAIC_SOLVER
+       SOLVER:               DEFLATED_CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-10
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+END_NUMERICAL_TREATMENT 
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+   POSTPROCESS DISPM
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES
+    1  11  0.0 0.0
+  END_CODES 
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+ 

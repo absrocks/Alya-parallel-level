@@ -1,0 +1,98 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            CMC  , LAMINAR 
+    LOOKUP:           GAUSS
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        ON
+    MECHANISM:        CANTERA
+       2S_CM2.xml
+    END_MECHANISM
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    GAS_CONSTANT=   8.3144621
+    TRANSPORT = CANTERA             $$ USER,  CANTERA 
+    KINETICS   = CANTERA             $$ USER,  CANTERA
+    TURBULENCE = 0.9
+    THERMODYNAMIC = 101325.0   $$$PRESURE
+  END_PROPERTIES
+  
+
+  CMC_MODEL           $ After the block PROPERTIES
+
+     MF_VECTOR
+        MF_PATH       $ Write the path in next line
+            Z_vector
+        MF_SIZE =  21
+     END_MF_VECTOR
+
+     $ AMC model
+     AMC_MF_SIZE   11
+     AMC_S_SIZE    21
+     AMC_S_MAX     0.5
+
+     S_THRESHOLD = 5.0e-1
+
+     Z_BC_OXIDANT
+         TEMPERATURE 1200.0
+         O2     46
+         N2     154
+     END_Z_BC_OXIDANT
+
+     Z_BC_FUEL
+         TEMPERATURE 300.0
+         CH4    1.0
+     END_Z_BC_FUEL
+
+     SOL_ENTHALPY  = YES
+
+     SPLIT_CFD_CMC = NO
+
+  END_CMC_MODEL
+
+
+  FIELDS: TEMPE= 2, SPECI = 0, ALPHA = 1
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  TAU_STRATEGY:            INCLUDING
+  ELEMENT_LENGTH:          Minimum
+  SHOCK_CAPTURING=         OFF
+  TIME_INTEGRATION:        RUNGE, ORDER: 1
+  SAFETY_FACTOR=           1.0
+
+  COUPLING:                MONOLITHIC
+  SPLITTING:               ORDER = 0   $0 = No Reactions, 1 = integration with full dt , 2 = integration with dt/2 in two steps
+  
+  STEADY_STATE_TOLERANCE  = -1e-8
+  NORM_OF_CONVERGENCE     = L2
+  MAXIMUM_NUMBER_OF_ITER  = 1
+  CONVERGENCE_TOLERANCE=   -1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:                  EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT       STEP =0
+  POSTPROCESS VISCO
+  POSTPROCESS MOLEC
+  POSTPROCESS HRR  
+  POSTPROCESS MASUN
+  POSTPROCESS ENTUN
+  POSTPROCESS TEMUN
+
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+ INCLUDE speciesBC.dat
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

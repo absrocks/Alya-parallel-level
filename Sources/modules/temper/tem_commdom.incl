@@ -1,0 +1,157 @@
+#ifdef COMMDOM
+#if   COMMDOM==-3  
+!-------------------------------------------------------------------------||---!
+!
+!< 2017JAN07. vim -c 'set syntax=fortran' tem_commdom.incl     
+!
+!-------------------------------------------------------------------------||---!
+
+  !-----------------------------------------------------------------------||---!
+  !   +
+  !   |_Alya                                       
+  !     |_call Turnon()                            
+  !     |_call Iniunk()                             
+  !     |_time: do while
+  !       |_call Timste()                         
+  !       |_reset: do 
+  !         |_call Begste()              TEMPE-->, HEATF<--0  
+  !           |_block: do while                          
+  !             |_coupling: do while                    
+  !               |_call Begzon()        TEMPE-->, HEATF<--0  [sendrecv]
+  !               |_modules: do while                           
+  !                 |_call Doiter()                
+  !                 |_call Concou()                
+  !               |_call Endzon()        TEMPE<--, HEATF-->                  
+  !                                                                           
+  !             |_call Conblk()                             
+  !       |_call Endste()                                     
+  !   |_call Turnof()                    
+  !
+  !-----------------------------------------------------------------------||---!
+  subroutine tem_commdom_plugin3_parallelMPMD( ) 
+  use def_master,          only: iblok, ittim, itcou
+  use mod_commdom_alya,    only: COMMDOM_COUPLING
+  use mod_commdom_driver,  only: CNT_SENDRECV, CNT_SMS
+  use mod_commdom_driver,  only: N_DOITER, INITIATED 
+  use mod_commdom_driver,  only: CNT_CPLNG, commdom_driver_exchange02
+  use mod_communications,  only: PAR_SUM 
+  !
+  use def_temper,          only: kfl_regim_tem, bvess_tem, bvnat_tem, kfl_fixno_tem
+  use def_temper,          only: kfl_plepp_tem
+  use def_master,          only: therm, title, inotslave 
+  !
+  use mod_commdom_dynamic, only: commdom_dynamic_check_fixno
+  use mod_commdom_dynamic, only: commdom_dynamic_set_vals
+  !
+  implicit none
+  real(rp)    :: relax_temp = 1.0, dummy = 0.0  
+  logical(ip) :: debug = .true.  
+  !-----------------------------------------------------------------------||---!
+  !                                                                            !
+  !-----------------------------------------------------------------------||---!
+  !
+  if( any(CNT_SENDRECV).and.INITIATED ) then
+    !
+    !if(INOTSLAVE) print *, "[tem_commdom_plugin3_new]", CNT_SMS
+    !
+    !----------------------------------------------------------| 2015Abr14 |---!
+    if( CNT_CPLNG%current_what(2_ip) ) then 
+      if(solve(1) % kfl_iffix /= 1) then 
+        print *, "[mod_tem_commdom01] '", trim(title) ,"' Set 'OPTION: FIXITY' before 'END_ALGEBRAIC_SOLVER', kfl_iffix:", solve(1) % kfl_iffix
+        call runend("[tem_commdom_plugin3_new] ERROR!!") 
+      endif 
+    else
+      if(solve(1) % kfl_iffix /= 0) then 
+        print *, "[mod_tem_commdom02] '", trim(title) ,"' Unset 'OPTION: ZERO_FIXITY' or 'FIXITY' before 'END_ALGEBRAIC_SOLVER', kfl_iffix:", solve(1) % kfl_iffix
+        call runend("[tem_commdom_plugin3_new] ERROR!!") 
+      endif 
+    endif 
+    !---------------------------------------------------------------------||---!
+    !---------------------------------------------------------------------||---!
+    if(CNT_CPLNG%current_code==CNT_CPLNG%code_i) then
+      !-------------------------------------------------------| HEATF--> |---!
+      if( CNT_SENDRECV(10) ) then ! SEND_modul_i, SEND_task_i, ITASK_BEFORE  
+        if(INOTSLAVE.and.debug) print *, trim(CNT_SMS), trim(title), ".HEATF-->", INITIATED !DONE, N_DOITER, ittim 
+        !
+        if(inotmaster) then 
+          !
+          CNT_CPLNG%var_ij(1,1:npoin) = 0.0
+          if( CNT_CPLNG%current_what(2_ip) ) then 
+            CNT_CPLNG%var_ij(1,1:npoin) = solve(1)%reaction(1,1:npoin) 
+          else 
+            call commdom_alya_cht_node_flux( CNT_CPLNG%var_ij(1,1:npoin) )
+            CNT_CPLNG%var_ij(1,1:npoin) = -CNT_CPLNG%var_ij(1,1:npoin)
+          endif 
+        endif 
+        !
+        call commdom_driver_exchange02( CNT_CPLNG, debug=DEBUG) 
+        call PAR_SUM(dummy,'IN MY CODE')
+        !
+      endif
+      !-----------------------------------------------------------------||---!
+      ! 
+      !-------------------------------------------------------| TEMPE<-- |---!
+      if( CNT_SENDRECV(11) ) then ! RECV_modul_i, RECV_task_i, ITASK_BEFORE   
+        if(INOTSLAVE.and.debug) print *, trim(CNT_SMS), trim(title), ".TEMPE<--", INITIATED ! DONE, N_DOITER, ittim
+        !
+        call commdom_driver_exchange02( CNT_CPLNG, debug=DEBUG) 
+        call PAR_SUM(dummy,'IN MY CODE')
+        !
+        if(inotmaster) then 
+          call temp2enth(  CNT_CPLNG%var_ji(1,1:npoin) )
+          !
+          !if( CNT_CPLNG%current_what(2_ip) ) relax_temp = 0.25 !< 2016Feb24  
+          !
+          call commdom_dynamic_set_vals( CNT_CPLNG%var_ji(1,1:npoin),     therm(  1:npoin,1), relax_op=relax_temp ) ! T(n)
+          call commdom_dynamic_set_vals( CNT_CPLNG%var_ji(1,1:npoin),     therm(  1:npoin,2), relax_op=relax_temp ) ! x?
+          call commdom_dynamic_set_vals( CNT_CPLNG%var_ji(1,1:npoin),     therm(  1:npoin,3), relax_op=relax_temp ) ! x?
+          call commdom_dynamic_set_vals( CNT_CPLNG%var_ji(1,1:npoin), bvess_tem(1,1:npoin,1), relax_op=relax_temp ) ! T(n)
+        endif
+      endif
+      !-----------------------------------------------------------------||---!
+    endif
+    !---------------------------------------------------------------------||---!
+    if(CNT_CPLNG%current_code==CNT_CPLNG%code_j) then
+      !-------------------------------------------------------| TEMPE--> |---!
+      if( CNT_SENDRECV(10) ) then  ! SEND_modul_j, SEND_task_j, ITASK_BEFORE   
+        if(INOTSLAVE.and.debug) print *, trim(CNT_SMS), trim(title), ".TEMPE-->", INITIATED ! DONE, N_DOITER, ittim 
+        !
+        if(inotmaster) then 
+          if (kfl_regim_tem == 4) call tem_clippi()
+          CNT_CPLNG%var_ij(1,1:npoin) = therm(1:npoin,1)
+        endif
+        !
+        call commdom_driver_exchange02( CNT_CPLNG, debug=DEBUG)
+        call PAR_SUM(dummy,'IN MY CODE')
+        !
+      endif
+      !-----------------------------------------------------------------||---!
+      !
+      !-------------------------------------------------------| HEATF<-- |---!
+      if( CNT_SENDRECV(11) ) then ! RECV_modul_j, RECV_task_j, ITASK_BEFORE    
+        if(INOTSLAVE.and.debug) print *, trim(CNT_SMS), trim(title), ".HEATF<--", INITIATED ! DONE, N_DOITER, ittim  
+        !
+        call commdom_driver_exchange02( CNT_CPLNG, debug=DEBUG) 
+        call PAR_SUM(dummy,'IN MY CODE')
+        !
+        if(inotmaster) then 
+          if( CNT_CPLNG%current_what(2_ip) ) then 
+            call commdom_dynamic_set_vals( CNT_CPLNG%var_ji(1,1:npoin), solve(1)%bvnat(1,1:npoin), relax_op=1.0_rp ) 
+          else 
+            call commdom_alya_cht_nodes2bvnat( CNT_CPLNG%var_ji(1,1:npoin), bvnat_tem(3,1:nboun,1) )
+          endif 
+          CNT_CPLNG%var_ji(1,1:npoin) = 0.0_rp                              ! <--- reset values for the next step...
+        endif 
+        !
+      endif
+      !-----------------------------------------------------------------||---!
+    endif    
+    !---------------------------------------------------------------------||---!
+  endif
+  !-----------------------------------------------------------------------||---!
+  !                                                                            !
+  !-----------------------------------------------------------------------||---!
+  end subroutine
+  !-----------------------------------------------------------------------||---!
+#endif
+#endif

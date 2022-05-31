@@ -1,0 +1,35 @@
+#!/bin/csh -f
+
+echo " ";
+echo "--| install |-- ";
+echo " ";
+echo "--| Install Alya in the specified directory";
+echo " ";
+ 
+if ( ($1 == "-help") || ($1 == "--help") || ($1 == "-h") ) then
+   echo "    Usage:   install directoryname"
+   echo " "
+   echo "    Alya executables and utilities are installed in directory directoryname"
+   goto bye
+else if ( $1 == "" ) then
+   set directory = $HOME/bin/Alya 
+else
+   set directory = $1
+endif   
+if ( ! -d $directory ) then
+   echo "    Alya directory. was created"
+   mkdir $directory   
+  if ( ! -d $directory ) then
+     echo "    Error: Could not create Alya directory"
+     goto bye
+  endif
+endif
+cp -f ./Alya.x            $directory/
+cp -f ../../Utils/user/*  $directory/
+chmod u+x $directory/*
+echo "    --> Add the following directory to your path: "$directory
+
+bye:
+echo " "
+echo "--| Bye."
+echo " "

@@ -1,0 +1,43 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  SENSITIVITY_MESH,  FIELD=1
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+  NUMERICAL_TREATMENT
+      DEFORMATION:           BOUNDARY, STEPS=1
+$      SMOOTHING:             STEPS=1, RELAXATION=1.0
+      
+$      ALGEBRAIC_SOLVER
+$        SOLVER:                CG
+$        CONVERGENCE:           ITERA=10000, TOLER=1.0e-10
+$        OUTPUT:                CONVERGENCE
+$        PRECONDITIONER:        DIAGONAL
+$        STEADY_STATE_TOLERANCE=-1.0e-10
+$      END_ALGEBRAIC_SOLVER
+
+  ALGEBRAIC_SOLVER:        GMRES, KRYLOV=200, TOLER=1.0e-14, ITERA=1000 , ADAPTI, RATIO=0.0001
+  PRECONDITIONER:         DIAGONAL
+
+  END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+$   START_POSTPROCESS_AT  STEP=  0
+$   POSTPROCESS INITIAL
+  POSTPROCESS DISPM, STEPS=1
+$  POSTPROCESS VELOM, STEPS=1
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+  CODES, NODES
+        4  11   0.0 0.0      $ Inlet rounded section
+    4 & 2  11   0.0 0.0
+        2  11   0.0 0.0      $ Inlet horizontal sections
+        3  11   0.0 0.0      $ Profile boundary
+        5  11   0.0 0.0
+    5 & 2  11   0.0 0.0      $ 5 is outlet, velocity is free by default
+  END_CODES
+
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+

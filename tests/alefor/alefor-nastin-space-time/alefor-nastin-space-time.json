@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "alefor-nastin-space-time.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        }
+    ],
+    "description": "Disminishing channel. Moving domain by alefor and nastin solution",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "alefor",
+        "nastin"
+    ],
+    "name": "alefor-nastin-space-time",
+    "postprocess": "alya2pos"
+}

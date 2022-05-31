@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "alefor-space-time_repart-VELOM-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "alefor-space-time_repart-DISPM-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Space time function to impose the displacement of alefor with repartitioning",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "alefor"
+    ],
+    "name": "alefor-space-time_repart",
+    "postprocess": "mpio2txt"
+}

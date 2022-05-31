@@ -1,0 +1,34 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+  COUPLING
+    ALEFOR NASTIN
+    NASTIN ALEFOR
+  END_COUPLING
+
+  PROPERTIES
+   MATERIAL=1
+      DENSITY:    CONSTANT, VALUE = 1.0
+      VISCOSITY:  CONSTANT, VALUE = 0.1
+    END_MATERIAL
+  END_PROPERTIES
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  MESH
+    DIVISION=0
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   50,50,50
+  END_ELSEST
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  STEPS=10
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

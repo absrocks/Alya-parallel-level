@@ -1,0 +1,494 @@
+!-----------------------------------------------------------------------
+!> @addtogroup Domain
+!> @{
+!> @file    domvar.f90
+!> @author  Guillaume Houzeaux
+!> @date    18/09/2012
+!> @brief   Define some domain variables
+!> @details Define some domain variables
+!>          \verbatim
+!>          LPOIZ(IZONE) % L(KPOIN) ....... =  0 if IPOIN does not belong to zone IZONE
+!>                                  ....... /= 0 if IPOIN does
+!>          LNOCH(NPOIN) .................. Node characterstics, compute from the element
+!>                                          characteristics.
+!>                                          = NOFEM ... Node is a normal node
+!>                                          = NOHOL ... Node is a hole node
+!>          LMAST(NPOIN) .................. List of masters
+!>                                          LMAST(JPOIN) = IPOIN if JPOIN is a slave and IPOIN master
+!>                                          = 0 if JPOIN is not a slave
+!>          \endverbatim
+!> @}
+!-----------------------------------------------------------------------
+
+subroutine domvar(itask)
+
+  use def_parame
+  use def_master
+  use def_domain
+  use def_elmtyp
+  use def_mpio,           only : kfl_mpio_export, mpio_flag_geometry_read_post, PAR_MPIO_ON
+  use def_kermod,         only : kfl_posdi
+  use def_kermod,         only : kfl_lapla
+  use def_kermod,         only : kfl_rotation_axe,ndivi
+  use def_kermod,         only : rotation_angle
+  use def_kermod,         only : kfl_difun
+  use mod_memory,         only : memory_alloca
+  use mod_memory,         only : memory_deallo
+  use mod_parall,         only : mcode
+  use mod_parall,         only : msubd
+  use mod_parall,         only : mzone
+  use mod_parall,         only : mcolo
+  use mod_communications, only : PAR_INTERFACE_NODE_EXCHANGE
+  use mod_communications, only : PAR_GHOST_BOUNDARY_EXCHANGE
+  use mod_communications, only : PAR_SUM
+  use mod_communications, only : PAR_MAX
+  use mod_communications, only : PAR_BROADCAST
+  use mod_elmgeo,         only : elmgeo_element_type_initialization
+  use mod_reaset,         only : reaset_set_connectivity
+
+  use def_domain,         only : htable_lninv_loc
+  use mod_materials,      only : materials_from_boundaries
+  use mod_htable,         only : HtableMaxPrimeNumber
+  use mod_htable,         only : hash_t
+  use mod_htable,         only : htaini
+  use mod_htable,         only : htaadd
+  use mod_htable,         only : htades
+  use mod_messages,       only : livinf
+  use mod_maths,          only : maths_maxloc_nonzero
+  use mod_domain,         only : domain_memory_allocate
+  use mod_meshes,         only : meshes_check_mesh_connectivity
+  use mod_messages,       only : messages_live
+  use mod_std
+
+  implicit none
+
+  integer(ip),            intent(in) :: itask
+  integer(ip)                        :: ielem,pelty,iboun,pblty
+  integer(ip)                        :: inode,ipoin,jdime,idime
+  integer(ip)                        :: ihole_aux,inodb,iperi,pelch
+  integer(ip)                        :: ipoin_master,ipoin_slave,ifiel
+ !integer(ip)                        :: ierro_element_wrong_node
+ !integer(ip)                        :: ierro_floating_node
+ !integer(ip)                        :: ierro_boundary_wrong_node
+ !integer(ip)                        :: ierro_local_node
+  integer(ip),            pointer    :: list_boundary_nodes(:)
+  character(20)                      :: chnod
+  real(rp)                           :: rotation_matrix(3,3),theta,xx(3)
+
+  nullify(list_boundary_nodes)
+
+  select case ( itask )
+
+  case ( 0_ip )
+
+     !-------------------------------------------------------------------
+     !
+     ! Materials, subomains, cohesive elements, number of groups
+     ! NGROU_DOM should be broadcast if the master has found a number
+     ! of groups different from that prescribed
+     !
+     !-------------------------------------------------------------------
+
+     nmate     = 0
+     nsubd     = 0
+     nperi     = 0
+     kfl_elcoh = 0
+     call materials_from_boundaries()
+     if( INOTMASTER .and. nelem > 0 ) then
+        nmate     = maxval(lmate)
+        nsubd     = maxval(lesub)
+        nperi     = maxval(lmast)
+        kfl_elcoh = min(1_ip,count(lelch == ELCOH,KIND=ip))
+        kfl_elint = min(1_ip,count(lelch == ELINT,KIND=ip))
+     end if
+     call PAR_MAX(nmate)
+     call PAR_MAX(nsubd)
+     call PAR_MAX(nperi)
+     call PAR_MAX(kfl_elcoh)
+     call PAR_MAX(kfl_elint)
+     call PAR_BROADCAST(ngrou_dom)
+     if( nelem == 0 ) then
+        IEMPTY    = .true.
+        INOTEMPTY = .false.
+     else
+        IEMPTY    = .false.
+        INOTEMPTY = .true.
+     end if
+     mzone     = nzone
+     msubd     = nsubd
+     call PAR_MAX(mzone,'IN THE WORLD')
+     call PAR_MAX(msubd,'IN THE WORLD')
+     mcolo = (mcode+1)*(mzone+1)*(msubd+1)-1
+     
+     !-------------------------------------------------------------------
+     !
+     ! If some meshes are moving, activate kfl_domar
+     !
+     !-------------------------------------------------------------------
+     
+     if( kfl_modul(ID_ALEFOR) /= 0 .or. kfl_difun /= 0 ) then
+        kfl_domar       = 1
+        kfl_domar_world = 1
+     end if
+     call PAR_MAX(kfl_domar)
+     call PAR_MAX(kfl_domar_world,'IN THE WORLD')     
+
+  case ( 1_ip )
+     !
+     ! If we export the mesh, desactivate mesh multiplication
+     !
+     if( kfl_mpio_export == 1 .or. mpio_flag_geometry_read_post == PAR_MPIO_ON) then
+        ndivi            = 0
+        kfl_posdi        = 0
+        trans(1)         = 0.0_rp
+        trans(2)         = 0.0_rp
+        trans(3)         = 0.0_rp
+        xscal(1)         = 1.0_rp
+        xscal(2)         = 1.0_rp
+        xscal(3)         = 1.0_rp
+        kfl_rotation_axe = 0
+     end if
+
+     !-------------------------------------------------------------------
+     !
+     ! Mesh dependent arrays
+     !
+     !-------------------------------------------------------------------
+
+     if( INOTMASTER ) then
+        !
+        ! LNLEV, LELEV, LBLEV: level of mesh multiplication
+        !
+        call memory_alloca(memor_dom,'LNLEV','domvar',lnlev,npoin,'IDENTITY')
+        call memory_alloca(memor_dom,'LELEV','domvar',lelev,nelem,'IDENTITY')
+        call memory_alloca(memor_dom,'LBLEV','domvar',lblev,nboun,'IDENTITY')
+        !
+        ! COORD: translation
+        !
+        if( trans(1) /= 0.0_rp .or. trans(2) /= 0.0_rp .or. trans(3) /= 0.0_rp ) then
+           do ipoin = 1,npoin
+              coord(1:ndime,ipoin) = trans(1:ndime) + coord(1:ndime,ipoin)
+           end do
+        end if
+        !
+        ! COORD: scale factor
+        !
+        if( xscal(1) /= 1.0_rp .or. xscal(2) /= 1.0_rp .or. xscal(3) /= 1.0_rp ) then
+           do ipoin = 1,npoin
+              coord(1:ndime,ipoin) = xscal(1:ndime) * coord(1:ndime,ipoin)
+           end do
+        end if
+        !
+        ! COORD: rotation
+        !
+        if( kfl_rotation_axe /= 0 ) then
+           rotation_matrix = 0.0_rp
+           theta           = rotation_angle/180.0_rp*pi
+           if( ndime == 2 ) then
+              rotation_matrix(1,1) =  cos(theta)
+              rotation_matrix(1,2) = -sin(theta)
+              rotation_matrix(2,1) =  sin(theta)
+              rotation_matrix(2,2) =  cos(theta)
+           else if( kfl_rotation_axe == 1 ) then
+              rotation_matrix(1,1) =  1.0_rp       !    +-                       -+
+              rotation_matrix(2,2) =  cos(theta)   !    |  1        0        0    |
+              rotation_matrix(2,3) = -sin(theta)   !    |  0      cos(t)  -sin(t) |
+              rotation_matrix(3,2) =  sin(theta)   !    |  0      sin(t)   cos(t) |
+              rotation_matrix(3,3) =  cos(theta)   !    +-                       -+
+           else if( kfl_rotation_axe == 2 ) then
+              rotation_matrix(1,1) =  cos(theta)   !    +-                       -+
+              rotation_matrix(1,3) =  sin(theta)   !    |  cos(t)   0      sin(t) |
+              rotation_matrix(2,2) =  1.0_rp       !    |    0      1        0    |
+              rotation_matrix(3,1) = -sin(theta)   !    | -sin(t)   0      cos(t) |
+              rotation_matrix(3,3) =  cos(theta)   !    +-                       -+
+           else if( kfl_rotation_axe == 3 ) then
+              rotation_matrix(1,1) =  cos(theta)   !    +-                       -+
+              rotation_matrix(1,2) = -sin(theta)   !    |  cos(t)  -sin(t)   0    |
+              rotation_matrix(2,1) =  sin(theta)   !    |  sin(t)   cos(t)   0    |
+              rotation_matrix(2,2) =  cos(theta)   !    |    0       0       1    |
+              rotation_matrix(3,3) =  1.0_rp       !    +-                       -+
+           end if
+           do ipoin = 1,npoin
+              xx(1:ndime)          = coord(1:ndime,ipoin)
+              coord(1:ndime,ipoin) = 0.0_rp
+              do idime = 1,ndime
+                 do jdime = 1,ndime
+                    coord(idime,ipoin) = coord(idime,ipoin) + rotation_matrix(idime,jdime) * xx(jdime)
+                 end do
+              end do
+           end do
+
+        end if
+     end if
+
+  case ( 2_ip )
+
+     !-------------------------------------------------------------------
+     !
+     ! Mesh dependent variables: this subroutine must be called whenever
+     ! new elements are created (for example after mesh multiplication)
+     !
+     !-------------------------------------------------------------------
+
+     if( INOTMASTER ) then
+        !
+        ! Number of elements per type
+        !
+        lnuty = 0
+        do ielem = 1,nelem
+           pelty = abs(ltype(ielem))
+           lnuty(pelty) = lnuty(pelty) + 1
+        end do
+        !
+        ! Number of boundaries per type
+        !
+        do iboun = 1,nboun
+           pblty = abs(ltypb(iboun))
+           lnuty(pblty) = lnuty(pblty) + 1
+        end do
+        !
+        ! Check if high order element exist
+        !
+        do ielem = 1,nelem
+           pelty = abs(ltype(ielem))
+           if( lorde(pelty) > 1 ) kfl_horde = 1
+        end do
+        !
+        ! Contact/hole/cohesive elements/interface elements
+        !
+        do ielem = 1,nelem
+           if( lelch(ielem) == ELCNT ) then
+              ltype(ielem) = -abs(ltype(ielem))
+           else if( lelch(ielem) == ELHOL ) then
+              ltype(ielem) = -abs(ltype(ielem))
+           end if
+        end do
+
+     end if
+     call PAR_MAX(kfl_horde,'IN MY CODE')
+     !
+     ! Copy of original mesh size for geometrical halo dimensions
+     !
+     if( ISEQUEN ) then
+        npoi1        = npoin
+        npoi2        = npoin+1
+        npoi3        = npoin
+        npoin_par(1) = npoin
+        nelem_par(1) = nelem
+        nboun_par(1) = nboun
+        npoin_total  = npoin
+        nelem_total  = nelem
+        nboun_total  = nboun
+     end if
+     nelem_2    = nelem
+     nboun_2    = nboun
+     npoin_2    = npoin
+     npoin_own  = npoi3
+     npoin_halo = npoin_own
+     !
+     ! Fields dimensions
+     !
+     do ifiel = 1,nfiel
+        if( kfl_field(1,ifiel) /= 0 ) then
+           if(      kfl_field(2,ifiel) == NELEM_TYPE ) then
+              kfl_field(5,ifiel) = nelem
+           else if( kfl_field(2,ifiel) == NPOIN_TYPE ) then
+              kfl_field(5,ifiel) = npoin
+           else if( kfl_field(2,ifiel) == NBOUN_TYPE ) then
+              kfl_field(5,ifiel) = nboun
+           else
+              call runend('OUTDOM: UNDEFINED FIELD TYPE')
+           end if
+        end if
+     end do
+     !
+     ! Cancel Laplacian if required
+     !
+     if( kfl_lapla == 0 ) llapl = 0
+     
+  case ( 3_ip )
+
+     !-------------------------------------------------------------------
+     !
+     ! Must be called after renelm() and mesh multiplication
+     !
+     !-------------------------------------------------------------------
+     !
+     ! Htable for LNINV_LOC
+     !
+     if( INOTEMPTY ) then
+        call htades( htable_lninv_loc, memor_opt=memor_dom  )
+        if( nperi == -2 ) then
+           call htaini( htable_lninv_loc, npoin, lidson=.true., AUTOMATIC_SIZE=.true.,memor_opt=memor_dom,REPEATED_ELEMENTS=.true.)
+        else
+           call htaini( htable_lninv_loc, npoin, lidson=.true., AUTOMATIC_SIZE=.true.,memor_opt=memor_dom)
+        end if
+        call htaadd( htable_lninv_loc, lninv_loc, memor_opt=memor_dom )
+        if(htable_lninv_loc % nelem /= npoin ) then
+           call runend('DOMVAR: TROUBLES WITH LNINV_LOC')
+        end if
+     end if
+     !
+     ! Set connectivity
+     !
+     call reaset_set_connectivity()
+     !
+     ! Define LNOCH according to LELCH and detect holes automatically
+     !
+     if( INOTMASTER .and. npoin > 0 ) then
+        ihole_aux= 0
+        call memgen(1_ip,npoin,0_ip)
+        do ielem = 1,nelem
+           if( lelch(ielem) /= ELHOL ) then
+              do inode = 1,nnode(abs(ltype(ielem)))
+                 ipoin = lnods(inode,ielem)
+                 gisca(ipoin) = 1
+              end do
+           else
+              ihole_aux= ihole_aux+1
+           end if
+        end do
+        call PAR_INTERFACE_NODE_EXCHANGE(gisca,'MAX','IN MY CODE')
+        do ipoin = 1,npoin
+           if( gisca(ipoin) == 0 ) then
+              lnoch(ipoin) = NOHOL
+              if (ihole_aux == 0) then
+                 chnod = intost(ipoin)
+                 call livinf(10000_ip, &
+                      'NODE NUMBER ( '//adjustl(trim(chnod)) &
+                      // ' HAS NO CONNECTIVITY DEFINED)',0_ip)
+              end if
+           end if
+        end do
+        call memgen(3_ip,npoin,0_ip)
+     end if
+     !
+     ! List of boundary nodes
+     ! NBONO .......... Number of boundary nodes
+     ! LBONO(NBONO) ... List of boudanry nodes
+     !
+     if( INOTMASTER .and. npoin > 0 ) then
+        call memory_alloca(memor_dom,'LIST_BOUNDARY_NODES','memgeo',list_boundary_nodes,npoin)
+        nbono = 0
+        do ipoin = 1,npoin
+           list_boundary_nodes(ipoin) = 0
+        end do
+        do iboun = 1,nboun
+           do inodb = 1,nnode(abs(ltypb(iboun)))
+              ipoin = lnodb(inodb,iboun)
+              if ( ipoin>npoin ) then
+                 call runend( "Domvar.f90: Array index of bounds when trying to access point ID "//trim(intost(ipoin))//" for boundary element "//trim(intost(iboun))//". Max point ID "//trim(intost(npoin))//". LNODB likely was not read correctly, see BOUNDARIES..END_BOUNDARIES section in dom.dat for errors." )
+              end if
+              if( list_boundary_nodes(ipoin) == 0 ) then
+                 nbono = nbono + 1
+                 list_boundary_nodes(ipoin) = 1
+              end if
+           end do
+        end do
+        call PAR_INTERFACE_NODE_EXCHANGE(list_boundary_nodes,'MAX','IN MY CODE')
+        nbono = 0
+        do ipoin = 1,npoin
+           nbono = nbono + list_boundary_nodes(ipoin)
+        end do
+        call domain_memory_allocate('LBONO')
+        nbono = 0
+        do ipoin = 1,npoin
+           if( list_boundary_nodes(ipoin) /= 0 ) then
+              nbono = nbono + 1
+              lbono(nbono) = ipoin
+           end if
+        end do
+        call memory_deallo(memor_dom,'LIST_BOUNDARY_NODES','memgeo',list_boundary_nodes)
+     end if
+     !
+     ! List of periodicity couples using LMAST
+     ! LPERI(1,:) = master
+     ! LPERI(2,:) = slave
+     !
+     ! LMAST(JPOIN) = IPOIN, IPOIN is the master of slave JPOIN
+     !
+     if( INOTEMPTY .and. new_periodicity == 0 ) then
+        nperi = 0
+        nperi = count( lmast(1:npoin) /= 0 ,KIND=ip)
+        if( nperi > 0 ) then
+           call domain_memory_allocate('LPERI')
+           iperi = 0
+           do ipoin_slave = 1,npoin
+              ipoin_master = lmast(ipoin_slave)
+              if( ipoin_master > 0 ) then
+                 iperi = iperi + 1
+                 lperi(1,iperi) = ipoin_master
+                 lperi(2,iperi) = ipoin_slave
+              end if
+           end do
+        end if
+     !else
+     !   nperi = 0
+     end if
+
+  case ( 4_ip )
+     !
+     ! LNNOD: number of nodes per element. Treat special case of virtual elements
+     !
+    if( INOTMASTER ) then
+        call domain_memory_allocate('LNNOD')
+        do ielem = 1,nelem
+           pelty = abs(ltype(ielem))
+           pelch = lelch(ielem)
+           if( pelch == ELVIR ) then
+              lnnod(ielem) = maths_maxloc_nonzero(lnods(:,ielem))
+           else if( pelty > 0 ) then
+              lnnod(ielem) = nnode(pelty)
+           end if
+        end do
+        meshe(ndivi) % lnnod => lnnod
+     end if
+     !
+     ! LNNOB: Number of nodes per boundary
+     !
+     if( INOTMASTER ) then
+        call domain_memory_allocate('LNNOB')
+        do iboun = 1,nboun
+           lnnob(iboun) = nnode(abs(ltypb(iboun)))
+        end do
+        meshe(ndivi) % lnnob => lnnob
+     end if
+     !
+     ! LGAUS: Number of Gauss points per element
+     !
+     if( INOTMASTER ) then
+        call domain_memory_allocate('LGAUS')
+        do ielem = 1,nelem
+           lgaus(ielem) = ngaus(abs(ltype(ielem)))
+        end do
+        meshe(ndivi) % lgaus => lgaus
+     end if
+     !
+     ! Empty subdomain
+     !
+     if( nelem == 0 ) then
+        IEMPTY    = .true.
+        INOTEMPTY = .false.
+     else
+        IEMPTY    = .false.
+        INOTEMPTY = .true.
+     end if
+     !
+     ! Let us check the mesh just in case!
+     !
+     !call messages_live('CHECKING THE MESH CONNECTIVITY JUST IN CASE...')
+     !call meshes_check_mesh_connectivity(&
+     !     npoin,nelem,nboun,lnods,lnnod,lnodb,lnnob,lelbo,&
+     !     ierro_element_wrong_node,ierro_floating_node,&
+     !     ierro_boundary_wrong_node,ierro_local_node)
+     !if(imaster) print*,ierro_element_wrong_node,ierro_floating_node,&
+     !     ierro_boundary_wrong_node,ierro_local_node
+     !if( ierro_floating_node       /= 0 ) call messages_live('THERE ARE NODES WITHOUT ELEMENTS!','WARNING')
+     !if( ierro_local_node          /= 0 ) call runend('DOMVAR: WRONG BOUNDARY CONNECTIVITY')
+     !if( ierro_element_wrong_node  /= 0 ) call runend('DOMVAR: SOME ELEMENTS HAVE NULL NODES')
+     !if( ierro_boundary_wrong_node /= 0 ) call runend('DOMVAR: SOME BOUNDARY ELEMENTS HAVE NULL NODES')
+
+  end select
+
+end subroutine domvar
+

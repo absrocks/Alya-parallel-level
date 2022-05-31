@@ -1,0 +1,21 @@
+# Forced compilation options
+# Sample file
+#  lo de libs aun lo estoy probando
+
+# start comment lines with a #
+f90==    mpixlf90 -I$$HDF5_INC -q64 -qflag=i -qnoescape -qextname=flush:etime -qfree=f90 -qmoddir=$O -qarch=qp -qtune=qp -qnostaticlink -I $O  -c -O3 -qsuffix=f=f90 -ig
+fpp90==  mpixlf90 -I$$HDF5_INC -q64 -qflag=i -qnoescape -qextname=flush:etime -qfree=f90 -qmoddir=$O -qarch=qp -qtune=qp -qnostaticlink -I $O  -c -O3 -qsuffix=cpp=f90 -g
+fomp90== mpixlf90 -I$$HDF5_INC -q64 -qflag=i -qnoescape -qextname=flush:etime -qfree=f90 -qmoddir=$O -qarch=qp -qtune=qp -qnostaticlink -I $O  -c -O3 -qsuffix=cpp=f90 -g
+cpp==    mpixlc   -I$$HDF5_INC -c  -DNOUNDERSCORE
+link==   mpixlf90
+
+
+## opcion mezcla dinamica estatica
+#escribi a suppor y me dijeron que estatica suele dar mejor rendimiento
+#libs== -qmkshrobj -L../../Thirdparties/metis-4.0/ -lmetis /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5_fortran.a /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5.a /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5hl_fortran.a /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5_hl.a   -L$$SZIP_LIB -lsz -L/usr/lib64 -lz -lgpfs
+## opcion pura estatica - parece fermi usa solo estatico salvo que yo lo fuerce
+##  con -qmkshrobj o  -qnostaticlink (dijeron en support)i
+## con estatica no andaba porque no encontraba gpfs
+##  Xavi me dijo que sin gpfs anda igual así que lo saco
+libs==  -L../../Thirdparties/metis-4.0/ -lmetis /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5_fortran.a /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5.a /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5hl_fortran.a /cineca/prod/libraries/hdf5/1.8.9_par/bgq-xl--1.0/lib/libhdf5_hl.a   -L$$SZIP_LIB -lsz -L$$ZLIB_LIB -lz 
+shell==  /fbin/sh

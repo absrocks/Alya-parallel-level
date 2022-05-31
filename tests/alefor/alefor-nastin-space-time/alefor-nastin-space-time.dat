@@ -1,0 +1,28 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   alefor-space-time
+  LIVE_INFO:              screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0,-2.0
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        10
+  BLOCK: 1
+    1 ALEFOR, NASTIN
+  END_BLOCK
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    OPENMP
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL_SERVICE
+  ALEFOR_MODULE:         ON
+  END_ALEFOR_MODULE
+  NASTIN_MODULE:         ON
+  END_NASTIN_MODULE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+ 

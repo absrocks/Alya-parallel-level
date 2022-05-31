@@ -1,0 +1,8 @@
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - for i in $(ls -R | grep json$); do count=`ls -R | grep ^$i$ | uniq -c | awk '{print $1}'`; if [ $count -ne 1 ] ; then echo "$i is duplicated!"; exit 1; fi; done;
+    - for i in $(find . | grep json$); do echo "Analyzing $i"; python3 tools/tests/json-validity.py $i; done; 

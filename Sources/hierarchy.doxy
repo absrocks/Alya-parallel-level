@@ -1,0 +1,50 @@
+/*! 
+@defgroup Turnon Turnon: Start the run
+@defgroup Output Output: Output and postprocess
+@defgroup Begste Begste: Begin time step
+@defgroup Timste Timste: Compute time step
+@defgroup Doiter Doiter: Solve problems by modules
+@defgroup Concou Concou: Check coupling convergence
+@defgroup Endste Endste: End a time step
+
+@defgroup Domain Mesh related functionalities
+@defgroup GraphsToolBox Toolbox for graphs construction, manipulation and renumbering
+@ingroup  Domain 
+
+@defgroup DomainInput Read mesh related arrays: coordinates, connectivity, boundary conditions
+@ingroup  Domain 
+@ingroup  Turnon 
+
+@defgroup Nastin Nastin: Incompressible flow
+
+@defgroup NastinTurnon Turnon - Nastin: Initial operations
+@ingroup  Nastin
+
+@defgroup NastinDoiter Doiter - Nastin: Solve equations
+@ingroup  Nastin
+
+@defgroup NastinOutput Output - Nastin: Output, filters and postprocess
+@ingroup  Nastin
+@ingroup  Output
+
+@defgroup NastinTimste Timste - Nastin: Compute time step 
+@ingroup  Nastin
+
+@defgroup NastinBegste Begste - Nastin: Begin a time step
+@ingroup  Nastin
+
+@defgroup NastinEndste Endste - Nastin: End a time step
+@ingroup  Nastin
+
+@defgroup NastinInput Read data files
+@ingroup  NastinTurnon
+
+@defgroup NastinMatrixAssembly Matrix assembly
+@ingroup  NastinDoiter
+
+@defgroup Turbul Turbul: Turbulence models
+
+@defgroup TurbulModel Turbulence model assembly
+@ingroup  Turbul
+
+*/

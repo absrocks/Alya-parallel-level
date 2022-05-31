@@ -1,0 +1,30 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "rigid-body-2d.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-06"
+        }
+    ],
+    "description": "Rigid body with spring in 2D",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1
+        },
+        {
+            "mpi": 4
+        }
+    ],
+    "modules": [
+        "nastin",
+        "alefor"
+    ],
+    "name": "rigid-body-2d",
+    "postprocess": "alya2pos"
+}

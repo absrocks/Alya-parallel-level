@@ -1,0 +1,6 @@
+  FIELD = 1
+        INCLUDE ./Fields/ALPHA.alya
+END_FIELD
+  FIELD = 2
+	INCLUDE ./Fields/TEMPE.alya 
+END_FIELD

@@ -1,0 +1,8 @@
+function(commdom)
+  if (NOT WITH_COMMDOM MATCHES "OFF")
+    add_dependencies(${PROJECT_NAME} commdom)
+    add_definitions(-DCOMMDOM=2)
+    include_directories(${commdom_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} commdom)
+  endif()
+endfunction()

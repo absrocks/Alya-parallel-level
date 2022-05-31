@@ -1,0 +1,1249 @@
+#!/usr/bin/perl
+
+######################################################
+#
+#  --| Alya configure |--
+#
+#  --| Build Alya makefile
+#
+#  --| Run it with no arguments to see usage
+#
+######################################################
+
+print "\n";
+print "--| Alya configure |-- \n";
+print "\n";
+print "--| Build Alya makefile \n";
+
+if ((@ARGV == 0) || ($ARGV[0] =~ /-h/)) {
+    print "    Usage:   configure  [-lib -g -x -pg -f=filename -old]   module1  module2  ... \n\n";
+    print "    The modules must be all registered and included in the alya-registry file. \n\n";
+    print "    \n";
+    print "    Module options:\n";
+    print "      module1, module2... :  Build only the listed modules.\n";
+    print "    \n";
+    print "    Compilation options:\n";
+    print "      Default options     :  Detect compiler, build debugger AND production binaries, \n";
+    print "                             compile using some standard compiler options and no optimization. \n";
+    print "      -lib                :  Build AlyaLib.a library.\n";
+    print "      -g                  :  Build ONLY debugger binary.\n";
+    print "      -x                  :  Build ONLY production (non-debugger) binary.\n";
+    print "      -v                  :  Show the detailed information of the selected flags.\n";
+    print "      -pg                 :  Build ONLY profiler binary.\n";
+    print "      -f=filename         :  Force compilation options (see companion file sample-comp.txt) \n";
+    print "      -xopt=option        :  Optimization for the production binary (e.g. -xopt=O3).\n";
+    print "    \n";
+    print "--| Bye.\n";
+    print "\n\n";
+    exit 1;
+}
+
+#-----------------------------------------------------------------------------------------------
+#
+# Save the command you typed in conf.log file
+#
+#-----------------------------------------------------------------------------------------------
+
+$datma= `date`;
+
+open (LOGFI,">conf.log");
+print LOGFI "--| \n";
+print LOGFI "--| Alya configure log file: \n";
+print LOGFI "--|   The last configure command you have typed was: \n";
+print LOGFI "--|     --->  .\/configure @ARGV \n";
+print LOGFI "--|   on this date: $datma";
+print LOGFI "--| \n";
+close (LOGFI);
+
+@zmods=();
+
+my ($action)  = @ARGV if (@ARGV == 1);
+my (@auxzmods) = @ARGV if (@ARGV >= 1);
+my (@zmods);
+
+#-----------------------------------------------------------------------------------------------
+#
+# Check module registration in Alya-registry
+#
+#-----------------------------------------------------------------------------------------------
+
+###splice(@zmods, $k) if ($k>0);
+
+$ifdebu="y";
+$ifstra="y";
+$ifprof="n";
+$ifliba="n";
+$iffilecomp="n";
+$foptix = "";
+$verbose="";
+foreach $opti (@auxzmods){
+    if ($opti =~/^-g$/) {
+	$ifdebu="y";
+	$ifstra="n";
+    } elsif ($opti =~/^-x$/){
+	$ifstra="y";
+	$ifdebu="n";
+    } elsif ($opti =~/^-v$/){
+        $verbose="y";
+    } elsif ($opti =~/^-lib$/){
+	$ifstra="n";
+	$ifdebu="n";
+	$ifliba="y";
+	} elsif ($opti =~/^-pg$/){
+	$ifprof="y";
+	$ifstra="n";
+	$ifdebu="n";
+    } elsif ($opti =~/^-f/){
+	$iffilecomp="y";
+	@fields= split(/\=/,$opti);
+	$filecomp = $fields[1];
+    } elsif ($opti =~/^-xopt/){
+	@fields= split(/\=/,$opti);
+	$foptix = "-" . $fields[1];
+    } else {
+	@zmods= (@zmods , $opti);
+    }
+}
+
+@rgmod=();
+%stmod=();
+open (MOLI,"alya-registry");
+while (<MOLI>) {
+    @rgmod = split;
+    if ($rgmod[0]=~/./) {
+	if (!($rgmod[0]=~/^\#/)) {
+	    $stmod{$rgmod[0]}{number} = $rgmod[1];
+	    $stmod{$rgmod[0]}{compile}= "yes" ;
+	    $stmod{$rgmod[0]}{iffold} = " no" ;
+	    $stmod{$rgmod[0]}{iffake} = " no" ;
+	    $stmod{$rgmod[0]}{folder} = " no" ;
+	    $stmod{$rgmod[0]}{ownfak} = " no" ;
+	    $stmod{$rgmod[0]}{modser} = "module" ;
+	    $stmod{$rgmod[0]}{modser} = "service" if ($rgmod[1] > 49);
+	}
+    }
+}
+close(MOLI);
+
+print "\n";
+print "\n";
+print "  ----------------------------------------------------------------------------\n";
+print "  | COMPILATION INFORMATION:                                                 |\n";
+print "  ----------------------------------------------------------------------------\n\n";
+open (IN,"config.in") or die "--| ERROR: Cannot open configure input file: \n--|    $filecomp \n";
+my $message = "";
+while (<IN>) {
+        @fields=split;
+	my $line=$_;
+        #print $fields[0]."\n";
+        if ($fields[0]=~/\#/ ){
+                if($fields[0]=~/\#@/){
+                        $message = $_;
+                        $message =~ tr/@/-/;
+                        $message =~ tr/#/ /;
+                }
+		else{
+			$message = "";
+		}
+
+        }
+        else{
+                if($message ne ""){
+                        print "   ".$message;
+		}
+		if($verbose eq "y" ){
+			chop $line;
+			$line=~ s/^\s+//;
+			if($line ne ""){
+				print "      --> -".$line."-\n";
+			}
+		}
+                $message="";
+        }
+}
+
+#-----------------------------------------------------------------------------------------------
+#
+# Compilers
+#
+#-----------------------------------------------------------------------------------------------
+
+my ($compi,$linki,$sheli);
+
+# default values:
+
+$com90      = "ifort -DMPI_OFF -module \$O -c ";
+$com77      = "ifort -DMPI_OFF -module \$O -c ";
+$comcc      = "gcc  -c ";
+$com90pp    = "ifort -fpp -DMPI_OFF -module \$O -c ";
+$com90a2p   = "ifort -fpp -DMPI_OFF -module ../../Utils/user/alya2pos -c ";
+$com90ppomp = "ifort -fpp -DMPI_OFF -module \$O -c ";
+$com77pp    = "ifort -fpp -DMPI_OFF -module \$O -c ";
+$comccpp    = "gcc  -c ";
+$linki      = "ifort  -DMPI_OFF ";
+$sheli      = "/bin/sh";
+$libsi      = " ";
+#$foptix     = "-O3 -staticlib";
+#$foptix     = "-O3 ";
+$foptix     = " ";
+$liar       = "ar r";
+$liranlib   = "ranlib  ";
+$profiling    = " ";
+
+#$com90 = "g95 -c ";
+#$com77 = "g95 -c ";
+#$comcc = "gcc -c ";
+#$linki = "g95 ";
+#$sheli = "/bin/sh";
+#$libsi = " ";
+
+# check which f90 compiler is available:
+
+my $OS =  `uname`;
+chomp($OS);
+
+#my $MPI = `mpif90 -show`;
+#print $MPI;
+
+$fpp   = "  ";
+if ($OS=~/inux/i){
+	print "    -Linux OS identified. \n";
+	$com90   = "ifort  -DMPI_OFF -module \$O -c ";
+	$com77   = "ifort  -DMPI_OFF -module \$O -c ";
+	$com90pp = "ifort -fpp  -DMPI_OFF -module \$O -c ";
+	$com90a2p   = "ifort -fpp  -DMPI_OFF -module ../../Utils/user/alya2pos -c ";
+	$com77pp = "ifort -fpp  -DMPI_OFF -module \$O -c ";
+	$comcc   = "gcc  -c ";
+	$comccpp = "gcc  -c ";
+	$linki   = "ifort  -DMPI_OFF ";
+	$sheli   = "/bin/sh";
+} elsif ($OS=~/irix/i) {
+	print "    SGI Irix OS identified. \n";
+	print "    Using SGI f90 Fortran Compiler. \n";
+	$com90 = "f90 -64 -mips4 -r10000 -i8 -r8 -col120 -backslash -c ";
+	$com77 = "f90 -64 -mips4 -r10000 -i8 -r8 -col120 -backslash -c ";
+	$comcc = "f90 -64 -mips4 -r10000 -i8 -r8 -col120 -backslash -c ";
+	$linki = "f90 -64 -mips4 -r10000 -i8 -r8 -col120 -backslash ";
+	$sheli = "/sbin/sh";
+} elsif ($OS=~/ygwin/i) {
+	print "    CygWin under DOS identified. \n";
+	print "    Using CygWin g95 Fortran Compiler. \n";
+	$com90 = "g95 -c ";
+	$com77 = "g95 -c ";
+	$comcc = "gcc -c ";
+	$linki = "g95 ";
+	$sheli = "/bin/sh";
+} elsif ($OS=~/aix/i) {
+	print "    CygWin under AIX identified. \n";
+	print "    Using AIX xfl Fortran Compiler. \n";
+	$com90 = "xlf -q64 -qintsize=8 -qsuffix=f=f90 -qfree=f90 -qnoescape -qextname=flush,etime -qsuffix=f=f90 -c ";
+	$com77 = "xlf -q64 -qintsize=8 -qfixed  -qnoescape -qextname=flush,etime -c ";
+	$comcc = "xlc -q64 -c ";
+	$linki = "xlf -q64 -qsuffix=f=f90 ";
+	$sheli = "/fbin/sh";
+} else {
+	print "    I could not detect the OS. \n";
+	print "    Let me try Intel Fortran Compiler with the default options... \n";
+#	$com90   = "ifort -module \$O -c ";
+#	$com77   = "ifort -module \$O -c ";
+#	$com90pp = "ifort -fpp -module \$O -c ";
+#	$com90a2p   = "ifort -fpp -module ../../Utils/user/alya2pos -c ";
+#	$com77pp = "ifort -fpp -module \$O -c ";
+###	$com90 = "g95 -c ";
+###	$com77 = "g95 -c ";
+#	$comcc = "gcc -c ";
+#	$linki   = "ifort ";
+#	$linki = "g95 ";
+#	$sheli = "/bin/sh";
+}
+
+my $FCFLAGS = "";
+my $CSALYA = "";
+my $FOPT = "";
+open (IN,"config.in") or die "--| ERROR: Cannot open configure input file: \n--|    $filecomp \n";
+while (<IN>) {
+	@fields=split;
+	if (!($fields[0]=~/\#/ or $fields[0]=~/\@/)){
+		@fields2=split(/=/,$_,2);
+		if ($fields[0]=~/F90/) {
+			$com90 = $fields2[1];
+			chomp($com90);
+		}
+		elsif ($fields[0]=~/FPPFLAGS/){
+			$com90pp = $fields2[1];
+			chomp($com90pp);
+		}
+		elsif ($fields[0]=~/FCFLAGS/){
+			if (index($fields2[1], "FCFLAGS") == -1) {
+				$FCFLAGS = $fields2[1];
+				chomp($FCFLAGS);
+			}
+		}
+		elsif ($fields[0]=~/FOPT/){
+			if (index($fields2[1], "FOPT") == -1) {
+				$FOPT = $fields2[1];
+				chomp($FOPT);
+			}
+		}
+		elsif ($fields[0]=~/fa2plk/){
+			$linki = $fields2[1];
+			chomp($linki);
+		}
+		elsif ($fields[0]=~/fa2p/){
+			$com90a2p = $fields2[1];
+			chomp($com90a2p);
+		}
+	}
+}
+close(IN);
+open (IN,"config.in") or die "--| ERROR: Cannot open configure input file: \n--|    $filecomp \n";
+my $message = "";
+while (<IN>) {
+	@fields=split;
+	if (!($fields[0]=~/\#/ or $fields[0]=~/\@/)){
+		@fields2=split(/:= \$\(CSALYA\)/,$_);
+		$CSALYA = $CSALYA . $fields2[1];
+		chomp($CSALYA);
+	}
+}
+close(IN);
+
+my ($file , $dirs,$i,$ncf,$little,$a,$b,$c,$depen,$srcdir) ;
+my (@alyadirs,@alldirs,@patdirs,@auxdirs,@allfiles,@comfiles,@objfiles);
+
+#-----------------------------------------------------------------------------------------------
+#
+# Write alya2pos-compile.sh file
+#
+#-----------------------------------------------------------------------------------------------
+
+open (POSCOMPI,">alya2pos-compile.sh");
+
+print POSCOMPI "#------------------------------------------------------------------- \n";
+print POSCOMPI "# \n";
+print POSCOMPI "#    alya2pos compilation file  \n";
+print POSCOMPI "#    Automatically generated by configure  \n";
+print POSCOMPI "#      $datma";
+print POSCOMPI "# \n";
+print POSCOMPI "#------------------------------------------------------------------- \n";
+print POSCOMPI "# \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/def_kintyp.f90   -o ../../Utils/user/alya2pos/def_kintyp.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/def_elmtyp.f90   -o ../../Utils/user/alya2pos/def_elmtyp.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/def_inpout.f90   -o ../../Utils/user/alya2pos/def_inpout.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/mod_maths.f90    -o ../../Utils/user/alya2pos/mod_maths.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/mod_output.f90   -o ../../Utils/user/alya2pos/mod_output.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/txtres.f90       -o ../../Utils/user/alya2pos/txtres.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/gidres_he.f90    -o ../../Utils/user/alya2pos/gidres_he.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/gidres_gp.f90    -o ../../Utils/user/alya2pos/gidres_gp.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/elmtyp.f90       -o ../../Utils/user/alya2pos/elmtyp.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ecoute.f90       -o ../../Utils/user/alya2pos/ecoute.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/runend.f90       -o ../../Utils/user/alya2pos/runend.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/connpo.f90       -o ../../Utils/user/alya2pos/connpo.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/vu_msh.f90       -o ../../Utils/user/alya2pos/vu_msh.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/vu_res.f90       -o ../../Utils/user/alya2pos/vu_res.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/vu_filter.f90    -o ../../Utils/user/alya2pos/vu_filter.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ensmsh.f90       -o ../../Utils/user/alya2pos/ensmsh.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ensres.f90       -o ../../Utils/user/alya2pos/ensres.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/wristl.f90       -o ../../Utils/user/alya2pos/wristl.o \n";
+#print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/stlval.f90       -o ../../Utils/user/alya2pos/stlval.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ensmsh_bin.f90       -o ../../Utils/user/alya2pos/ensmsh_bin.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ensres_bin.f90       -o ../../Utils/user/alya2pos/ensres_bin.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ensmsh_filter.f90       -o ../../Utils/user/alya2pos/ensmsh_filter.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/ensres_filter.f90       -o ../../Utils/user/alya2pos/ensres_filter.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/zfemres.f90       -o ../../Utils/user/alya2pos/zfemres.o \n";
+print POSCOMPI " $com90a2p ../../Utils/user/alya2pos/reahed.f90       -o ../../Utils/user/alya2pos/reahed.o \n";
+print POSCOMPI " $linki   ../../Utils/user/alya2pos/alya2pos.f90 ../../Utils/user/alya2pos/*.o -o ../../Utils/user/alya2pos/alya2pos.x \n";
+print POSCOMPI "     rm  ../../Utils/user/alya2pos/*.o ../../Utils/user/alya2pos/*.mod \n";
+
+close (POSCOMPI);
+
+#-----------------------------------------------------------------------------------------------
+#
+# Start writting makefile
+#
+#-----------------------------------------------------------------------------------------------
+
+open (MAKEFILE,">makefile");
+
+print MAKEFILE "#-------------------------------------------------------------------- \n";
+print MAKEFILE "# \n";
+print MAKEFILE "#                Makefile   A   L   Y   A\n";
+print MAKEFILE "# \n";
+print MAKEFILE "#           Automatically generated by configure\n";
+print MAKEFILE "#             $datma";
+print MAKEFILE "# \n";
+print MAKEFILE "# \n";
+print MAKEFILE "#-------------------------------------------------------------------- \n";
+print MAKEFILE "\n";
+print MAKEFILE "#-------------------------------------------- Variables \n";
+print MAKEFILE "\n";
+
+print MAKEFILE "O = Objects_x\n";
+print MAKEFILE "\n";
+print MAKEFILE "NINJA=0\n";
+print MAKEFILE "\n";
+print MAKEFILE "METIS5_CC=0\n";
+print MAKEFILE "\n";
+print MAKEFILE "CANTERA=0\n";  
+print MAKEFILE "\n";
+print MAKEFILE "include config.in\n";
+print MAKEFILE "\n";
+print MAKEFILE "FCO90  =    \$(F90)   \$(FCFLAGS)\n";
+print MAKEFILE "FPP90  =    \$(F90)   \$(FCFLAGS) \$(FPPFLAGS)\n";
+print MAKEFILE "FOM90  =    \$(F90)   \$(FCFLAGS) \$(FPPFLAGS)\n";
+print MAKEFILE "FCO77  =    \$(F77)   \$(FCFLAGS)\n";
+print MAKEFILE "FPP77  =    \$(F77)   \$(FCFLAGS) \$(FPPFLAGS)\n";
+print MAKEFILE "FCCCC  =    \$(FCOCC) \$(CCFLAGS) \n";
+
+print MAKEFILE "FLINK  =    \$(F90) \n";
+print MAKEFILE "FLIAR  = ar r\n";
+print MAKEFILE "FLIRN  = ranlib\n";
+print MAKEFILE "PROFI  =   \n";
+print MAKEFILE "LIBS   += \$(EXTRALIB)\n";
+print MAKEFILE "FCOPT= \$(FOPT)\n";
+
+#-------------------------------------------------------------------------------------------------------------------||---#
+print MAKEFILE "\n#-------| make -e COMMDOM=1 |---#";
+print MAKEFILE "\nCOMMDOM=0";
+print MAKEFILE "\nSATURNE=0";
+print MAKEFILE "\nifneq (\$(COMMDOM), 0)";
+print MAKEFILE "\nFCO90   += -DCOMMDOM=\$(COMMDOM) \nFPP90   += -DCOMMDOM=\$(COMMDOM) \nFOM90   += -DCOMMDOM=\$(COMMDOM)";
+print MAKEFILE "\nROOT     = \$(shell pwd)";
+print MAKEFILE "\nLIBPLEPP = \$(ROOT)/../../Thirdparties/libple/PLEPP/";
+print MAKEFILE "\nLIBPLE   = \$(ROOT)/../../Thirdparties/libple/";
+print MAKEFILE "\nifeq (\$(COMMDOM), 2)";
+print MAKEFILE "\nLIBPLEPP = \$(ROOT)/../../Thirdparties/PLEPP/LIBPLEPP/";
+print MAKEFILE "\nLIBPLE   = \$(ROOT)/../../Thirdparties/PLEPP/LIBPLE/";
+print MAKEFILE "\nendif";
+print MAKEFILE "\nifeq (\$(COMMDOM), 2)";
+print MAKEFILE "\nLIBS    += \$(LIBPLEPP)/build/libcommdom.a";
+print MAKEFILE "\nLIBS    += \$(LIBPLE)/build/libple.a";
+print MAKEFILE "\nelse";
+print MAKEFILE "\nLIBS    += \$(LIBPLEPP)/Wrappers/Fortran/libcommdom.a";
+print MAKEFILE "\nLIBS    += \$(LIBPLE)/Execs/lib/libple.a";
+print MAKEFILE "\nendif";
+print MAKEFILE "\nifeq (ifort,\$(shell mpif90 -show | cut -d\" \" -f1))";
+print MAKEFILE "\nLIBS    += -lstdc++";
+print MAKEFILE "\nelse";
+print MAKEFILE "\nLIBS    += -lstdc++ -lmpi_cxx";
+print MAKEFILE "\nendif";
+print MAKEFILE "\nifneq (\$(SATURNE), 0)";
+print MAKEFILE "\nLIBS    += \$(ROOT_SATURNE)/Execs/lib/libsaturne.a";
+print MAKEFILE "\nendif";
+print MAKEFILE "\nendif";
+print MAKEFILE "\n#--------------------------| CANTERA |---#";
+print MAKEFILE "\nifneq (\$(CANTERA), 0)";  
+print MAKEFILE "\nROOT         = \$(shell pwd)";  
+print MAKEFILE "\nFCO90       += -DCANTERA=1";  
+print MAKEFILE "\nFPP90       += -DCANTERA=1";  
+print MAKEFILE "\nFOM90       += -DCANTERA=1";  
+print MAKEFILE "\nLIBS        += \$(ROOT)/../../Thirdparties/CANTERA/Wrappers/FORTRAN/libcantera4alya.a";
+print MAKEFILE "\nLIBS        += \$(ROOT_CANTERA)/lib/libcantera_fortran.a ";  
+print MAKEFILE "\nLIBS        += \$(ROOT_CANTERA)/lib/libcantera.a -lstdc++  ";
+print MAKEFILE "\nINCLUDE     += -I\$(ROOT_CANTERA)/include/cantera ";    
+print MAKEFILE "\nendif";
+print MAKEFILE "\n#--------------------------------||---#";
+print MAKEFILE "\nROOT_PRECICE=0";
+print MAKEFILE "\nifneq (\$(ROOT_PRECICE), 0)";
+print MAKEFILE "\nFCO90   += -DPRECICE=1";
+print MAKEFILE "\nFPP90   += -DPRECICE=1";
+print MAKEFILE "\nFOM90   += -DPRECICE=1";
+print MAKEFILE "\nLIBS    += \$(ROOT_PRECICE)/libprecice.a -lstdc++ -lrt";
+print MAKEFILE "\nendif";
+print MAKEFILE "\n#--------------------------|metis5|---#";
+#This section does not work! see line 421
+print MAKEFILE "\nnTYPE=XXX";
+print MAKEFILE "\nifneq (\$(findstring gfortran,\$(shell mpif90 -show)),0)";
+print MAKEFILE "\nTYPE=gfortran";
+print MAKEFILE "\nendif";
+print MAKEFILE "\nifneq (\$(findstring ifort,\$(shell mpif90 -show)),0)";
+print MAKEFILE "\nTYPE=ifort";
+print MAKEFILE "\nendif";
+#End of not working section
+print MAKEFILE "\n#--------------------------| MICROPP |---#";
+print MAKEFILE "\nMICROPP=0";
+print MAKEFILE "\nifneq (\$(MICROPP), 0)";
+print MAKEFILE "\nROOT     = \$(shell pwd)";
+print MAKEFILE "\nLIBMICROPP = \$(ROOT)/../../Thirdparties/micropp";
+print MAKEFILE "\nFCO90   += -DMICROPP=1";
+print MAKEFILE "\nFPP90   += -DMICROPP=1";
+print MAKEFILE "\nFOM90   += -DMICROPP=1";
+print MAKEFILE "\nLIBS    += \$(LIBMICROPP)/build/libmicropp.a -lstdc++ ";
+print MAKEFILE "\nINCLUDE += -I\$(LIBMICROPP)/build";
+print MAKEFILE "\nendif";
+print MAKEFILE "\n#--------------------------------||---#\n\n";
+
+#-------------------------------------------------------------------------------------------------------------------||---#
+
+#$objcog =  "@objcopy --weaken Ojects_g/sld_dummy_vumat.o";
+#$objcox =  "@objcopy --weaken Ojects_x/sld_dummy_vumat.o";
+
+print MAKEFILE "main: \n";
+if ($ifstra =~/y/) {
+	print MAKEFILE "	\@echo '------>>> START MAKING Alya Binary -x-' \n";
+	print MAKEFILE "	\@mkdir -p Objects_x \n";
+	print MAKEFILE "	+\@make \"O = Objects_x\" \"XT=x\" Alya.x \n";
+	print MAKEFILE "	\@echo '------>>> END Alya Binary -x-' \n";
+	print MAKEFILE "	\@echo '  ' \n";
+}
+if ($ifdebu =~/y/) {
+	print MAKEFILE "	\@echo '  ' \n";
+	print MAKEFILE "	\@echo '------>>> START MAKING Alya Debugger Binary -g-' \n";
+	print MAKEFILE "	\@mkdir -p Objects_g \n";
+	print MAKEFILE "	+\@make \"O = Objects_g\" \"FCOPT=-g\" \"XT=g\" Alya.g \n";
+	print MAKEFILE "	\@echo '------>>> END Debugger Binary -g-' \n";
+	print MAKEFILE "	\@echo '  ' \n";
+}
+if ($ifprof =~/y/) {
+	print MAKEFILE "	\@echo '  ' \n";
+	print MAKEFILE "	\@echo '------>>> START MAKING Performance Profiler Binary -pg-' \n";
+	print MAKEFILE "	\@mkdir -p Objects_pg \n";
+	print MAKEFILE "	+\@make \"O = Objects_pg\" \"FCOPT=-pg\" \"XT=pg\" Alya.pg \n";
+	print MAKEFILE "	\@echo '------>>> END Performance Profiler Binary -pg-' \n";
+}
+if ($ifliba =~/y/) {
+	print MAKEFILE "	\@echo '  ' \n";
+	print MAKEFILE "	\@echo '------>>> START MAKING Alya Library' \n";
+	print MAKEFILE "	\@mkdir -p Objects_x \n";
+	print MAKEFILE "	+\@make \"O = Objects_x\" \"XT=x\" AlyaLib.a \n";
+	print MAKEFILE "	\@echo '------>>> END Alya Library' \n";
+	print MAKEFILE "	\@echo '  ' \n";
+}
+
+print MAKEFILE "#------------------------------------------------------------- \n";
+if ($ifliba =~/y/) {
+    print MAKEFILE "AlyaLib.a: \\\n";
+}else{
+    print MAKEFILE "Alya.\$(XT): \\\n";
+}
+$srcdir="../../Sources";
+@alyadirs=($srcdir."/kernel" , $srcdir."/modules", $srcdir."/services" , $srcdir."/automatic" , $srcdir."/alya" );
+@alldirs=();
+
+# load all the directory names in modules and kernel folders
+$i=0;
+foreach $dirs (@alyadirs) {
+    opendir(ALL_DIRS,$dirs);
+    @auxdirs=readdir(ALL_DIRS);
+    foreach (@auxdirs) {$patdirs[$i]=$dirs ."/".$_ ;$i++}
+    @alldirs=(@alldirs,@auxdirs);
+    closedir(ALL_DIRS);
+}
+
+@zmods=(@zmods,"fakes");
+
+# check that all the modules to be compiled has their corresponding source folders
+$i=0;
+foreach $dirs (@alldirs) {
+    if (($patdirs[$i]=~/modules/) || ($patdirs[$i]=~/services/) || ($patdirs[$i]=~/automatic/) ) {
+	foreach $modu ( sort keys %stmod ) {
+	    if ($dirs=~/$modu/) {
+		$stmod{$modu}{folder}= $patdirs[$i] ;
+		if ($stmod{$modu}{compile}=~/yes/) {
+		    $stmod{$modu}{iffold}= "yes" ;
+		}
+	    }
+	}
+    }
+    $i++;
+}
+
+# set to "yes" or "no" the compilation status for each module
+
+if (!($action=~/^all$/)) {
+    foreach $modu ( sort keys %stmod ) {
+	$stmod{$modu}{compile}= " no" ;
+	foreach $zmo (@zmods) {
+	    if (($zmo=~/^$modu$/) && ($stmod{$modu}{iffold}=~/yes/)){
+		$stmod{$modu}{compile}= "yes";
+		$stmod{$modu}{proceed}= "yes";
+	    }
+	}
+    }
+} else {
+
+    foreach $modu ( sort keys %stmod ) {
+
+	$stmod{$modu}{compile}= " no" if (!($stmod{$modu}{iffold}=~/yes/));
+
+	if (($stmod{$modu}{compile}=~/yes/) && ($stmod{$modu}{iffold}=~/yes/)){
+	    $stmod{$modu}{proceed}= "yes";
+	}
+    }
+}
+
+# check which services have their own fakes
+$nope = " no";
+foreach $modu ( sort keys %stmod ) {
+    if (($stmod{$modu}{folder}=~/services/) || ($stmod{$modu}{folder}=~/modules/) ){
+	if  (($stmod{$modu}{iffold}== "yes") && ($stmod{$modu}{compile}==$nope)) {
+	    opendir(ALL_DIRS,$stmod{$modu}{folder});
+	    @auxdirs=readdir(ALL_DIRS);
+	    foreach (@auxdirs) {
+		if (($_=~/^fak_/) &&(!($_=~/\~$/))){
+		    $stmod{$modu}{iffake}= "yes" ;
+		    $stmod{$modu}{ownfak}= $stmod{$modu}{folder} ."/". $_ ;
+		}
+	    }
+	    closedir(ALL_DIRS);
+	}
+    }
+}
+
+# no "weakening" on object files
+$ifobjcopy = "no";
+
+# report what will i do
+if (!($action=~/^all$/)) {
+	    print "\n\n";
+	    print "  ----------------------------------------------------------------------------\n";
+		print "  | MODULES READY FOR COMPILATION:                                            |\n";
+		print "  ----------------------------------------------------------------------------\n\n";
+
+    	#my $i=0;
+	    foreach $modu ( sort keys %stmod ) {
+			if ($stmod{$modu}{proceed}=~/^yes$/) {
+			    print "    -".$modu."\n";
+			    if ($modu=~/olidz/) {$ifobjcopy= "yes" }
+			    #$i++;
+			    #if($i%7 == 0){ print "\n   ";}
+			}
+	    }
+	    print "\n";
+	}
+	else {
+    print "\n";
+    print "    Creating makefile for all registered modules, when the source folder exists:   \n\n";
+    print "    The following Modules will be compiled:\n";
+    print "    ";
+    foreach $modu ( sort keys %stmod ) {
+			if ($stmod{$modu}{proceed}=~/^yes$/) {
+				print $modu.", ";
+			    if ($modu=~/olidz/) {$ifobjcopy= "yes" }
+			}
+	    }
+	    print "\n";
+}
+
+# tell what compiling options are in use are binaries to be made:
+print "\n";
+print "  ----------------------------------------------------------------------------\n";
+print "  | Makefile will make the following binaries:                               |\n";
+print "  ----------------------------------------------------------------------------\n\n";
+if ($ifstra =~/y/) {
+    print "      Alya.x    -->  Production (non debugger) binary  \n";
+    if ($foptix =~/-/) {
+	print "                    Optimized with $foptix compiling option.\n"}
+}
+if ($ifdebu =~/y/) {
+    print "      Alya.g    -->  Debugger binary   \n";
+}
+if ($ifprof =~/y/) {
+    print "      Alya.pg   -->  Performance profiler binary  \n";
+}
+if ($ifliba =~/y/) {
+    print "      AlyaLib.a -->  Alya library binary  \n";
+}
+print "\n\n";
+
+# add fakemo to the forced compilable folders, because it contains all the fakes
+$stmod{fakes}{compile}= "yes" ;
+$stmod{fakes}{iffold} = "yes" ;
+
+# label as "CVS" the folders whose modules WILL NOT be compiled
+$i=0;
+my @fakemods=();
+foreach $dirs (@alldirs) {
+    if ($patdirs[$i]=~/modules/ || ($patdirs[$i]=~/services/)) {
+	$onoff= 0;
+
+	foreach $modu ( sort keys %stmod ) {
+	    if (($dirs=~/$modu/) && ($stmod{$modu}{compile}=~/yes/)) {
+		$onoff= 1;
+	    }
+	}
+
+	if ($onoff==0) {
+	    if (! (($dirs=~/CVS/) || ($dirs=~/\./))) {@fakemods=(@fakemods,$dirs);@alldirs[$i]="CVS"}}
+    }
+    $i++;
+}
+
+# finally, add to @fakemods the modules with no folder
+$nope = " no";
+foreach $modu ( sort keys %stmod ) {
+      @fakemods=(@fakemods,$modu) if (($stmod{$modu}{iffold}=~/^$nope$/))}
+
+#-----------------------------------------------------------------------------------------------
+#
+# Write the fake modules file Fakemo.f90
+#
+#-----------------------------------------------------------------------------------------------
+
+$fakedir = @alyadirs[3] . "/fakes";
+$fakefile= $fakedir . "/Fakemo.f90";
+
+$exeshel = `rm -rf $fakedir/* `;
+
+# Fakemo.f90 header
+open (FAKEFILE,">$fakefile");
+print FAKEFILE "!----------------------------------------------------------------------- \n";
+print FAKEFILE "! \n";
+print FAKEFILE "! FAKE SUBROUTINES  \n";
+print FAKEFILE "! AUTOMATICALLY WRITTEN BY onfigure \n";
+print FAKEFILE "!  \n";
+print FAKEFILE "! DO     NOT     COMMIT     TO     CVS!!!!!!!!!!! \n";
+print FAKEFILE "!  \n";
+print FAKEFILE "!----------------------------------------------------------------------- \n";
+print FAKEFILE "subroutine Dumsub \n";
+print FAKEFILE "  return \n";
+print FAKEFILE "end subroutine Dumsub \n";
+print FAKEFILE "!----------------------------------------------------------------------- \n";
+
+# Write to Fakemo ONLY those fakes whose HAS NOT their own fake subroutines
+# Otherwise, copy the corresponding fake subroutine to the fakes directory $fakedir
+
+$nope = " no";
+foreach  $modu (@fakemods) {
+    if ($stmod{$modu}{iffake}=~/^$nope$/) {
+	$fak = ucfirst lc($modu);
+	$num = $stmod{$modu}{number};
+	if ( $stmod{$modu}{modser}=~/^module$/) {
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	    print FAKEFILE "subroutine $fak(order) \n";
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	    print FAKEFILE "! FAKE SUBROUTINE \n";
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	    print FAKEFILE "  use      def_master \n";
+	    print FAKEFILE "  use      def_inpout \n";
+	    print FAKEFILE "  use      mod_ecoute,   only : ecoute \n";
+	    print FAKEFILE "  implicit none \n";
+	    print FAKEFILE "  integer(ip) :: order \n";
+	    print FAKEFILE "  call runend('CANNOT SOLVE $fak: RECOMPILE THIS MODULE.') \n";
+	    print FAKEFILE "end subroutine $fak  \n";
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	} elsif ( $stmod{$modu}{modser}=~/^service$/) {
+	    $num = $num-50;
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	    print FAKEFILE "subroutine $fak(order) \n";
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	    print FAKEFILE "! FAKE SUBROUTINE \n";
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	    print FAKEFILE "  use      def_master \n";
+	    print FAKEFILE "  use      def_inpout \n";
+	    print FAKEFILE "  use      mod_ecoute, only : ecoute \n";
+	    print FAKEFILE "  implicit none \n";
+	    print FAKEFILE "  integer(ip) :: order \n";
+	    print FAKEFILE "  !servi=$num \n";
+	    print FAKEFILE "  if (kfl_paral<=0.and.order==2) then \n";
+	    print FAKEFILE "     rewind(lisda) \n";
+	    print FAKEFILE "     do while(words(1)/='RUNDA') \n";
+	    print FAKEFILE "        call ecoute('RPRODA') \n";
+	    print FAKEFILE "     end do \n";
+	    print FAKEFILE "     do while(words(1)/='ENDRU') \n";
+	    print FAKEFILE "        call ecoute('RPRODA') \n";
+	    print FAKEFILE "     end do \n";
+	    print FAKEFILE "     do while(words(1)/='PROBL') \n";
+	    print FAKEFILE "        call ecoute('RPRODA') \n";
+	    print FAKEFILE "     end do \n";
+	    print FAKEFILE "     do while(words(1)/='ENDPR') \n";
+	    print FAKEFILE "        call ecoute('RPRODA') \n";
+	    print FAKEFILE "        !if(words(1)==naser(servi)(1:5)) then     \n";
+	    print FAKEFILE "        !   if(exists('ON   '))& \n";
+	    print FAKEFILE "        !      call runend('CANNOT SOLVE $fak: RECOMPILE THIS SERVICE.') \n";
+	    print FAKEFILE "        !end if \n";
+	    print FAKEFILE "     end do\n";
+	    print FAKEFILE "  end if\n";
+	    print FAKEFILE "  return \n";
+	    print FAKEFILE "end subroutine $fak  \n";
+	    print FAKEFILE "!----------------------------------------------------------------------- \n";
+	}
+    } elsif ($stmod{$modu}{iffake}=~/^yes$/) {
+	$msg = "cp $stmod{$modu}{ownfak} $fakedir";
+	system ($msg);
+    }
+}
+
+#-----------------------------------------------------------------------------------------------
+#
+# Write revision file Sources/automatic/info/infrev.f90
+#
+#-----------------------------------------------------------------------------------------------
+
+$infodir = @alyadirs[3] . "/info";
+$infofile= $infodir . "/infrev.f90";
+
+$exeshel = `rm -rf $infodir/* `;
+
+open (INFOFILE,">$infofile");
+
+$currentdir=`pwd`;
+@splitdir= split('/',$currentdir);
+$currentdir=$splitdir[@splitdir-1];
+$lastCommitSHA=`git rev-parse HEAD`;
+$reducedSHA=`git rev-parse --short HEAD`;
+$isDirty=`git diff HEAD --quiet || echo -n "dirty-"`;
+$pirucho=`echo -n "Path: "; \
+pwd;
+if [ -d ../../.git ]; then \
+	echo "Remote URL: "; \
+	git remote -v; \
+	echo -n "Revision: ";\
+	echo -n "$isDirty$lastCommitSHA";\
+	echo -n "Branch: ";\
+	git rev-parse --abbrev-ref HEAD;\
+	echo "\nFor more info check:\ngit show $reducedSHA";\
+else\
+	echo "Not a git repository.";\
+fi`;
+
+@abruti = split(/\n/,$pirucho);
+
+print INFOFILE "subroutine infrev() \n";
+print INFOFILE "  !------------------------------------------------------------------------\n";
+print INFOFILE "  !****f* info/infrev \n";
+print INFOFILE "  ! NAME  \n";
+print INFOFILE "  !    infrev \n";
+print INFOFILE "  ! DESCRIPTION \n";
+print INFOFILE "  !    Output revision info \n";
+print INFOFILE "  ! USES \n";
+print INFOFILE "  !    outfor\n";
+print INFOFILE "  ! USED BY \n";
+print INFOFILE "  !*** \n";
+print INFOFILE "  !------------------------------------------------------------------------ \n";
+print INFOFILE "  use def_master \n";
+print INFOFILE "  implicit none \n";
+print INFOFILE "  \n";
+$i=1;
+foreach (@abruti) {
+print INFOFILE "  coutp(min($i,size(coutp)))= \'$_\' \n";
+$i++;
+}
+print INFOFILE "  coutp(min($i,size(coutp)))= \'END\'      \n";
+print INFOFILE "  \n";
+print INFOFILE "end subroutine infrev \n";
+close (INFOFILE);
+
+#-----------------------------------------------------------------------------------------------
+#
+# Write module file Sources/automatic/info/infmod.f90
+#
+#-----------------------------------------------------------------------------------------------
+
+$infodir = @alyadirs[3] . "/info";
+$infofile= $infodir . "/infmod.f90";
+
+open (INFOFILE,">$infofile");
+
+$currentdir=`pwd`;
+@splitdir= split('/',$currentdir);
+$currentdir=$splitdir[@splitdir-1];
+$pirucho=`module list 3>&1 1>&2 2>&3 3>&-`;
+
+@abruti = split(/  /,$pirucho);
+ 
+print INFOFILE "subroutine infmod() \n";
+print INFOFILE "  !------------------------------------------------------------------------\n";
+print INFOFILE "  !****f* info/infmod \n";
+print INFOFILE "  ! NAME  \n";
+print INFOFILE "  !    infmod \n";
+print INFOFILE "  ! DESCRIPTION \n";
+print INFOFILE "  !    Output module info \n";
+print INFOFILE "  ! USES \n";
+print INFOFILE "  !    outfor\n";
+print INFOFILE "  ! USED BY \n";
+print INFOFILE "  !*** \n";
+print INFOFILE "  !------------------------------------------------------------------------ \n";
+print INFOFILE "  use def_master \n";
+print INFOFILE "  implicit none \n";
+print INFOFILE "  \n";
+$i=1;
+foreach (@abruti) {
+    $str1="$_";
+    $str1=~ s/^\s+|\s+$//g; 
+    print INFOFILE "  coutp(min($i,size(coutp)))= \'$str1\' \n";
+    $i++;
+}
+print INFOFILE "  coutp(min($i,size(coutp)))= \'END\'      \n";
+print INFOFILE "  \n";
+print INFOFILE "end subroutine infmod \n";
+close (INFOFILE);
+
+#-----------------------------------------------------------------------------------------------
+#
+# Write makefile info file Sources/automatic/info/infmak.f90
+#
+#-----------------------------------------------------------------------------------------------
+
+$makdir = @alyadirs[3] . "/info";
+$makfile= $makdir . "/infmak.f90";
+
+open (MAKFILE,">$makfile");
+
+$pirucho1=`date`;
+chomp($pirucho1);
+$pirucho2=`whoami`;
+chomp($pirucho2);
+$pirucho3=`hostname -s`;
+chomp($pirucho3);
+$pirucho4=`arch`;
+chomp($pirucho4);
+$pirucho5=`uname -rs`;
+chomp($pirucho5);
+
+print MAKFILE "subroutine infmak() \n";
+print MAKFILE "  !------------------------------------------------------------------------\n";
+print MAKFILE "  !****f* info/infmak \n";
+print MAKFILE "  ! NAME  \n";
+print MAKFILE "  !    infmak \n";
+print MAKFILE "  ! DESCRIPTION \n";
+print MAKFILE "  !    Output makefile info \n";
+print MAKFILE "  ! USES \n";
+print MAKFILE "  !    outfor\n";
+print MAKFILE "  ! USED BY \n";
+print MAKFILE "  !*** \n";
+print MAKFILE "  !------------------------------------------------------------------------ \n";
+print MAKFILE "  use def_master \n";
+print MAKFILE "  implicit none \n";
+print MAKFILE "  \n";
+# coutp(1) -> coutp(8): user and system info
+print MAKFILE "  coutp(1)  = \'COMPILED BY:      $pirucho2\'   \n";
+print MAKFILE "  coutp(2)  = \'DATE:             $pirucho1\'   \n";
+print MAKFILE "  coutp(3)  = \'HOSTNAME:         $pirucho3\'   \n";
+print MAKFILE "  coutp(4)  = \'ARCHITECTURE:     $pirucho4\'   \n";
+print MAKFILE "  coutp(5)  = \'OPERATING SYSTEM: $pirucho5\'   \n";
+print MAKFILE "  coutp(6)  = \'END\'                           \n";
+# coutp(1) -> coutp(18): compiler options
+print MAKFILE "  coutp(10) = \'F90:            $com90\'      \n";
+print MAKFILE "  coutp(11) = \'FPPFLAGS:       $com90pp\'    \n";
+print MAKFILE "  coutp(12) = \'FCFLAGS:        $FCFLAGS\' \n";
+print MAKFILE "  coutp(13) = \'FOPT:           $FOPT\' \n";
+print MAKFILE "  coutp(14) = \'CSALYA:         $CSALYA\' \n";
+
+#print MAKFILE "  coutp(10) = \'FCO90:            $com90\'      \n";
+#print MAKFILE "  coutp(11) = \'FPP90:            $com90pp\'    \n";
+#print MAKFILE "  coutp(12) = \'FOM90:            $com90ppomp\' \n";
+#print MAKFILE "  coutp(13) = \'FCO77:            $com77\'      \n";
+#print MAKFILE "  coutp(14) = \'FPP77:            $com77pp\'    \n";
+#print MAKFILE "  coutp(15) = \'FCOCC:            $comcc\'      \n";
+#print MAKFILE "  coutp(16) =  \'FLINK:           $linki\'      \n";
+
+print MAKFILE "  coutp(15) =  \'END\'                          \n";
+print MAKFILE "  \n";
+print MAKFILE "end subroutine infmak \n";
+close (MAKFILE);
+
+#-----------------------------------------------------------------------------------------------
+#
+# Check dependencies and write makefile
+#
+#-----------------------------------------------------------------------------------------------
+
+$i=0;
+$k=0;
+$imk=0;
+foreach $dirs (@alldirs) {
+    if (! (($dirs=~/CVS/) || ($dirs=~/\./)) ) {
+#	print "$dirs\n";
+	$dirs = $patdirs[$k];
+#	print "$k $dirs\n";
+	opendir(ALL_FILES,$dirs);
+	@allfiles=readdir(ALL_FILES);
+	foreach (@allfiles) {
+	    $imk=0;
+	    if (!($_=~/\#/)) {$imk=1}
+	    if ($dirs=~/fakes/) {$imk=1}
+	    elsif (!($_=~/^fak_/)) {$imk=1}
+	    else {$imk=0}
+
+	    if ($imk == 1) {
+		if ($_=~/\.f90$/) {
+		    $i++;
+		    @comfiles=(@comfiles,$dirs."/".$_);
+		    s/f90/o/;
+#		print "$dirs $_ \n";
+		    @objfiles=(@objfiles,$_);
+		}elsif ($_=~/\.f$/) {
+		    $i++;
+		    @comfiles=(@comfiles,$dirs."/".$_);
+		    s/\.f/\.o/;
+#		print "$dirs $_ \n";
+		    @objfiles=(@objfiles,$_);
+		}elsif ($_=~/\.for$/) {
+		    $i++;
+		    @comfiles=(@comfiles,$dirs."/".$_);
+		    s/\.for/\.o/;
+#		print "$dirs $_ \n";
+		    @objfiles=(@objfiles,$_);
+		}elsif ($_=~/\.c$/) {
+		    $i++;
+		    @comfiles=(@comfiles,$dirs."/".$_);
+		    s/\.c/\.o/;
+#		print "$dirs $_ \n";
+		    @objfiles=(@objfiles,$_)}
+	    }
+	}
+	closedir(ALL_FILES);
+    }
+    $k++;
+}
+
+$ncf=$i; $i=0;
+foreach (@objfiles) {
+    $i++;
+    if ($i==$ncf) {
+	print MAKEFILE "\$O/".$_."\n";
+	if ($ifliba=~/y/) {
+#            print MAKEFILE "	libtool -static -o AlyaLib.a \$O/*\.o $libsi \n";
+            print MAKEFILE "	\$(FLINK) -o AlyaLib.a \$O/*\.o $libsi \n\n";
+#            print MAKEFILE "	\$(FLIAR) AlyaLib.a \$O/*\.o $libsi \n";
+#            print MAKEFILE "	\$(FLIRN) AlyaLib.a  \n\n";
+        }else{
+			#--------------------------------------------------------------------------------------------------------||---#
+			print MAKEFILE "\nifneq (\$(NINJA), 0)";
+			print MAKEFILE "\n\t+\@make ninja";
+			print MAKEFILE "\n\t\$(FLINK) -o Alya.\$(XT) \$O/*\.o \$(LIBS)";
+			print MAKEFILE "\nelse ifneq (\$(COMMDOM), 0)";
+			print MAKEFILE "\n\t\$(FLINK) -o Alya.\$(XT) \$O/*\.o \$(LIBS)";
+			print MAKEFILE "\nelse ifneq (\$(ROOT_PRECICE), 0)";
+			print MAKEFILE "\n\t\$(FLINK) -o Alya.\$(XT) \$O/*\.o \$(LIBS)";
+			print MAKEFILE "\nelse";
+			print MAKEFILE "\n\t\$(FLINK) -o Alya.\$(XT) \$O/*\.o \$(LIBS)";
+			print MAKEFILE "\nendif\n\n";
+			#--------------------------------------------------------------------------------------------------------||---#
+        }
+    }else{
+	print MAKEFILE "\$O/".$_." \\\n";
+    }
+}
+
+$i=0;
+foreach $file (@comfiles) {
+    $i++;
+    open (IN,$file);
+    print MAKEFILE "\$O/"."$objfiles[$i-1]:   $file  ";
+    $ifpp  = ' ';
+    $ifomp = 'no';
+    while (<IN>) {
+	if (!($_=~/^\!/)){
+	    if ((($_=~/^\s*use/i)) && (($_=~/ef_/i)||($_=~/od_/i))){
+		chomp($_);
+		s/\s+$//;
+		@usedf = split;
+		$b = $usedf[1];
+		$depen=$b;
+		@field = split(/ /,$depen);
+		$depen = $field[0];
+		if ($depen=~/,/) {
+		    $depen=~s/,//;
+		}
+
+		print MAKEFILE "\\\n";
+		print MAKEFILE "\$O/".$depen."\.o";
+
+	    } elsif ( ($_=~/ifdef/i) || ($_=~/ifndef/i) || ($_=~/if defined/i) ) {
+		$ifpp = 'yes';
+	    }
+	}
+	if (($_=~/\!\$OMP/i)) {
+	   $ifomp = 'yes';
+        }
+    }
+    print MAKEFILE "\n";
+
+#    print " $ifomp  $file \n";
+
+    if (($file=~/\.f90$/)||($file=~/\.for$/)) {
+	if ($ifomp =~/yes/) {
+            if ($file=~/\/Sources\/modules\//) {
+               print MAKEFILE "	\$(FOM90) \$(FCOPT) \$(PROFI) \$(INCLUDE) \$(MODULEFLAGS) ".$file."\n";
+	    } else {
+               print MAKEFILE "	\$(FOM90) \$(FCOPT) \$(INCLUDE) ".$file."\n";
+            }
+	}elsif ($ifpp =~/yes/) {
+            if ($file=~/\/Sources\/modules\//) {
+               print MAKEFILE "	\$(FPP90) \$(FCOPT) \$(PROFI) \$(INCLUDE) \$(MODULEFLAGS) ".$file."\n";
+	    } else {
+               print MAKEFILE "	\$(FPP90) \$(FCOPT) \$(INCLUDE) ".$file."\n";
+            }
+	}else{
+            if ($file=~/\/Sources\/modules\//) {
+	       print MAKEFILE "	\$(FCO90) \$(FCOPT) \$(PROFI) \$(INCLUDE)  \$(MODULEFLAGS) ".$file."\n";
+	    } else {
+	       print MAKEFILE "	\$(FCO90) \$(FCOPT) \$(INCLUDE) ".$file."\n";
+            }
+	}
+    }elsif ($file=~/\.f$/) {
+	if ($ifpp =~/yes/) {
+	    print MAKEFILE "	\$(FPP77) \$(FCOPT) ".$file."\n";
+	}else{
+	    print MAKEFILE "	\$(FCO77) \$(FCOPT) ".$file."\n";
+	}
+    }elsif ($file=~/\.c$/) {
+	    print MAKEFILE "	\$(FCCCC) \$(FCOPT) ".$file."\n";
+	
+    }
+#    print MAKEFILE "	\$(FCOMP) \$(FCOPT) ".$file."\n";
+
+#  esto es algo mejorado para poder usar el -j en el make
+    @truename= split(/\//,$file);
+    @truename2= split(/\./,$truename[5]);
+#    print "$truename2[0] \n";
+    print MAKEFILE "	\@mv $truename2[0].o \$O/\n\n";
+#    print MAKEFILE "	\@mv *.o \$O/\n\n";
+    close (IN);
+}
+
+if (!($OS=~/arwin/i)){
+    if ($ifobjcopy=~/^yes$/){
+        print MAKEFILE "# Weakening fake objects in module solidz\n";
+        print MAKEFILE "weaken :\n";
+        print MAKEFILE "	objcopy --weaken Objects_x/sld_dummy_vumat.o \n";
+        print MAKEFILE "	objcopy --weaken Objects_x/sld_dummy_umat.o \n";
+        if ($ifdebu =~/y/) {
+        print MAKEFILE "	objcopy --weaken Objects_g/sld_dummy_vumat.o \n"}
+        print MAKEFILE "	objcopy --weaken Objects_x/sld_dummy_umat.o \n";
+    }
+}
+
+print MAKEFILE "\n";
+print MAKEFILE "\n";
+print MAKEFILE "alya2pos :\n";
+print MAKEFILE "	\@echo 'Compiling alya2pos tool...'\n";
+print MAKEFILE "	sh -x alya2pos-compile.sh \n";
+print MAKEFILE "	\@echo 'Done OK.'\n";
+print MAKEFILE "\n";
+print MAKEFILE "clean :\n";
+print MAKEFILE "	rm -f \*.mod \n";
+print MAKEFILE "	rm -f \*.s \n";
+print MAKEFILE "	rm -f \*.o   \n";
+print MAKEFILE "	rm -f \*.f90 \n";
+print MAKEFILE "	rm -f Objects_x/\*\n";
+print MAKEFILE "	rm -f Objects_g/\*\n";
+print MAKEFILE "	rm -f Objects_pg/\*\n";
+print MAKEFILE "	rm -f Alya.x Alya.g Alya.pg AlyaLib.a \n";
+print MAKEFILE "	rm -f libninja.a \n";
+print MAKEFILE "	\@echo 'Done OK.'\n";
+print MAKEFILE "\n";
+print MAKEFILE "wiki :\n";
+print MAKEFILE "	\@echo Generating ALYA wiki...\n";
+print MAKEFILE "	cd ../../doc/markdown ; ./generate-md && ./generate-html\n";
+print MAKEFILE "	\@echo Done...\n";
+print MAKEFILE "\n";
+print MAKEFILE "cleandocs :\n";
+print MAKEFILE "	rm -rf ../../Documents/doxygen \n";
+print MAKEFILE "	\@echo 'Done OK.'\n";
+print MAKEFILE "\n";
+print MAKEFILE "manual :\n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "	\@echo 'Running alya-docu to create sample input files...'\n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "	../../Documents/tools/alya-docu \n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "	\@echo 'Done OK.'\n";
+print MAKEFILE "	\@echo 'Running doxygen on alya...'\n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "	cd ../../Documents/doxygen ; doxygen ../tools/config-docs.doxygen ; doxygen ../tools/config-docs.doxygen ; cd ../../Executables/$currentdir  \n";
+print MAKEFILE "	make tutorial\n";
+print MAKEFILE "	make overview\n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "\n";
+print MAKEFILE "tutorial :\n";
+print MAKEFILE 	"	\@echo \n";
+print MAKEFILE 	"	\@echo 'Running doxygen on alya to create the tutorial...'\n";
+print MAKEFILE 	"	\@echo \n";
+print MAKEFILE 	"	cd ../../Documents/doxygen ; doxygen ../tutorial/config-docs-tutorials.doxygen ; cd ../../Executables/$currentdir  \n";
+print MAKEFILE 	"	\@echo \n";
+print MAKEFILE 	"\n";
+print MAKEFILE "overview :\n";
+print MAKEFILE 	"	\@echo \n";
+print MAKEFILE 	"	\@echo 'Running doxygen on alya to create the overview...'\n";
+print MAKEFILE 	"	\@echo \n";
+print MAKEFILE 	"	cd ../../Documents/doxygen ; doxygen ../overview/config-docs-overview.doxygen ; cd ../../Executables/$currentdir  \n";
+print MAKEFILE 	"	\@echo \n";
+print MAKEFILE 	"\n";
+print MAKEFILE "help :\n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "	\@echo 'make options for Alya:  '\n";
+print MAKEFILE "	\@echo '   [ clean | cleandocs | docs | alya2pos ]'\n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "\n";
+print MAKEFILE "testsuite :\n";
+print MAKEFILE "	cd ../../TestSuite ; perl testSuite.plx  \n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "\n";
+print MAKEFILE "sundials :\n";
+print MAKEFILE "	cd ../../Thirdparties/sundials ; make-sundials  \n";
+print MAKEFILE "	\@echo 'Done OK.'\n";
+print MAKEFILE "\n";
+print MAKEFILE "alya-mpio-tools :\n";
+print MAKEFILE "	cd ../../Utils/user/alya-mpio-tools ; ./compile.sh  \n";
+print MAKEFILE "	\@echo \n";
+print MAKEFILE "extrae :\n";
+print MAKEFILE "	\$(EXTRAE_FC) -c \$(EXTRAE_HOME)/include/extrae_module.f90 \n";
+print MAKEFILE "	\@echo \n";
+#-------------------------------------------------------------------------------------------------------------------||---#
+print MAKEFILE "\nlibple:\n\t\@\$(eval   ROOT :=\$(shell pwd))";
+print MAKEFILE "\n\t\@\$(eval LIBPLE :=\$(ROOT)/../../Thirdparties/libple/)";
+print MAKEFILE "\n\t\@cd \$(LIBPLE); ./configure CC=mpicc --prefix=\$(LIBPLE)/Execs";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(LIBPLE)\n\t\@\$(MAKE) -C \$(LIBPLE) install\n";
+print MAKEFILE "\n";
+print MAKEFILE "libplepp:\n\t\@\$(eval     ROOT :=\$(shell pwd))";
+print MAKEFILE "\n\t\@\$(eval   LIBPLE :=\$(ROOT)/../../Thirdparties/libple/)";
+print MAKEFILE "\n\t\@\$(eval LIBPLEPP :=\$(ROOT)/../../Thirdparties/libple/PLEPP)";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(LIBPLEPP)/Wrappers/Cpp     test04 HOME=\$(LIBPLEPP) ROOT_PLE=\$(LIBPLE)/Execs CPPCOMPILER=mpicxx #BOOST=\$(ROOT_BOOST)";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(LIBPLEPP)/Wrappers/Fortran static HOME=\$(LIBPLEPP) ROOT_PLE=\$(LIBPLE)/Execs CPPCOMPILER=mpicxx \n";
+print MAKEFILE "\n";
+print MAKEFILE "\nlibple2:\n\t\@\$(eval   ROOT :=\$(shell pwd))";
+print MAKEFILE "\n\tcd ../../Thirdparties/PLEPP/LIBPLE  ; mkdir -p build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..; make; cd \$(ROOT)";
+print MAKEFILE "\n";
+print MAKEFILE "\nlibplepp2:\n\t\@\$(eval   ROOT :=\$(shell pwd))";
+print MAKEFILE "\n\tcd ../../Thirdparties/PLEPP/LIBPLEPP; mkdir -p build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..; make; cd \$(ROOT)";
+print MAKEFILE "\n";
+print MAKEFILE "\ncleanple2:";
+print MAKEFILE "\n\trm -rf ../../Thirdparties/PLEPP/LIBPLE/build";
+print MAKEFILE "\n\trm -rf ../../Thirdparties/PLEPP/LIBPLEPP/build";
+print MAKEFILE "\n";
+print MAKEFILE "\nmetis4:\n\t\@\$(MAKE) -C ../../Thirdparties/metis-4.0/ \n\n";
+print MAKEFILE "\n";
+print MAKEFILE "\nmetis4-clean:\n\t\@\$(MAKE) -C ../../Thirdparties/metis-4.0/ clean\n\n";
+print MAKEFILE "\n";
+print MAKEFILE "\nmetis5:\n\t\@\$(eval   ROOT :=\$(shell pwd))";
+print MAKEFILE "\n\t\@\$(eval METIS5 :=\$(ROOT)/../../Thirdparties/metis-5.1.0_i8)";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(METIS5) distclean ";
+print MAKEFILE "\nifeq (\$(METIS5_CC),0)";
+print MAKEFILE "\n\t\@echo setting METIS5 TYPE\n";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(METIS5) config prefix=\$(METIS5)/\$(TYPE)";
+print MAKEFILE "\nelse";
+print MAKEFILE "\n\t\@echo setting METIS5 CC\n";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(METIS5) config cc=\$(METIS5_CC) prefix=\$(METIS5)/XXX";
+print MAKEFILE "\nendif";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(METIS5) install";
+print MAKEFILE "\n";
+print MAKEFILE "\ncantera4alya:\n\t\@\$(eval   ROOT :=\$(shell pwd))";
+print MAKEFILE "\n\t\@\$(MAKE) -C \$(ROOT)/../../Thirdparties/CANTERA/Wrappers/FORTRAN ROOT_CANTERA=\$(ROOT_CANTERA) ROOT_BOOST=\$(ROOT_BOOST) -B static ";  
+print MAKEFILE "\n";
+ 
+#-------------------------------------------------------------------------------------------------------------------||---#
+print MAKEFILE "\nprecice:\n\t\@\$(MAKE) -C ../../Thirdparties/metis-4.0/ \n\n";
+#-------------------------------------------------------------------------------------------------------------------||---#
+
+#--NINJA THIRPARTY COMPILATION--
+print MAKEFILE "ninja: \\\n";
+print MAKEFILE "\$O/def_kintyp.o \\\n";
+print MAKEFILE "\$O/def_kintyp.o \\\n";
+print MAKEFILE "\$O/mod_communications.o\n";
+print MAKEFILE "\t\@\$(eval     ROOT :=\$(shell pwd))\n";
+print MAKEFILE "\tcd \$(ROOT)/../../Thirdparties/ninja ; make realclean; make ALDIR=$currentdir";
+print MAKEFILE "\tcp \$(ROOT)/../../Thirdparties/ninja/libninja.a \$(ROOT)/../../Executables/$currentdir";
+print MAKEFILE "\t\@echo\n";
+print MAKEFILE "\tcd \$(ROOT)/../../Executables/$currentdir\n";
+
+#-----------------------------------------------------------------------------------------------
+
+print "--| Makefile created. Ready to make.\n";
+print "--| The command you typed has been saved in file conf.log \n";
+print "--| Bye.\n";
+print "\n\n";
+
+close(MAKEFILE)

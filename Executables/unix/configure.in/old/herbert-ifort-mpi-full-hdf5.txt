@@ -1,0 +1,15 @@
+# Forced compilation options
+# Sample file
+
+# start comment lines with a #
+
+
+f90==     mpif90  -m64 -c -C -ftrapuv       -module $O -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -I/gpfs/projects/bsc21/hdf5-1.8.8/include
+fpp90==   mpif90  -m64 -c -C -ftrapuv -fpe0 -module $O -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -I/gpfs/projects/bsc21/hdf5-1.8.8/include -fpp 
+fomp90==  mpif90  -m64 -c -C -ftrapuv -fpe0 -module $O -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -I/gpfs/projects/bsc21/hdf5-1.8.8/include -fpp 
+cpp==     mpicc   -m64 -c 
+link==    mpif90  -m64  
+libs==    -L../../Thirdparties/metis-4.0 -lmetis -L/gpfs/projects/bsc21/hdf5-1.8.8/lib -lhdf5_fortran -lhdf5 -lhdf5hl_fortran -lhdf5_hl  /apps/SZIP/2.1/lib/libsz.a /usr/lib64/libz.a
+
+fa2p== mpif90 -m64 -c -C -ftrapuv -fpe0 -module ../../Utils/user/alya2pos -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -fpp 
+

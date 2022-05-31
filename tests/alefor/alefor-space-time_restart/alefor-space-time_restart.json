@@ -1,0 +1,46 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "alefor-space-time_restart-VELOM-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "alefor-space-time_restart-DISPM-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "alefor-space-time_restart-VELOM-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "alefor-space-time_restart-DISPM-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+    ],
+    "description": "MPI-IO test based on cavtri03: write and read restart with merge, and also repartitioning with random subdomains!",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 5 [NAME] ; [RUN] [NP] 4 [ALYA] --read-rst --time-steps 10 [NAME]"
+            },
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "alefor-space-time_restart",
+    "postprocess": "mpio2txt"
+}
+ 
