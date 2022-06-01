@@ -1,0 +1,32 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=      2860
+  ELEMENTS=          8681
+  BOUNDARIES=        5505
+  SPACE_DIMENSIONS=  3
+  TYPES_OF_ELEMENTS= TET04
+  MATERIALS=         1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                 OPEN
+  DOMAIN_INTEGRATION_POINTS:        1
+  SCALE:                            XSCAL=0.08 YSCAL=0.08 ZSCAL=0.1
+  TRANSLATION:                      XTRAN=77.83805 YTRAN=101.4977 ZTRAN=8.74921
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  BOUNDARY_ELEMENT:                 OFF
+  GROUPS=                           80, SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE multiple-local-axes_impl.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE multiple-local-axes_impl.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE multiple-local-axes_impl.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

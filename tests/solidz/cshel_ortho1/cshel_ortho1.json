@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cshel_ortho1-node.sld.set",
+            "method": "power",
+            "tolerance": 6
+        }
+    ],
+    "description": "This test validates the Sant Venant - Kirchoff orthotropic material model implemented for the continuum shell elements (num 200). The model consist of a square plate with a 45/-45 lay-up under pressure loading (Spilker et al. 1976). The example verifies simple laminated composite plate analysis by using material coordinate system and continuum shell elements.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cshel_ortho1",
+    "postprocess": "alya2pos"
+}

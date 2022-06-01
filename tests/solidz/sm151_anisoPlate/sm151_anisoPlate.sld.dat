@@ -1,0 +1,108 @@
+$------------------------------------------------------------
+$
+$ sm151_anisoPlate
+$ Author:  Gerard Guillamet and Adria Quintanas
+$ Units: SI (mm)
+$ Details: Validation test for ortho. mat. model (num 151)
+$          Anisotropic layered plate 90/45 under tensile
+$          loading based on Spilker et al. 1976
+$          The plate is fixed (ux=uy=yz=0) at one end
+$          and a displacement is applied at the other end.
+$          Displacements are measured at node 142 which is
+$          located at the center top of the plate.
+$
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,,  Bulk  ,,,,,,
+    MATERIAL          = 1
+    CONSTITUTIVE_MODEL: ORTLIN, GREEN \
+      276.e+3 6.9e+3 6.9e+3 0.25 0.25 0.25 3.4e+3 3.4e+3 3.4e+3
+    $ ,,,,,,   MAT CSYS  ,,,,,,
+    CSYS_MATERIAL: FIELD=1, ORIENTATION, TYPE=GLOBAL, ROTAXIS=3
+ END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  NO_STEADY_STATE
+  ALGEBRAIC_SOLVER:
+    SOLVER:            GMRES, KRYLOV=500
+    CONVERGENCE:       ITERA=900,TOLER=1.0E-5,ADAPTATIVE,RATIO=1.0E-1
+    PRECONDITIONER:    DIAGONAL, RIGHT
+    RESIDUAL:          RHS
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL:            TOTAL
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-4
+  MAXIMUM_ITERATION:   20
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP  = 1
+  POSTPROCESS BOCOD,   STEPS = 1
+  POSTPROCESS DISPL,   STEPS = 1
+  POSTPROCESS AXIS1,   STEPS = 1
+  POSTPROCESS AXIS2,   STEPS = 1
+  POSTPROCESS AXIS3,   STEPS = 1
+  POSTPROCESS ORIEN,   STEPS = 1
+  NODE_SET
+    DISPX
+    DISPY
+    DISPZ
+  END_NODE_SET
+  BOUNDARY_SET
+    DIBOX
+    DIBOY
+    DIBOZ
+    DIBOU
+    FRBOX
+    FRBOY
+    FRBOZ
+    FRBOU
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+            $ Grip-fixed FACE
+          1 111 0.0 0.0 0.0 0
+      1 & 2 111 0.0 0.0 0.0 0
+      1 & 4 111 0.0 0.0 0.0 0
+      1 & 6 111 0.0 0.0 0.0 0
+      1 & 5 111 0.0 0.0 0.0 0
+  1 & 2 & 4 111 0.0 0.0 0.0 0
+  1 & 4 & 6 111 0.0 0.0 0.0 0
+  1 & 6 & 5 111 0.0 0.0 0.0 0
+  1 & 5 & 2 111 0.0 0.0 0.0 0
+            $ Grip-disp FACE
+          3 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+      3 & 2 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+      3 & 4 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+      3 & 6 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+      3 & 5 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+  3 & 2 & 4 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+  3 & 4 & 6 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+  3 & 6 & 5 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+  3 & 5 & 3 111 0.0 0.0 0.0, MODULE_FUNCTION=  1
+  END_CODES
+  $-----------------
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE, LINEAR
+      SHAPE_DEFINITION
+        2
+        0.0 0.0 0.0 0.0
+        1.0 1.0 0.0 0.0
+      END_SHAPE_DEFINITION
+    END_CONDITION
+   END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

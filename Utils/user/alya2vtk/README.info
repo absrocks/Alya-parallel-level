@@ -1,0 +1,8 @@
+alya2vtk: mesh converter from Alya format to VTK (ASCII)
+Very useful if you want to visualize a mesh without running Alya 
+So far it only works for 3D meshes with tetrahedral elements. 
+--Requirement: python interpreter and paraview (or similar) to visualize the vtk file
+--To print the usage: ./alya2vtk.py -v or python alya2vtk.py -v
+Check the examples 
+This converter is under development so if you need an extension for 2D meshes or other type of elements please contact me!
+Contact: matias.rivero@bsc.es

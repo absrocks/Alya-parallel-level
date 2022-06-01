@@ -1,0 +1,118 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL         DYNAMIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL           = 1
+    DENSITY            = 1
+    CONSTITUTIVE_MODEL: ISOLIN  1.0e+06  0.25
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:       EXPLICIT
+  NO_STEADY_STATE
+  CONVERGENCE_TOLER=    1.0e-6
+  SAFETY_FACTOR=        0.8
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP= 0
+  POSTPROCESS DISPL
+  POSTPROCESS SIGMA
+  WITNESS_POINTS
+    DISPX
+    DISPY
+    DISPZ
+    SIGXX
+    SIGYY
+    SIGZZ
+    SIGXY
+    SIGYZ
+   $SIGXZ
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+$  1 & 2 & 3  111  0.002     0.002    0.002   , MODULE_FUNCTION= 1
+$  1 & 2 & 5  111  0.0015    0.0015   0.001   , MODULE_FUNCTION= 2
+$  1 & 4 & 3  111  0.001     0.0015   0.0015  , MODULE_FUNCTION= 3
+$  1 & 4 & 5  111  0.0005    0.001    0.0005  , MODULE_FUNCTION= 4
+$  6 & 2 & 3  111  0.0015    0.001    0.0015  , MODULE_FUNCTION= 5
+$  6 & 2 & 5  111  0.001     0.0005   0.0005  , MODULE_FUNCTION= 6
+$  6 & 4 & 3  111  0.0005    0.0005   0.001   , MODULE_FUNCTION= 7
+$  6 & 4 & 5  111  0.0       0.0      0.0     , MODULE_FUNCTION= 8
+  1 & 2 & 3  111  0.0     0.0    0.0, MODULE_FUNCTION=    1
+  1 & 2 & 5  111  0.0     0.0    0.0, MODULE_FUNCTION=    2
+  1 & 4 & 3  111  0.0     0.0    0.0, MODULE_FUNCTION=    3
+  1 & 4 & 5  111  0.0     0.0    0.0, MODULE_FUNCTION=    4
+  6 & 2 & 3  111  0.0     0.0    0.0, MODULE_FUNCTION=    5
+  6 & 2 & 5  111  0.0     0.0    0.0, MODULE_FUNCTION=    6
+  6 & 4 & 3  111  0.0     0.0    0.0, MODULE_FUNCTION=    7
+  6 & 4 & 5  111  0.0     0.0    0.0, MODULE_FUNCTION=    8
+  END_CODES
+  FUNCTIONS
+   TOTAL_NUMBER = 8
+      CONDITION
+      FUNCTION_NUMBER: 1
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0    0.0    0.0
+      1.00    0.002  0.002  0.002
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 2
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0     0.0     0.0
+      1.00    0.0015  0.0015  0.001
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 3
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0     0.0     0.0
+      1.00    0.001   0.0015  0.0015
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 4
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0     0.0     0.0
+      1.00    0.0005   0.001   0.0005
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 5
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0     0.0    0.0
+      1.00    0.0015  0.001  0.0015
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 6
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0       0.0      0.0
+      1.00    0.001     0.0005   0.0005
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 7
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0       0.0      0.0
+      1.00    0.0005    0.0005   0.001
+      END_SHAPEDEFINITION
+      FUNCTION_NUMBER: 8
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      2
+      0.00    0.0   0.0   0.0
+      1.00    0.0   0.0   0.0
+      END_SHAPEDEFINITION
+      END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

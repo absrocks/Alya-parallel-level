@@ -1,0 +1,80 @@
+$-------------------------------------------------------------------
+$
+$ cantilever_shell_expl
+$ Author:     Gerard Guillamet
+$
+$ Details:    Validation test continuum shells using elastic
+$             isotropic material and Explicit analysis.
+$             The model consist of cantilever beam (out-of-plane
+$             bending
+$
+$ Dimensions: L = 10; W = 1; h = 0.1
+$
+$ BCs:        Fully clamped at one end
+$             Dirichlet is applied at the other end tip
+$
+$ Mesh:       16 x 1 elements
+$
+$ Units:      -
+$
+$ Results:    Tip deflections:
+$               Results compared with Reinoso paper.
+$
+$
+$
+$
+$
+$
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL=           1
+    DENSITY=            5.0E-4
+    CONSTITUTIVE_MODEL: CSHEL, ISOLIN 1.2E+06 0.0
+    CSHELL_PARAMETERS:  ANS_TRAPEZOIDAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      EXPLICIT
+  TIME_INTEGRATION:    NEWMARK, CDIFF
+  SAFETY_FACTOR=       0.65
+  MASS_SCALING=        1.0
+  NO_STEADY_STATE
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT STEP = 0
+  POSTPROCESS DISPL
+  POSTPROCESS BOCOD
+  POSTPROCESS FIXNO
+  POSTPROCESS BVESS
+  BOUNDARY_SET
+    DIBOY
+    FRBOY
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+        1  111  0.0 0.0 0.0
+    2 & 3  010  0.0 0.0 0.0, MODULE_FUNCTION= 1
+  END_CODES
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE, SMOOTH
+      SHAPE_DEFINITION
+        2
+        0.0  0.0 0.0    0.0
+        0.05 0.0 6.6516 0.0
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

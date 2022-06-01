@@ -1,0 +1,34 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          126
+  ELEMENTS=              100
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0,      0,      0,      0,      0,      0,      0
+  BOUNDARIES=             50
+  SKEW_SYSTEMS=            0
+  SLAVES=                  0
+  PERIODIC_NODES=         21
+  ZONES=                   1
+  SUBDOMAINS=              1
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL $ PARALLEL_FRONTAL, SFC, PARTITION, FIELD
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  lineper.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  lineper.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  lineper.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

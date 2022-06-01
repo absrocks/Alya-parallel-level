@@ -1,0 +1,62 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            FLAMELET, PREMIX, LAMINAR $$ PREMIX/NON-PREMIXED, LAMINAR/LES
+    Yc_VARIANCE:      OFF $$ OFF, Ycv, Yc_Yc
+    Z_VARIANCE:       OFF $$ OFF, Zv, Z_Z
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        ON
+    SOURCE:           REACTIONS
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    REACTIONS, TABLE
+      INCLUDE CH4_Air_ER0.67_prem_turbulent_table.dat  
+    END_REACTIONS
+  END_PROPERTIES
+  
+  FIELDS: TEMPE= 1, SPECI = 2
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           OFF 
+  ELEMENT_LENGTH:          Minimum
+  TIME_INTEGRATION:        RUNGE,  ORDER: 4
+  SAFETY_FACTOR=           20.0
+
+  STEADY_STATE_TOLERANCE  = 1e-8
+  NORM_OF_CONVERGENCE     = L2
+  CONVERGENCE_TOLERANCE=   1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+  NEGATIVE_CLIP = ON
+  POSITIVE_CLIP = ON 
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS CONCE
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ INITIAL
+   CLASS
+     CLASS 1, CONSTANT 0.0
+   END_CLASS
+   CLASS
+     CLASS 2, CONSTANT 0.0
+   END_CLASS
+ END_INITIAL
+ CODES, NODES, CLASS = 1
+   1 & 3    1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 2
+   1 & 3    1   0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

@@ -1,0 +1,43 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY       = LOWMA, GP_LOOKUP, UPDP1=ENDSTE, UPDP2=NEVER
+      VISCOSITY     = MU_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      SPECIFIC_HEAT = CP_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      CONDUCTIVITY  = K_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES
+
+  GAS_CONSTANT    = 8.3144621
+
+  GRAVITY:       NORM=9.81, GX=0.0,GY=-1.0,GZ=0.0
+
+  COUPLING
+    NASTIN, CHEMIC = 1 1
+    CHEMIC, NASTIN = 1 1
+    NASTIN, TEMPER = 1 1
+    TEMPER, NASTIN = 1 1
+    CHEMIC, TEMPER = 1 1
+    TEMPER, CHEMIC = 1 1
+  END_COUPLING
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+
+  MESH
+    DIVISION=0
+  END_MESH
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=10
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

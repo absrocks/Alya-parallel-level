@@ -1,0 +1,4 @@
+nodes_file /gpfs/projects/bsc21/WORK-JAZMIN/REAL_BURGER/final_mesh/final_mesh.bsc.node
+elements_file /gpfs/projects/bsc21/WORK-JAZMIN/REAL_BURGER/final_mesh/final_mesh.bsc.ele
+vectors_file /gpfs/projects/bsc21/WORK-JAZMIN/REAL_BURGER/final_mesh/final_mesh.bsc.grad
+output_file /gpfs/projects/bsc21/WORK-JAZMIN/REAL_BURGER/final_mesh/meshinvtk.vtk

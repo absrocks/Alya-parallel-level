@@ -1,0 +1,15 @@
+# ALYA Witness set results
+#
+# HEADER
+# ISET , Column :   1
+# COORX , Column :   2
+# COORY , Column :   3
+# COORZ , Column :   4
+# NUMVARIABLES :       4
+# NUMSETS      :       3
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+         1  0.58247980E-001  0.37499543E-001  0.98980592E-001
+         2  0.58249930E-001  0.37499921E-001  0.98981390E-001
+         3  0.58246123E-001  0.37499151E-001  0.98979762E-001

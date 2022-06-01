@@ -1,0 +1,41 @@
+--------------------
+GENERAL
+--------------------
+model = 0  ! 0 = CFDW2   1=RNG    2= REALIZABLE  3= CFDW1
+nstep = 800
+miite    = 1        ! global iteration
+--------------------
+PHYSICAL
+--------------------
+fcori = 1.13e-4  ! 2*Omega*sin(latitud)
+vegeo = 17.5d0
+ustar = 0.65d0 ! fix ustar  
+l_max = 36.0d0
+rough = 0.30d0 
+--------------------
+MESH
+--------------------
+ztop = 3000.0d0
+hele1= 0.003 ! generally double of dwall
+nelem = 150 ! # num of vertical elemenst
+--------------------
+BOUNDARY
+--------------------
+bouco = 2   ! 0: nonsip veloc, 1: fix ustar, 2: wall law
+--------------------
+NUMERICAL
+--------------------
+dwall = 0.003 ! wall distance 
+toler= 1.0e-4 ! converg tolerance
+mitve = 1 ! max # iterations for velocity
+mittu = 3  ! max # iterations for turbulence
+--------------------
+THERMAL
+--------------------
+thmod  =  0      ! Thermal model,  0 = No thermal coupl  1=Apsley-Castro 2= Alinot-Masson 3= Crespo
+heatfl =   00.0  ! heat flux over the ground,   >0 stable, <0 unstable.    if =0.0 = no thermal model 
+height  = 000.0  ! SBL height: heat flux decreases linearly up to z_sbl
+molen  =  000.0  ! M-O length, L>0 stable, L<0 unstable
+
+
+

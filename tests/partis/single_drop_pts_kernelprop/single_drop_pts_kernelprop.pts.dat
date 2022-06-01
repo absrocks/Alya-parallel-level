@@ -1,0 +1,41 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       FORCE
+      THERMODYNAMIC_MODEL:  ON
+      BROWNIAN_MOTION:      OFF
+      FORCES:               DRAG: GANSER, GRAVITY
+      WSEEN=                0.3333333333333333
+      HT_CORRECTION:        OFF
+      MASS_POTENTIAL:       DILUTE_LIMIT EQUILIBRIUM
+      PROPERTIES
+        RHO=         995.10
+        D=           1.0e-04
+        CP=          4.178e3
+        H_VAPOR=     2264.705e3
+        W=           18.015e-3
+        BOILING_T=   373.15
+      END_PROPERTIES
+  END_TYPE
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  INJECTOR: 1
+    GEOMETRY:    POINT,    PARAM = 0.0, 0.0, 0.0, 1
+    TEMPERATURE: CONSTANT, VALUE = 288.0
+  END_INJECTOR
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e6
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

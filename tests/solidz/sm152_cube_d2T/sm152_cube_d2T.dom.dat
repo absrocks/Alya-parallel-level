@@ -1,0 +1,40 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 64
+  ELEMENTS          = 27
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 54
+  MATERIALS         = 2
+  FIELDS            = 3
+    FIELD = 1, DIMENSIONS=3, ELEMENTS
+    FIELD = 2, DIMENSIONS=3, ELEMENTS
+    FIELD = 3, DIMENSIONS=3, ELEMENTS
+  END_FIELDS
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       8
+  SCALE:                           XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./sm152_cube_d2T.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./sm152_cube_d2T.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./sm152_cube_d2T.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+  INCLUDE ./sm152_cube_d2T.fie.dat
+END_FIELDS
+$-------------------------------------------------------------------

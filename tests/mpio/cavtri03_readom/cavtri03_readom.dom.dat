@@ -1,0 +1,44 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          121
+  ELEMENTS=              200
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10
+  BOUNDARIES=             40
+  FIELDS, NUMBER = 3
+    FIELD = 1, DIMENSION=1, ELEMENTS,   STEPS=1, DEFAULT=0.0
+    FIELD = 2, DIMENSION=2, NODES,      STEPS=3, DEFAULT=1.0
+      TIMES
+          0.0
+         10.0
+        700.0
+      END_TIMES
+    END_FIELD
+    FIELD = 3, DIMENSION=3, BOUNDARIES, STEPS=1, DEFAULT=10.0
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                           40, SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  ./cavtri03_readom.geo.dat
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  INCLUDE  ./cavtri03_readom.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  ./cavtri03_readom.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  INCLUDE  ./cavtri03_readom.fie.dat  
+END_FIELDS
+$-------------------------------------------------------------

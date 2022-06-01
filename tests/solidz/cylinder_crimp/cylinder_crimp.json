@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "eva.casoni@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cylinder_crimp-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test is a cylinder with thick wall (interior and exterior surfaces) that is crimped with a ficticious rigid body defined with a space time function, that gives the new radius of the cylinder at each time step.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i8"
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cylinder_crimp",
+    "postprocess": "mpio",
+    "timeout":"00:03:00"
+}

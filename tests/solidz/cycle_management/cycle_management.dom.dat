@@ -1,0 +1,36 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE cycle_management.dims.dat
+  MATERIALS:         1
+  SPACE_DIMENSIONS:  3
+  NODES:             4
+  SKEW_SYSTEMS:      0 
+  SLAVES:            0 
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       1
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+  GROUPS:                          10
+$$$  SCALE:       XSCAL=0.5 YSCAL=1.0 ZSCAL=1.0
+$$$  TRANSLATION: XTRAN=43545.0 YTRAN=-23.0 ZTRAN=-2.0
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+  INCLUDE cycle_management.geo.dat
+END_GEOMETRY
+$------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE cycle_management.set.bou
+  END_BOUNDARIES
+END_SETS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE cycle_management.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

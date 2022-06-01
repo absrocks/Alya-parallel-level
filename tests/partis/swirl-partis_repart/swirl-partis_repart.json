@@ -1,0 +1,42 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "swirl-partis_repart-PAR01-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "swirl-partis_repart-PAR01-00000004.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "swirl-partis_repart-PAR01-00000008.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "swirl-partis_repart-PAR01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "Repartitioning of Alya at each time step with partis with empty subdomain",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "swirl-partis_repart",
+    "postprocess": "mpio2txt"
+}

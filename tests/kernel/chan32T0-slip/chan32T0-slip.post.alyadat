@@ -1,0 +1,27 @@
+$-------------------------------------------------------------------
+DATA
+  FORMAT:                   visit
+  MARK_ELEMENTS:            type
+  ELIMINATE_BOUNDARY_NODES: yes
+  MULTIPLE_FILE:            OFF
+  BOUNDARY:                 ON
+  SUBDOMAINS, ALL
+  END_SUBDOMAINS
+$  SUBDOMAINS
+$    2
+$  END_SUBDOMAINS
+ONLYS
+  420000
+  430000
+  440000
+  450000
+  460000
+  470000
+  480000
+  490000
+  500000
+  510000
+ENDON
+END_DATA
+$-------------------------------------------------------------------
+ 

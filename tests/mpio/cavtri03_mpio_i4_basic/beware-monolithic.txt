@@ -1,0 +1,8 @@
+In the monolithic case this case does not converge to a stationary solution.
+If can be solved by changing to leaky lid. Then it converges to the same solution as the orthomin.
+
+The behaviour of the non-leaky case is very strange:
+
+- The monolitic does not converge. Linf stays in the order of 1e-1.
+- Starting from a highly converged ortomin solution the initial residual for the solver can reach 1e-11. Then you let it evolve and this is lot and Linf reaches the same values as if you had started from 0. I have seen the same behaviour with GMRES or SPARSE.
+

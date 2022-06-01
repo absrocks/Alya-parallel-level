@@ -1,0 +1,66 @@
+#!/bin/bash
+
+if [ $# -eq 0 ] ; then
+  echo "Wrong arguments: $0 directory"
+  exit
+fi
+
+mkdir $1
+#dst='$1 2> /dev/null'
+dst=$1
+
+mv *.cvg $dst
+mv *.plt $dst
+mv *.tex $dst
+mv *.log* $dst
+mv *.rst* $dst
+mv *.sol $dst
+find ./ -maxdepth 1 -name '*.ensi*' -exec mv {} $dst \;
+find ./ -maxdepth 1 -name '*.zfem*' -exec mv {} $dst \;
+mv *.post.msh* $dst
+mv *.post.res* $dst
+mv *.gid.msh* $dst
+mv *.gid.res* $dst
+mv *.vu $dst
+mv *.vubin $dst
+mv *.par $dst
+mv *.tra* $dst
+mv *.mem* $dst
+#mv *.msh $dst
+mv *.res $dst
+mv *.set $dst
+mv *.liv $dst
+mv *.mpit $dst
+mv *.mpits $dst
+mv *.tmp $dst
+mv *.mxm $dst
+mv *.frc $dst
+mv *.p2d $dst
+mv *.out $dst
+mv *.err $dst
+mv *.wit $dst
+mv *.cso $dst
+mv *.plt $dst
+mv fort.* $dst
+find ./ -maxdepth 1 -name '*post.alyabin' -exec mv {} $dst \;
+#mv *post.alyabin $dst
+mv *post.alyafil $dst
+mv *post.alyalog $dst
+mv *post.alyapar $dst
+mv *.bvox $dst
+mv *.h5 $dst
+mv *.xmf $dst
+mv *.pvtu $dst
+mv *.vtu $dst
+mv  *_vtk $dst
+mv *.csv $dst
+mv *.stp $dst
+mv events_* $dst
+
+# Copy .dat files (to know params)
+cp *.dat $dst
+# AlyaFix path exist?
+if [ -d AlyaFix ]; then
+  echo "Copying Alyafix .inc files..."
+  find AlyaFix/ -name "*.inc" -exec cp {} $dst \;
+fi

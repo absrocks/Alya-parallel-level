@@ -1,0 +1,115 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       VELOCITY
+      THERMODYNAMIC_MODEL:  ON, FLAMELET_TABLE
+      PROPERTIES
+        LIQ_NAME= H2O
+        D=        100.0e-06
+        TABLE
+            INCLUDE ./water_turbulent_table.dat
+        END_TABLE
+        YC_SCALING
+            INCLUDE ./water_turbulent_scaling_gen0.dat 
+        END_YC_SCALING
+        HEAT_LOSS
+            INCLUDE ./water_turbulent_scaling_gen1.dat 
+        END_HEAT_LOSS
+      END_PROPERTIES
+  END_TYPE
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  $
+  $ Constant properties uniform polar distribution
+  $
+  INJECTOR: 1
+    TYPE=          1
+    GEOMETRY:      CIRCLE, PARAM= 0.0,0.0,0.0, 3.0e-3, -1.0,0.0,0.0, 2
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      SPRAY,    PARAM = 0.5, 60
+  END_INJECTOR
+
+  $
+  $ Constant properties, uniform Cartesian distribution
+  $
+  INJECTOR: 2
+    TYPE=          1
+    GEOMETRY:      ANNULUS, PARAM= 10.0e-3,0.0,0.0, 3.0e-3, 2.0e-3, -1.0,0.0,0.0, 5
+    DISTRIBUTION:  UNI_CARTESIAN
+    N_PARTICLES:   AS_IS
+    STOCHASTIC
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      SPRAY,    PARAM = 0.5, 60
+  END_INJECTOR
+
+  $
+  $ Number determined by mass flow
+  $
+  INJECTOR: 3
+    TYPE=          1
+    GEOMETRY:      ANNULUS, PARAM= 20.0e-3,0.0,0.0, 3.0e-3, 2.0e-3, -1.0,0.0,0.0
+    DISTRIBUTION:  UNI_CARTESIAN
+    N_PARTICLES:   MASS_FLOW: CONSTANT= 0.0005e-3 
+    STOCHASTIC
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      SPRAY,    PARAM = 0.5, 40
+    SIZE_DISTRIB:  CONSTANT 
+  END_INJECTOR
+
+  $
+  $ Number determined by mass flow and uniform size discribution
+  $
+  INJECTOR: 4
+    TYPE=          1
+    GEOMETRY:      ANNULUS, PARAM= 30.0e-3,0.0,0.0, 3.0e-3, 2.0e-3, -1.0,0.0,0.0
+    DISTRIBUTION:  UNI_CARTESIAN
+    N_PARTICLES:   MASS_FLOW: CONSTANT= 0.0005e-3 
+    STOCHASTIC
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      SPRAY,    PARAM = 0.5, 40
+    SIZE_DISTRIB:  UNIFORM   PARAM = 80.0e-06 120.0e-06
+  END_INJECTOR
+
+  $
+  $ Number determined by mass flow and Rosin-Rammler size distribution
+  $
+  INJECTOR: 5
+    TYPE=          1
+    GEOMETRY:      ANNULUS, PARAM= 40.0e-3,0.0,0.0, 3.0e-3, 2.0e-3, -1.0,0.0,0.0
+    DISTRIBUTION:  UNI_CARTESIAN
+    N_PARTICLES:   MASS_FLOW: CONSTANT= 0.0005e-3 
+    STOCHASTIC
+    TEMPERATURE:   CONSTANT,      VALUE = 288.0
+    VELOCITY:      SPRAY,         PARAM = 0.5, 40
+    SIZE_DISTRIB:  ROSIN_RAMMLER, PARAM = 40.0e-6, 200.0e-6, 100.0e-6, 3.0
+  END_INJECTOR
+
+  $
+  $ Space-time function for mass flow and velocity
+  $
+  INJECTOR: 6
+    TYPE=          1
+    GEOMETRY:      ANNULUS, PARAM= 50.0e-3,0.0,0.0, 3.0e-3, 2.0e-3, -1.0,0.0,0.0
+    DISTRIBUTION:  UNI_CARTESIAN
+    N_PARTICLES:   MASS_FLOW: SPACE_TIME= FLOW_RATE 
+    STOCHASTIC
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      SPRAY,    PARAM = 0.5, 20, SPACE_TIME= VELOCITY
+    SIZE_DISTRIB:  CONSTANT 
+  END_INJECTOR
+
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e-20
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

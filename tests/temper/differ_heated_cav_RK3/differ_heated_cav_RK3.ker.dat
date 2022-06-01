@@ -1,0 +1,54 @@
+$-------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+  PROPERTIES
+    MATERIAL = 1  
+      DENSI = LOWMA,    GMIXT,              UPDP1 = ENDSTE 
+      VISCO = POLYN,    DUMMY =  1,         1.0
+      CONDU = POLYN,    DUMMY =  2,         1.0
+      SPECI = POLYN,    DUMMY =  3,         1.0
+    END_MATERIAL 
+  END_PROPERTIES 
+
+  GAS_CONSTANT       = 287.0
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------
+NUMERICAL_TREATMENT  
+  MESH  
+  END_MESH 
+
+  SPACE_&_TIME_FINCTIONS
+    FUNCTION=VISCO
+      ( 1.4283e-6 * t**1.5 / (t + 110.5)  )   
+    END_FUNCTION
+    $$ Sutherland                  Ventosa et al. 2017
+    
+    FUNCTION=CONDU 
+     ( 2.0217e-3 * t**1.5 / (t + 111.0) )      
+    END_FUNCTION
+    $$ lambda=mu*Cp/Pr Pr=0.71     Ventosa et al. 2017
+    $$ 1.4283e-6*1005.0/0.71 = 2.0217e-3 
+      
+    FUNCTION=SPECI
+       1.005e+03
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+
+  ELSEST  
+    STRATEGY: BIN  
+    NUMBER:   10,10,10  
+    DATAF: LINKED_LIST  
+  END_ELSEST  
+
+END_NUMERICAL_TREATMENT  
+$-------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST  
+  STEPS = 200 
+
+  POSTPROCESS  DENSI
+  POSTPROCESS  VISCO 
+  POSTPROCESS  CONDU 
+
+END_OUTPUT_&_POST_PROCESS  

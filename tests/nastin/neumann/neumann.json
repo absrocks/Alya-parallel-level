@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "neumann.post.res",
+            "method": "absolute",
+            "tolerance": "1e-12"
+        }
+    ],
+    "description": "Impose the traction on a uniform flow so that pressure is 2 everywhere",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "neumann",
+    "postprocess": "alya2pos"
+}

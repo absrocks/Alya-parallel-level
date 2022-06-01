@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "tubo-nastin.post.res",
+            "method": "absolute",
+            "tolerance": "1e-6"
+        },
+        {
+            "file": "tubo-solidz.post.res",
+            "method": "absolute",
+            "tolerance": "1e-6"
+        }
+    ],
+    "description": "test coupling nastin with solidz",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 4 [ALYA] tubo-nastin [SEP] [NP] 4 [ALYA] tubo-solidz",
+                "postprocess": "echo | [POST] tubo-nastin; echo | [POST] tubo-solidz"
+            },
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "solidz",
+        "alefor"
+    ],
+    "name": "tubo-fsi",
+    "postprocess": "alya2pos",
+    "timeout": "00:08:00"
+}

@@ -1,0 +1,38 @@
+GiD Post Results File 1.0
+ 
+Result EXNOR ALYA  0.00000000E+00 Vector OnNodes
+ComponentNames EXNOR_X,EXNOR_Y,EXNOR_Z
+Values
+        1 -0.70710678E+000 -0.70710678E+000
+        2  0.44721360E+000 -0.89442719E+000
+        3  0.70710678E+000  0.70710678E+000
+        4  0.70710678E+000 -0.70710678E+000
+        5  0.44721360E+000  0.89442719E+000
+        6 -0.70710678E+000  0.70710678E+000
+        7  0.00000000E+000  0.10000000E+001
+End values
+
+Result MASSM ALYA  0.00000000E+00 Scalar OnNodes
+ComponentNames MASSM
+Values
+        1  0.18750000E+000
+        2  0.10416667E+000
+        3  0.83333333E-001
+        4  0.83333333E-001
+        5  0.10416667E+000
+        6  0.18750000E+000
+        7  0.25000000E+000
+End values
+
+Result MASSC ALYA  0.00000000E+00 Scalar OnNodes
+ComponentNames MASSC
+Values
+        1  0.20833333E+000
+        2  0.12500000E+000
+        3  0.62500000E-001
+        4  0.62500000E-001
+        5  0.12500000E+000
+        6  0.20833333E+000
+        7  0.20833333E+000
+End values
+

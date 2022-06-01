@@ -1,0 +1,46 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+ PROPERTIES
+         DENSITY   = CONSTANT, PARAMETER=  1  $$ in g/cm3
+         VISCOSITY = CONSTANT, PARAMETER=  0.01 $$ in poise
+
+ END_PROPERTIES
+
+  COUPLING
+    NASTIN ALEFOR
+  END_COUPLING
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+$    DIVISION = 1
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+
+
+  SPACE_&_TIME_FUNCTIONS
+     FUNCTION=INFLOW
+        0.5+0.5*cos(2*3.14159*t)
+     END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+
+   STEPS = 1
+   POSTPROCESS SUBDO
+   POSTPROCESS CODNO
+   POSTPROCESS LBSET
+   POSTPROCESS LMATE
+   
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

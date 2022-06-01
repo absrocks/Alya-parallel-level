@@ -1,0 +1,46 @@
+{
+    "authors": [
+        "daniel.mira@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "traslation_interface_20x20-CON03-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "traslation_interface_20x20-CON04-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "traslation_interface_20x20-DENSI-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        }
+    ],
+    "description": "Stand-alone chemic level-set method on a 2D mesh.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 6,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "chemic"
+    ],
+    "name": "traslation_interface_20x20",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

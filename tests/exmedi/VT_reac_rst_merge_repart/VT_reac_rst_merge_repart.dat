@@ -1,0 +1,46 @@
+$------------------------------------------------------------------
+RUN_DATA
+  ALYA:                    EPbmk25
+  LIVE_INFO:               screen
+  POSTPROCESS:             domain
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TIME_COUPLING:          GLOBAL
+  TIME_INTERVAL:          0.000, 1.0
+  TIME_STEP_SIZE:         1E-4 $$$$$ 1E-5 5E-6 $ ESTOS SON LOS PASOS DE NIEDERER
+  NUMBER_OF_STEPS_(MAX):  20
+$-------------------------------------------------------------------
+  EXMEDI:                 ON
+  END_EXMEDI
+
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+    OUTPUT:               SLAVES
+    OPENMP
+      ELEMENT_CHUNK=10
+      COLORING: MIN_COLOR
+    END_OPENMP
+    PARTITIONING
+      METHOD:         RANDOM
+      EXECUTION_MODE: PARALLEL
+    END_PARTITIONING
+    REPARTITIONING: Off
+      CRITERION:    ALWAYS
+      FREQUENCY=    1
+      POSTPROCESS:  NONE
+    END_REPARTITIONING
+    ORDER_COMMUNICATIONS: ON
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:         On
+  GEOMETRY:     On
+  RESTART:      On 
+  POSTPPROCESS: On
+  MERGE:        On
+  END_MERGE
+  SYNCHRONOUS: ON
+END_MPI_IO
+$-------------------------------------------------------------------

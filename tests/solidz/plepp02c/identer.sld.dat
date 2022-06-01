@@ -1,0 +1,68 @@
+$-------------------------------------------------------------------
+$
+$ indenter
+$ Details:   Indenter in 2-d
+$            Dimensions:
+$            Indenter is assumed as a deformable body (D=0.2m)
+$            Material indenter is Steel
+$ Units:     SI
+$
+$ Reference: -
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+    PLANE:                STRAIN
+    GRAVITY:              NORM=9.8, GX=0.0, GY=-1.0
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    DENSITY=            7.9E+3
+    CONSTITUTIVE_MODEL: ISOLIN \
+                        200E+7 0.35
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:       IMPLICIT
+  NO_STEADY_STATE
+  TIME_INTEGRATION:     NEWMARK, DAMPED
+  MAXIMUM_ITERATION=    100
+  CONVERGENCE_TOLER=    1.0E-5
+  SAFETY_FACTOR=        1.0
+  ALGEBRAIC_SOLVER
+$    SOLVER:              DIRECT
+    SOLVER:              GMRES, KRYLOV=500
+    CONVERGENCE:         ITERA=1000,TOLER=1.0E-07
+    PRECONDITIONER:     DIAGONAL
+$    OPTION:             ZERO_FIXITY
+    OUTPUT:             CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT  STEP = 0
+  POSTPROCESS PARTI
+$  POSTPROCESS BOCOD
+$  POSTPROCESS SIGMA
+  POSTPROCESS DISPL
+$  POSTPROCESS BVNAT
+$  POSTPROCESS RESID
+$  POSTPROCESS INTLI
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+        1  10  0.0  0.0  0
+        2  10  0.0  0.0  0
+    1 & 2  10  0.0  0.0  0
+  END_CODES
+  PARAMETERS
+    CONTACT_PDN
+      BILATERAL, NEUMANN=1.0, TOLERANCE=1.0E-5, ITERATIONS=20
+      BOUNDARY:   2
+      PROJECTION: Y
+    END_CONTACT_PDN
+  END_PARAMETERS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

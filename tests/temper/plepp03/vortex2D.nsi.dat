@@ -1,0 +1,80 @@
+$$Create by J. MIGUEL ZAVALA-AKE 
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  $
+  PROBLEM_DEFINITION       
+    TEMPORAL_DERIVATIVES:   On 
+    CONVECTIVE_TERM:        On
+    VISCOUS_TERM:           LAPLACIAN $FULL
+   $REGIME:                 INCOMPRESSIBLE
+    REGIME:                 LOWMACH, TEMPERATURE = 300.0
+  END_PROBLEM_DEFINITION  
+  $
+  PROPERTIES
+  $$LOWMACH:
+    THERMODYN_PRESSURE = 101315.516777133  
+    GAS_CONSTANT       =    287.175501069    $$ 8.3144621
+  END_PROPERTIES  
+  $
+END_PHYSICAL_PROBLEM  
+
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            ASGS
+  ELEMENT_LENGTH:           Minimum
+  TIME_INTEGRATION:         Trapezoidal, ORDER: 1, EULER=5
+ $SAFETY_FACTOR:            1e3  EXPON 1.02 1e5              $  b)   :) 
+  SAFETY_FACTOR:            1e3                              $  b.1) ...  
+ $SAFETY_FACTOR:            1e5  EXPON 1.02 1e7              $  x) 
+  STEADY_STATE_TOLER:       1e-12
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     10 
+
+  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ SACAR DE UNA VEZ
+  VECTORIZATION: OFF
+  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  CONVERGENCE_TOLERANCE:    1e-03
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING
+    PRECONDITIONER:         DT
+    ELEMENT_LENGTH:         MINIMUM
+    TAU_STRATEGY:           CODINA
+  END_ALGORITHM
+  MOMENTUM
+    ALGEBRAIC_SOLVER:       GMRES,  ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.01, KRYLOV=30, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL
+  END_MOMENTUM 
+  CONTINUITY
+    ALGEBRAIC_SOLVER:       DEFLATED_CG, ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001, UNSYMME, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL 
+  END_CONTINUITY
+END_NUMERICAL_TREATMENT  
+
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+  POSTPROCESS  INITIAL 
+  POSTPROCESS  VELOCITY
+ $POSTPROCESS  PRESSURE
+ $POSTPROCESS  MACHN
+ $POSTPROCESS  DENSITY <- kernel 
+  $
+END_OUTPUT_&_POST_PROCESS   
+
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  $
+  PARAMETERS
+    $
+    INITIAL: VALUE = 1
+   $VARIATION:         CONSTANT
+   $INITIAL:           INERTIAL, Value= 0.0 0.0 
+    $
+  END_PARAMETERS
+  $
+  CODES, NODES 
+    INCLUDE vortex2D.nsi.codes   
+  END_CODES
+  $
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

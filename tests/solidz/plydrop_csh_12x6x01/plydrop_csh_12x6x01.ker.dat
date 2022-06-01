@@ -1,0 +1,16 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+    EXTENDED_GRAPH: ON
+  END_MESH
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+$  POSTPROCESS SUBDO
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

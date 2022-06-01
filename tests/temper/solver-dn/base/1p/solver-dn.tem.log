@@ -1,0 +1,112 @@
+
+
+
+        --------------------------
+     |- TEMPER OUTPUT FOR PROBLEM: tempe01
+        --------------------------
+
+
+        ---------------------
+     |- DIFFERENTIAL EQUATION
+        ---------------------
+
+
+
+
+     FINITE ELEMENT ERRORS
+     =====================
+
+     TIME STEP=     0, CURRENT TIME=  0.00000000E+000
+
+     NORM       VALUE  
+     -----------------------
+     W(0,1)  1.00000000E+000
+     W(0,2)  1.00000000E+000
+     W(0,i)  1.00000000E+000
+     W(1,1)  1.00000000E+000
+     W(1,2)  1.00000000E+000
+     W(1,i)  1.00000000E+000
+     -----------------------
+
+
+
+     FINITE ELEMENT ERRORS
+     =====================
+
+     TIME STEP=     1, CURRENT TIME=  1.00000000E-001
+
+     NORM       VALUE  
+     -----------------------
+     W(0,1)  1.38097055E-011
+     W(0,2)  1.75294238E-011
+     W(0,i)  2.28565942E-011
+     W(1,1)  5.34055887E-011
+     W(1,2)  6.80880995E-011
+     W(1,i)  2.13674411E-010
+     -----------------------
+
+
+
+     FINITE ELEMENT ERRORS
+     =====================
+
+     TIME STEP=     1, CURRENT TIME=  1.00000000E-001
+
+     NORM       VALUE  
+     -----------------------
+     W(0,1)  1.38097055E-011
+     W(0,2)  1.75294238E-011
+     W(0,i)  2.28565942E-011
+     W(1,1)  5.34055887E-011
+     W(1,2)  6.80880995E-011
+     W(1,i)  2.13674411E-010
+     -----------------------
+
+
+        -----------------
+     |- SUMMARY OF SOLVER
+        -----------------
+
+
+        TEMPERATURE:
+        ------------
+
+        SOLVER:               GMRES
+        # SOLVES=                    1
+        PRECONDITIONER:       DIAGONAL diag(A)
+        MIN. # ITERATIONS=         163
+        MAX. # ITERATIONS=         163
+        AVE. # ITERATIONS=         163
+        TOT. # ITERATIONS=         163
+        TOT. CPU TIME=         0.715910E-002
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME (AVERAGE):  7.160E-03
+          Initial operations:             9.671E-05 (  1.35 % )
+          Preconditioning:                2.472E-03 ( 34.53 % )
+          Coarse system solver (DCG):     0.000E+00 (  0.00 % )
+          Orthogonalization (GMRES):      3.794E-03 ( 52.99 % )
+          Others:                         7.968E-04 ( 11.13 % )
+
+
+        |- SPMV:                          181
+
+           Computation:             
+              Average CPU time:      1.978E-04 
+              Maximum CPU time:      2.032E-04 
+              Load balance:          9.731E-01
+           Point-to-point comm.:    
+              Average CPU time:      1.785E-03 
+              Maximum CPU time:      2.327E-03 
+              Load balance:          7.669E-01
+           Overall:                 
+              Average CPU time:      1.982E-03 
+              Maximum CPU time:      2.521E-03 
+              Load balance:          7.863E-01
+
+
+
+     |- END OF TEMPER RUN
+

@@ -1,0 +1,45 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1000000
+   TYPE= 1
+       MODEL=           VELOCITY
+  END_TYPE
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+$  ELEMENT_SEARCH: BIN
+  ALGEBRAIC_SOLVER  $solver for the slip wall
+       SOLVER:               DEFLATED_CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-3
+       PRECONDITIONER:       DIAGONAL
+  END_ALGEBRAIC_SOLVER
+  NEWMARK: GAMMA=0.5, BETA=0.25
+  WALLD: ON
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  LEVEL     = 1
+  FREQUENCY = 1
+  OUTPUT DEPOSITION SURFACE
+$  POSTPROCESS DEPOSITION, STEPS=100
+$  POSTPROCESS PARTICLES,  STEPS=100
+$  POSTPROCESS  PARTICLE_NUMBE, STEPS = 100
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+    VELOC = 1
+    INJECTOR=           1
+       GEOMETRY: SEGMENT,PARAM=2.0,-0.2,0.0,2.0,0.2,0.0, 100
+       TYPE=           1
+       INITIAL_TIME=   0.0 $s
+       PERIOD_TIME=    0.5 $0.005 $s
+       FINAL_TIME=     0.4 $0.35 $s
+       $VELOCITY : SPRAY, PARAM= 0.0, 40.00   $$$veloc, angulo
+    END_INJECTOR
+   CODES, BOUNDARIES
+      2 3
+      4 3 
+   END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+

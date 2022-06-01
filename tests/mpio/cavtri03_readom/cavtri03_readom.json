@@ -1,0 +1,51 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es",
+        "damien.dosimont@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_readom.post.res",
+            "method": "power",
+            "tolerance": 8
+        },
+        {
+            "file": "cavtri03_readom-boundary.nsi.set",
+            "method": "power",
+            "tolerance": 8
+        },
+        {
+            "file": "cavtri03_readom.nsi.wit",
+            "method": "power",
+            "tolerance": 8
+        }
+    ],
+    "description": "Test based on cavtri03, check the whole domain reading (geometry, bcs, sets and fields)",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 5,
+            "openmp": 0
+        },
+        {
+            "mpi": 4,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_readom",
+    "postprocess": "alya2pos",
+    "timeout": "00:05:00"
+}

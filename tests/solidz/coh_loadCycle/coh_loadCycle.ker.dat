@@ -1,0 +1,26 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+    EXTENDED_GRAPH: OFF
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER_BOXES: 10,10,10
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+$  POSTPROCESS MATER
+  WITNESS_POINTS, NUMBER = 4
+    0.00  0.00  2.001
+    1.00  0.00  2.001
+    1.00  1.00  2.001
+    0.00  1.00  2.001
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------

@@ -1,0 +1,43 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           36
+  ELEMENTS=               25
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=             20
+  FIELDS, NUMBER = 1
+    FIELD = 1, DIMENSION=2, NODES, STEPS=3
+      TIMES
+          0.0
+          1.0
+          2.0
+      END_TIMES
+    END_FIELD
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                          10
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  time-fields-veloc-dispm.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  time-fields-veloc-dispm.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  time-fields-veloc-dispm.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  INCLUDE  time-fields-veloc-dispm.fie.dat  
+END_FIELDS
+$---------------------------------------------------------------
+	 

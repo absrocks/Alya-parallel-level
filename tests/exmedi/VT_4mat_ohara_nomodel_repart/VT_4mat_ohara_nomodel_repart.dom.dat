@@ -1,0 +1,75 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+  NODAL_POINTS    1331
+  ELEMENTS        6000
+  BOUNDARIES      1200
+  MATERIALS= 4
+  SPACE_DIMENSIONS=             3
+  NODES=                        4
+  SKEW_SYSTEMS=                 0 
+  SLAVES=                       0 
+  NO_SETS 
+  FIELDS = 3
+        FIELD= 1, DIMENSION= 3, NODES 
+        FIELD= 2, DIMENSION= 1, NODES
+        FIELD= 3, DIMENSION= 4, NODES
+  END_FIELDS
+  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE: XSCALE = 0.5 , YSCALE = 0.5 , ZSCALE = 0.5 
+  BOUNDARY_ELEMENT: OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+
+   INCLUDE  VT_4mat_ohara_nomodel_repart.geo.dat
+
+      MATERIALS, NUMBER=4 $, DEFAULT=4
+            INCLUDE  material_scar_det.in  $mat1.txt
+      END_MATERIALS
+
+END_GEOMETRY
+
+SETS
+    include VT_4mat_ohara_nomodel_repart.defsets
+END_SETS
+
+BOUNDARY_CONDITIONS $, EXTRAPOLATE
+    include VT_4mat_ohara_nomodel_repart.fix.bou
+
+    $MATERIALS, BOUNDARIES
+    $    CODE=3
+    $    MATERIAL=2
+    $    LAYERS=2
+    $END_MATERIALS
+
+END_BOUNDARY_CONDITIONS
+ 
+FIELDS
+        FIELD= 1
+             INCLUDE  VT_4mat_ohara_nomodel_repart.fiber.dat
+        END_FIELD
+        
+        FIELD= 2
+            INCLUDE  cell_types.txt $VT_4mat_ohara_nomodel_repart.cell.dat $
+        END_FIELD
+        
+        FIELD= 3
+             310  -80 0.0 0.020
+             318  -80 0.0 0.020
+             319  -80 0.0 0.020
+             320  -80 0.0 0.020
+             328  -80 0.0 0.020 
+             472  -80 0.0 0.020
+             480  -80 0.0 0.020
+             481  -80 0.0 0.020
+             482  -80 0.0 0.020
+             490  -80 0.0 0.020              
+        END_FIELD
+END_FIELDS

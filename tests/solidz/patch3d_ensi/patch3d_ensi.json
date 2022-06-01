@@ -1,0 +1,57 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "patch3d_ensi.sld.wit",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "patch3d_ensi.ensi.SIGXX-000003",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_ensi.ensi.SIGYY-000003",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_ensi.ensi.SIGZZ-000003",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_ensi.ensi.SIGXY-000003",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_ensi.ensi.SIGYZ-000003",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_ensi.ensi.SIGXZ-000003",
+            "method": "absolute",
+            "tolerance": 1e-08
+        }
+    ],
+    "description": "This 3D patch test verifies the correctness of the computer implementation of the 8-node hexahedral element, using a quasi-static implicit algorithm. This validation was taken from the paper by Areias et. al., \"Analysis of 3D problems using a new enhanced strain hexahedral element\". The case C presented in this paper is taken as reference, where a displacement field is imposed at the exterior nodes.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "patch3d_ensi",
+    "postprocess": "alya2pos"
+}

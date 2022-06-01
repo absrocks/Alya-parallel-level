@@ -1,0 +1,11 @@
+$-------------------------------------------------------------------
+DATA
+  FORMAT:                   gid
+  MARK_ELEMENTS:            type
+  ELIMINATE_BOUNDARY_NODES: yes
+  MULTIPLE_FILE:            OFF
+  BOUNDARY:                 yes
+  SUBDOMAINS, ALL
+  END_SUBDOMAINS
+END_DATA
+$-------------------------------------------------------------------

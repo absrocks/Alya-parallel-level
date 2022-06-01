@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "indenDrop_expl-node.sld.set",
+            "method": "power",
+            "tolerance": 8
+        },
+        {
+            "cols": [
+                0,
+                1,
+                6,
+                7,
+                8,
+                9
+            ],
+            "file": "indenDrop_expl.sld.cvg",
+            "method": "absolute",
+            "tolerance": 1e-26
+        }
+    ],
+    "description": "This test validates the use of gravity loads, initial velocities and the calculation of the energies using the Explicit scheme. The model consists of a body-weight drop (indenter) at a defined height with an initial velocity. The aim of the problem is that the indenter reaches an energy of 35J at the origin of the global coordinate system. The same test is evaluated in this AlyaTS but in Implicit Dynamic.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "indenDrop_expl",
+    "postprocess": "alya2pos"
+}

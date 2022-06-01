@@ -1,0 +1,34 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "taylor_green_2d-PRESS-00000100.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "taylor_green_2d-VELOC-00000100.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        }
+		  
+    ],
+    "description": "Taylor green vortex in 2D. We check periodicity with multiple periodic nodes",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "taylor_green_2d",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

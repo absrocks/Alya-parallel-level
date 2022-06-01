@@ -1,0 +1,15 @@
+
+este programa se usa asi:
+
+conta 
+
+y va a leer un archivo "create-contact.input" que tiene esta forma:
+
+nombre-del-problema
+27663   npoin
+160073  nelem
+1822    nboun
+3       ndime
+1       nmateri
+
+

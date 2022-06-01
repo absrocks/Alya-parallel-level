@@ -1,0 +1,71 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  INCLUDE ./MESH08T_11/Mesh08t_11_SIZES.alya
+  FIELDS:                  2
+    FIELD = 1, DIMENSIONS=2, NODES
+    FIELD = 2, DIMENSIONS=1, NODES
+  END_FIELDS
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  SCALE:                     XSCALE=1e-1, YSCALE=1e-1, ZSCALE=1.0
+  TRANS:                     XTRANS=-1.0, YTRANS=0.0,  ZTRANS=0.0 
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    300
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+
+  INCLUDE ./MESH08T_11/Mesh08t_11_TYPES.alya
+  INCLUDE ./MESH08T_11/Mesh08t_11_ELEMENTS.alya
+  INCLUDE ./MESH08T_11/Mesh08t_11_COORDINATES.alya
+  INCLUDE ./MESH08T_11/Mesh08t_11_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$      INCLUDE  ../Mesh08t_11_CHARACTERISTICS.alya
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$
+ BOUNDARIES
+  $INCLUDE ../Mesh08t_11_ON_BOUNDARIES.alya
+ END_BOUNDARIES
+$
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./MESH08T_11/Mesh08t_11_ON_BOUNDARIES.alya
+  $
+  $
+  ON_NODES
+     6  13
+  END_ON_NODES
+  $
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------
+FIELDS
+  FIELD: 1
+    INCLUDE ./FIELDST/VELOC_FROM_QUAD04.dat  
+  END_FIELD
+  FIELD: 2
+    INCLUDE ./FIELDST/TEMPE_FROM_QUAD04.dat
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------
+

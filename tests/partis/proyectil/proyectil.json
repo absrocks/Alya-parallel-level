@@ -1,0 +1,37 @@
+{
+    "authors": [
+        "beatriz.eguzkitza@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "proyectil.pts.res",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        }
+    ],
+    "description": "This test resolves the trajectory of a projectile.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/pgiFormat2Standard.sh [NAME].pts.res; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/pgiFormat2Standard.sh [NAME].pts.res; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "proyectil",
+    "postprocess": "alya2pos"
+}

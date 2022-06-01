@@ -1,0 +1,107 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi.chm.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi.chm.wit-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi.chm.wit-col10.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi.chm.wit-col12.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi.chm.wit-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-CON01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-CON03-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-ENTHA-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e2"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-SCO04-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-TEMPE-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e0"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-TEMPE-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e0"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-AVOH-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "heat_loss_opp_diff_2d_flame_no_nsi-YKOH-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+
+    ],
+    "description": "Laminar opposing diffusion flame in 2D domain without flow solver with heat loss to a slip plate in the middle.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 4 10 12 13; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 4 10 12 13; echo | [POST] [NAME]"
+            },
+            "mpi": 6,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 4 10 12 13; echo | [POST] [NAME]"
+            },
+            "mpi": 6,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "temper",
+        "chemic"
+    ],
+    "name": "heat_loss_opp_diff_2d_flame_no_nsi",
+    "postprocess": "mpio2txt",
+	"timeout": "00:02:00"
+}

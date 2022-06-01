@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "daniel.mira@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "plepp04.ensi.TTRAC-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "plepp04.ensi.REACT-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "plepp04.nsi.wit",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "plepp04.tem.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "test coupling libple",
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 1 [ALYA] vortex2D --name NEUMA [SEP] [NP] 1 [ALYA] --name DIRIC"
+            },
+            "mpi": 2,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "ple_four"
+    ],
+    "modules": [
+        "alefor",
+        "temper",
+        "nastin"
+    ],
+    "name": "plepp04",
+    "postprocess": "alya2pos"
+}

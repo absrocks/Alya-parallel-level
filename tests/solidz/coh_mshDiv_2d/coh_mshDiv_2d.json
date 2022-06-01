@@ -1,0 +1,52 @@
+{
+    "authors":[
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coh_mshDiv_2d.ensi.ORIEN-000001",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_2d.ensi.BOCOD-000001",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_2d.ensi.ELNOR-000001",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_2d.ensi.AXIS1-000001",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_2d.ensi.AXIS2-000001",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_2d.ensi.BOSET-000001",
+            "method":"absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Test to check the use of mesh multiplication for interface elements in 2-d",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules":[
+        "solidz"
+    ],
+    "name": "coh_mshDiv_2d",
+    "postprocess": "alya2pos"
+}

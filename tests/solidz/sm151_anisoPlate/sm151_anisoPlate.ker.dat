@@ -1,0 +1,23 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+    EXTENDED_GRAPH = OFF
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_ORIGINAL_MESH
+$  POSTPROCESS MATER
+$  POSTPROCESS SUBDO
+$  POSTPROCESS OPENM
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

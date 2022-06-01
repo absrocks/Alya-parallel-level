@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "materials_from_boundaries.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Check parallel generation of materials from boundaries, in parallel",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "materials_from_boundaries",
+    "postprocess": "alya2pos"
+}

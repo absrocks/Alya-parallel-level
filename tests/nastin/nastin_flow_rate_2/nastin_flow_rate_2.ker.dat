@@ -1,0 +1,21 @@
+ $------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=0.01
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=1
+    ROTATION:  Y, ANGLE=30
+  END_MESH 
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+  NO_MESH
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

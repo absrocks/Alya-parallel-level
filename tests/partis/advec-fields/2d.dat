@@ -1,0 +1,39 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   fluidda
+  RUN_TYPE:               Preliminary, FREQUENCY=1000
+END_RUN_DATA 
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed $from_critical
+  TIME_INTERVAL=          0.0, 1
+  TIME_STEP_SIZE=         1E-02
+  NUMBER_OF_STEPS=        10000000
+  NASTIN_MODULE:          Off
+  END_NASTIN_MODULE
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  END_PARALL_SERVICE   PARALL_SERVICE:         On
+         PARTITION_TYPE:       FACES
+         $
+         $enable the following lines to use prepartitioning
+         $FILE_HIERARCHY:       ON
+         $FILE_OPEN_CLOSE:      Yes
+         $VIRTUAL_FILE:         On, MAXIMUM_MEMORY=0.5
+         $
+         $enable to prepartition
+         $TASK:                 ONLY_PREPROCESS, BINARY, SUBDOMAIN=3407
+         $
+         $enable to read the partitions
+         $TASK:                 READ_PREPROCESS, BINARY 
+         $
+         OPENMP
+          COLORING: MINCO
+         END_OPENMP
+	 OUTPUT_FILE:          Off
+	 POSTPROCESS:          MASTER
+  END_PARALL_SERVICE
+$  HDFPOS_SERVICE:         On
+$  END_HDFPOS_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

@@ -1,0 +1,53 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "indenDrop_rk4-node.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-7
+        },
+        {
+            "file": "indenDrop_rk4-element.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "cols": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ],
+            "file": "indenDrop_rk4.sld.cvg",
+            "method": "absolute",
+            "tolerance": 1e-7
+        }
+    ],
+    "description": "This test is the same as indenDrop_xxx but assumes the part as a Rigid body. The equations of motion are solved using a Runge-Kutta scheme.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "indenDrop_rk4",
+    "postprocess": "alya2pos"
+}

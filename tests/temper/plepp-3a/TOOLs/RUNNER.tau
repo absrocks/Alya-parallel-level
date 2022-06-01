@@ -1,0 +1,42 @@
+
+#BSUB -n 288  
+#BSUB -R"span[ptile=16]"
+#BSUB -o out.txt  
+#BSUB -e err.txt 
+#BSUB -J TAU_F256xS32   
+#BSUB -W 00:15  
+# #BSUB -q bsc_case  
+
+
+export TAU_PATH=/home/bsc21/bsc21704/z2016/REPOSITORY/TAU/TAU2251/EXEC2/x86_64
+export TAU_MAKEFILE=$TAU_PATH/lib/Makefile.tau-icpc-mpi-pdt
+export PATH=$PATH:$TAU_PATH/bin
+#
+export TAU_TRACE=1 
+#
+#export TAU_CALLPATH=1
+#export TAU_CALLPATH_DEPTH=10 
+#
+export TAU_SUMMARY=1  
+export TAU_SYNCHRONIZE_CLOCKS=1 
+export TAU_COMPENSATE=1 
+#export TAU_TRACK_MESSAGE=1 # To enable MPI message statistics
+ 
+
+ALYA_PATH=/home/bsc21/bsc21704/z2016/REPOSITORY/ALYAs/ALYA_2016/Executables/plepp03
+ALYA_PATH=/home/bsc21/bsc21704/z2016/REPOSITORY/ALYAs/ALYA_2016/Executables/tau_PLEPP03
+
+
+ALYAi=3
+ALYAj=3 
+
+time mpirun \
+-np $ALYAi  \
+ $ALYA_PATH/Alya.x vortex2D --name NEUMA  \
+ : \
+-np $ALYAj \
+ $ALYA_PATH/Alya.x Interior01 --name DIRIC
+
+# ALYA_PATH=/home/bsc21/bsc21704/z2016/REPOSITORY/ALYAs/ALYA_2016/Executables/plepp03
+
+

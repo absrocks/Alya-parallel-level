@@ -1,0 +1,35 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=0.001
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=1
+  END_MESH
+  ELSEST 
+    STRATEGY: BIN
+    NUMBER:   100,33
+    DATAF: LINKED_LIST
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INFLOW, DIMENSION=2
+       -cos(2.0*pi(1.0)*x)*sin(2.0*pi(1.0)*y) * cos(5.0*t) 
+        sin(2.0*pi(1.0)*x)*cos(2.0*pi(1.0)*y) * cos(5.0*t)  
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1e6
+  WITNESS_POINTS, NUMBER=1
+     0.8 0.8
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

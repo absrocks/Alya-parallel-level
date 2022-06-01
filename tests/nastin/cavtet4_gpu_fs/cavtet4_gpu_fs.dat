@@ -1,0 +1,22 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavtet4
+  RUN_TYPE:               No_restart
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1e6
+  TIME_STEP_SIZE=         4.0e-3
+  NUMBER_OF_STEPS=        10
+  MAXIMUM_NUMBER_GLOBAL=  1
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+ 
+ 

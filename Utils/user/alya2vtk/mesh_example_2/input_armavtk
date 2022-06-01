@@ -1,0 +1,5 @@
+nodes_file Big01_COORDINATES.alya
+elements_file Big01_ELEMENTS.alya
+boundaries_file Big01_BOUNDARIES.alya
+codes_file Big01_ON_BOUNDARIES.alya
+output_file Big01.vtk

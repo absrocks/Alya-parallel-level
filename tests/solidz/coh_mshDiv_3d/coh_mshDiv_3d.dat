@@ -1,0 +1,40 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  coh_mshDiv_3d
+  CODE=                  1
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, PRESCRIBED
+  TIME_INTERVAL:         0.0, 1.0
+  TIME_STEP_SIZE=        0.1
+  NUMBER_OF_STEPS=       0
+  $---------------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    OUTPUT_FILE:         OFF
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING
+      METHOD:            FIELD= 2
+      EXECUTION_MODE:    PARALLEL
+    END_PARTITIONING
+    OPENMP
+      ELEMENT_CHUNK=     100
+      COLORING:          MIN_COLOR
+    END_OPENMP
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:                  ON
+  GEOMETRY:              OFF
+  RESTART:               OFF
+  POSTPROCESS:           ON
+  RESTART:               OFF
+  MERGE:                 OFF
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------

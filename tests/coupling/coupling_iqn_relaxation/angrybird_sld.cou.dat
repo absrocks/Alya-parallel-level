@@ -1,0 +1,68 @@
+$------------------------------------------------------------
+$------------------------------------------------------------
+$ Input file for configuration of Alya coupling
+$------------------------------------------------------------
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 2            $ How many couplings exist
+
+$------------------------------------------------------------
+   COUPLING=1
+      TARGET, MODULE:    SOLIDZ
+      SOURCE, MODULE:    NASTIN
+      TARGET, CODE:      2     
+      SOURCE, CODE:      1   
+
+
+     WHERE_TYPE:        CODE, NUMBER=4  
+
+     WHAT=              RESIDUAL
+
+      VARIABLE=          MOMENTUM
+
+    RELAXATION=        1.0
+
+      TYPE:              BOUNDARY_INTERPOLATION
+
+      SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY:   1
+      RECEIVE_ASSEMBLE:  BEGZON BEFORE, FREQUENCY:   1
+  END_COUPLING
+$------------------------------------------------------------
+$------------------------------------------------------------
+   COUPLING=2
+    TARGET, MODULE:    ALEFOR
+    SOURCE, MODULE:    SOLIDZ
+    TARGET, CODE:      1
+    SOURCE, CODE:      2
+    WHERE_TYPE:        CODE, NUMBER=5     
+    WHAT=              UNKNOWN
+   VARIABLE=          ALEFOR
+    TYPE:             BOUNDARY
+
+
+   RELAXATION:        0.01
+   SCHEME:            IQNLS, RANK_UPDATE: 5, HISTORY= 5, FILTERING = 0.00001
+   TEMPORAL_PREDIC:   ZEROTH
+
+    SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY:   1
+   RECEIVE_ASSEMBLE:  ENDZON BEFORE, FREQUENCY:   1
+  END_COUPLING
+
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  $
+  $ You can have different blocks to couple different sections of Alya.
+  $
+  BLOCK, NUMBER=1
+    COUPLINGS=  1,2
+    ITERATIONS= 50
+    TOLERANCE= 1.0e-5
+  END_BLOCK
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+$------------------------------------------------------------
+

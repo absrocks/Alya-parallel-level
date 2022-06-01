@@ -1,0 +1,32 @@
+$------------------------------------------------------------
+RUN_DATA                                                     
+  ALYA          2DHills_Test
+  CUSTOMER      CFDW2
+  RUN_TYPE:     nocontin , PRELIMINARY, FREQUENCY=25        
+$  RUN_TYPE:     contin   , PRELIMINARY, FREQUENCY=25         
+  TIMING        On                                           
+END_RUN_DATA                                                 
+$------------------------------------------------------------
+PROBLEM_DATA                                                 
+  TIME_COUPLING         global, prescribed 
+  TIME_INTERVAL         0.0, 1d8                             
+  TIME_STEP_SIZE        10.0                                  
+  NUMBER_OF_STEPS       15
+  NASTIN_MODULE          On                                  
+  END_NASTIN_MODULE                                          
+  TURBUL_MODULE          On
+  END_TURBUL_MODULE      
+  TEMPER_MODULE          On
+  END_TEMPER_MODULE                                    
+  DODEME_SERVICE         Off
+  END_DODEME_SERVICE                                         
+  PARALL_SERVICE         On                                  
+    OUTPUT_FILE          OFF                                 
+    POSTPROCESS          MASTER                              
+    PARTITION_TYPE       FACES
+    OPENMP
+      COLORING: MINCO
+    END_OPENMP                             
+  END_PARALL_SERVICE                                         
+END_PROBLEM_DATA                                             
+$------------------------------------------------------------

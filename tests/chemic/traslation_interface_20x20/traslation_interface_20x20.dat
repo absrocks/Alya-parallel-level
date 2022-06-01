@@ -1,0 +1,30 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   TRANSLATION
+  RUN_TYPE:               NOCONTINUA,PRELIMINARY,FREQUENCY=100
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          GLOBAL, PRESCRIBED
+  NUMBER_OF_STEPS:        10
+  TIME_STEP:              5.0e-2
+
+  CHEMIC_PROBLEM:         ON
+  END_CHEMIC
+
+  PARALL_SERVICE:         ON
+    METHOD:               METIS
+    PARTITION_TYPE:       FACES
+    OPENMP:
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY:    ON $ ON / OFF/  Expor
+  RESTART:     ON
+  POSTPROCESS: ON
+  SYNCHRONOUS: ON
+END_MPI_IO

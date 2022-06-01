@@ -1,0 +1,60 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  NODAL_POINTS=       14864
+  ELEMENTS=           29152
+  SPACE_DIMENSIONS=   2
+  BOUNDARIES=         576
+  TYPES_OF_ELEMS=     TRI03
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  SCALE:                     XSCALE=7.0e-3, YSCALE=7.0e-3, ZSCALE=1.0  
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    100
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+
+  INCLUDE ./Placzek01_TYPES.alya
+  INCLUDE ./Placzek01_ELEMENTS.alya
+  INCLUDE ./Placzek01_COORDINATES.alya
+  INCLUDE ./Placzek01_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$      INCLUDE  ../Placzek01_CHARACTERISTICS.alya
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$
+ BOUNDARIES
+  $INCLUDE ../Placzek01_ON_BOUNDARIES.alya
+ END_BOUNDARIES
+$
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./Placzek01_ON_BOUNDARIES.alya
+$
+$  VALUES, FUNCTION = -1, DIMENSION = -3 
+$    INCLUDE FIELD_3D.alya
+$  END_VALUES
+$
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------
+

@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "temper-solver-dcg-direct-TEMPERATURE.tem.cso-col1.out",
+            "method": "diff"
+        }
+    ],
+    "description": "Convergence of the Deflated CG solving a Laplacian with temper. More groups than nodes, so convergence should be obtained at initial guess.",
+    "enabled": true,
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-TEMPERATURE.tem.cso 1; echo | [POST] [NAME]"
+            },
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "temper-solver-dcg-direct",
+    "postprocess": "mpio2txt",
+    "timeout": "00:03:00"
+}

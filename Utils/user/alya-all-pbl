@@ -1,0 +1,89 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "reset"                             >  ./gnuplot.tmp
+
+echo "set multiplot "                    >> ./gnuplot.tmp
+echo "set size noratio 3.0,3.0 "         >> ./gnuplot.tmp
+#----------------------------------------------------------------
+# Top-Left
+#----------------------------------------------------------------
+
+echo "set size   0.3,0.3 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.3 "               >> ./gnuplot.tmp   
+echo "set xlabel 'Step'"                 >> ./gnuplot.tmp
+echo "set ylabel 'L2 Residual'"          >> ./gnuplot.tmp
+echo "set log y"                         >> ./gnuplot.tmp
+echo "plot '$1.nsi.cvg' u 16 t 'MOMENTUM' w l, '$1.nsi.cvg' u 17 t 'CONTINUITY' w l" >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Top-Right
+#----------------------------------------------------------------
+
+echo "set size   0.3,0.3 "                 >> ./gnuplot.tmp
+echo "set origin 0.3,0.3"                  >> ./gnuplot.tmp
+echo "set xlabel 'Step'"                   >> ./gnuplot.tmp
+echo "set ylabel 'L2 Residual'"            >> ./gnuplot.tmp
+echo "set log y "                          >> ./gnuplot.tmp   
+echo "plot '$1.tur.cvg' u 5 t 'k' w l, '$1.tur.cvg' u 6 t 'Epsilon' w l "   >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# top-Righter
+#----------------------------------------------------------------
+echo "#unset log y "                      >> ./gnuplot.tmp  
+echo "set size   0.3,0.3 "               >> ./gnuplot.tmp
+echo "set origin 0.6,0.3"                >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Max tke and eps'"        >> ./gnuplot.tmp 
+echo "plot '$1.tur.cvg' u 1:9 t 'Max tke' w l, '$1.tur.cvg' u 1:11 t 'Max eps' w l" >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Left
+#----------------------------------------------------------------
+echo "set log y "                      >> ./gnuplot.tmp  
+echo "set size   0.3,0.3 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.0"                >> ./gnuplot.tmp
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Velocity'"             >> ./gnuplot.tmp
+echo "set y2label 'Pressure'"            >> ./gnuplot.tmp
+echo "set y2tics  "                      >> ./gnuplot.tmp
+echo "set ytics nomirror"                >> ./gnuplot.tmp
+echo "unset log y "                      >> ./gnuplot.tmp   
+echo "plot '$1.nsi.cvg' u 10 t 'max vel' w l axes x1y1, '$1.nsi.cvg' u 0:(abs(column(26))) t 'abs(min) pres' w l axes x1y2, '$1.nsi.cvg' u 0:(abs(column(27))) t 'abs(max) pres' w l axes x2y2 "   >> ./gnuplot.tmp
+echo "unset y2label "                    >> ./gnuplot.tmp
+#  echo "unset y2tics  "                 >> ./gnuplot.tmp   
+
+#----------------------------------------------------------------
+# Bot-Right
+#----------------------------------------------------------------
+
+echo "set size   0.3,0.3 "               >> ./gnuplot.tmp
+echo "set origin 0.3,0.0"                >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Solver iterations'"    >> ./gnuplot.tmp
+echo "set y2tics  "                      >> ./gnuplot.tmp
+echo "unset log y"                       >> ./gnuplot.tmp   
+echo "plot '$1-MOMENTUM.nsi.sol' u 1 t 'MOMENTUM' w l, '$1-CONTINUITY.nsi.sol' u 1 t 'CONTINUITY' w l ,'$1-1ST_TURBUL_VARIABLE.tur.sol' u 1 t 'K' w l, '$1-2ND_TURBUL_VARIABLE.tur.sol' u 1 t 'EPSILON' w l" >> ./gnuplot.tmp
+
+
+
+#----------------------------------------------------------------
+# Bot-Righter
+#----------------------------------------------------------------
+echo "set logscale y"                    >> ./gnuplot.tmp
+echo "set size   0.3,0.3 "               >> ./gnuplot.tmp
+echo "set origin 0.6,0.0"                >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Min  tke and eps'"        >> ./gnuplot.tmp
+echo "plot '$1.tur.cvg' u 8 t 'Min tke' w l, '$1.tur.cvg' u 10 t 'Min eps' w l" >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Replot
+#----------------------------------------------------------------
+
+echo "unset multiplot "                  >> ./gnuplot.tmp
+echo "load './gnuplot.tmp'"              >  ./gnuplot2.tmp
+echo "pause 2"                           >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"             >> ./gnuplot2.tmp
+gnuplot ./gnuplot2.tmp 

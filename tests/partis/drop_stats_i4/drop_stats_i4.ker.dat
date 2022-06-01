@@ -1,0 +1,63 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:       CONSTANT, VALUE= 1.127 
+      VISCOSITY:     CONSTANT, VALUE= 1.918e-5
+      SPECIFIC_HEAT: CONSTANT, VALUE= 1.023e3
+      CONDUCTIVITY:  CONSTANT, VALUE= 0.02662 
+    END_MATERIAL
+  END_PROPERTIES
+
+  VELOCITY:      NULL
+  TEMPERATURE:   SPACE_TIME_FUNCTION=T_CONSTANT
+  CONCENTRATION: SPACE_TIME_FUNCTION=C_CONSTANT
+
+  RANDOM_UNIQUE_SEED: OFF
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+
+  MESH
+    DIVISION=0
+  END_MESH
+  SPACE_&_TIME_FUNCTIONS
+    $
+    $  Dry air enthalpies:
+    $  298.0  K: -112.326666559
+    $  373.15 K: 76094.4256129
+    $  673.15 K: 389117.295797 
+    $ 
+    FUNCTION=T_CONSTANT
+      -112.326666559
+    END_FUNCTON
+
+    FUNCTION=C_CONSTANT, DIMENSION=4
+       0.0 
+       0.0 
+       0.0
+       0.0  
+    END_FUNCTON
+
+  END_SPACE_&_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=10
+  WITNESS, GEOMETRY NUMBER=6
+     SPHERE RADIUS=0.001, X=0.01,Y=0.0,Z=0.0
+     SPHERE RADIUS=0.001, X=0.02,Y=0.0,Z=0.0
+     BOX    XMIN=-1,YMIN=-1,ZMIN=-1,XMAX=1,YMAX=1,ZMAX=1
+     BOX    XMIN=0.009,YMIN=-0.001,ZMIN=-0.001,XMAX=0.011,YMAX=0.001,ZMAX=0.001
+     RING   X=0.01,Y=0.0,Z=0.0,NX=1.0,NY=0.0,NZ=0.0,R=0.001,DR=0.002,DN=0.002
+     RING   X=0.01,Y=0.0,Z=0.0,NX=1.0,NY=2.0,NZ=0.0,R=0.001,DR=0.001,DN=0.001
+  END_WITNESS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

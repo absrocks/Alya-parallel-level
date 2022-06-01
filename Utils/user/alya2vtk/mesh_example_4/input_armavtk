@@ -1,0 +1,6 @@
+nodes_file coord.dom.geo
+elements_file eleme.dom.geo
+boundaries_file bounda.dom.geo
+codes_file set.dat
+vectors_file vectors.dat
+output_file mesh.vtk

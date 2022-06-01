@@ -1,0 +1,72 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           16
+  ELEMENTS=                9
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=             12
+  FIELDS = 2
+    FIELD = 1, DIMENSIONS=2, NODES
+    FIELD = 2, DIMENSIONS=1, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                             100, Sequential_frontal  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  node_functions.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  node_functions.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  node_functions.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD: 1
+1 3.0 4.0
+2 3.0 4.0 
+3 3.0 4.0 
+4 3.0 4.0 
+5 3.0 4.0 
+6 3.0 4.0 
+7 3.0 4.0
+8 3.0 4.0 
+9 3.0 4.0
+10 3.0 4.0
+11 3.0 4.0
+12 3.0 4.0
+13 3.0 4.0
+14 3.0 4.0
+15 3.0 4.0
+16 3.0 4.0
+  END_FIELD
+  FIELD: 2
+1 5.0
+2 5.0 
+3 5.0 
+4 5.0 
+5 5.0 
+6 5.0 
+7 5.0
+8 5.0 
+9 5.0
+10 5.0
+11 5.0
+12 5.0
+13 5.0
+14 5.0
+15 5.0
+16 5.0
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

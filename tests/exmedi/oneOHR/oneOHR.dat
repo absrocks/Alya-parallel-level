@@ -1,0 +1,28 @@
+$------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   one
+  LIVE_INFO:               screen
+  POSTPROCESS:             domain
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TIME_COUPLING:          GLOBAL
+  TIME_INTERVAL:          0.000, 0.70
+  TIME_STEP_SIZE:         1E-6
+  NUMBER_OF_STEPS_(MAX):  10000
+$-------------------------------------------------------------------
+  EXMEDI:                 ON
+  END_EXMEDI
+  SOLIDZ_PROBLEM=         OFF
+  END_SOLIDZ   
+  PARALL_SERVICE:         OFF
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION:            FACES
+  END_PARALL
+$-------------------------------------------------------------------
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+
+	

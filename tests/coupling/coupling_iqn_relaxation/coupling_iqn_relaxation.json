@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "angrybird_fld-PRESS-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1e-04"
+        },
+        {
+            "file": "angrybird_sld-DISPL-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1e-04"
+        }
+    ],
+    "description": "Test of interface quasi-Newton relaxation with all its parameters ",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] angrybird_sld [SEP] [NP] 3 [ALYA] angrybird_fld",
+                "postprocess": "[POST] -m angrybird_sld; [POST] -m angrybird_fld"
+            },
+            "mpi": 6,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "solidz",
+        "alefor"
+    ],
+    "name": "coupling_iqn_relaxation",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

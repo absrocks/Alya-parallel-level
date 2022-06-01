@@ -1,0 +1,35 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "pzt-actuator_repart-node.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-17
+        }
+    ],
+    "description": "This tests checks the repartitioning of solidz module and it is equal to the pzt-actuator test.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 5,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "pzt-actuator_repart",
+    "postprocess": "alya2pos"
+}

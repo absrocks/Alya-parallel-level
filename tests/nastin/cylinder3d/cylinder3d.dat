@@ -1,0 +1,17 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   Cylinder
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          local, Galerkin
+  TIME_INTERVAL=          0.0, 1e6
+  NUMBER_OF_STEPS=        5 $ steady state is obtained after 22 time steps
+  MAXIMUM_NUMBER_GLOBAL=  1 
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

@@ -1,0 +1,21 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 1
+  ABSOLUTE_TOLERANCE=-2.0
+  COUPLING=1
+     TARGET, MODULE:   TEMPER
+     SOURCE, MODULE:   TEMPER
+     TARGET, CODE:     2
+     SOURCE, CODE:     1
+     WHERE_TYPE:       WHOLE_MESH
+     VARIABLE=         TEMPERATURE
+     WHAT=             UNKNOWN
+     TYPE:             GLOBAL
+     SEND_AND_COMPUTE: ENDSTE BEFORE, FREQUENCY= 1 
+     RECEIVE_ASSEMBLE: INIUNK BEFORE, FREQUENCY= 1
+  END_COUPLING  
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+END_NUMERICAL_TREATMENT 
+$------------------------------------------------------------

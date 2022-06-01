@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "beatriz.eguzkitza@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "swirl-partis.pts.res",
+            "method": "power",
+            "tolerance": 1e-14
+        }
+    ],
+    "description": "A single particle is transported in a swirl. If particle is small enough, it must follow a closed circle.\r \r Adaptive time step on. Characteristic length = Element\r \r It is a 2D domain with a single square element.",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/pgiFormat2Standard.sh [NAME].pts.res; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "swirl-partis",
+    "postprocess": "alya2pos"
+}

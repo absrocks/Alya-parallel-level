@@ -1,0 +1,38 @@
+{
+    "authors": [
+        "beatriz.eguzkitza@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "advec-fields.pts.res",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        }
+    ],
+    "description": "This test read advec from a field in a chanel.",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/pgiFormat2Standard.sh advec-fields.pts.res; echo | [POST] advec-fields"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/pgiFormat2Standard.sh advec-fields.pts.res; echo | [POST] advec-fields"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "advec-json",
+    "postprocess": "alya2pos"
+}

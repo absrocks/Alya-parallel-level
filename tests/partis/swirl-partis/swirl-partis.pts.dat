@@ -1,0 +1,42 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   TYPE= 1
+$      MODEL=           VELOCITY
+      MODEL=           FORCE
+      FORCES:          DRAG
+      DENSITY=         1.0
+      DIAMETER=        1.0E-09
+      BROWNIAN_MOTION: Off
+  END_TYPE
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+$   ORDER=-3
+$   NEWMARK: GAMMA=1.0, BETA=0.5625    $ Very diffusive
+   ADAPTIVE_TIME_STEP: ERROR  , CHARACTERISTIC_LENGTH: DIAME
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  LEVEL     = 1
+  FREQUENCY = 1
+$  OUTPUT DEPOSITION
+$  POSTPROCESS DEPOSITION, STEPS=1
+$  POSTPROCESS PARTICLES,  STEPS=1
+$  POSTPROCESS NNEWTON,    STEPS=1e6
+$  POSTPROCESS NTIME,      STEPS=1e6
+$  POSTPROCESS TIME_STEPS, STEPS=1e6
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+$  INJE1:           SQUARE, PARAM=0.3,0.3,0.0,0.7,0.7,0.0 10
+  INJE1:           SQUARE, PARAM=0.3,0.3,0.0,0.3,0.3,0.0 1
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e6
+  CODES, BOUNDARIES
+     1  0
+     2  1
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "temper-solver-cg-TEMPERATURE.tem.cso-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Convergence of the CG solving a Laplacian with temper.",
+    "enabled": true,
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-TEMPERATURE.tem.cso 2; echo | [POST] [NAME]"
+            },
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "temper-solver-cg",
+    "postprocess": "mpio2txt",
+    "timeout": "00:03:00"
+}

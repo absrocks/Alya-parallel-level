@@ -1,0 +1,88 @@
+
+
+
+        --------------------------
+     |- PARTIS OUTPUT FOR PROBLEM: fluidda
+        --------------------------
+
+
+
+        ------------------------
+*    |- BOUNDARY CODES USED FOR PARTICLES
+        ------------------------
+
+
+
+
+        -----------------
+     |- SUMMARY OF SOLVER
+        -----------------
+
+
+        SLIP_WALL:
+        ----------
+
+        SOLVER:               DEFLATED CONJUGATE GRADIENT
+        # SOLVES=                    2
+        NUMBER OF GROUPS=          108
+        PRECONDITIONER:       DIAGONAL diag(A)
+        MIN. # ITERATIONS=           0
+        MAX. # ITERATIONS=          39
+        AVE. # ITERATIONS=          19
+        TOT. # ITERATIONS=          39
+        TOT. CPU TIME=         2.680E-03
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME (AVERAGE):  2.680E-03
+          Initial operations:             3.603E-04 ( 13.44 % )
+          Preconditioning:                3.815E-05 (  1.42 % )
+          Coarse system solver (DCG):     2.713E-04 ( 10.12 % )
+          Orthogonalization (GMRES):      0.000E+00 (  0.00 % )
+          Others:                         2.010E-03 ( 75.01 % )
+
+
+        |- SpMV:                           47
+
+           Computation:             
+              Average CPU time:      7.317E-04 
+              Maximum CPU time:      7.317E-04 
+              Load balance:               1.00
+           Point-to-point comm.:    
+              Average CPU time:      0.000E+00 
+              Maximum CPU time:      0.000E+00 
+              Load balance:               0.00
+           Overall:                 
+              Average CPU time:      7.317E-04 
+              Maximum CPU time:      7.317E-04 
+              Load balance:               1.00
+                                    
+           Flops:                   
+              Average:               9.482E+02 Mflop/s
+              Maximum:               9.482E+02 Mflop/s
+
+
+        |- Dot product:                    86
+
+           Computation:             
+              Average CPU time:      1.049E-04 
+              Maximum CPU time:      1.049E-04 
+              Load balance:               1.00
+           Point-to-point comm.:    
+              Average CPU time:      6.914E-06 
+              Maximum CPU time:      6.914E-06 
+              Load balance:               1.00
+           Overall:                 
+              Average CPU time:      1.118E-04 
+              Maximum CPU time:      1.118E-04 
+              Load balance:               1.00
+                                    
+           Flops:                   
+              Average:               1.324E+00 Gflop/s
+              Maximum:               1.324E+00 Gflop/s
+
+
+
+     |- END OF PARTIS RUN
+

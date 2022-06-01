@@ -1,0 +1,43 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          121
+  ELEMENTS=              100
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      12
+  BOUNDARIES=             40
+  PERIODIC=               11
+END_DIMENSIONS 
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                           20, SEQUENTIAL_FRONTAL $ PARALLEL_FRONTAL, SFC, PARTITION, FIELD
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  nastin-periodic_fs.geo.dat
+  LMAST
+19   20
+39   10
+56   11
+71   12
+84   13
+95   14
+104  15
+111  16
+116  17
+119  18
+121  21 
+  END_LMAST
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  nastin-periodic_fs.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  nastin-periodic_fs.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

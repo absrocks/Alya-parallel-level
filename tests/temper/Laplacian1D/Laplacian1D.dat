@@ -1,0 +1,20 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   Laplacian1D
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1.0e6
+  TIME_STEP_SIZE=         0.1
+  NUMBER_OF_STEPS=        1
+  TEMPER_MODULE:          On
+  END_TEMPER_MODULE
+  PARALL_SERVICE:         On
+    OUTPUT_FILE:          Yes
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE  
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+ 

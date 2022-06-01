@@ -1,0 +1,33 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "partis-alefor.pts.res",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "This example tests the particle migration when mesh is deformed by alefor.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/pgiFormat2Standard.sh [NAME].pts.res; echo | [POST] [NAME]"
+            },
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    
+    "modules": [
+        "partis",
+	"alefor"
+    ],
+    "name": "partis-alefor",
+    "postprocess": "alya2pos"
+}
+ 

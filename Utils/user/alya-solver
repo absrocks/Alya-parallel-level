@@ -1,0 +1,14 @@
+#
+# This script plots solver convergence
+#
+echo "Press Ctrl-c to quit"
+echo "set xlabel 'Iteration number'"     > /tmp/gnuplot.tmp
+echo "set ylabel 'Residual'"            >> /tmp/gnuplot.tmp
+echo "set log y"                        >> /tmp/gnuplot.tmp
+echo "plot '$1.cso' u 2 t 'SOLVER' w l" >> /tmp/gnuplot.tmp
+echo "! rm -rf gnuplot.tmp"             >> /tmp/gnuplot.tmp
+echo "load '/tmp/gnuplot2.tmp'"         >> /tmp/gnuplot.tmp
+echo "replot"                            > /tmp/gnuplot2.tmp
+echo "pause 2"                          >> /tmp/gnuplot2.tmp
+echo "load '/tmp/gnuplot2.tmp'"         >> /tmp/gnuplot2.tmp
+gnuplot /tmp/gnuplot.tmp 

@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exatemtet10.post.res",
+            "method": "absolute",
+            "tolerance": "1e-10"
+        }
+    ],
+    "description": "Only tests the temper module equations, it tests the finite element errors with a 1E-8 tolerance",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "exatemtet10",
+    "postprocess": "alya2pos"
+}

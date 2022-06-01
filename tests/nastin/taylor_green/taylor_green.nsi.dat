@@ -1,0 +1,90 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On  
+  CONVECTIVE_TERM:          EMAC
+  VISCOUS_TERM:             FULL
+  $ GRAVITY:                  Off 
+  TURBULENCE_COUPLING:      LESMO, VRMAN , PARAM=0.1
+  $ REGIM:                    LOWMACH, TEMPERATURE = 300.0
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+PROPERTIES
+$   THERMODYN_PRESSURE = 759.9375
+$   GAS_CONSTANT = 287.0
+END_PROPERTIES  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  TIME_STEP:                EIGENVALUE
+  ELEMENT_LENGTH:           Minimum
+  STABILIZATION:            OFF
+  TIME_INTEGRATION:         RUNGE, ORDER:3
+  SAFETY_FACTOR:            1.5
+  STEADY_STATE_TOLER:       1e-15
+  ASSEMBLY:                 GPU2
+  VECTOR:                   ON
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  GRAD_DIV = ON
+
+  ALGORITHM:FRACTIONAL_STEP
+      GAMMA = 0.0
+      ROTAT = 0.0
+  END_ALGORITHM
+
+  MOMENTUM
+     ALGEBRAIC_SOLVER     
+        $SOLVER:                CG, COARSE: SPARSE
+        SOLVER:                EXPLICIT, APPROXIMATE, ORDER=0
+        $SOLVER:                EXPLICIT, LUMPED
+        CONVERGENCE:           ITERA=300, TOLER=1.0e-14, ADAPTIVE, RATIO=1.0e-3
+        PRECONDITIONER:        DIAGONAL
+     END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+
+  CONTINUITY 
+     ALGEBRAIC_SOLVER
+         SOLVER:               DEFLATED_CG, COARSE: SPARSE
+         CONVERGENCE:          ITERA=1000, TOLER=1.0e-8
+         PRECONDITIONER:       DIAGONAL
+     END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+
+  CONSISTENT_MASS
+    ALGEBRAIC_SOLVER
+	   SOLVER: CG, KRYLOV=30
+		CONVERGENCE: ITERA=1000, TOLER=1.0E-10
+		PRECONDITIONER: DIAGONAL
+    END_ALGEBRAIC_SOLVER
+  END_CONSISTENT_MASS
+  
+  DIRICHLET:ALGORITHM
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  =  0
+  POSTPROCESS VELOCITY
+  POSTPROCESS PRESSURE
+  POSTPROCESS LAMB2
+  POSTPROCESS QCRIT
+  POSTPROCESS VORTI
+
+  WITNESS_POINTS
+  END_WITNESS_POINTS
+
+  BOUNDARY_SET
+        FORCE                                     $ obtain pressure & velocity forces acting on boundaries
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS , NON_CONSTANT
+  PARAMETERS
+    INITIAL, VALUE=1
+  END_PARAMETERS 
+  CODES, NODES
+  END_CODES  
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

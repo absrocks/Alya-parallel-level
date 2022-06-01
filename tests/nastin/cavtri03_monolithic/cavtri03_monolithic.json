@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_monolithic.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "cavity flow using a monolithic scheme",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_monolithic",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,43 @@
+PHYSICAL_PROBLEM
+
+   MAXIMUM = 1000000
+ TYPE= 1
+        MODEL=           FORCE
+        FORCES:          GRAVITY  $DRAG
+        DENSITY=         1.0
+        DIAMETER=        1.0E-05
+        $$BROWNIAN_MOTION: FORCE
+  END_TYPE
+  END_PHYSICAL_PROBLEM
+$----------------------------------- --------------------------------
+NUMERICAL_TREATMENT
+$      ADAPTIVE_TIME_STEP: ERROR, CHARACTERISTIC_LENGTH: TAU
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+$   NEWMARK: GAMMA=1.0, BETA=0.5625    $ Very diffusive
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  LEVEL     = 1
+  FREQUENCY = 1
+  OUTPUT DEPOSITION
+$  POSTPROCESS DEPOSITION, STEPS=1
+$  POSTPROCESS PARTICLES,  STEPS=1
+$POSTPROCESS RESIDENCE, STEPS=1
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  $xc,yc,zc,rad,nx,ny,nz num_particles
+  INJECTOR=1
+      $$$GEOMETRY:   SQUARE, PARAM=0,5,0,4,5,0,21
+      GEOMETRY:   POINT, PARAM=0.2, 1.3, 0.0, 1
+      TYPE=     1
+      VELOCITY: CONSTANT, PARAM= 1.0  0.0  0.0
+      PERIOD_TIME = 1.0e6
+  END_INJECTOR
+  INITIAL_TIME=    0.0
+  CODES,BOUNDARIES
+   2 1
+  END_CODES
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

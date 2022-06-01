@@ -1,0 +1,33 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+       DENSITY:       Constant, VALUE=1.0
+       VISCOSITY:     Constant, VALUE=0.01
+       CONDUCTIVITY:  Constant, VALUE=1.0
+       SPECIFIC_HEAT: Constant, VALUE=1.0
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY:    Bin
+    NUMBER_BINS= 20,20,20
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INITIAL_VELOCITY, DIMENSION=2
+      1.0/0.02*y*(1.0-y)
+      0.0
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+  MESH
+    MULTIPLICATION= 0
+  END_MESH
+END_NUMERICAL_TREATMENT  
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  On_last_mesh
+   STEPS = -1
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------

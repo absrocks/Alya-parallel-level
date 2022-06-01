@@ -1,0 +1,64 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "reset"                               >  ./gnuplot.tmp
+
+echo "set multiplot"                       >> ./gnuplot.tmp
+echo "set size noratio 1.0,2.0"            >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Top-Left
+#----------------------------------------------------------------
+
+echo "set format y '10^{%2T}'"             >> ./gnuplot.tmp
+echo "set origin 0.00,0.50"                >> ./gnuplot.tmp
+echo "set size   0.50,0.50"                >> ./gnuplot.tmp
+echo "set xlabel 'Cumulative Iterations'"  >> ./gnuplot.tmp
+echo "set ylabel 'Residual'"               >> ./gnuplot.tmp
+echo "set log y"                           >> ./gnuplot.tmp
+echo "plot '$1.sld.cvg' u 7 t 'DISPL' w l, '$1.sld.cvg' u 8 t 'FORCE' w l, '$1.sld.cvg' u 9 t 'ENERG' w l " >> ./gnuplot.tmp
+echo "unset format"                        >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Top-Right
+#----------------------------------------------------------------
+
+echo "set origin 0.50,0.50"                >> ./gnuplot.tmp
+echo "set size   0.50,0.50"                >> ./gnuplot.tmp
+echo "set xlabel 'Cumulative iterations'"  >> ./gnuplot.tmp
+echo "set ylabel 'Inner iterations'"       >> ./gnuplot.tmp
+echo "unset log y "                        >> ./gnuplot.tmp
+echo "plot '$1.sld.cvg' u 3 t 'N-R' w l "  >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Left
+#----------------------------------------------------------------
+
+echo "set origin 0.00,0.00"                >> ./gnuplot.tmp
+echo "set size   0.50,0.50"                >> ./gnuplot.tmp
+echo "set xlabel 'Cumulative iterations'"  >> ./gnuplot.tmp
+echo "set ylabel 'Min and Max'"            >> ./gnuplot.tmp
+echo "unset log y "                        >> ./gnuplot.tmp
+echo "plot '$1.sld.cvg' u 10 t 'MAX. DISPL.' w l " >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Right
+#----------------------------------------------------------------
+
+echo "set origin 0.50,0.00"                >> ./gnuplot.tmp
+echo "set size   0.50,0.50"                >> ./gnuplot.tmp
+echo "set xlabel 'Cumulative iterations'"  >> ./gnuplot.tmp
+echo "set ylabel 'Solver iterations'"      >> ./gnuplot.tmp
+echo "unset log y "                        >> ./gnuplot.tmp
+echo "plot '$1.sld.cvg' u 4 t 'SOLVER' w l" >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Replot
+#----------------------------------------------------------------
+
+echo "unset multiplot "                    >> ./gnuplot.tmp
+echo "load './gnuplot.tmp'"                >  ./gnuplot2.tmp
+echo "pause 2"                             >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"               >> ./gnuplot2.tmp
+gnuplot ./gnuplot2.tmp

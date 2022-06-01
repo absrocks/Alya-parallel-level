@@ -1,0 +1,38 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+NODAL_POINTS    4410
+ELEMENTS        20664
+BOUNDARIES      3616
+  SPACE_DIMENSIONS=             3
+  NODES=                        4
+  MATERIALS         = 1
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE:                            XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                      XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  BOUNDARY_ELEMENT:                 OFF
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+   INCLUDE  beam_prstr.geo.dat
+END_GEOMETRY
+$------------------------------------------------------------
+
+SETS
+    include beam_prstr.defsets
+END_SETS
+$------------------------------------------------------------
+
+BOUNDARY_CONDITIONS
+    include beam_prstr.fix.bou
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+FIELDS
+END_FIELDS
+
+ 

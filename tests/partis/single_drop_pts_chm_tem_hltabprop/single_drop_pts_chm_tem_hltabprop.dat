@@ -1,0 +1,39 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   drop_heat
+  LIVE_INFORMATION:       Screen
+  MEMORY                  ON, VARIABLES
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 3000
+  TIME_STEP_SIZE=         0.005
+  NUMBER_OF_STEPS=        20
+
+  MAXIMUM_NUMBER_GLOBAL:  1
+  BLOCK_ITERATION: 1
+     1 PARTIS, CHEMIC, TEMPER
+  END_BLOCK_ITERATION
+
+
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  CHEMIC_MODULE:          On
+  END_CHEMIC_MODULE
+  TEMPER_MODULE:          On
+  END_TEMPER_MODULE
+
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: OFF
+  RESTART: ON
+  POSTPROCESS: ON 
+  SYNCHRONOUS: ON
+END_MPI_IO
+$-------------------------------------------------------------------
+

@@ -1,0 +1,36 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           54
+  ELEMENTS=               123
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10
+  BOUNDARIES=             24
+  SKEW_SYSTEMS=            0
+  SLAVES=                  0
+  PERIODIC_NODES=          0
+  SUBDOMAINS=              1
+  ZONES=              1
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Close  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 Off
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                           4, SEQUENTIAL_FRONTAL $ PARALLEL_FRONTAL, SFC, PARTITION, FIELD
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE dodeme.geo.dat 
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+ $ INCLUDE  dodeme.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_NODES
+   INCLUDE  dodeme.fix.dat
+  END_ON_NODES 
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

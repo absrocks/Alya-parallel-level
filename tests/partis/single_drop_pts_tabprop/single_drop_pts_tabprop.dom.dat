@@ -1,0 +1,43 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  mesh/mesh3d.dims.dat
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=       HEX08
+  FIELDS = 1
+	FIELD: 1, DIMEN= 4, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN  
+  DOMAIN_INTEGRATION_POINTS: 0 
+  GROUPS:                    10, SEQUENTIAL
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE mesh/mesh3d.geo.dat
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  ELEMENTS
+    INCLUDE mesh/mesh3d.set.elm
+  END_ELEMENTS
+  BOUNDARIES
+    INCLUDE  mesh/mesh3d.fix.bou 
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE mesh/mesh3d.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE mesh/CONCE.alya
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

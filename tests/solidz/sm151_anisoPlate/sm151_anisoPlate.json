@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "sm151_anisoPlate-node.sld.set",
+            "method": "power",
+            "tolerance": 8
+        }
+    ],
+    "description": "This test validates the Sant Venant - Kirchoff orthotropic material model (num 151). The test consist of an anisotropic layered plate 90/45 under tensile loading. The cross section is not balanced neither symmetric, so the response includes shear-extension and bend-twist couplings. The example verifies simple laminated composite plate analysis by using material coordinate system.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "sm151_anisoPlate",
+    "postprocess": "alya2pos"
+}

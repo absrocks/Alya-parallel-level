@@ -1,0 +1,33 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  COUPLING
+    NASTIN ALEFOR
+  END_COUPLING
+  PROPERTIES
+    MATERIAL=1
+      DENSITY:   CONSTANT, VALUE = 1.e0
+      VISCOSITY: CONSTANT, VALUE = 0.03e0
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_ORIGINAL_MESH
+  STEPS = 5
+$   POSTPROCESS SUBDO
+$   POSTPROCESS CODNO
+$   POSTPROCESS CODBO
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

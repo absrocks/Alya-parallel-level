@@ -1,0 +1,19 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    MULTIPLICATION
+      LEVEL= 0
+      PARALLELIZATION: GLOBAL
+    END_MULTIPLICATION
+  END_MESH
+  LOCALIZE: BILATERAL
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS= 2
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

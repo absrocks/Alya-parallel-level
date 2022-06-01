@@ -1,0 +1,68 @@
+$-------------------------------------------------------------------
+$
+$ block
+$ Details:   Block in 3-d
+$            Dimensions: W=; h=
+$            Block is assumed as a deformable body
+$ Units:     -
+$
+$ Reference: Results are compared against Code Aster
+$
+$    DENSITY          =  1.0E+6   $1E+3
+$ CONSTITUTIVE_MODEL NEOHOOKE BELYTSCHKO  \
+$  8.11E+7 3.38E+6
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL         =  1
+    DENSITY          =  1E+5
+    CONSTITUTIVE_MODEL: ISOLIN \
+      68.96E+7 0.32
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      EXPLICIT
+  TIME_INTEGRATION:    NEWMARK, CDIFF
+  NO_STEADY_STATE
+  SAFETY_FACTOR:       0.85
+  MASS_SCALING=        1.0
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT STEP = 0
+$  POSTPROCESS SIGMA
+  POSTPROCESS DISPL
+  NODE_SET
+    COORX
+    COORY
+    COORZ
+    DISPX
+    DISPY
+    DISPZ
+    SIGXX
+    SIGYY
+    SIGZZ
+    SIGYZ
+    SIGXZ
+    SIGXY
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+       2 111 0.0 0.0 0.0 0
+   2 & 3 111 0.0 0.0 0.0 0
+  END_CODES
+  PARAMETERS
+    CONTACT_PDN
+      UNILATERAL
+      BOUNDARY:   1
+      PROJECTION: Y
+    END_CONTACT
+  END_PARAMETERS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

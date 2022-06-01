@@ -1,0 +1,41 @@
+# ALYA Node set results
+#
+# HEADER
+# ISET , Column :   1
+# INTRA , Column :   2
+# NUMVARIABLES :       2
+# NUMSETS      :       1
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+       306  0.00000000E+000
+# Iterations  =       1      1      1
+# Time        =  0.50000000E-004
+       306  0.00000000E+000
+# Iterations  =       2      1      1
+# Time        =  0.10000000E-003
+       306  0.66207038E-001
+# Iterations  =       3      1      1
+# Time        =  0.15000000E-003
+       306  0.34473382E+000
+# Iterations  =       4      1      1
+# Time        =  0.20000000E-003
+       306  0.73879688E+000
+# Iterations  =       5      1      1
+# Time        =  0.25000000E-003
+       306  0.11842397E+001
+# Iterations  =       6      1      1
+# Time        =  0.30000000E-003
+       306  0.16092416E+001
+# Iterations  =       7      1      1
+# Time        =  0.35000000E-003
+       306  0.19782279E+001
+# Iterations  =       8      1      1
+# Time        =  0.40000000E-003
+       306  0.22811661E+001
+# Iterations  =       9      1      1
+# Time        =  0.45000000E-003
+       306  0.25197064E+001
+# Iterations  =      10      1      1
+# Time        =  0.50000000E-003
+       306  0.27005582E+001

@@ -1,0 +1,42 @@
+{
+    "authors": [
+        "cbutakoff@elem.bio"
+    ],
+    "comparisons": [
+        {
+            "file": "ohara_ode.m4c1.csv",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "ohara_ode.m4c2.csv",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "ohara_ode.m4c3.csv",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Check that ohara initial conditions are calculated correctly",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_4mat_ohara_init",
+    "postprocess": "alya2pos",
+    "timeout": "00:02:00"
+}

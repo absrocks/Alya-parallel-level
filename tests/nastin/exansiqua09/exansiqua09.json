@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exansiqua09.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "Only tests the nastin module equations, it tests the finite element errors with a 1E-8 tolerance",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "exansiqua09",
+    "postprocess": "alya2pos"
+}

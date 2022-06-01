@@ -1,0 +1,95 @@
+$-------------------------------------------------------------------
+$
+$ cshel_ortho1
+$ Author:     Gerard Guillamet and Eva Casoni
+$
+$ Details:    Validation test continuum shells using elastic
+$             orthotropic material model.
+$             The model consist of an anisotropic layered
+$             plate (45/-45) under pressure loading
+$             (Spilker et al. 1976).
+$ Dimensions: a = b = 20in; h = 0.02in
+$ BCs:        Fully clamped all sides; q = 1.0psi
+$ Mesh:       6 x 6 x 2 element (one element per layer)
+$
+$ Notes:      Displacement is measured at node 85 which is
+$             located at the center bottom of the plate.
+$             N-R iterations are set to 1 in order to force
+$             a linear iteration for a single step.
+$
+$ Units:      USCS (US Units)
+$
+$ Results:    Transverse displacement at plate center:
+$               Solution         57.80
+$               Spilker et al.   58.58
+$               Quoc and Tan     58.92
+$               Alya (EAS=On)    60.19
+$               Alya (EAS=Off)   58.61
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, BULK  ,,,,,,
+    MATERIAL =         1
+    CONSTITUTIVE_MODEL: CSHEL, ORTHO \
+      40.0e+6 1.0e+6 1.0e+6 0.25 0.25 0.25 0.5e+6 0.5e+6 0.5e+6
+    $ ,,,,,,   MAT CSYS  ,,,,,,
+    CSYS_MATERIAL:    FIELD = 1, 2, 3
+    CSHEL_PARAMETERS: EAS, ANS_SHEAR, ANS_TRAPEZOIDAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+$     SOLVER:            DIRECT
+     SOLVER:           GMRES, KRYLOV=300
+     CONVERGENCE:      ITERA=600, TOLER=1.0E-10
+     PRECONDITIONER:   DIAGONAL, RIGHT
+     RESIDUAL:         RHS
+     OUTPUT:           CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL             TOTAL
+  SAFETY_FACTOR        1.0
+  CONVERGENCE_TOLER    1.0e-5
+  MAXIMUM_ITERATION    1
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP = 0
+$  POSTPROCESS FIXNO
+  POSTPROCESS DISPL
+  NODE_SET
+    DISPZ
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+        2 111 0.0 0.0 0.0   $ Side-face fixed
+    1 & 2 111 0.0 0.0 0.0   $ Bot-edge fixed
+    2 & 3 111 0.0 0.0 0.0   $ Top-edge fixed
+  END_CODES
+  $-----------------
+  CODES, BOUNDARIES
+        3   3 0.0 0.0 0.0, MODULE_FUNCTION= 1 $ Top-face pressure
+  END_CODES
+  $-----------------
+  FUNCTION
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE
+      SHAPE_DEFINITION
+        2
+        0.0  0.0
+        1.0 -1.0
+      END_SHAPEDEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

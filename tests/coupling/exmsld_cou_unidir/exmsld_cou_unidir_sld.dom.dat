@@ -1,0 +1,59 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+  NODAL_POINTS    1331
+  ELEMENTS        6000
+  BOUNDARIES      1200
+  SPACE_DIMENSIONS=             3
+  NODES=                        4
+
+
+  MATERIALS         = 1
+
+  FIELDS            = 1
+    FIELD = 1, DIMENSIONS=3, NODES
+  END_FIELDS
+
+  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE:                            XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                      XTRAN=-0.2 YTRAN=-0.2 ZTRAN=-0.2
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  BOUNDARY_ELEMENT:                 OFF
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+
+   INCLUDE  exmsld_cou_unidir_sld.geo.dat
+
+      MATERIALS, NUMBER=2, DEFAULT=1
+      END_MATERIALS
+
+
+END_GEOMETRY
+$------------------------------------------------------------
+
+SETS
+    include exmsld_cou_unidir_sld.defsets
+END_SETS
+$------------------------------------------------------------
+
+BOUNDARY_CONDITIONS
+    include exmsld_cou_unidir_sld.fix.bou
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+
+FIELDS
+  
+   FIELD = 1
+    INCLUDE  exmsld_cou_unidir_sld.fiber.dat
+  END_FIELD
+        
+
+END_FIELDS
+ 

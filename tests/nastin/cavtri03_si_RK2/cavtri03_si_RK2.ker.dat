@@ -1,0 +1,28 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=0.001
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=0
+    MASS: CONSISTENT
+    ELEMENTAL_TO_CSR: ON
+  END_MESH
+  ELSEST 
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF:    TYPE 
+  END_ELSEST
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1e6
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

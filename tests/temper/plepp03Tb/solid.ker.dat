@@ -1,0 +1,60 @@
+$$Create by J. MIGUEL ZAVALA-AKE
+$-------------------------------------------------------xxx.ker.dat
+$
+$ termal time:
+$       t = L2/alpha
+$   alpha = k/rho/Cp [alpha] = m2/s
+$
+$   Helium II: k = 1e6 >
+$   Copper:    k = 4e2 <
+$
+PHYSICAL_PROBLEM
+   PROPERTIES
+     MATERIAL: 1
+$
+ $DENSITY       = CONSTANT,  PARAMETER  =    1.177
+ $SPECIFIC_HEAT = CONSTANT,  PARAMETER  = 1000.6     $ J/kg/K
+ $CONDUCTIVITY  = CONSTANT,  PARAMETER  =    0.026   $ W/M/K
+  DENSITY:        CONSTANT,  PARAMETERS = 7836.0000  $ [rho] = kg/m3
+  CONDUCTIVITY:   CONSTANT,  PARAMETERS =   49.900   $   [k] = W/m/C == W/m/K
+  SPECIFIC_HEAT:  CONSTANT,  PARAMETERS =  443.0000  $  [Cp] = J/Kg/C
+$
+$  CONDUCTIVITY:   CONSTANT,  PARAMETERS =  1.0
+$  DENSITY:        CONSTANT,  PARAMETERS =  1.0
+$  SPECIFIC_HEAT:  CONSTANT,  PARAMETERS =  1.0
+$
+     END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+
+NUMERICAL_TREATMENT
+$
+  MESH
+   $DIVISION=1
+  END_MESH
+$
+  ELSEST: ON
+    STRATEGY: BIN
+    NUMBER: 50,50,50
+  END_ELSEST
+$  
+  $TIME_FUNCTIONS
+  $  FUNCTION=XXX, DISCRETE, NUMBER= 4
+  $    INCLUDE inflow-velocity.txt
+  $  END_FUNCTION
+  $END_TIME_FUNCTIONS
+$
+END_NUMERICAL_TREATMENT
+
+OUTPUT_&_POST_PROCESS
+  ON_LASTMESH
+   STEPS = 100  
+$
+$ WITNESS_POINTS, NUMBER=4
+$ END_WITNESS_POINTS
+$
+ $POSTPROCESS CODNO
+$
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+

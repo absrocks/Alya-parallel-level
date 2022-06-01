@@ -1,0 +1,40 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  ./mesh/cavity3d.dims.dat
+  SPACE_DIMENSIONS=            3
+  TYPES_OF_ELEMENTS=       TET20
+  $PERIODIC_NODES=          48081
+  FIELDS = 0
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  29
+  $PERIODICITY:               MATRIX
+  GROUPS =                   720, SEQUENTIAL_FRONTAL
+  BOUNDARY_ELEMENT:          OFF
+  EXTRAPOLATE:               ON
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./mesh/cavity3d.geo.dat
+  $PERIODIC
+  $  INCLUDE ./mesh/cavity3d.per
+  $END_PERIODIC
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE ./mesh/cavity3d.fix.bou
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE ./mesh/cavity3d.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS          
+$-------------------------------------------------------------
+FIELDS
+END_FIELDS

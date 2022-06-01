@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "case3-extnor.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Compute exterior normals in ugly elements",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "case3-extnor",
+    "postprocess": "alya2pos"
+}

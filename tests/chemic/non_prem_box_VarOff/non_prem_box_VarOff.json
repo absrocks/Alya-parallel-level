@@ -1,0 +1,201 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "non_prem_box_VarOff-boundary.chm.set-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff-boundary.chm.set-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff-boundary.chm.set-col5.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff-boundary.chm.set-col6.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff-boundary.chm.set-col7.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col5.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col10.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col11.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col12.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col16.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.chm.wit-col17.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff.tem.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff.tem.wit-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_VarOff-CON01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-CON02-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-CON03-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-CON04-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-SCO01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-SCO02-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-SCO03-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-SCO04-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-TEMPE-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "non_prem_box_VarOff-XYR-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-XYS-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_VarOff-XZR-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff-XZS-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "non_prem_box_VarOff-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Non premixed flame in square shaped duct with slip walls, both variance models on.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.chm.set 3 4 5 6 7; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 3 4 5 10 11 12 13 14 16 17; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].tem.wit 2 3; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.chm.set 3 4 5 6 7; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 3 4 5 10 11 12 13 14 16 17; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].tem.wit 2 3; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.chm.set 3 4 5 6 7; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 3 4 5 10 11 12 13 14 16 17; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].tem.wit 2 3; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "non_prem_box_VarOff",
+    "postprocess": "mpio2txt"
+}

@@ -1,0 +1,79 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          skews
+  VISCOUS_TERM:             LAPLACIAN
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+PROPERTIES
+END_PROPERTIES  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+
+  ELEMENT_LENGTH:           Minimum
+  STABILIZATION:            Off
+  TIME_INTEGRATION:         RUNGE, ORDER:2
+  SAFETY_FACTOR:            0.1
+  STEADY_STATE_TOLER:       1e-5
+
+  VECTOR:                   ON
+
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+
+  TIMES:                    EIGEN
+  GRAD_DIV=                 ON
+  ALGORITHM:                FRACTIONAL_STEP
+    GAMMA = 0.0
+    ROTAT = 0.0
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER     
+      SOLVER:                EXPLICIT, LUMPED
+    END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+  CONTINUITY 
+    ALGEBRAIC_SOLVER
+       SOLVER:               DEFLATED_CG , COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-10 , ADAPTIVE, RATIO=1.0e-5
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL , NEVER_CHANGE
+    END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+
+  DIRICHLET:ALGORITHM
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS VELOCITY,     STEPS = 1
+  POSTPROCESS PRESSURE,     STEPS = 1
+  POSTPROCESS VEPAV,        STEPS = 1
+END_OUTPUT_&_POST_PROCESS   
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    VARIATION:    NON_CONSTANT
+  END_PARAMETERS
+  CODES, NODES
+        1  11  1.000000  0.000000
+    4 & 1  11  1.000000  0.000000
+    2 & 1  11  1.000000  0.000000
+    3 & 4  01  0.000000  0.000000
+        4  01  0.000000  0.000000
+        2  01  0.000000  0.000000
+        3  00  0.000000  0.000000
+    3 & 2  01  0.000000  0.000000
+  END_CODES
+  CODES, BOUNDARIES
+    2  3
+  END_CODES
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

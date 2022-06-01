@@ -1,0 +1,127 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "levelSet_box.chm.wit-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "levelSet_box.chm.wit-col5.out",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "levelSet_box.chm.wit-col10.out",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "levelSet_box.chm.wit-col11.out",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "levelSet_box.chm.wit-col12.out",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "levelSet_box-CON03-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "levelSet_box-CON04-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "levelSet_box-DENSI-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "levelSet_box-SIGM0-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "levelSet_box-SIGMA-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "levelSet_box-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "levelSet_box-AVD32-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        },
+        {
+            "file": "levelSet_box-AVDEN-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "levelSet_box-AVL-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "levelSet_box-AVL2-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "levelSet_box-AVS-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "levelSet_box-AVS0-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        }
+    ],
+    "description": "Level set in square shaped duct with slip walls.",
+    "enabled": true,
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 4 5 10 11 12; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 4 5 10 11 12; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 4 5 10 11 12; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "chemic"
+    ],
+    "name": "levelSet_box",
+    "postprocess": "mpio2txt",
+    "timeout": "00:03:00"
+}

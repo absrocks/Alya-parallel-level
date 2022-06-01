@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "lam_mshDiv-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test uses the ALYA mesh divisor in an anistropic layered plate. The model consist of a square plate with a 45/-45 lay-up under pressure loading (Spilker et al. 1976). This example verifies the use of the mesh divisor when using different material coordinate systems.\r ",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "lam_mshDiv",
+    "postprocess": "alya2pos"
+}

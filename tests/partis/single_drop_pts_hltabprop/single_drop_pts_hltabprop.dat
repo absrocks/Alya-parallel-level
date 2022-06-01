@@ -1,0 +1,19 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   drop_heat
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 3000
+  TIME_STEP_SIZE=         0.01
+  NUMBER_OF_STEPS=        30
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

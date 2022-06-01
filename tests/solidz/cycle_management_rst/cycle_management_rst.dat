@@ -1,0 +1,31 @@
+$------------------------------------------------------------------
+RUN_DATA
+  ALYA:                    vaso
+  LIVE_INFO:               screen
+  POSTPROCESS:             domain
+ $ RUN_TYPE:               CONTINUE
+ $ RUN_TYPE:               PRELIMINARY, FREQUENCY=1
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TIME_COUPLING:          GLOBAL
+  TIME_INTERVAL:          0.000, 0.15
+  TIME_STEP_SIZE:         0.025
+  NUMBER_OF_STEPS_(MAX):  6
+
+  SOLIDZ_PROBLEM=         ON
+  END_SOLIDZ
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION:            FACES
+    PARTITIONING:
+        METHOD:           METIS
+    END_PARTITIONING
+  END_PARALL
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

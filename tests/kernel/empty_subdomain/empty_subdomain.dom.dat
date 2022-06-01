@@ -1,0 +1,36 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          127
+  ELEMENTS=              162
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10, 12
+  BOUNDARIES=             40
+  FIELDS= 1
+    FIELD: 1, DIMENSION=1, ELEMENT
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  empty_subdomain.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  empty_subdomain.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  empty_subdomain.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  INCLUDE empty_subdomain.fie.dat
+END_FIELDS
+$-------------------------------------------------------------

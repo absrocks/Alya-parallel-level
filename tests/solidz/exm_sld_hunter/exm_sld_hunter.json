@@ -1,0 +1,46 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "adria.quintanas@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exm_sld_hunter-node.exm.set",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "exm_sld_hunter-node.sld.set",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        }
+    ],
+    "description": "Tests the three-coupled model Ohara-Rudy-Hunter-OH",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 100 [NAME] ; [RUN] [NP] [MPI] [ALYA] --read-rst --time-steps 200 [NAME]"
+            },
+
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 100 [NAME] ; [RUN] [NP] [MPI] [ALYA] --read-rst --time-steps 200 [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi",
+        "solidz"
+    ],
+    "name": "exm_sld_hunter",
+    "postprocess": "alya2pos",
+    "timeout": "00:05:00"
+}

@@ -1,0 +1,39 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   DIF_HEA_CAV_VEC
+  RUN_TYPE:               NOCONTI, PRELIMINARY, FREQUENCY=200
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          GLOBAL,  PRESCRIBED 
+  TIME_STEP:              3e-1
+  NUMBER_OF_STEPS:        200 
+
+  MAXIMUM_NUMBER_GLOBAL:  1
+  BLOCK_ITERATION: 1
+     1 TEMPER, NASTIN
+  END_BLOCK_ITERATION
+
+  NASTIN_MODULE:          ON
+  END_NASTIN_MODULE
+
+  TEMPER_MODULE:          ON
+  END_TEMPER_MODULE
+
+  PARALL_SERVICE:         ON
+    METHOD:               METIS
+    PARTITION_TYPE:       FACES
+    OPENMP:
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: OFF $ ON / OFF/  Expor
+  RESTART: ON
+  POSTPROCESS: ON
+  SYNCHRONOUS: ON
+END_MPI_IO
+$-------------------------------------------------------------------

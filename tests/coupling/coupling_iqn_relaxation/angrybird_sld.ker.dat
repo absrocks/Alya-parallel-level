@@ -1,0 +1,38 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+  COUPLING
+$$$    SOLIDZ EXMEDI
+  END_COUPLING
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY:    Bin
+    MAXIMUM=     10
+  END_ELSEST
+  MESH
+  EXTENDED_GRAPH=ON
+$    DIVISION = 0
+  END_MESH
+END_NUMERICAL_TREATMENT  
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  On_last_mesh
+
+  STEPS = 1
+
+  WITNESS_POINTS, NUMBER=1
+    0.0 -0.501
+  END_WITNESS_POINTS
+
+
+  POSTPROCESS CODNO
+  POSTPROCESS LMATE
+  POSTPROCESS LBSET
+  POSTPROCESS SUBDO
+
+
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------

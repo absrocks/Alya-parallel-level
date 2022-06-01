@@ -1,0 +1,67 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+  include ./AlyaFix/Test_Suite.nsi.inc
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELEMENT_LENGTH           appro
+  STABILIZATION            ASGS nogrv
+  TIME_INTEGRATION         Trapezoidal, ORDER: 1, EULER=10
+  STEADY_STATE_TOLER       1d-10
+  NORM_OF_CONVERGENCE      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT     1
+  CONVERGENCE_TOLERANCE    1d-10    ! ortomin
+  ALGORITHM                SCHUR
+    SOLVER                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER         TAU
+    ELEMENT_LENGTH         minimum
+    TAU_STRATEGY           Codina
+    CORRECTION             open
+  END_ALGORITHM
+  SAFETY_FACTOR            1.0 expon 1.05  maxim 200.0 mingl 20.0 
+  MOMENTUM
+    ALGEBRAIC_SOLVER       GMRES, KRYLOV=80,ITERA=100, TOLER=1.0e-10, ADAPTIVE, RATIO=5e-4, CONVER
+    PRECONDITIONER         DIAGONAL                                                  
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER       CG, ITERA=600, TOLER=1.0e-8, ADAPTIVE, RATIO=1e-4, UNSYMME
+    PRECONDITIONER         DIAGONAL                                                   
+  END_CONTINUITY
+  DIRICHLET : MATRIX
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS VELOCITY      STEPS = 100
+  POSTPROCESS PRESSURE      STEPS = 100
+$  POSTPROCESS FIXNO         STEPS = 100
+$  POSTPROCESS FIXPR         STEPS = 100
+$  POSTPROCESS SCHUR         STEPS = 100
+  WITNESS_POINTS
+    VELOX
+    VELOY
+    VELOZ
+    PRESS
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES
+   -3      777  0.0 0.0 0.0 FIELD=6             $ entry
+   -4      000  0.0 0.0 0.0 FIELD=6             $ output
+    5      100  0.0 0.0 0.0 AXES:LOCAL  $ WALL
+    3 & 5  100  0.0 0.0 0.0 AXES:LOCAL  $ WALL entry
+    4 & 5  100  0.0 0.0 0.0 AXES:LOCAL  $ WALL output
+   -6      001  0.0 0.0 0.0 FIELD=6             $ top
+   -6 & 3  771  0.0 0.0 0.0 FIELD=6             $ top entry
+   -6 & 4  001  0.0 0.0 0.0 FIELD=6             $ top output
+  END_CODES
+  CODES, BOUNDARIES
+   5  3    ! wall boundary condition on bottom
+  END_CODES
+  PARAMETER
+     VARIATION: NON_CONSTANT
+     INITIAL VALUE_FUNCTION = 1 ! use field 1 for initial condition
+  END_PARAMETER
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

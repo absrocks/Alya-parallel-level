@@ -1,0 +1,6 @@
+$> 'Exterior', id:2, n_nodes:256, NEUMANN  
+$   2   0  314.159  
+
+$> 'Interior', id:3, n_nodes:256 
+    1   1  373.0
+

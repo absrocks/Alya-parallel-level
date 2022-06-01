@@ -1,0 +1,37 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   fluidda
+END_RUN_DATA 
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed 
+  TIME_INTERVAL=          0.0, 1
+  TIME_STEP_SIZE=         1E-02
+  NUMBER_OF_STEPS=        0
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+    OPENMP
+     COLORING: MINCO
+    END_OPENMP
+    OUTPUT_FILE:          Off
+    POSTPROCESS:          MASTER
+    PARTITIONING
+      METHOD:             SFC
+      EXECUTION:          PARALLEL
+    END_PARTITIONING
+$    TASK:                ONLY_PREPROCESS, SUBDOMAIN=3, BINARY
+$    TASK:                READ_PREPROCESS, SUBDOMAIN=3, BINARY
+$    FILE_HIERARCHY:      On
+$    VIRTUAL_FILE:        OFF
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:         on
+  GEOMETRY:     on
+  RESTART:      OFF 
+  POSTPPROCESS: on
+  SYNCHRO:      On
+  MERGE:        ON
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------

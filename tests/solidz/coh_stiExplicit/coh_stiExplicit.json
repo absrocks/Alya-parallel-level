@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coh_stiExplicit.sld.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test validates the use o cohesive elements (Turon et. al 2006) in an Explicit time integration scheme and the calculation of the stable time increment in the first time step. The model consist of one cohesive element between two HEX08 elements. The boundary conditions are imposed directly to the nodes of the cohesive element: the bottom nodes are fixed while the top nodes a controlled displacement is imposed loading the element in pure Mode II. The theoritical stable time increment in the first step must be 9.615144E-4.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "coh_stiExplicit",
+    "postprocess": "alya2pos"
+}

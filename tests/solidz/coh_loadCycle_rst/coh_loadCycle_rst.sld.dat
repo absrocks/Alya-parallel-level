@@ -1,0 +1,96 @@
+$-------------------------------------------------------------------
+$
+$ coh_loadCycle_rst_i4
+$ Author:  Gerard Guillamet and Adria Quintanas
+$ Details: This test validates the use of a restart for
+$          damage state variables of cohesive elements
+$          formulated by Turon et al. 2006.
+$          Alya compilation must be with 4 byte integer.
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, PEEK/AS4 ,,,,,,
+    MATERIAL           = 1
+    DENSITY            = 1.6E-9
+    CONSTITUTIVE_MODEL: ORTLIN \
+      122.7e+3 10.1e+3 10.1e+3 0.25 0.25 0.45 5.5e+3 5.5e+3 3.7e+3
+    $ ,,,,,, COHESIVE,,,,,,
+    MATERIAL           = 2
+    DENSITY            = 1.6E-9
+    COHESIVE_MODEL:     TURON \
+      0.969 1.719 80.0 1.0e+5 2.284 0.0
+    $ ,,,,,, Material CSYS ,,,,,,
+    CSYS_MATERIAL     FIELD = 1, 2, 3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK, DAMPED
+  ALGEBRAIC_SOLVER:
+    SOLVER:            GMRES, KRYLOV=100
+    CONVERGENCE:       ITERA=100, TOLER=1.0E-8
+    PRECONDITIONER:    DIAGONAL, RIGHT
+    RESIDUAL:          RHS
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  SAFETY_FACTOR=       1.0
+  CONVERGENCE_TOLER=   1.0e-8
+  MAXIMUM_ITERATION=   25
+  RESIDUAL:            DISPL
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP = 0
+$  POSTPROCESS DISPL
+$  POSTPROCESS FRXID
+$  POSTPROCESS DCOHE
+  NODE_SET
+    DISPZ
+    FRXIZ
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1  000  0.0 0.0 0.0 0
+    2  000  0.0 0.0 0.0 0
+    3  000  0.0 0.0 0.0 0
+    4  000  0.0 0.0 0.0 0
+    5  111  0.0 0.0 0.0 0
+    6  111  0.0 0.0 0.0 0
+    7  111  0.0 0.0 0.0 0
+    8  111  0.0 0.0 0.0 0
+    9  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   10  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   11  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   12  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   13  000  0.0 0.0 0.0 0
+   14  000  0.0 0.0 0.0 0
+   15  000  0.0 0.0 0.0 0
+   16  000  0.0 0.0 0.0 0
+  END_CODES
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE
+      SHAPE_DEFINITION
+        8
+        0.00 0.0 0.0  0.00
+        0.25 0.0 0.0  8.000E-04
+        0.50 0.0 0.0  1.251E-02
+        0.75 0.0 0.0  0.00
+        1.00 0.0 0.0  1.251E-02
+        1.25 0.0 0.0  2.423E-02
+        1.50 0.0 0.0  3.000E-02
+        1.75 0.0 0.0  3.000E-02
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

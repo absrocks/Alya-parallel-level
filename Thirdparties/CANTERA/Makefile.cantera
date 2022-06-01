@@ -1,0 +1,13 @@
+ROOT         :=$(shell pwd)
+
+wrappers:  
+	@$(MAKE) -C $(ROOT)/Wrappers/FORTRAN  static  ROOT_CANTERA=$(ROOT_CANTERA) -B   
+
+
+
+
+
+
+
+
+

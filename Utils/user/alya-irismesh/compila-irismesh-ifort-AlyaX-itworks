@@ -1,0 +1,12 @@
+rm -rf *.o *.mod ;\
+
+cp        ../alya-create-contact/alyafaces.f90 . ;\
+
+mpif90 -c alyafaces.f90 -I../../../Executables/unix/Objects_x
+
+export GLOBIGNORE="../../../Executables/unix/Objects_x/Alya.o"
+
+mpif90 -o iris2alya  iris2alya.f90 *.o  ../../../Executables/unix/Objects_x/*.o -I../../../Executables/unix/Objects_x  -L../../../Thirdparties/metis-4.0 -lmetis
+
+
+export GLOBIGNORE=""

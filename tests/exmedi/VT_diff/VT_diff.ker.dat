@@ -1,0 +1,23 @@
+$-------------------------------------------------------------
+  PHYSICAL_PROBLEM
+    PROPERTIES
+    END_PROPERTIES
+
+    COUPLING
+    END_COUPLING
+
+  END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------
+  NUMERICAL_TREATMENT 
+     MESH
+       DIVISION=0
+     END_MESH
+  END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------
+
+$-------------------------------------------------------------
+  OUTPUT_&_POST_PROCESS
+    ON_LAST_MESH
+
+  END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------

@@ -1,0 +1,53 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      4692
+  ELEMENTS          2250
+  SPACE_DIMENSIONS   3
+  TYPES_OF_ELEMENTS HEX08
+  BOUNDARIES         190
+  PERIODIC_NODES=    2346 
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  0
+  PERIODICITY:    MATRIX
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  GROUPS = 500
+  TYPES, ALL =HEX08
+  END_TYPES
+  INCLUDE ./Test_Suite.geo
+  INCLUDE ./Test_Suite.mat
+  PERIODIC
+    INCLUDE ./Test_Suite.per
+  END_PERIO
+ FIELD, NUMBER= 5
+   INCLUDE ./Test_Suite.zo.dat
+   INCLUDE ./Test_Suite.nsi.bcs.dat
+   INCLUDE ./Test_Suite.tur1.bcs.dat
+   INCLUDE ./Test_Suite.tur2.bcs.dat
+   INCLUDE ./Test_Suite.tem.bcs.dat
+  END_FIELD
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS, extrapolate
+  INCLUDE ./Test_Suite.fix
+  VALUES, FUNCTION=1, DIMENSION=3
+     INCLUDE ./AlyaFix/Test_Suite.nsi.ini
+  END_VALUES
+  VALUES, FUNCTION=2, DIMENSION=1
+     INCLUDE ./AlyaFix/Test_Suite.tur1.ini
+  END_VALUES
+  VALUES, FUNCTION=3, DIMENSION=1
+     INCLUDE ./AlyaFix/Test_Suite.tur2.ini
+  END_VALUES
+  VALUES, FUNCTION=4, DIMENSION=1
+     INCLUDE ./AlyaFix/Test_Suite.tem.ini
+  END_VALUES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

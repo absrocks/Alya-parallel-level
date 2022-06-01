@@ -1,0 +1,68 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  NODAL_POINTS=       69055
+  ELEMENTS=           136896
+  SPACE_DIMENSIONS=   2
+  BOUNDARIES=         1214
+  TYPES_OF_ELEMS=     TRI03
+  FIELDS:                  2
+    FIELD = 1, DIMENSIONS=2, NODES
+    FIELD = 2, DIMENSIONS=1, NODES
+  END_FIELDS
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    100
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+
+  INCLUDE ./Cerfacs02_TYPES.alya
+  INCLUDE ./Cerfacs02_ELEMENTS.alya
+  INCLUDE ./Cerfacs02_COORDINATES.alya
+  INCLUDE ./Cerfacs02_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$      INCLUDE  ../Cerfacs02_CHARACTERISTICS.alya
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$
+ BOUNDARIES
+  $INCLUDE ../Cerfacs02_ON_BOUNDARIES.alya
+ END_BOUNDARIES
+$
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./Cerfacs02_ON_BOUNDARIES.alya
+  $
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------
+FIELDS
+  FIELD: 1
+    INCLUDE ./VELOC_CPLNG04_01.dat
+  END_FIELD
+  FIELD: 2
+    INCLUDE ./TEMPE_CPLNG04_01.dat
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------
+

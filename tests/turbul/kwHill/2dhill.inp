@@ -1,0 +1,56 @@
+--------------------
+MESH
+--------------------
+  komega = yes
+ readtopo = no           ! read topo file
+! topofile = Puebla.2d.xyz ! topofile 
+ flat   = no    ! homogenous and periodic flat terrain simulation 
+ notopo = no   ! no topography, not homogeneous  
+ perio  = no   ! periodic inflow and outflow  
+ hele1 =  1.0 !  first element length
+ nz    =  20    ! # num of vertical elements
+ nx    =  25   ! # num of longitudinal elements
+ ny    =  1     ! # num of deep elements (periodic) 
+ LX    =  500.0 ! Domain
+ LY    =  200.0
+ ztop  =  600.0 
+--------------------
+PHYSICAL
+--------------------
+fcori = 0.0  ! 2*Omega*sin(latitud)
+vegeo = 10.00d0  ! velocity on the top
+rough = 0.028
+--------------------
+NUMERICAL
+--------------------
+dwall = 1.00 ! wall distance (if zero will be equal to hele1)
+--------------------
+THERMAL
+--------------------
+thermal = no
+teref   = 310.0  ! reference temperature 
+tewall  = 300.0    ! tem over wall
+gradbot = 0.005    ! temp gradient bottom
+gradtop = -0.001  ! temp gradient top
+zinfle  = 200.0     ! inflexion height coordinate (if 0, infle = ztop) 
+--------------------
+CANOPY
+---------------------
+canopy   =  no  ! Yes or no
+model    =  LOPES  ! SOGAC  , GREEN, SVENS, SANZ, LOPES (da Costa)
+cd       =  0.2   ! drag coefficient
+LAD      =  0.2   ! Leaf Area density 
+LAI      =  2.0   ! Leaf Area index (For table distribution)
+height   =  7.50 ! Canopy height 
+distribution = TABLE ! uniform, lalic, table (LAD distri)
+inican   = 144.0
+endcan   = 288.0
+--------------------
+POSTPROCESS 
+--------------------
+steps = 1200
+cutheight = 2.0 10.0 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+
+
+
+

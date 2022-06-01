@@ -1,0 +1,44 @@
+$-----------------------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 2
+  COUPLING=1
+     TARGET, MODULE:    SOLIDZ
+     SOURCE, MODULE:    NASTIN
+     TARGET, CODE:      1
+     SOURCE, CODE:      2
+     WHERE_TYPE:        CODE, NUMBER=24
+     WHAT=              RESIDUAL
+     VARIABLE=          MOMENTUM
+     RELAXATION=        0.2
+$     SCHEME:            AITKEN
+     TYPE:              BOUNDARY_INTERPOLATION
+     SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY= 1
+     RECEIVE_ASSEMBLE:  BEGZON BEFORE, FREQUENCY= 1
+  END_COUPLING
+  COUPLING=2
+     TARGET, MODULE:    ALEFOR
+     SOURCE, MODULE:    SOLIDZ
+     TARGET, CODE:      2
+     SOURCE, CODE:      1
+     WHERE_TYPE:        CODE, NUMBER=20
+     WHAT=              UNKNOWN
+     VARIABLE=          ALEFOR
+     TYPE:              BOUNDARY_INTERPOLATION
+     RELAXATION=        0.2
+$     SCHEME:            AITKEN
+     SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY= 1
+     RECEIVE_ASSEMBLE:  ENDZON BEFORE, FREQUENCY= 1
+  END_COUPLING
+
+END_PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+
+  BLOCK, NUMBER=1
+    COUPLINGS=  1, 2
+    ITERATIONS= 100
+    TOLERANCE= 1.0e-2
+  END_BLOCK
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------

@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "fibers_field.dat",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        }
+    ],
+    "description": "Tests streeter fibre field creation",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "streeter",
+    "postprocess": "alya2pos"
+}

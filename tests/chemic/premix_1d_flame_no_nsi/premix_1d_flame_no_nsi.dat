@@ -1,0 +1,40 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   1D_FLAME
+  LIVE_INFO:              Screen
+  OUTPUT:                 ENSIGHT
+  RUN_TYPE:               NOCONTINUATION,PRELIMINARY,FREQUENCY=1000
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, PRESCRIBED
+  NUMBER_OF_STEPS:        200
+  TIME_STEP:              3.0e-7
+  TIME_INTERVAL:          0,1000
+
+  MAXIMUM_NUMBER_GLOBAL:  1
+  BLOCK_ITERATION: 1
+     1 CHEMIC, TEMPER
+  END_BLOCK_ITERATION
+
+  CHEMIC_PROBLEM:         ON
+  END_CHEMIC
+  TEMPER_PROBLEM:         ON
+  END_TEMPER
+
+  PARALL_SERVICE:         ON
+    METHOD:               METIS
+    PARTITION_TYPE:       FACES
+    OPENMP:
+      COLORING: MINCO
+    END_OPENMP
+  END_PARALL
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: ON $ ON / OFF/  Expor
+  RESTART: ON
+  POSTPROCESS: ON
+  SYNCHRONOUS: ON
+END_MPI_IO
+$-------------------------------------------------------------------

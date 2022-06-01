@@ -1,0 +1,38 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL=1
+      DENSITY:        CONSTANT,  PARAMETERS = 2.0
+      CONDUCTIVITY:   CONSTANT,  PARAMETERS = 3.0
+      SPECIFIC_HEAT:  CONSTANT,  PARAMETERS = 4.0
+      VISCOSITY,      CONSTANT,  PARAMETERS = 5.0
+    END_MATERIAL
+  END_PROPERTIES
+  VELOCITY: FUNCTION=2
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT    
+  MESH
+   DIVISION=0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   5,5
+    DATAF: LINKED_LIST
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INFLOW
+       2.0*x*x+3.0*y*y
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1
+  POSTPROCESS MASSMA
+  POSTPROCESS LESUB
+  POSTPROCESS codno
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+ 

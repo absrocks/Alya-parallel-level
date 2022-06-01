@@ -1,0 +1,29 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=1.0
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST 
+    STRATEGY: bin
+    NUMBER:   10,10
+    DATAF:    TYPE
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INFLOW
+      y*(1.0-y)
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH 
+  STEPS=1e6
+  MESH: ON, ALL
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

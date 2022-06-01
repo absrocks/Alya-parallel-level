@@ -1,0 +1,22 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [],
+    "description": "Partitioning by defining weights on materials",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        ""
+    ],
+    "name": "partition_weights_materials",
+    "postprocess": "none"
+}

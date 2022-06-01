@@ -1,0 +1,104 @@
+#!/usr/bin/perl
+
+#
+#  Recorre todos los ficheros buscando todos los bucles openemepeados
+#
+#
+# Execute this PERL script from Alya main directory (one directory before Sources)
+#
+print "\n";
+print "--| alya-openmp-mic |-- \n";
+print "\n";
+print "--| Substitute a string by another string in the Sources directory: \n";
+print "--| \n";
+print "--| Edit the script to write the module/service/kernel you want to explore \n";
+print "--| separated with commas. \n";
+print "--| \n";
+
+@wanttoexplore= ("solidz","kernel");
+
+
+#################################
+
+@patdirs= qw(.);
+
+
+$srcdir="Sources";
+@zepdirs=($srcdir."/kernel" , $srcdir."/modules", $srcdir."/services");
+@alldirs=();
+@patdirs=();
+@patfils=();
+@prefils=();
+@lisfils=();
+#
+# load all the directory names in modules and kernel folders 
+#
+$i=0;
+foreach $dirs (@zepdirs) {
+    opendir(ALL_DIRS,$dirs);
+    @auxdirs=readdir(ALL_DIRS);
+    foreach (@auxdirs) {
+	if (! (($_=~/CVS/) || ($_=~/\./)) ) {
+	    @patdirs=(@patdirs, $dirs ."/".$_ );
+	    $i++; 
+	}
+    } 
+    @alldirs=(@alldirs,@auxdirs);
+    closedir(ALL_DIRS);
+}
+
+#
+# load all the file names
+#
+foreach $dirs (@patdirs){
+    opendir(ALL_DIRS,$dirs);
+    @auxi   = readdir(ALL_DIRS);
+    @lisfils=(@lisfils,@auxi);
+    foreach $a (@auxi) { 
+	@patfils=(@patfils,$dirs . "/".$a );
+	@prefils=(@prefils,$dirs);
+    }
+}
+
+$iflag=0;
+$i = 0;
+$ioccur = 0;
+
+$strini  = "\$OMP";
+$stripara= "PARALLEL";
+
+foreach $fils (@patfils) {
+    if ( ($fils=~/\.f90$/) || ($fils=~/\.c$/) || ($fils=~/\.f$/) ) {
+	open (IN,$fils);  
+	$iflag=0;
+	while (<IN>) {if (($_=~/$strini/) || ($_=~/$stripara/)) {$iflag=1}} 
+	close (IN);
+	
+	if ($iflag == 1) {
+	    $ioccur++;
+	    print "$fils\n";
+#	    open (IN,$fils);  
+#	    open (OUT, ">mocos");
+#	    while (<IN>) {
+#		if (($_=~/$strini/) || ($_=~/$stripara/)) {s/$strini/$strout/}
+#		print OUT $_ ;
+#	    } 
+#	    close (IN);
+#	    close (OUT);
+	    
+#	    open (IN,"mocos");  
+#	    open (OUT,">$fils");
+#	    while (<IN>) {print OUT $_} 
+#	    close (IN);
+#	    close (OUT);						
+	}
+    }
+    $i++;
+}
+#system ("rm -r mocos");
+
+print "--| Found $ioccur occurences \n";
+print "--| \n";
+print "--| Bye.\n";
+print "--| \n";
+

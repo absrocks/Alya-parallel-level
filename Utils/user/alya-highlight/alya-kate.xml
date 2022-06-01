@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE language SYSTEM "language.dtd"> 
+<language name="alya" version="1.00" kateversion="3.14.2" section="Scientific" > 
+    <highlighting> 
+	<list name="Options"> 
+	    <item>RAYALPHA</item>
+	    <item>RAYBETA</item>
+	    <item>ISOLIN</item>
+	    <item>CONSTANT</item>
+	    <item>IMPLICIT</item>
+	    <item>NO_STEADY_STATE</item>
+	    <item>NEWMARK</item>
+	    <item>NEWBE</item>
+	    <item>NEWGA</item>
+	    <item>NEWAL</item>
+	    <item>COARSE</item>
+	    <item>NODES</item>
+	    <item>SPARSE</item>
+	    <item>CG</item>
+	    <item>KRYLOV</item>
+	    <item>TOLER</item>
+	    <item>ITERA</item>
+	    <item>DIAGONAL</item>
+	    <item>STEPS</item>
+	    <item>TRANSIENT</item>
+	    <item>DISCRETE</item>
+	    <item>DIRECT</item>
+	    <item>DISCRETE</item>
+	    <item>ON</item>
+	    <item>OFF</item>
+	    <item>BIN</item>
+	    <item>ON_LAST_MESH</item>
+	    <item>CODNO</item>
+	</list> 
+<!--  -->
+	<list name="Variables"> 
+	    <item>DISPX</item>
+	    <item>DISPY</item>
+	    <item>DISPZ</item>
+	    <item>SIGMA</item>
+	    <item>SEQVM</item>
+	    <item>DISPLACEMENT</item>
+	    <item>SEQVM</item>
+	</list> 
+<!-- 	 -->
+	<list name="Alya_steps"> 
+	    <item>PHYSICAL_PROBLEM</item>
+	    <item>END_PHYSICAL_PROBLEM</item>
+	    <item>NUMERICAL_TREATMENT</item>
+	    <item>END_NUMERICAL_TREATMENT</item>
+	    <item>OUTPUT_POST-PROCESS</item>
+	    <item>END_OUTPUT_POST_PROCESS </item>
+	    <item>BOUNDARY_CONDITIONS</item>
+	    <item>END_BOUNDARY_CONDITIONS</item>
+	    <item>OUTPUT_POST_PROCESS</item>
+	    <item>END_OUTPUT_&amp;_POST_PROCESS</item>
+	</list> 
+<!-- 	 -->
+	<list name="Alya_sub_steps"> 
+	    <item>PROPERTIES</item>
+	    <item>END_PROPERTIES</item>
+	    <item>CODES</item>
+	    <item>END_CODES</item>
+	    <item>ALGEBRAIC_SOLVER</item>
+	    <item>END_ALGEBRAIC_SOLVER</item>
+	    <item>WITNESS_POINTS</item>
+	    <item>END_WITNESS_POINTS</item>
+	    <item>FUNCTIONS</item>
+	    <item>END_FUNCTIONS</item>
+	    <item>ELSEST</item>
+	    <item>END_ELSEST</item>
+	</list>
+<!-- 	 -->
+	<list name="Alya_sub_sub_steps"> 
+	    <item>CONDITION</item>
+	    <item>END_CONDITION</item>
+	</list>
+<!-- 	 -->
+	<list name="Alya_sub_sub_sub_steps"> 
+	    <item>SHAPE_DEFINITION</item>
+	    <item>END_SHAPE_DEFINITION</item>
+	</list>
+<!--  -->
+	<list name="Parameters_variable"> 
+	    <item>DENSITY</item>
+	    <item>LAW_DENSITY</item>
+	    <item>CONSTITUTIVE_MODEL</item>
+	    <item>RAYLEIGH_DUMPING</item>
+	    <item>TIME_TREATMENT</item>
+	    <item>TIME_INTEGRATION</item>
+	    <item>MAXIMUM_ITERATION</item>
+	    <item>CONVERGENCE_TOLER</item>
+	    <item>SAFETY_FACTOR</item>
+	    <item>SOLVER</item>
+	    <item>CONVERGENCE</item>
+	    <item>PRECONDITIONER</item>
+	    <item>POSTPROCESS</item>
+	    <item>CONTACT_BOUNDARY</item>
+	    <item>FUNCTION_NUMBER</item>
+	    <item>TOTAL_NUMBER</item>
+	    <item>TIME_SHAPE</item>
+	    <item>STRATEGY</item>
+	    <item>NUMBER</item>
+	</list> 
+	<contexts>
+	    
+	    <context attribute="Normal Text" lineEndContext="#pop" name="Normal Text" > 
+		<keyword attribute="Keyword1" context="#stay" String="Alya_steps" />
+		<keyword attribute="sub" context="#stay" String="Alya_sub_steps" />
+		<keyword attribute="sub_sub" context="#stay" String="Alya_sub_sub_steps" />
+		<keyword attribute="sub_sub_sub" context="#stay" String="Alya_sub_sub_sub_steps" />
+		<keyword attribute="Keyword2" context="#stay" String="Options" />
+		<keyword attribute="Keyword3" context="#stay" String="Parameters_variable" />
+		<keyword attribute="vars" context="#stay" String="Variables" />
+		<DetectChar attribute="String" context="string" char="&quot;" /> 
+                <DetectChar attribute="Comment" context="Comment" char="$"/> 
+		<DetectChar attribute="Comment" context="Comment" char="!"/>
+		<StringDetect context="#stay" attribute="Keyword1" String="OUTPUT_&amp;_POST_PROCESS"/>
+		<StringDetect context="#stay" attribute="Keyword1" String="END_OUTPUT_&amp;_POST_PROCESS"/>
+		<StringDetect context="#stay" attribute="Operator" String="="/>
+		<StringDetect context="#stay" attribute="Operator" String=","/>
+		<StringDetect context="#stay" attribute="Operator" String=":"/>
+		
+		<RegExpr attribute="int" context="#stay" String="(\d+)(\&amp;)(\d+)" />
+		<RegExpr attribute="int" context="#stay" String="(\&amp;)(\d+)" />
+		<RegExpr attribute="int" context="#stay" String="(\d+)(\&amp;)" />
+		
+		<StringDetect context="#stay" attribute="Operator" String="&amp;"/>
+		<RegExpr attribute="int" context="#stay" String="(\d+(\.\d+)?|\.\d+)([eE](\d+))" />
+		<RegExpr attribute="int" context="#stay" String="(\d+(\.\d+)?|\.\d+)([eE][+-](\d+))" />
+		<RegExpr attribute="int" context="#stay" String="(\d+(\.\d+)?|\.\d+)([eE][+-]?\d+)?(im)?(?=')" />
+		<RegExpr attribute="int" context="#stay" String="(\d+(\.\d+)?|\.\d+)" />
+		
+	    </context>
+	    
+	    <context name="Comment" attribute="Comment" lineEndContext="#pop"/>
+	  
+	    <context attribute="String" lineEndContext="#stay" name="string" > 
+		<keyword attribute="Function" context="#stay" String="Code_step" />
+		<DetectChar attribute="String" context="#pop" char="&quot;" /> 
+	    </context> 
+	    
+	</contexts> 
+	<itemDatas> 
+	    <itemData name="Normal Text" defStyleNum="dsNormal" />
+	    <itemData name="Keyword1" defStyleNum="dsFunction" color="#008000" bold="1" italic="0"/>
+	    <itemData name="Keyword2" defStyleNum="dsKeyword" />
+	    <itemData name="Keyword3" defStyleNum="dsFunction" color="#FF00FF" bold="1" /> 
+	    <itemData name="vars" defStyleNum="dsFunction" color="#FF4500" bold="0" italic="1"/>
+	    <itemData name="sub"         defStyleNum="dsFunction" color="#40E0D0" bold="0" italic="1"/>
+	    <itemData name="sub_sub"     defStyleNum="dsFunction" color="#D2691E" bold="1" italic="1"/>
+	    <itemData name="sub_sub_sub" defStyleNum="dsFunction" color="#CD853F" bold="0" italic="1"/>
+	    <itemData name="int" defStyleNum="dsDecVal" />
+	    <itemData name="String" defStyleNum="dsString" />
+	    <itemData name="Comment" defStyleNum="dsComment"/>
+	    <itemData name="Operator" defStyleNum="dsFunction" color="#00FF00" bold="1" italic="0"/>
+	</itemDatas> 
+    </highlighting> 
+    
+<!--    <general>
+	<comments> 
+	    <comment name="singleLine" start="$"/> 
+	    <comment name="singleLine" start="!"/> 
+	</comments> 
+	 
+	<keywords casesensitive="1" />
+    </general>-->
+</language> 
+
+ <!--color="#7A378B"
+ color="#488214"
+ color="#A0522D"
+ color="#388E8E"
+ color="#B20000"-->

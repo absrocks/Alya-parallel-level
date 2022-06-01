@@ -1,0 +1,84 @@
+$------------------------------------------------------------
+DIMENSIONS
+NODAL_POINTS    640 
+ELEMENTS        585 
+BOUNDARIES      108 
+  SPACE_DIMENSIONS=         2
+  NODES=                    4
+
+  FIELDS = 7
+	FIELD: 1, DIMEN= 1, NODES
+	FIELD: 2, DIMEN= 1, NODES
+	FIELD: 3, DIMEN= 1, NODES
+	FIELD: 4, DIMEN= 1, NODES
+	FIELD: 5, DIMEN= 1, NODES
+	FIELD: 6, DIMEN= 1, NODES
+	FIELD: 7, DIMEN= 2, NODES
+  END_FIELDS
+  
+  MATERIALS = 2
+  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN  
+  DOMAIN_INTEGRATION_POINTS: 0
+  GROUPS:                    50
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+   
+  MATERIALS, BOUNDARIES, DEFAULT=2
+    CODE=4
+    MATERIAL=1
+    LAYERS=5
+  END_MATERIALS
+
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  mesh2d.geo.dat
+
+  MATERIALS, NUMBER=2, DEFAU=2
+   1 2
+  END_MATERIALS
+
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE mesh2d.fix.bou   
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  
+  ON_BOUNDARIES
+    INCLUDE mesh2d.fix.bou 
+  END_ON_BOUNDARIES
+
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE TEMPE.alya
+  END_FIELD
+  FIELD= 2
+    INCLUDE CON01.alya
+  END_FIELD
+  FIELD= 3
+    INCLUDE CON02.alya
+  END_FIELD
+  FIELD= 4
+    INCLUDE CON03.alya
+  END_FIELD
+  FIELD= 5
+    INCLUDE CON04.alya
+  END_FIELD
+  FIELD= 6
+    INCLUDE ENTHA.alya
+  END_FIELD
+  FIELD= 7
+    INCLUDE VELOC.alya
+  END_FIELD
+END_FIELDS
+$--------------------------------------------------

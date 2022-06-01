@@ -1,0 +1,48 @@
+$------------------------------------------------------------
+WIND_MESH
+  FIRST_CELL_SIZE    1.000
+END_WIND_MESH
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      4692
+  ELEMENTS          2250
+  SPACE_DIMENSIONS   3
+  TYPES_OF_ELEMENTS HEX08
+  BOUNDARIES         190
+  PERIODIC_NODES=    2346
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           open
+  DOMAIN_INTEGRATION_POINTS  0
+  PERIODICITY:    MATRIX
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  GROUPS = 500
+  TYPES, ALL =HEX08
+  END_TYPES
+  INCLUDE ./2DcosHill.geo.dat
+  INCLUDE ./2DcosHill.mat
+  PERIODIC 
+    INCLUDE ./2DcosHill.per
+  END_PERIO 
+  INCLUDE ./2DcosHill.zo.dat
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS, extrapolate
+  INCLUDE ./2DcosHill.fix
+  VALUES, FUNCTION=1, DIMENSION=3
+     INCLUDE ./2DcosHill.vel.ini
+  END_VALUES
+  VALUES, FUNCTION=2, DIMENSION=1
+     INCLUDE ./2DcosHill.tur1.ini
+  END_VALUES
+  VALUES, FUNCTION=3, DIMENSION=1
+     INCLUDE ./2DcosHill.tur2.ini
+  END_VALUES
+END_BOUNDARY_CONDITIONS          
+$-------------------------------------------------------------

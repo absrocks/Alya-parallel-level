@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "neumann_monolithic.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-14"
+        }
+    ],
+    "description": "Uniform flow with pressure=2 prescribed as a traction",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "neumann_monolithic",
+    "postprocess": "alya2pos"
+}

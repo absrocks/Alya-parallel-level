@@ -1,0 +1,32 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           36
+  ELEMENTS=               25
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=             20
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                          100, PARALLEL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  temper-solver-dcg-direct.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  temper-solver-dcg-direct.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  temper-solver-dcg-direct.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------

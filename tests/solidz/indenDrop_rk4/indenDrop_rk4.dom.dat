@@ -1,0 +1,34 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 901
+  ELEMENTS          = 696
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 360
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       1
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  SCALE:                           XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./indenDrop_rk4.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./indenDrop_rk4.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./indenDrop_rk4.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------------

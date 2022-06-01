@@ -1,0 +1,25 @@
+- contrary to nastin/cavtri03 here I compare .ensi instead of post.res for 2 reasons.
+1) With ensi supposedly you can use tolerance. This for me is much better. When the case fails,
+one looks at it and accepts the changes are small. Nowadays what we do is change the svn base because we are comparing with diff.
+Instead, it would be better to change the tolerance and leave the svn base unaltered. 
+In this way if a new difference appears but it is below the tolerance it will not fail.
+For the moment I will set the difference to a very small value: 1.0e-12
+2) The second reason to use ensi is that in this way the time does not appear.
+Since TIME_COUPLING:          Global, From_critical is used and at each time step the solver is not fully converged.
+The time is not identical with different number of processors. This is ok but it would give an error if post.res are compared. 
+
+Further, Guillaume also has cavtri03_agmg-boundary.nsi.set  cavtri03_agmg.nsi.wit but since they have the time
+I prefer to avoid them. Moreover, they have results over all the time steps, not just the last one. It is not correct
+to compare results over all time steps if each step is not fully converged. 
+
+So the files to compare are:
+cavtri03_agmg.ensi.PRESS-000001
+cavtri03_agmg.ensi.PRESS-000002
+cavtri03_agmg.ensi.VELOC-000001
+cavtri03_agmg.ensi.VELOC-000002
+
+with tolerance 1e-12 for the 000002 files and tolerance 1e-15 for the 000001 files.
+
+I do not want 1p, 4p  & 5p. All must compare against a single folder.
+
+Finally the file cavtri03_agmg.post.alyadat must be included. (needed for alya2pos)

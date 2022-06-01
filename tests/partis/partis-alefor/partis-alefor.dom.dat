@@ -1,0 +1,35 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           36
+  ELEMENTS=               25
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=             20
+  FIELDS= 1
+      FIELD: 1, DIMENSION=4, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                             100, Sequential_frontal  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  partis-alefor.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  partis-alefor.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+INCLUDE partis-alefor.fie.dat
+END_FIELDS
+$-------------------------------------------------------------

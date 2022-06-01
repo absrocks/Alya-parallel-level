@@ -1,0 +1,48 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS     35937
+  ELEMENTS         32768
+  SPACE_DIMENSIONS   3
+  TYPES_OF_ELEMENTS HEX08
+  BOUNDARIES        2048
+  PERIODIC_NODES=    2145
+  FIELDS=            1
+     FIELD: 1, DIMENSION=3, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  0
+  PERIODICITY:    MATRIX
+  EXTRAPOLATE_BOUND_CONDIT:  ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS = 500 , SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  TYPES, ALL =HEX08
+  END_TYPES
+  INCLUDE ./chan32T0.geo.dat
+  PERIODIC 
+    INCLUDE ./chan32T0.per
+  END_PERIO 
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+ BOUNDARIES
+  INCLUDE ./chan32T0.grp
+ END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ ON_BOUNDARIES
+  INCLUDE ./chan32T0.fix
+ END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------a
+FIELDS
+ FIELD=1
+    INCLUDE ./chan32T0.vel.ini
+ END_FIELD
+END_FIELDS

@@ -1,0 +1,132 @@
+#!/usr/bin/perl
+
+###############
+# 
+# --| Alya alya-userbuild |--
+# 
+# --| Build an Alya binary linking 
+# --| user's subroutines with AlyaLib.a
+# --| library.
+# 
+# --| Run it with -h to see usage 
+# 
+######################################################
+
+print "\n";
+print "--| \n";
+print "--| alya-userbuild |-- \n";
+print "--| \n";
+print "--| Build a local Alya binary linking \n";
+print "--| user subroutines with AlyaLib.a library \n";
+print "--| \n";
+
+if ((@ARGV == 0) || ($ARGV[0] =~ /-h/)) { 
+    print "    Usage:   alya-userbuild  [-f=filename  -o=binaryname]  -link=/path/to/alya/Alya \n";
+    print "    \n";
+    print "    The user subroutines must be located in a local ./Sources folder. \n";
+    print "    /path/to/alya/Alya if the path to Alya top level folder \n";
+    print "    \n";
+    print "    Input options:\n";
+    print "    \n";
+    print "      -f=filename         :  input compiler options file, located in ./Sources, with the sources. \n";
+    print "      -o=binaryname       :  name of the local binary file. \n";
+    print "    \n";
+    print "      Defaults            :  Detect compiler and build local file ./AlyaUser.x \n";
+    print "                             Compile using some standard compiler options and no optimization. \n";
+    print "    \n";
+    print "--| Bye.\n";
+    print "\n\n";
+    exit 1;
+}
+
+$iffile="n";
+$ifbina="n";
+
+my (@auxzmods) = @ARGV if (@ARGV >= 1);
+foreach $opti (@auxzmods){
+    if ($opti =~/^-f=/) {
+	$iffile="y";
+    }elsif($opti =~/^-o=/) {
+	$ifbina="y";
+    }elsif($opti =~/^-link=/) {
+	@fields= split(/\=/,$opti);
+	$libalya = $fields[1];
+    }
+}
+
+#-----------------------------------------------------------------------------------------------
+#
+# Compilers
+#
+#-----------------------------------------------------------------------------------------------
+
+
+# default values:
+
+$com90      = "ifort -module Sources -c ";
+$com77      = "ifort -module Sources -c ";
+$comcc      = "gcc  -c ";
+$com90pp    = "ifort -fpp -module Sources -c ";
+$com90ppomp = "ifort -fpp -module Sources -c ";
+$comccpp    = "gcc  -c ";
+$linki      = "ifort  ";
+$foptix     = "-O5";
+
+$pirucho1=`date`;
+chomp($pirucho1);
+$pirucho2=`whoami`;
+chomp($pirucho2);
+$pirucho3=`hostname -s`;
+chomp($pirucho3);
+$pirucho4=`arch`;
+chomp($pirucho4);
+$pirucho5=`uname -rs`;
+chomp($pirucho5);
+
+#$compile = "$com90 -staticlib Sources/*.f90";
+#$movobjs = "mv *.o  Sources/. ";
+#$linklib = "$linki $libalya Sources/*.o ";
+
+$pathobj=$libalya."/Executables/unix/Objects_x/";
+opendir(DIRS,$pathobj);
+@objx=readdir(DIRS);
+$linklib= " ";
+foreach (@objx) {
+    if (!($_ =~/^sld_dummy_vumat/)) {
+	if (!($_ =~ /^\.$/)) {
+	    if (!($_ =~ /^\.\.$/)) {
+		$linklib= $linklib . " " . $pathobj . $_
+	    }
+	}
+    }
+    if (!($_ =~/^sld_dummy_umat/)) {
+	if (!($_ =~ /^\.$/)) {
+	    if (!($_ =~ /^\.\.$/)) {
+		$linklib= $linklib . " " . $pathobj . $_
+	    }
+	}
+    }
+}
+closedir(DIRS);
+
+$compile = "$com90 Sources/*.f*";
+$movobjs = "mv *.o  Sources/. ";
+#$linklib = "$linki -o AlyaLocal.x $linklib Sources/*.o ";
+$linklib = "$linki -o AlyaLocal.x $pathobj*.o Sources/*.o ";
+
+print "--|    $compile \n";
+print "--|      Compiling... \n";
+print "--|      \n";
+print "\n";
+system($compile);
+print "\n";
+print "--|      \n";
+print "--|    $movobjs \n";
+system($movobjs);
+print "--|    $linklib \n";
+system($linklib);
+
+print "--| Local binary created.\n";
+print "--| Bye.\n";
+print "--| \n";
+print "\n\n";

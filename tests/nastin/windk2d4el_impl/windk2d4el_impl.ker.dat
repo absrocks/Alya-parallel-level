@@ -1,0 +1,47 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL=1 $interior
+      DENSITY: CONSTANT, VALUE = 1.060 $ g/cm3
+      VISCOSITY: CONSTANT, VALUE = 0.035 $ g/cm s
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  ELSEST
+    STRATEGY:    Bin
+    NUMBER_BINS= 20,20,20
+  END_ELSEST
+
+  MESH
+    MULTIPLICATION= 0
+  END_MESH
+
+    TIME_FUNCTIONS
+         FUNCTION= inlet, DISCRETE, NUMBER_OF_SAMPLES=250
+            INCLUDE flow.dat
+         END_FUNCTION
+    END_TIME_FUNCTIONS  
+
+    SPACE_TIME_FUNCTIONS
+         FUNCTION=sinus
+            10*(1+sin(2*3.14*t-3.14/2))
+         END_FUNCTION
+         FUNCTION=ramp
+            10*t
+         END_FUNCTION
+    END_SPACE_TIME_FUNCTIONS  
+
+
+    WINDKESSEL_FUNCTIONS  
+$          FUNCTION= outlet, TWOEL, 100, 0.01
+          FUNCTION= outlet, FOURE, 100, 0.01, 2, 0.05
+    END_WINDKESSEL_FUNCTIONS
+  
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+   ON_LAST_MESH
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------

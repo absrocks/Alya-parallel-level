@@ -1,0 +1,31 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=0.01
+      POROSITY;  CONSTANT, VALUE=1.0
+    END_MATERIAL
+  END_PROPERTIES
+  DISPLACEMENT: FIELD=1
+  VELOCITY:     FIELD=1
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION=0
+  END_MESH
+  ELSEST 
+    STRATEGY: BIN
+    NUMBER:   100,33
+    DATAF: LINKED_LIST
+  END_ELSEST
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1
+  POSTPROCESS DISPM
+  POSTPROCESS VELOC
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

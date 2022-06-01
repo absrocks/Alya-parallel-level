@@ -1,0 +1,29 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavtri03
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, Prescribed
+  TIME_INTERVAL=          0.0, 700
+  TIME_STEP_SIZE=         2.0
+  NUMBER_OF_STEPS=        1
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  TEMPER_MODULE:          On
+  END_TEMPER_MODULE
+  PARALL_SERVICE:         On
+    OUTPUT:               ON, CONNECTIVITY
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO       Off
+  GEOMETRY:  Off
+  POSTP:     Off
+  RESTART:   Off
+  MERGE:     Off
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------
+

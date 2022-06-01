@@ -1,0 +1,70 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+ PROPERTIES
+      MATERIAL=1 $$ DOMAIN
+         DENSITY   = CONSTANT, PARAMETER=  1.1     $ in g/cm3 (40% glycerol @ 20C)
+         VISCOSITY = CONSTANT, PARAMETER=  0.0372  $ in poise
+$         POROSITY  = CONSTANT, VALUE=0.0
+      END_MATERIAL
+      MATERIAL=2 $$ VALVE_1
+         DENSITY   = CONSTANT, PARAMETER=  1.1     $ in g/cm3 (40% glycerol @ 20C)
+         VISCOSITY = CONSTANT, PARAMETER=  0.0372  $ in poise
+         POROSITY  = VALVE, VALUE= 1,2 , 1000.0, 0.01,0.0 
+      END_MATERIAL
+      MATERIAL=3 $$ VALVE_2
+         DENSITY   = CONSTANT, PARAMETER=  1.1     $ in g/cm3 (40% glycerol @ 20C)
+         VISCOSITY = CONSTANT, PARAMETER=  0.0372  $ in poise
+         POROSITY  = VALVE, VALUE= 4,3, 1000.0, 0.01,0.0
+
+      END_MATERIAL
+ END_PROPERTIES
+
+  COUPLING
+$    NASTIN ALEFOR
+  END_COUPLING
+
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+
+ SPACE_&_TIME_FUNCTIONS
+    FUNCTION=PULSE, DIMENSION=2
+       2.0*cos(3.14159265359*t)
+       0.0
+    END_FUNCTION
+END_SPACE_&_TIME_FUNCTIONS 
+$  TIME_FUNCTIONS
+$     FUNCTION=poroa, DISCRETE, NUMBER_OF_SAMPLES=6
+$       INCLUDE poroa.func
+$     END_FUNCTION
+$     FUNCTION=porob, DISCRETE, NUMBER_OF_SAMPLES=6
+$       INCLUDE porob.func
+$     END_FUNCTION
+$  END_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+
+   STEPS = 5
+$   POSTPROCESS SUBDO
+$   POSTPROCESS CODNO
+$   POSTPROCESS LBSET
+$   POSTPROCESS MATER
+$   POSTPROCESS POROS
+   
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

@@ -1,0 +1,64 @@
+BeginZE /Users/houzeaux/Desktop/COEX/cavtet4/cavtet4_gpu_fs.post.vv
+   x -1.80493628978729248 1.90857779979705811
+   y 1.82254981994628906 -0.413518220186233521
+   z -1.67268133163452148 0.673042535781860352
+   e 1.1180340051651001
+   v -0.160251615022319105 0.328978777246498821 0.0240881721576417032
+   r 0.930329048826276206
+   m 0.782385468482971191 -0.150258615612983704 0.604396700859069824 0 -0.0606189072132110596 0.947478353977203369 0.314022451639175415 0 -0.619837343692779541 -0.282324463129043579 0.732184767723083496 0 0 0 0 1
+   c 0.0440303385257720947 0.674435675144195557 0.499819397926330566
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 2
+   DrawingType 3
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 1
+   OGLShadow(FBOSize) 2048
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.045
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE /Users/houzeaux/Desktop/COEX/cavtet4/cavtet4_gpu_fs.post.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+
+BeginPostState
+BeginSingleMesh
+  Num meshes: 1
+  Num sets: 0
+  Num cuts: 0
+  Mesh: 0
+  State: On
+    Name: "cavtet4_TET04 30"
+    IdSet: 30
+    Color Type: 0
+    Color Ambient: 0.166667 0.333333 0.166667 0.5
+    Color Diffuse: 0.5 1 0.5 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 1
+    Property Transparent: 0
+    Property Style: 3932221
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndMesh: 0
+EndSingleMesh
+  Post_Prefs_Vector_Size: 0 32 32 32
+  ResultView: {Id 10} {Contour Fill} ALYA 0.20208249 VELOC |VELOC| 0.0 4 5
+EndPostState
+

@@ -1,0 +1,37 @@
+$--------------------------------------------------
+DIMENSIONS
+NODAL_POINTS=       93083
+ELEMENTS==      308209
+SPACE_DIMENSIONS=         3
+TYPES_OF_ELEMS=   TET04  PEN06                                                                  
+BOUNDARIES=        8192
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS:   1  6                                                                          
+$ SCALE: XSCAL=0.001,YSCAL=0.001,ZSCAL=0.001
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+  GROUPS=650
+  INCLUDE ../mesh/1.geo.dat
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE ../mesh/1.fix
+  END_BOUNDARIES
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS, EXTRAPOLATE
+  ON_BOUNDARIES
+    INCLUDE ../mesh/1.fix
+  END_ON_BOUNDARIES
+   GEOMETRICAL_CONDITIONS
+     WALL_LAW:     3
+     INFLOW:       4,5,6,7,8
+     OUTFLOW:      2
+     ANGLE,   GEOAN=170.0
+   END_GEOMETRICAL_CONDITIONS
+END_BOUNDARY_CONDITIONS
+$--------------------------------------------------

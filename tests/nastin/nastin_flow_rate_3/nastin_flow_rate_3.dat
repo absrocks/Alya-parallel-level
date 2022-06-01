@@ -1,0 +1,19 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   fensap
+END_RUN_DATA 
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1.0e6
+  TIME_STEP_SIZE=         0.5
+  NUMBER_OF_STEPS=        5
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+   PARALL_SERVICE:        On
+    OUTPUT_FILE:          Off
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

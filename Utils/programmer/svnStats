@@ -1,0 +1,150 @@
+#!/usr/bin/python2.7
+import xml.etree.ElementTree as ET
+import sys
+import os
+import re
+
+def help():
+	print
+	print "---------------------------------------------------------------"
+	print "                ALYA SVN STADISTICS - HELP                     "
+	print "---------------------------------------------------------------"
+	print
+	print "\tHELP:"
+	print "\tIntroduce the dates between the 2 svn versions"
+	print "\tDate format: YYYY-MM-DD"
+	print "\tExecution svnStats.py INITIAL_DATA END_DATE"
+	print
+	print "\tExample svnStats.py 2017-06-08 2017-07-18"
+	print 
+	print "---------------------------------------------------------------"
+	print "                         END HELP                              "
+	print "---------------------------------------------------------------"
+
+path = os.popen('pwd').read()
+
+if len(sys.argv) < 3:
+	help()
+	sys.exit(0)
+
+if not re.match("^\d\d\d\d-\d\d-\d\d", sys.argv[1][0:10]):
+	help()
+	sys.exit(0)
+
+if not re.match("^\d\d\d\d-\d\d-\d\d", sys.argv[2][0:10]):
+	help()
+	sys.exit(0)
+
+if("Utils/programmer" in path):
+	print 
+	print
+	print "\t Called in Utils/programmer..."
+	print "\t Going to execute the script in Alya/"
+	os.chdir("../../")
+
+
+os.system("svn log -v -r {"+sys.argv[1]+"}:{"+sys.argv[2]+"} --xml > svnlog.xml")
+
+tree = ET.parse('svnlog.xml')
+root = tree.getroot()
+
+commits = root.findall('logentry')
+firstRev = int(commits[0].attrib['revision'])
+lastRev = int(commits[len(commits)-1].attrib['revision'])
+
+totalCommits = 0
+totalReintegrate = 0
+totalNormal = 0
+totalMini = 0
+totalCritical = 0
+others = 0
+
+commitsByUser = {} 
+reintegrateByUser = {}
+miniByUser = {} 
+
+for commit in commits:
+	user = commit.find('author').text
+	commitsByUser[user] = 0
+	reintegrateByUser[user] = 0
+	miniByUser[user] = 0
+
+for commit in commits:
+	totalCommits+=1
+	user = commit.find('author').text
+	msg = commit.find('msg').text
+	if type(msg) != type("hola"):
+		print "Fail"
+		continue
+	msg = msg.replace(" ", "")
+	if("TYPE=NORMAL" in msg):
+		totalNormal+=1
+	elif("TYPE=REINTEGRATE" in msg):
+		totalReintegrate+=1
+	elif("TYPE=MINI" in msg):
+		totalMini+=1
+	elif("TYPE=CRITICAL" in msg):
+		totalCritical+=1
+	else:
+		others+=1
+
+	if ("TYPE=MINI" in msg):
+		if(user in miniByUser):
+			miniByUser[user] += 1
+			commitsByUser[user] += 1
+	elif not ("TYPE=REINTEGRATE" in msg):
+		if(user in commitsByUser):
+                        commitsByUser[user] += 1
+	else:
+		if(user in reintegrateByUser):
+			reintegrateByUser[user] += 1
+
+tCommits 		= lastRev - firstRev
+tCommitsTrunk	= totalCommits
+tNotReintegrate = tCommitsTrunk - totalReintegrate
+pCommitsTrunk	= round(tCommitsTrunk	/float(tCommits)*100, 1)
+pNotReintegrate	= round(tNotReintegrate	/float(tCommitsTrunk)*100, 1)
+pReintegrate 	= round(totalReintegrate/float(tCommitsTrunk)*100, 1)
+pCritical		= round(totalCritical	/float(tNotReintegrate)*100, 1)
+pNormal			= round(totalNormal		/float(tNotReintegrate)*100, 1)
+pMini			= round(totalMini		/float(tNotReintegrate)*100, 1)
+pOthers			= round(others 			/float(tNotReintegrate)*100, 1)
+
+
+print
+print
+print "---------------------------------------------------------------"
+print "                     ALYA SVN STADISTICS                       "
+print "---------------------------------------------------------------"
+print
+
+print "\tTotal Number of Commits in Repository:\t ", tCommits
+print "\tTotal Number of Commits in Trunk:\t ", tCommitsTrunk, "("+str(pCommitsTrunk)+"%)"
+print 
+
+print "\t\033[92mTotal Number of REINTEGRATE: \t\t", totalReintegrate, "\t("+str(pReintegrate)+"%)", "\033[0m"
+#print "\t\033[91mTotal Number of Not REINTEGRATE: \t", tNotReintegrate, "\t("+str(pNotReintegrate)+"%)", "\033[0m"
+print "\t\033[91mTotal Number of Not REINTEGRATE: \t", tNotReintegrate, "\033[0m"
+print "\t\033[91mTotal Number of CRITICAL: \t\t", totalCritical, "\t("+str(pCritical)+"%)", "\033[0m"
+print "\t\033[91mTotal Number of NORMAL: \t\t", totalNormal, "\t("+str(pNormal)+"%)", "\033[0m"
+print "\tTotal Number of MINI: \t\t\t", totalMini , "\t("+str(pMini)+"%)"
+print "\tTotal Number of OTHERS: \t\t", others , "\t("+str(pOthers)+"%)", 
+print
+print
+
+print "\tUser stadistics:"
+print 
+
+sortedUsers = list(sorted(commitsByUser, key=commitsByUser.__getitem__, reverse=True))
+
+print "\t    User\tCommits\tReint\tMinis"
+print "\t-------------------------------------"
+for user in sortedUsers:
+	print "\t  -", user, "\t\033[91m", commitsByUser[user], "\033[0m\t", reintegrateByUser[user], "\t", miniByUser[user]
+
+print
+print "---------------------------------------------------------------"
+print "                            END                                "
+print "---------------------------------------------------------------"
+
+

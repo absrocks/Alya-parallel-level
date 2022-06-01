@@ -1,0 +1,21 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "reset"                             >  ./gnuplot.tmp
+
+####echo "set multiplot "                    >> ./gnuplot.tmp
+####echo "set size noratio 1.0,2.0 "         >> ./gnuplot.tmp
+#----------------------------------------------------------------
+# Top-Left
+#----------------------------------------------------------------
+
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Particles'"            >> ./gnuplot.tmp
+echo "plot '$1.pts.cvg' u 3 t 'PARTICLES' w l "  >> ./gnuplot.tmp
+
+####echo "unset multiplot "                  >> ./gnuplot.tmp
+echo "load './gnuplot.tmp'"              >  ./gnuplot2.tmp
+echo "pause 2"                           >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"             >> ./gnuplot2.tmp
+gnuplot ./gnuplot2.tmp 

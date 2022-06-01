@@ -1,0 +1,38 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 16
+  ELEMENTS          = 7
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 6
+  MATERIALS         = 1
+  FIELDS            = 1
+    FIELD = 1, DIMENSIONS=1, ELEMENTS
+  END_FIELDS
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                 OPEN
+  DOMAIN_INTEGRATION_POINTS:        0
+  SCALE:                            XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                      XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  BOUNDARY_ELEMENT:                 OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE patch3d_expl.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE patch3d_expl.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE patch3d_expl.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+  INCLUDE patch3d_expl.fie.dat
+END_FIELDS
+$-------------------------------------------------------------------

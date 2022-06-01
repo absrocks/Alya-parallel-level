@@ -1,0 +1,54 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      5694
+  ELEMENTS         16933
+  SPACE_DIMENSIONS   3
+  TYPES_OF_ELEMENTS TET04 PYR05 HEX08
+  BOUNDARIES        1262
+  FIELDS:       4
+     FIELD= 1, DIMENSIONS= 3,NODES  
+     FIELD= 2, DIMENSIONS= 1,NODES  
+     FIELD= 3, DIMENSIONS= 1,NODES  
+     FIELD= 4, DIMENSIONS= 1,NODES  
+  END_FIELDS  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  0
+  GROUPS = 500
+  BOUNDARY_ELEMENT: On
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  GEOMETRICAL_CONDITIONS
+     FREESTREAM   1,2,3,4,6
+     WALL_LAW     5
+     ANGLE, GEO_ANGLE = 170.0
+     CRITERION_FREESTREAM :  VALUE_FUNCTION =  1 toler 5.0
+  END_GEOMETRICAL_CONDITIONS
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./keDisc.geo
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./keDisc.fix
+END_BOUNDARY_CONDITIONS
+FIELDS
+   FIELD= 1
+     INCLUDE ./keDisc.nsi.ini
+   END_FIELD
+   FIELD= 2
+     INCLUDE ./keDisc.tur1.ini
+   END_FIELD
+   FIELD= 3
+     INCLUDE ./keDisc.tur2.ini
+   END_FIELD
+   FIELD= 4
+     INCLUDE ./keDisc.zo.dat
+   END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

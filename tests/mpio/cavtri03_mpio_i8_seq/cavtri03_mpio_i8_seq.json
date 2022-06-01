@@ -1,0 +1,70 @@
+{
+    "authors": [
+        "damien.dosimont@bsc.es",
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_mpio_i8_seq-COORD.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-LELCH.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-LNODS.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-LTYPE.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-PRESS-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-PRESS-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-VELOC-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_seq-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "MPI-IO test based on cavtri03 (i8): forced sequential geometry reading, post and restart writing",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i8"
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_mpio_i8_seq",
+    "postprocess": "mpio2txt"
+}

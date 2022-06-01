@@ -1,0 +1,75 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+ PROBLEM_DEFINITION
+   TEMPORAL_DERIVATIVES      On
+   CONVECTIVE_TERM           On
+   VISCOUS_TERM              divergence
+   GRAVITY        NORM=  0.0000000E+00 GX=      0.0000000 GY=      0.0000000 GZ=      0.0000000
+   AXES_ROTATION  NORM=  0.0000000E+00 OX=      0.0000000 OY=      0.0000000 OZ=      1.0000000
+$   TURBULENCE_COUPLING       from_turbul
+   TEMPERATURE_COUPLING      OFF                                                         
+ END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELEMENT_LENGTH           minim
+  STABILIZATION            ASGS nogrv
+  TIME_INTEGRATION         Trapezoidal, ORDER: 1, EULER=10
+ $ TRACKING    TIME
+  STEADY_STATE_TOLER       1d-10
+  NORM_OF_CONVERGENCE      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT     1
+  CONVERGENCE_TOLERANCE    1d-10    ! ortomin
+  ALGORITHM                SCHUR
+    SOLVER                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER         TAU
+    ELEMENT_LENGTH         minimum
+    TAU_STRATEGY           Codina
+    CORRECTION             open
+  END_ALGORITHM
+  SAFETY_FACTOR            15.0 expon 1.1  maxim  40.0    mingl 60.0
+  MOMENTUM
+    ALGEBRAIC_SOLVER       GMRES, KRYLOV=70,ITERA=200, TOLER=1.0e-12, ADAPTIVE, RATIO=1e-3 $, CONVER
+    PRECONDITIONER         DIAGONAL 
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER     DEFLATED_CG ITERA=600, TOLER=1.0e-8, ADAPTIVE, RATIO=1e-5,UNSYMME
+    PRECONDITIONER         DIAGONAL                     
+  END_CONTINUITY
+  DIRICHLET : MATRIX          
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS VELOCITY      STEPS = 100
+$  POSTPROCESS FIXNO         STEPS = 100
+$  POSTPROCESS FIXPR         STEPS = 100
+$  POSTPROCESS SCHUR         STEPS = 100
+  WITNESS_POINTS
+    VELOX
+    VELOY
+    VELOZ
+    PRESS
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES
+  3 111  FIELD=1 $ entry 
+  4 000  FIELD=1 $ output  
+  5 100  0.0 0.0 0.0       AXES:LOCAL $ WALL 
+  3 & 5  100 0.0 0.0 0.0   AXES:LOCAL $ WALL entry
+  4 & 5  100 0.0 0.0 0.0   AXES:LOCAL $ WALL output
+  6      111  FIELD=1   $ top  
+  6 & 3  111 FIELD=1  $ top entry 
+  6 & 4  111 FIELD=1  $ top output      
+  END_CODES 
+  CODES, BOUNDARIES 
+$   4                20      0.0                00      1         4
+   5  3    ! wall boundary condition on bottom 
+  END_CODES 
+  PARAMETER
+     INITIAL VALUE_FUNCTION = 1 ! use field 1 for initial condition
+  END_PARAMETER
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

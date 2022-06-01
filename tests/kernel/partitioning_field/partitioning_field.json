@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "partitioning_field.post.msh",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Parallel partitioning using field.",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "partitioning_field",
+    "postprocess": "alya2pos"
+}

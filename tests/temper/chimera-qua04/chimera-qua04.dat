@@ -1,0 +1,17 @@
+$------------------------------------------------------------
+RUN_DATA                                                     
+  ALYA:                chimera                     
+END_RUN_DATA                                                 
+$------------------------------------------------------------
+PROBLEM_DATA                                                 
+  TIME_COUPLING         global, from_critical                
+  TIME_INTERVAL         0.0, 1.0e6                         
+  NUMBER_OF_STEPS       100   
+  TEMPER_MODULE:        On
+  END_TEMPER_MODULE                                                       
+  PARALL_SERVICE        On
+    COMMUNICATIONS:     SYNCHRONOUS                              
+  END_PARALL_SERVICE                                         
+END_PROBLEM_DATA                                             
+$------------------------------------------------------------
+

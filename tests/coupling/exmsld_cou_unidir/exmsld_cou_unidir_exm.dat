@@ -1,0 +1,27 @@
+$------------------------------------------------------------------
+RUN_DATA
+  INCLUDE exmsld_cou_unidir_exm.run.dat
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TIME_COUPLING:          GLOBAL
+  TIME_INTERVAL:          0.000, 0.2
+  TIME_STEP_SIZE:         5E-5 $$$$$ 1E-5 5E-6 $ ESTOS SON LOS PASOS DE NIEDERER
+  NUMBER_OF_STEPS_(MAX):  50
+$-------------------------------------------------------------------
+  EXMEDI:                 ON
+  END_EXMEDI
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION:            FACES
+    PARTITIONING:
+        METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL
+
+$-------------------------------------------------------------------
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

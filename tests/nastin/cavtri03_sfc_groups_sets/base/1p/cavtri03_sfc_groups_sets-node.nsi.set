@@ -1,0 +1,17 @@
+# ALYA Node set results
+#
+# HEADER
+# ISET , Column :   1
+# VELOX , Column :   2
+# PRESS , Column :   3
+# NUMVARIABLES :       3
+# NUMSETS      :       2
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+        48  0.00000000E+000  0.00000000E+000
+       121  0.00000000E+000  0.00000000E+000
+# Iterations  =       1      1      1
+# Time        =  0.37235376E+001
+        48 -0.18559495E+000 -0.13174330E+000
+       121  0.00000000E+000  0.00000000E+000

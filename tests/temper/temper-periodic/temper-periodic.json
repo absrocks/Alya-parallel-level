@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "temper-periodic.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Temperature equation with periodicity",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "temper-periodic",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,19 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=3
+      VISCOSITY: CONSTANT: VALUE=4
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION=<<division>>
+  END_MESH
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

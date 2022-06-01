@@ -1,0 +1,57 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL=1 $interior
+      DENSITY: CONSTANT, VALUE = 1.06 $ g/cm3
+      VISCOSITY: CONSTANT, VALUE = 0.035 $ g/cm s
+$      TURBULENCE: VRMAN, PARAMETERS=0.1
+    END_MATERIAL
+  END_PROPERTIES
+  GRAVITY: NORM=9.81, GX=0.0,GY=-1.0
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  ELSEST
+    STRATEGY: BIN
+    NUMBER: 50,50,50
+    TOLER: 1e-8
+  END_ELSEST
+  MESH
+   DIVISION=0
+  END_MESH
+  WALL_DISTANCE                                 
+   ALGEBRAIC_SOLVER    DEFLATED_CG, ITERA= 5000,TOLER= 1e-9, ADAPTIVE, RATIO=1e-9
+   PRECONDITIONING     DIAGONAL                
+   CODES, BOUNDARIES
+    2  1
+    4  1                    
+    END_CODES                                  
+  END_WALL_DISTANCE    
+  WALL_NORMAL
+   ALGEBRAIC_SOLVER    DEFLATED_CG, ITERA= 5000,TOLER= 1e-9, ADAPTIVE, RATIO=1e-9
+   PRECONDITIONING     DIAGONAL
+   CODES, BOUNDARIES
+    2  1
+    4  1
+    END_CODES
+  END_WALL_NORMAL
+
+ SPACE_&_TIME_FUNCTIONS
+    FUNCTION=POISS
+      -7.8125*y*y+1.25                                                                                               
+    END_FUNCTION
+    FUNCTION=WORM
+       cos(2*3.141592653589793238462643383279502884*t)*(-7.8125*y*y+1.25)
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS 
+  
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+ON_LAST_MESH
+$  STEPS=1
+$  WITNESS_POINTS, NUMBER=81
+$    INCLUDE witness.in
+$  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------

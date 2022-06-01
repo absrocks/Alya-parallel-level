@@ -1,0 +1,67 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION       
+    TEMPORAL_DERIVATIVES:     ON 
+    CONVECTIVE_TERM:          ON
+    VISCOUS_TERM:             LAPLACIAN
+    REGIME=                   LOWMACH,   TEMPERATURE = 273.0
+    GRAVITY:                  NORM=0.00295908836019, GX=0.0, GY=-1.0 
+  END_PROBLEM_DEFINITION  
+
+  PROPERTIES
+    THERMODYN_PRESSURE = 101325.0, MASS_CONSERVATION: 0.606354
+  END_PROPERTIES
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:            ASGS
+  ELEMENT_LENGTH:           Minimum
+  TIME_INTEGRATION:         TRAPEZOIDAL, ORDER: 1, EULER=5
+  SAFETY_FACTOR:            1e3                              
+  STEADY_STATE_TOLER:       1e-12
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+
+  MAXIMUM_NUMBER_OF_IT:     10  
+  CONVERGENCE_TOLERANCE:    1e-03
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING
+    PRECONDITIONER:         DT
+    ELEMENT_LENGTH:         MINIMUM
+    TAU_STRATEGY:           CODINA
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER:       GMRES,  ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.01, KRYLOV=30, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL
+  END_MOMENTUM 
+
+  CONTINUITY
+    ALGEBRAIC_SOLVER:       DEFLATED_CG, ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001, UNSYMME, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL 
+  END_CONTINUITY
+END_NUMERICAL_TREATMENT 
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT       STEP = 0
+  POSTPROCESS VELOC
+  POSTPROCESS PRESS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+     INITIAL:        CONSTANT= 0.0 0.0
+     FIX_PRESSURE:   ON, ON_NODE= 1, VALUE= 0.0
+  END_PARAMETERS
+
+  CODES, NODES 
+       1    11  0.00      0.00    $$ Bottom
+       2    11  0.00      0.00    $$ Right
+       3    11  0.00      0.00    $$ Top
+       4    11  0.00      0.00    $$ Left
+     1 & 2  11  0.00      0.00
+     1 & 4  11  0.00      0.00
+     2 & 3  11  0.00      0.00
+     3 & 4  11  0.00      0.00
+  END_CODES
+END_BOUNDARY_CONDITIONS 

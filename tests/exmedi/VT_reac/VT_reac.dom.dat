@@ -1,0 +1,53 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+NODAL_POINTS    4410
+ELEMENTS        20664
+BOUNDARIES      3616
+
+  SPACE_DIMENSIONS=             3
+  NODES=                        4
+
+  MATERIALS         = 1
+
+  FIELDS            = 2
+    FIELD = 1, DIMENSIONS=3, NODES
+    FIELD = 2, DIMENSIONS=1, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE:                            XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                      XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  BOUNDARY_ELEMENT:                 OFF
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+   INCLUDE  VT_reac.geo.dat
+END_GEOMETRY
+$------------------------------------------------------------
+
+SETS
+    include VT_reac.defsets
+END_SETS
+$------------------------------------------------------------
+
+BOUNDARY_CONDITIONS
+    include VT_reac.fix.bou
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+FIELDS
+   FIELD = 1
+    INCLUDE  VT_reac.fiber.dat
+  END_FIELD
+
+  FIELD=2
+    INCLUDE  VT_reac.cell.dat
+  END_FIELD
+
+END_FIELDS
+
+ 

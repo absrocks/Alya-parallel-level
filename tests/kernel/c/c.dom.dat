@@ -1,0 +1,39 @@
+$--------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS= 8
+  ELEMENTS=     2
+  SPACE_DIMENSIONS=       3
+TYPES_OF_ELEMS=   PEN06
+  BOUNDARIES= 0
+  PERIODIC_NODES=0
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS:   6
+$  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+  INCLUDE  nodes
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+$ BOUNDARIES
+$   INCLUDE   /gpfs/scratch/bsc21/bsc21011/Mesh/Ahmed_road_layer/Ahmed.fix
+$ END_BOUNDARIES
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS
+$ ON_BOUNDARIES
+$    INCLUDE  /gpfs/scratch/bsc21/bsc21011/Mesh/Ahmed_road_layer/Ahmed.fix
+$ END_ON_BOUNDARIES
+$1    inlet
+$2    outlet
+$3    road
+$4    top
+$5    sides
+$6    body
+$7    underbody
+$8    road_underbody
+END_BOUNDARIES_CONDITIONS
+$--------------------------------------------------

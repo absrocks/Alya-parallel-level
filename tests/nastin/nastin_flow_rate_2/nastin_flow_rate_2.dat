@@ -1,0 +1,19 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavhex8
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, from_critical
+  TIME_INTERVAL=          0.0, 1.0e6
+  TIME_STEP_SIZE=         0.1  
+  NUMBER_OF_STEPS=        2
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE  
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+ 

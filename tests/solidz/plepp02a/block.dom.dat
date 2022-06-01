@@ -1,0 +1,30 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 856
+  ELEMENTS          = 1581
+  SPACE_DIMENSIONS  = 2
+  TYPES_OF_ELEMENTS = TRI03
+  BOUNDARIES        = 129
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       0
+  SCALE:                           XSCAL=1.0 YSCAL=1.0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+   INCLUDE ./block.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./block.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

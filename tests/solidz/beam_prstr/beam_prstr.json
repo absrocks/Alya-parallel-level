@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "eva.casoni@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "beam_prstr-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Testing principal stretches computation and output.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i8"
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "beam_prstr",
+    "postprocess": "mpio2vtk",
+    "timeout": "00:05:00"
+}

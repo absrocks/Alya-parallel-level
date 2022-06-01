@@ -1,0 +1,42 @@
+#!/bin/bash
+
+compile_test() {
+    v2=$(echo $1 | cut -d'.' -f 1) 
+    mpif90 -c -g $1 -o $(echo "$v2.o") -J../Executables/unix/Objects_x/ -Iunitt/ 
+    #mpif90 -o $(echo "$v2.x")  ../Executables/unix/Objects_x/*.o $(echo "$v2.o") unitt/unitt.o -lc  -L../Thirdparties/metis-4.0 -lmetis
+    mpif90 -o $(echo "$v2.x") $(ls ../Executables/unix/Objects_x/*.o | grep -v 'Alya.o') $(echo "$v2.o") unitt/unitt.o -lc  -L../Thirdparties/metis-4.0 -lmetis
+}
+
+clear
+echo -e "\nALYA UNIT TESTING\n\n"
+echo -e "Compilation:\n"
+
+#echo -e "Compiling ALYA . . ."
+#cd ../Executables/unix
+#cp configure.in/config_gfortran.in config.in
+#./reconfigure
+#make metis4 > /dev/null 2>&1 
+#make -j 8 > /dev/null 2>&1 
+#rm -f Objects_g/Alya.o
+#echo -e "Done\n"
+
+#cd ../../unitt
+
+mpif90 unitt/unitt.f90 -c -o unitt/unitt.o -Junitt
+
+for file in test_files/test_*.f90 
+do
+    echo "Compiling test: $file"
+    compile_test $file
+done
+
+echo -e "\nEnd of compilations\n\n"
+echo -e "Test Execution:\n"
+
+for file in test_files/test_*.x 
+do
+    echo "Executing test: $file"
+    ./$file
+done
+
+find test_files/ -type f ! -name '*.f90' -delete

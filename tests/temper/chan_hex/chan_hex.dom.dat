@@ -1,0 +1,49 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE  ./mesh/chan_hex.dims.dat
+  SPACE_DIMENSIONS=         2
+  TYPES_OF_ELEMENTS=        QUA04
+  PERIODIC_NODES=           51
+
+  FIELDS = 2
+	FIELD: 1, DIMEN= 1, NODES
+	FIELD: 2, DIMEN= 2, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 4
+  GROUPS:                    50
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+
+  INCLUDE  ./mesh/chan_hex.geo.dat
+
+  INCLUDE  ./mesh/chan_hex.per
+
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE  ./mesh/chan_hex.fix.bou
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+     INCLUDE ./mesh/chan_hex.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE ./mesh/TEMPE.alya
+  END_FIELD
+  FIELD= 2
+    INCLUDE ./mesh/VELOC.alya
+  END_FIELD
+END_FIELDS

@@ -1,0 +1,31 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  identer
+  CODE=                  1
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, PRESCRIBED
+  TIME_INTERVAL:         0.0, 4.0
+  TIME_STEP_SIZE=        0.015
+  NUMBER_OF_STEPS=       4
+  MAXIMUM_NUMBER_GLOBAL= 1
+  $------------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    OUTPUT_FILE:         OFF
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING:
+      METHOD:            METIS
+    END_PARTITIONING
+    OPENMP
+      ELEMENT_CHUNK=     100
+      COLORING:          MIN_COLOR
+    END_OPENMP
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

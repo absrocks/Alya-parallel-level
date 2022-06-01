@@ -1,0 +1,19 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   name
+  LIVE_INFORMATION:       Screen
+  CODE:                   2
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, Prescribed
+  TIME_INTERVAL=          0.0, 1.0  
+  TIME_STEP_SIZE=         0.1  
+  NUMBER_OF_STEPS=        1e5   
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TEMPER_MODULE:          ON
+  END_TEMPER_MODULE
+  PARALL_SERVICE:         On
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

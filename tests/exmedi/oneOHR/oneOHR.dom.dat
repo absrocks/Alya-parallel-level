@@ -1,0 +1,71 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=                 4
+  ELEMENTS=                    1
+  SPACE_DIMENSIONS=               3
+  TYPES_OF_ELEMENTS=       TET04
+  NODES=                          4
+  BOUNDARIES=              0
+  SKEW_SYSTEMS=            0 
+  SLAVES=                  0 
+  NO_SETS
+  MATERIALS=  1
+  FIELDS= 2 
+    FIELD= 1, DIMENSION= 3, NODES
+    FIELD= 2, DIMENSION= 1, NODES
+  END_FIUELDS 
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:      OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY, GID, WALL_DISTANCE= 0.0, ROUGHNESS=0.0
+   MATERIALS, DEFAULT=1, NUMBER=1
+      1  1
+   END_MATERIALS  
+   ELEMENTS
+   1   1  2  3  4
+   END_ELEMENTS
+   COORDINATES
+   1   0  0  0  
+   2   0.009  0  0  
+   3   0  0.009  0  
+   4   0  0  0.009
+   END_COORDINATES
+   BOUNDARIES, ELEMENT
+   END_BOUNDARIES
+   SKEW_SYSTEMS 
+   END_SKEW_SYSTEMS  
+END_GEOMETRY
+SETS
+  BOUNDARIES
+  END_BOUNDARIES
+END_SETS
+BOUNDARIES
+    ON_NODES , POSITIONAL      
+        INTERSECTIONS, ADDING          
+        RANGE         
+            CODE_NUMBER  = 1   
+            COORDINATE   =   ZCOOR      
+   $$       GREATER_THAN =   10.2687         
+            LOWER_THAN =   0.001  
+        END_RANGE      
+    END_ON_NODES
+END_BOUNDARIES
+FIELDS
+   FIELD= 1
+             1  1.0 0.0  0.0
+             2  1.0 0.0  0.0
+             3  1.0 0.0  0.0
+             4  1.0 0.0  0.0
+   END_FIELD
+   FIELD= 2
+             1   3
+             2   1
+             3   2
+             4   3
+   END_FIELD
+END_FIELDS
+

@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_repart-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "cavtri03_repart-PRESS-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        },
+        {
+            "file": "cavtri03_repart-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_repart-node.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_repart-element.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Repartitioning of Alya at each time step, should give same solution as cavtri03 test. There can be empty subdomains, this is fancy isnt it?",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_repart",
+    "postprocess": "mpio2txt"
+}

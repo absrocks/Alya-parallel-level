@@ -1,0 +1,23 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   dodeme
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_Critical
+  TIME_INTERVAL=          0.0, 1.0  
+  TIME_STEP_SIZE=         0.1  
+  NUMBER_OF_STEPS=        1
+  MAXIMUM_NUMBER_GLOBAL=  1
+  NASTIN_MODULE=          On
+  END_NASTIN_MODULE
+  DODEME_SERVICE:         Off
+  END_DODEME_SERVICE
+  PARALL_SERVICE:         On
+   OUTPUT_FILE:           NO
+   POSTPROCESS:           MASTER
+   PARTITION:             nodes
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

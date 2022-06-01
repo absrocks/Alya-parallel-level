@@ -1,0 +1,101 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop.pts.res-col6.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop.pts.res-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop.pts.res-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop.pts.res-col15.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop.pts.res-col16.out",
+            "method": "absolute",
+            "tolerance": "1.0e-11"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-HEASK-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-AVHSK-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-MASSK-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-AVMSK-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-ENTHA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e0"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-TEMPE-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "single_drop_pts_chm_tem_hltabprop-CON03-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        }
+    ],
+    "description": "Heat and mass transfer of a single droplet with built in water liquid properties and a flamelet table with heat loss. Partis, Chemic, and Temper coupled with one executable.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 6 13 14 15 16; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 6 13 14 15 16; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 6 13 14 15 16; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "temper",
+        "chemic",
+        "partis"
+    ],
+    "name": "single_drop_pts_chm_tem_hltabprop",
+    "postprocess": "mpio2txt"
+}

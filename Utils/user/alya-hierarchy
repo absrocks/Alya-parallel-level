@@ -1,0 +1,53 @@
+#!/bin/bash 
+
+echo 
+echo '--| alya-hierarchy |-- '
+echo '--| '
+if  [ "$1" = "-h" ] || [ "$1" = "-help" ] || [ "$1" = "" ]; then
+echo '--| Create a directory hierarchy for Alya'
+echo '--| '
+echo '--| Usage:   alya-hierarchy n'
+echo '--|'
+echo '--| n ... Number of directories'
+echo '--| '
+echo '--| Options:\n'
+echo '--| -two                  :  Two-level hierarchy.'
+echo '--| '
+echo '--| Bye.'
+echo '--| '
+echo '--| '
+exit
+fi
+
+LEVEL=1
+if  [ "$1" = "-two" ]; then
+    LEVEL=2
+    shift
+fi
+    
+NDIRE=0
+DIREC=`seq -w 0 100 900000`
+
+for dirname in ${DIREC}; do 
+  
+  if [ $dirname -gt $1 ]; then
+      echo '--| '$NDIRE' directories have been created'
+      echo '--| '
+      echo '--| Bye.'
+      echo '--| '
+      echo '--| '
+      exit
+  fi
+  let "NDIRE++"
+  mkdir -p PAR$dirname
+  if [ "$LEVEL" = "2" ]; then
+      let "NDIRE++"
+      let "NDIRE++"
+      mkdir -p PAR$dirname/data
+      mkdir -p PAR$dirname/results
+  fi
+
+done
+
+
+

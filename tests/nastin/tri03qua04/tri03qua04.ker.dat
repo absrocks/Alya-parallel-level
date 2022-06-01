@@ -1,0 +1,37 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:    CONSTANT, VALUE=1.0
+      VISCOSITY:  CONSTANT: VALUE=5.181347150259067e-07
+      TURBULENCE: VRMAN , PARAMETERS=0.1 ,UPDP1=ENDSTE,UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES 
+  WALL_LAW:               REICHARDT, VARIABLE, MULTI=2
+  WALL_EXCHANGE_LOCATION, BOUN1=2
+  TIME_AVERAGING,         PERIOD = 1.0
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=0
+  END_MESH
+  ELSEST 
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF:    LINKED_LIST
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INFLOW, DIMENSION=2
+       4.0*(1.0-y)*y
+       0.0
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1e6
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+ 

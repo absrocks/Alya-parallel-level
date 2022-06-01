@@ -1,0 +1,110 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+PROBLEM_DEFINITION
+  TEMPORAL         DYNAMIC
+END_PROBLEM_DEFINITION
+
+PROPERTIES
+
+   DENSITY=              1.0
+   LAW_DENSITY=         CONSTANT
+ 
+   RAYLEIGH_DUMPING, RAYALPHA= 100.0
+   CONSTITUTIVE_MODEL   HOLZAPFEL    \
+                        5.0e4 12185000.0 113557.0 10.2273 15959.0 15.577 0.0 0.0 0.0 0.0  1.0
+    COUPLING_SCHEME
+       MODEL: LAND
+    END_COUPLING_SCHEME
+
+  FIBER_MODEL
+       LOCATION: NODAL
+       FIBER:    1
+  END_FIBER_MODEL
+ 
+
+END_PROPERTIES 
+
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT   
+
+
+$  TIME_TREATMENT:   EXPLICIT
+$  TIME_INTEGRATION: NEWMARK, DAMPED
+$  SAFETY_FACTOR: 0.1
+
+  STEADY_STATE_TOLERANCE: -1.0
+
+  SAFETY_FACTOR: 5.0
+
+  TIME_TREATMENT:   IMPLICIT
+  TIME_INTEGRATION: NEWMARK, DAMPED
+
+  RESIDUAL: DISP 
+  CONVERGENCE_TOLER: 1e-4
+
+  MAXIMUM_ITERATION: 100
+
+  ALGEBRAIC_SOLVER:
+    SOLVER: CG
+    CONVERGENCE: ITERA = 10000, TOLER = 1.0e-5, ADAPTIVE, RATIO = 0.0001
+    OUTPUT: CONVERGENCE
+    PRECONDITIONER: BLOCK_DIAGONAL
+    OPTIONS: ZERO_FIXITY
+  END_ALGEBRAIC_SOLVER
+
+  ROTATION:          ON
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST-PROCESS 
+    START_POSTPROCESS_AT STEP=0
+ 
+   NODE_SET
+     DISPX
+     DISPY
+     DISPZ
+   END_NODE SET
+
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+
+
+CODES, NODES
+   1         000 0.0 0.0 0.0
+   2         000 0.0 0.0 0.0
+   6         000 0.0 0.0 0.0
+
+   3         100 0.0 0.0 0.0
+   4         010 0.0 0.0 0.0
+   5         001 0.0 0.0 0.0
+  3 & 4      110 0.0 0.0 0.0 
+  3 & 5      101 0.0 0.0 0.0 
+  4 & 5      011 0.0 0.0 0.0 
+  3 & 4 & 5  111 0.0 0.0 0.0 $Stimulation node
+
+  1 & 2      000 0.0 0.0 0.0 
+  1 & 4      000 0.0 0.0 0.0 
+  1 & 5      000 0.0 0.0 0.0 
+  1 & 6      000 0.0 0.0 0.0 
+  2 & 3      000 0.0 0.0 0.0 
+  2 & 5      000 0.0 0.0 0.0 
+  2 & 6      000 0.0 0.0 0.0 
+  3 & 6      000 0.0 0.0 0.0 
+  4 & 6      000 0.0 0.0 0.0 
+  1 & 2 & 5  000 0.0 0.0 0.0
+  1 & 2 & 6  000 0.0 0.0 0.0
+  1 & 4 & 5  000 0.0 0.0 0.0
+  1 & 4 & 6  000 0.0 0.0 0.0
+  2 & 3 & 5  000 0.0 0.0 0.0
+  2 & 3 & 6  000 0.0 0.0 0.0
+  3 & 4 & 6  000 0.0 0.0 0.0
+
+
+END_CODES
+
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

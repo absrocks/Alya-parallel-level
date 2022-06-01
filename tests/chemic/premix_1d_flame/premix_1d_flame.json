@@ -1,0 +1,196 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "premix_1d_flame.tem.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "premix_1d_flame.chm.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame.chm.wit-col10.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame.chm.wit-col11.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame-CON01-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "premix_1d_flame-CONDU-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-ENTHA-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "premix_1d_flame-MOLEC-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "premix_1d_flame-PRESS-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "premix_1d_flame-SCO01-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-SOURC-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame-SPHEA-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame-TEMPE-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "premix_1d_flame-VELOC-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-CON01-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-CONDU-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-DRHOD-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "premix_1d_flame-ENTHA-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "premix_1d_flame-MOLEC-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-PRESS-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "premix_1d_flame-SCO01-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-SOURC-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame-SPHEA-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "premix_1d_flame-TEMPE-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "premix_1d_flame-VELOC-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-XYR-00000050.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame-XFIEL.00000001.00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "premix_1d_flame-XFIEL.00000002.00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "premix_1d_flame-XFIEL.00000003.00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "premix_1d_flame-XFIEL.00000004.00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "premix_1d_flame-XFIEL.00000005.00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+    ],
+    "description": "Laminar premixed flame in 1D domain.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].tem.wit 2; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 10 11; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].tem.wit 2; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 10 11; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].tem.wit 2; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 10 11; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "premix_1d_flame",
+    "postprocess": "mpio2txt"
+}

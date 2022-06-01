@@ -1,0 +1,53 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   OPP_DIFF
+  RUN_TYPE:               NOCONTI,PRELIMINARY,FREQUENCY=20
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, PRESCRIBED 
+  TIME_STEP:              4.0e-4
+  NUMBER_OF_STEPS:        20 
+
+  MAXIMUM_NUMBER_GLOBAL:  1
+  BLOCK_ITERATION: 1
+     1 CHEMIC, TEMPER, NASTIN
+  END_BLOCK_ITERATION
+
+  NASTIN_PROBLEM:         ON
+  END_NASTIN 
+  CHEMIC_PROBLEM:         ON
+  END_CHEMIC
+  TEMPER_PROBLEM:         ON
+  END_TEMPER
+
+  PARALL_SERVICE:         ON
+    PARTITION_TYPE:       FACES
+    OUTPUT: SLAVE
+    OPENMP
+      ELEMENT_CHUNK=      10
+      COLORING:           MIN_COLOR
+    END_OPENMP
+    PARTITIONING
+      METHOD:             RANDOM
+      EXECUTION_MODE:     PARALLEL
+    END_PARTITIONING
+    REPARTITIONING:       ON
+      CRITERION:          ALWAYS
+      FREQUENCY=          1
+      POSTPROCESS:        NONE
+    END_REPARTITIONING
+    ORDER_COMMUNICATIONS: OFF
+  END_PARALL
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: OFF $ ON / OFF/  Expor
+  RESTART: ON
+  POSTPROCESS: ON
+  MERGE: ON
+  END_MERGE 
+  SYNCHRONOUS: ON
+END_MPI_IO
+$-------------------------------------------------------------------

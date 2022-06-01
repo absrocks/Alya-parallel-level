@@ -1,0 +1,34 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es",
+        "oriol.lehmkuhl@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_si_RK2.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        }
+    ],
+    "description": "Test the semi-implicit method, with the basic solver options.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1
+        },
+        {
+            "mpi": 5
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_si_RK2",
+    "postprocess": "alya2pos"
+}

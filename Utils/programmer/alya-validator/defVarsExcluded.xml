@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defVarsExcluded>
+    <module>
+        <moduleName>levels</moduleName>
+        <excludedVar>flsex_lev</excludedVar>
+    </module>
+    <module>
+        <moduleName>porous</moduleName>
+        <excludedVar>iwell_por</excludedVar> <!-- Obtained from field -->
+        <excludedVar>satin_por</excludedVar> <!-- Obtained from field -->
+        <excludedVar>poro0_por</excludedVar> <!-- Obtained from field -->
+        <excludedVar>perme_por</excludedVar> <!-- Obtained from field -->
+    </module>
+    <module>
+        <moduleName>exmedi</moduleName>
+        <excludedVar>vcolo_exm</excludedVar>
+        <excludedVar>elmlo_exm</excludedVar>
+        <excludedVar>ituss_exm</excludedVar>
+        <excludedVar>vaulo_exm</excludedVar>
+        <excludedVar>viclo_exm</excludedVar>
+    </module>      
+    <module>
+        <moduleName>turbul</moduleName>
+        <excludedVar>itera_tur</excludedVar>
+   </module>
+</defVarsExcluded>

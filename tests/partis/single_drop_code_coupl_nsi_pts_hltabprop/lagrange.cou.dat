@@ -1,0 +1,42 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS=3
+  COUPLING=1
+     TARGET, MODULE:    NASTIN
+     SOURCE, MODULE:    PARTIS
+     TARGET, CODE:      1
+     SOURCE, CODE:      2
+     WHERE_TYPE:        WHOLE_MESH
+     VARIABLE=          MOMSK
+     TYPE:              GLOBAL_NUMBERING
+     SEND_AND_COMPUTE:  BEGSTE BEFORE
+     RECEIVE_ASSEMBLE:  BEGSTE BEFORE
+  END_COUPLING
+  COUPLING=2
+     TARGET, MODULE:    PARTIS
+     SOURCE, MODULE:    NASTIN
+     TARGET, CODE:      2
+     SOURCE, CODE:      1
+     WHERE_TYPE:        WHOLE_MESH
+     VARIABLE=          VELOC
+     TYPE:              GLOBAL_NUMBERING
+     SEND_AND_COMPUTE:  ENDSTE AFTER
+     RECEIVE_ASSEMBLE:  BEGSTE BEFORE
+  END_COUPLING
+  COUPLING=3
+     TARGET, MODULE:    PARTIS
+     SOURCE, MODULE:    NASTIN
+     TARGET, CODE:      2
+     SOURCE, CODE:      1
+     WHERE_TYPE:        WHOLE_MESH
+     VARIABLE=          VELOC
+     TYPE:              GLOBAL_NUMBERING
+     SEND_AND_COMPUTE:  INIUNK AFTER
+     RECEIVE_ASSEMBLE:  INIUNK AFTER
+  END_COUPLING
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  TIME_COUPLING: GLOBAL
+END_NUMERICAL_TREATMENT 
+$------------------------------------------------------------

@@ -1,0 +1,56 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=     64
+  ELEMENTS=         162
+  BOUNDARIES=       108
+  SPACE_DIMENSIONS= 3
+  NODES=            4
+
+
+  FIELDS=           2
+    FIELD = 1, DIMENSIONS=3, NODES
+    FIELD = 2, DIMENSIONS=1, NODES
+  END_FIELDS
+
+  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE:                            XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                      XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  BOUNDARY_ELEMENT:                 OFF
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+
+   INCLUDE  exm_sld_land_fromcri.geo.dat
+
+
+END_GEOMETRY
+$------------------------------------------------------------
+
+SETS
+    include exm_sld_land_fromcri.defsets
+END_SETS
+$------------------------------------------------------------
+
+BOUNDARY_CONDITIONS
+    include exm_sld_land_fromcri.fix.bou
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+
+FIELDS
+  FIELD=1
+    INCLUDE  exm_sld_land_fromcri.fiber.dat
+  END_FIELD
+
+  FIELD=2
+       INCLUDE  exm_sld_land_fromcri.cell.dat
+  END_FIELD
+
+END_FIELDS
+ 

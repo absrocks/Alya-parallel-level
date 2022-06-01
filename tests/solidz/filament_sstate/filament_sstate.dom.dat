@@ -1,0 +1,31 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 68
+  ELEMENTS          = 16
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 1
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       0
+  SCALE:                           XSCAL=1.1e-2 YSCAL=2.0e-2 ZSCAL=6.5e-3
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./filament_sstate.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./filament_sstate.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./filament_sstate.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

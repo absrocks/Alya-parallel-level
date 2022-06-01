@@ -1,0 +1,94 @@
+ple_coupling.lo: ple_coupling.c /usr/include/stdc-predef.h \
+ /usr/include/assert.h /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h /usr/include/errno.h \
+ /usr/include/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/asm/errno.h /usr/include/asm-generic/errno.h \
+ /usr/include/asm-generic/errno-base.h /usr/include/stdio.h \
+ /gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stddef.h \
+ /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/stdlib.h /usr/include/bits/stdlib-float.h \
+ /usr/include/string.h ple_defs.h ../ple_config.h ple_config_defs.h \
+ ../ple_config_priv.h \
+ /gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/wchar.h \
+ /gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stdbool.h \
+ ple_coupling.h /usr/mpi/gcc/openmpi-1.10.4-hfi/include/mpi.h \
+ /usr/mpi/gcc/openmpi-1.10.4-hfi/include/mpi_portable_platform.h
+
+/usr/include/stdc-predef.h:
+
+/usr/include/assert.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/usr/include/errno.h:
+
+/usr/include/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/stdio.h:
+
+/gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stddef.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/stdlib-float.h:
+
+/usr/include/string.h:
+
+ple_defs.h:
+
+../ple_config.h:
+
+ple_config_defs.h:
+
+../ple_config_priv.h:
+
+/gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/gpfs/apps/MN4/GCC/4.9.4/lib/gcc/x86_64-unknown-linux-gnu/4.9.4/include/stdbool.h:
+
+ple_coupling.h:
+
+/usr/mpi/gcc/openmpi-1.10.4-hfi/include/mpi.h:
+
+/usr/mpi/gcc/openmpi-1.10.4-hfi/include/mpi_portable_platform.h:

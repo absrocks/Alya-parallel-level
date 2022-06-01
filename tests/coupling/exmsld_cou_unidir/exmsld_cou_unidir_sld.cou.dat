@@ -1,0 +1,40 @@
+$ ----------------------------------------------
+$-----------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 1             
+
+  NUMBER_COUPLINGS= 1
+  ABSOLUTE_TOLERANCE=1000.0
+  LOST_WET_POINTS=ZERO
+  A_TODA_COSTA=ON
+
+
+  COUPLING=1
+     SOURCE, CODE:      2          
+     SOURCE, MODULE:    EXMEDI     
+
+     TARGET, CODE:      1          
+     TARGET, MODULE:    SOLIDZ     
+
+     WHERE_TYPE:        WHOLEMESH $$ volumetrico
+
+     WHAT=              UNKNOWN
+     VARIABLE=          CALCIUM 
+
+$     TYPE:              TRANSPOSE 
+     TYPE:              ELEMENT_INTERPOLATION    $ volumetrico
+
+     SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY:   1   
+     RECEIVE_ASSEMBLE:  BEGZON BEFORE, FREQUENCY:   1
+  END_COUPLING
+END_PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  BLOCK, NUMBER=1
+    COUPLINGS=  1
+    ITERATIONS= 1
+    TOLERANCE= 1.0e-5
+  END_BLOCK
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------

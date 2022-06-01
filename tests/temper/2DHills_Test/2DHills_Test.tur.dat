@@ -1,0 +1,57 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+  include ./AlyaFix/2DHills_Test.tur.inc
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STRATEGY                   ASGS
+  ELEMENT_LENGTH             Minimum
+  TIME_INTEGRATION           Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR              1.0 expon 1.05  maxim 200.0 mingl 5.0 
+  STEADY_STATE_TOLER         -1d-9  
+  NORM_OF_CONVERGENCE        ALGEBRAIC
+  RELAXATION_FACTOR          0.5    
+  MAXIMUM_NUMBER_OF_IT       2
+  INNER_ITERATIONS           2
+  CONVERGENCE_TOLERANCE      1d-10  
+  ALGEBRAIC_SOLVER           GMRES, KRYLOV=50, ITERA= 70, TOLER= 1d-12, ADAPTIVE, RATIO = 1d-4, FIXITY
+  PRECONDITIONING            DIAGONAL
+  CLIPPING                   ALMOST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT        STEP =0
+  POSTPROCESS KEY            STEPS=100
+  POSTPROCESS EPSILON        STEPS=100
+  POSTPROCESS TUR_VISCOSITY  STEPS=100
+  WITNESS_POINTS
+    KEY
+    EPSILON
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+CODES, NODES, VARIABLE=1
+     5     0 0.0     FIELD=7   $ WALL
+     3 & 5 7 0.0     FIELD=7   $ WALL entry
+     4 & 5 0 0.0     FIELD=7   $ WALL output
+     6     0 0.0     FIELD=7   $ top
+     3 & 6 7 0.0     FIELD=7   $ top entry
+     4 & 6 0 0.0     FIELD=7   $ top output
+     3     7 0.0     FIELD=7   $ entry
+     4     0 0.0     FIELD=7   $ output
+ END_CODES
+ CODES, NODES, VARIABLE=2
+     5     0 0.0     FIELD=8   $ WALL
+     3 & 5 7 0.0     FIELD=8   $ WALL entry
+     4 & 5 0 0.0     FIELD=8   $ WALL output
+     6     0 0.0     FIELD=8   $ top
+     3 & 6 7 0.0     FIELD=8   $ top entry
+     4 & 6 0 0.0     FIELD=8   $ top output
+     3     7 0.0     FIELD=8   $ entry
+     4     0 0.0     FIELD=8   $ output
+ END_CODES
+   INITIAL VALUE_FUNCTION=2, VARIABLE = 1  ! use field 2 for initial condition for k
+   INITIAL VALUE_FUNCTION=3, VARIABLE = 2  ! use field 3 for initial condition for e
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

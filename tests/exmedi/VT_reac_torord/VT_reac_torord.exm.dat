@@ -1,0 +1,76 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+    PROBLEM_DEFINITION
+
+        STARTING_POTENTIAL
+            NSTIM=     1
+            CURDENSITY= -80
+            LAPSE=    0.002              [s]
+            CENTER=  0.0 0.0 0.0
+            REACH=    0.15
+            T_START=  0.0
+        END_STARTING_POTENTIAL
+
+$       GEO_COUPLING: LAGRANGIAN
+
+    END_PROBLEM_DEFINITION
+
+$------------------------------------------------------------
+    PROPERTIES
+        CONTINUUM_MODEL
+            IN_DIFFUSION=    0.01171 0.0039033 0.0039033  [mS/cm]
+        ENDCONTINNUM_MODEL
+
+        CELL_MODEL:   TORORD
+             CM_CONST=  1.0 $[muF/cm2]
+        END_CELL_MODEL
+
+        INI_CELL, HETEROGENEOUS
+            INCLUDE TThet_framework.txt
+        END_INI_CELL
+
+        PARAMETERS
+            ISOCHRONES HIGHER 0.0
+        END_PARAMETERS
+
+    END_PROPERTIES
+
+    FIBER_MODEL:              FIELD=1
+    CELL_TYPE:                FIELD=2
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+    CONSTANT_MATRIX
+    SAFETY_FACTOR=           1.0
+
+    TIMETREATMENT: IMPLICIT, CRANK
+
+    ALGEBRAIC_SOLVER
+        SOLVER:                CG
+        CONVERGENCE:           ITERA=1000, TOLER=1.0e-5, ADAPTIVE, RATIO=0.01
+        OUTPUT:                CONVERGENCE
+        PRECONDITIONER:        DIAGONAL
+    END_ALGEBRAIC_SOLVER
+
+END_NUMERICAL_TREATMENT
+
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+    START_POSTPROCESS_AT STEP = 0
+    SAVE_CONVERGENCE CELL_MODEL
+	$POST_PROCESS INTRA STEPS = 10
+	$POST_PROCESS CALCI STEPS = 10
+        NODE_SET
+           INTRA
+		   CALCI
+        END_NODE_SET
+
+END_OUTPUT_&_POST-PROCESS
+
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, CONSTANT
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

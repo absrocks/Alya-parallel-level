@@ -1,0 +1,33 @@
+{
+    "authors": [
+        "eva.casoni@bsc.es",
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cantilever_shell.sld.wit",
+            "method": "absolute",
+            "tolerance": 2e-14
+        },
+        {
+            "file": "cantilever_shell-node.sld.set",
+            "method": "absolute",
+            "tolerance": 2e-14
+        }
+    ],
+    "description": "Cantilever beam under distributed end load. \r It is a non-elastic bending test. It is a clamped plate subjected to end load. The beam is very thin so it is modelled using continuum shells and an isotropic constitutive law. The tip displacement is almost 7 meters (compare to the 10 meters of the beam). \r It uses fields to impose distributed forces on the edge. ",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cantilever_shell",
+    "postprocess": "alya2pos"
+}

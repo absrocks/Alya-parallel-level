@@ -1,0 +1,56 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   ON
+    CONVECTIVE_TERM:        ON
+    CONDUCTION_TERM:        ON
+    REGIME :                LOWMACH, ENTHALPY   
+    SOURCE_TERMS:           OFF
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    TURBULENT_PRANDTL = 0.7
+  END_PROPERTIES
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS 
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE , ORDER: 3
+  SAFETY_FACTOR=           100.0
+
+  STEADY_STATE_TOLERANCE=  -1e-5
+  NORM_OF_CONVERGENCE:     L2
+  MAXIMUM_NUMBER_OF_ITER=  1
+  RELAXATION_FACTOR=       1.0
+  CONVERGENCE_TOLERANCE=   1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+  NEGATIVE_CLIP = ON
+  POSITIVE_CLIP = ON
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS TEMPE
+  POSTPROCESS ENTHA
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS, NONCONSTANT
+  INITIAL:  VALUE = 5
+$ PARAMETERS
+$   INITIAL: CONSTANT = 300.0
+$ END_PARAMETERS
+ CODES, NODES
+    1     1     298.0
+    2     1     298.0
+    3     0     0.0
+  1 & 3   1     298.0
+  2 & 3   1     298.0
+  4 & 3   0     0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

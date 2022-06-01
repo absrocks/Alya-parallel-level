@@ -1,0 +1,24 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   Ahmed 
+  RUN_TYPE:               noINITI , PRELIMINARY, FREQUENCY=500
+  LATEX_INFO_FILE:        Yes
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+   TIME_COUPLING:          GLOBAL, FROM_CRITICAL
+   TIME_INTERVAL=          0.0,500000
+   TIME_STEP_SIZE=         1e-2
+   NUMBER_OF_STEPS=        0
+   MAXIMUM_NUMBER_GLOBAL=  1
+   NASTIN_MODULE:          On
+   END_NASTIN_MODULE
+   PARALL_SERVICE:         On
+     OUTPUT_FILE:          OFF
+     POSTPROCESS:          MASTER
+     PARTITION_TYPE:       FACES
+$    COMMUNICATION:        ASYNCRONOUS
+   END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

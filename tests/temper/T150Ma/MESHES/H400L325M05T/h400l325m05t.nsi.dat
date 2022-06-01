@@ -1,0 +1,75 @@
+$$Create by J. MIGUEL ZAVALA-AKE 
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$
+  PROBLEM_DEFINITION       
+    TEMPORAL_DERIVATIVES:   On 
+    CONVECTIVE_TERM:        On
+    VISCOUS_TERM:           FULL
+    REGIME:                 INCOMPRESSIBLE
+   $REGIME:                 LOWMACH, TEMPERATURE = 273.0  
+   $GRAVITY:                GZ=
+  END_PROBLEM_DEFINITION  
+$
+  PROPERTIES
+$  INCOMPRESSIBLE:
+     DENSITY                 1000.0
+     VISCOSITY               0.001   
+     PRESSURE                0.0
+$  LOWMACH:
+$    THERMODYN_PRESSURE = 101467.007   
+$    GAS_CONSTANT       =    287.176  $ 8.3144621
+  END_PROPERTIES  
+$
+END_PHYSICAL_PROBLEM  
+
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            ASGS
+  ELEMENT_LENGTH:           Minimum
+  TIME_INTEGRATION:         Trapezoidal, ORDER: 2, EULER=5
+  SAFETY_FACTOR:            1.0 
+  STEADY_STATE_TOLER:       1e-12
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  CONVERGENCE_TOLERANCE:    1e-03
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING
+    PRECONDITIONER:         DT
+    ELEMENT_LENGTH:         MINIMUM
+    TAU_STRATEGY:           CODINA
+  END_ALGORITHM
+  MOMENTUM
+    ALGEBRAIC_SOLVER:       GMRES,  ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001, KRYLOV=50, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL
+  END_MOMENTUM 
+  CONTINUITY
+    ALGEBRAIC_SOLVER:       CG,     ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001, UNSYMME, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL 
+  END_CONTINUITY
+END_NUMERICAL_TREATMENT  
+
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  POSTPROCESS  VELOCITY
+  POSTPROCESS  PRESSURE
+END_OUTPUT_&_POST_PROCESS   
+
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+$
+  PARAMETERS
+    VARIATION:         CONSTANT
+    INITIAL:           INERTIAL, Value= 0.0 0.0 0.0  
+   $FIX_PRESSURE: ON, ON_NODE = 1077, VALUE = 1.0 
+   $CODES, NODES, PRESSURE
+   $END_CODES
+  END_PARAMETERS
+$
+  CODES, NODES 
+    INCLUDE ./h400l325m05t_init_codes.alya
+  END_CODES
+$
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------
+

@@ -1,0 +1,52 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "block-node.sld.set",
+            "method": "absolute",
+            "tolerance": 5e-7
+        },
+        {
+            "file": "block-boundary.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "impactor-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "impactor-element.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This is a 2-dimension low velocity impact test at 10J. This test validates the PDN contact between Rigid and Deformable bodies. It uses the dissipatives Tchamwa-Wielgosz explicit scheme.",
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] block --name SOLID [SEP] [NP] 3 [ALYA] impactor --name FLUID"
+            },
+            "mpi": 6,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 5 [ALYA] block --name SOLID [SEP] [NP] 5 [ALYA] impactor --name FLUID"
+            },
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "ple_cnt2"
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "lvi-2d-10J-expl",
+    "postprocess": "alya2pos"
+}

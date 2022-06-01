@@ -1,0 +1,50 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+  NUMBER= 1
+
+  IB, NUMBER=1
+    TYPE: BODY_FITTED, SET=3
+  END_IB
+
+END_DIMENSIONS
+$------------------------------------------------------------
+GEOMETRY 
+
+   IB, NUMBER=1
+     DENSITY= 253.87 
+     POSGR= 0.0 0.0 0.0
+     MOMEN= 40000 40000 40000 0.0 0.0 0.0
+     MASS = 2000
+$     VELOL=    0.0,-0.15
+   END_IB
+
+END_GEOMETRY  
+$-------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0 
+END_STRATEGY
+$-------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MOTION:          On
+$   FORCES:          GRAVITY, BUOYANCY   $ SIN LEVELS
+   FORCES:          GRAVITY 
+   FORCES:          CATAMARAN
+   TRANSLATION: START  350 210 200
+   ROTATION: START  1000000 200 1000000
+   RALEIGHT:   VALUE=100.0, START=700, END=1500
+   MOVE_EXTERNAL
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------
+NUMERICAL_TREATMENT 
+$  FORCE:             AVERA
+  FORCE:            ORDIN
+  NEWMARK: GAMMA= 1.5,BETA=1.0
+END_NUMERICAL_TREATMENT 
+$-------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+   POSTPROCESS INITIAL
+$  POSTPROCESS DMESH, STEPS=1
+END_OUTPUT_&_POST_PROCESS 
+$-------------------------------------------------------------

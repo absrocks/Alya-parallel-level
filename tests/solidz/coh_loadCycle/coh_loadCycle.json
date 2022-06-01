@@ -1,0 +1,42 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coh_loadCycle.sld.wit",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "coh_loadCycle-node.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "coh_loadCycle.ensi.DISPL-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_loadCycle.ensi.FRXID-000002",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test validates the state variables of the cohesive element formulated by Turon et. al 2006. The model consist of one cohesive element between two HEX08 elements. The boundary conditions are imposed at the bulk material: the bottom nodes are fixed while the top nodes a controlled displacement is imposed. The cohesive element is loaded and unloaded with the following cycle load: (1) critical strength in Mode I, 80MPa; (2) dissipation half of the critical fracture energy; (3) unloading to its origin; (4) contact stage; (5) dissipation of the remaining energy; and (6) displacement after completely element damage.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "coh_loadCycle",
+    "postprocess": "alya2pos"
+}

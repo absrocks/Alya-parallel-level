@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+
+###############
+# 
+# --| Alya what |--
+# 
+# --| Returns which modules and services have been compiled
+# 
+# --| Run it with no arguments to see usage 
+# 
+######################################################
+
+$ext = "x";
+if ($ARGV[0] =~ /-g/) { 
+    $ext = "g" ;
+} elsif ($ARGV[0] =~ /-pg/) { 
+    $ext = "pg" ; 
+} elsif ($ARGV[0] =~ /-x/) {
+    $ext = "x";
+} elsif ($ARGV[0] =~ /-h/) { 
+    print "    Usage:   alya-what [-g -x -pg -h]\n\n";
+    print "    Returns which modules and services have been compiled\n";
+    print "    The modules must be all registered and included in the alya-registry file. \n\n";
+    print "    \n";
+    print "    Options:\n";
+    print "      -g                  :  Check Alya.g.\n";
+    print "      -x                  :  Check Alya.x (default).\n";
+    print "      -pg                 :  Check Alya.pg.\n";
+    print "      -h                  :  Display this help.\n";
+    print "    \n";
+    exit;
+}
+$prog = "Alya.$ext";
+
+print "\n";
+print "--| alya-what |-- \n";
+print "\n";
+print "--| Returns which modules and services have been compiled.\n";
+print "\n";
+print "\n";
+print "    The following modules and services have been compiled in $prog:\n";
+print "\n";
+
+if (!(-e $prog)) {
+    print "      Error: Executable $prog does not exist.\n";
+    goto final
+}
+
+@rgmod=();
+%stmod=();
+system ("touch mocos");
+
+open (MOLI,"alya-registry");
+while (<MOLI>) {
+    @rgmod = split;
+    if ($rgmod[0]=~/./) {
+	if (!($rgmod[0]=~/^\#/)) {
+	    $stmod{$rgmod[0]}{name}     = $rgmod[0]; 
+	    $stmod{$rgmod[0]}{number}   = $rgmod[1];
+	    $stmod{$rgmod[0]}{fullname} = $rgmod[2];
+	    $stmod{$rgmod[0]}{modser}   = "module" ;
+	    $stmod{$rgmod[0]}{modser}   = "service" if ($rgmod[1] > 49);
+	    $msg = "nm $prog | grep def_$stmod{$rgmod[0]}{name} > mocos";
+	    system ($msg);
+	    if (-s "mocos"){ 
+		write;
+	    }
+	} 
+    }
+}
+format STDOUT =
+      Name: @<<<<<<<<  ( @<<<<<<< # @<< ) 
+$stmod{$rgmod[0]}{name} , $stmod{$rgmod[0]}{modser} , $stmod{$rgmod[0]}{number} 
+.
+
+close(MOLI);
+system ("rm -r mocos");
+
+final:
+print "\n";
+print "--| Bye.\n";
+print "\n\n";

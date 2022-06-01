@@ -1,0 +1,35 @@
+$------------------------------------------------------------
+RUN_DATA                                                     
+  ALYA          2DcosHill
+  RUN_TYPE:     $  nocontin , PRELIMINARY, FREQUENCY=100       
+  CUSTOMER      CFDW2
+  TIMING        On                                           
+END_RUN_DATA                                                 
+$------------------------------------------------------------
+PROBLEM_DATA                                                 
+  TIME_COUPLING          local   , from_critical                
+  TIME_INTERVAL         0.0, 1d8                             
+  TIME_STEP_SIZE        0.1                                  
+  NUMBER_OF_STEPS       3                             
+  NASTIN_MODULE          On                                  
+  END_NASTIN_MODULE                                          
+  TURBUL_MODULE          On                                  
+  END_TURBUL_MODULE                                          
+  TEMPER_MODULE          Off                          
+  END_TEMPER_MODULE                                          
+  PARALL_SERVICE         On                                  
+    OUTPUT_FILE          OFF                                 
+    POSTPROCESS          MASTER                              
+    PARTITION_TYPE       FACES                               
+     OPENMP                                                  
+      COLORING: MINCO                                        
+     END_OPENMP                                              
+  END_PARALL_SERVICE                                         
+END_PROBLEM_DATA                                             
+$------------------------------------------------------------
+MPI_IO: On                                            
+  GEOMETRY: Off                                            
+  RESTART: On                                            
+  POSTPROCESS: On                                             
+END_MPI_IO                                            
+$------------------------------------------------------------

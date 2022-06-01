@@ -1,0 +1,31 @@
+#! /bin/bash
+
+FULLNAME=`finger $USER | grep -i name | cut -d":" -f3`
+SUBROUTINE=$1
+NAME=`echo $SUBROUTINE | cut -d"." -f1`
+WHERE=`basename $PWD`
+DATE=`date +%d/%m/%Y`
+
+echo '!-----------------------------------------------------------------------' >  $SUBROUTINE
+echo '!> @addtogroup '$WHERE                                                    >> $SUBROUTINE
+echo '!> @{                                                                   ' >> $SUBROUTINE
+echo '!> @file    '$1                                                           >> $SUBROUTINE
+echo '!> @author '$FULLNAME                                                     >> $SUBROUTINE
+echo '!> @date    '$DATE                                                        >> $SUBROUTINE
+echo '!> @brief   ????????????????????????????                                ' >> $SUBROUTINE
+echo '!> @details ????????????????????????????\n                              ' >> $SUBROUTINE
+echo '!!          ????????????????????????????\n                              ' >> $SUBROUTINE
+echo '!!          ????????????????????????????                                ' >> $SUBROUTINE
+echo '!> @}                                                                   ' >> $SUBROUTINE
+echo '!-----------------------------------------------------------------------' >> $SUBROUTINE
+echo 'subroutine '$NAME'()'                                                     >> $SUBROUTINE
+echo '  use def_kintyp, only : ip,rp'                                           >> $SUBROUTINE
+echo '  implicit none'                                                          >> $SUBROUTINE
+echo '  integer(ip), intent(in)  :: i1        !< Definition of i1'              >> $SUBROUTINE
+echo '  real(rp),    intent(in)  :: r1        !< Definition of r1'              >> $SUBROUTINE
+echo '  integer(ip), intent(out) :: i2        !< Definition of i2'              >> $SUBROUTINE
+echo '  real(rp),    intent(out) :: r2        !< Definition of r2'              >> $SUBROUTINE
+echo '  integer(ip)              :: i3'                                         >> $SUBROUTINE
+echo '  real(rp)                 :: r3'                                         >> $SUBROUTINE
+echo ' '                                                                        >> $SUBROUTINE
+echo 'end subroutine '$NAME                                                     >> $SUBROUTINE

@@ -1,0 +1,36 @@
+#BSUB -n 17    
+#BSUB -R"span[ptile=16]"
+#BSUB -o OUT00.txt
+#BSUB -e ERR00.txt
+#BSUB -J 2016MAY10  
+#BSUB -W 00:09  
+# #BSUB -q bsc_case  
+
+export PATH=$PATH:/home/bsc21/bsc21704/z2016/REPOSITORY/HPCTOOLKIT/HPCTK/hpctoolkit/build_gcc_papi/Execs/bin
+ALYA_PATH=/home/bsc21/bsc21704/z2016/REPOSITORY/ALYAs/ALYA_2016SEP06/Executables/gLI8M5_hpctk/
+
+module purge
+module load openmpi/1.8.1 gcc/4.9.1
+
+#ALYAi=3 
+#ALYAj=3    
+
+ALYAij=16   
+ALYAi=12  
+ALYAj=$((ALYAij-ALYAi)) 
+
+
+ln -s cou.dat  Interior01.cou.dat
+ln -s cou.dat    vortex2D.cou.dat
+#
+time mpirun \
+-np $ALYAi \
+ hpcrun -t --event WALLCLOCK@100001 --output P${ALYAij}_measurements \
+ $ALYA_PATH/Alya.x vortex2D\
+ : \
+-np $ALYAj \
+ hpcrun -t --event WALLCLOCK@100001 --output P${ALYAij}_measurements \
+ $ALYA_PATH/Alya.x Interior01  
+#
+rm *.cou.dat 
+#

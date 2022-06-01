@@ -1,0 +1,27 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   hill
+  LIVE_INFO:              Screen
+  OUTPUT:                 visit
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_Critical
+  $$TIME_INTERVAL =         0.0, 10.0
+  TIME_STEP_SIZE  =       0.01
+  NUMBER_OF_STEPS=        50
+  MAXIMUM_NUMBER_GLOBAL=  1
+  BLOCK_ITERATION: 1
+     1 TEMPER, NASTIN
+  END_BLOCK_ITERATION
+  NASTIN_PROBLEM:         ON
+  END_NASTIN 
+  TEMPER_PROBLEM:         ON
+  END_TEMPER
+PARALL_SERVICE:         ON
+    OUTPUT_FILE:          no
+    POSTPROCESS:          MASTER
+    PARTITION:            FACES
+END_PARALL
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

@@ -1,0 +1,87 @@
+$-------------------------------------------------------------------
+$
+$ coh_stiExplicit
+$ Author:  Gerard Guillamet and Adria Quintanas
+$ Details: This test validates the cohesive element (Turon
+$          et al. 2006) in a Explicit time integration scheme
+$          A mass scaling of 1e+8 is applied to the problem
+$          and densities are modified accordingly.
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, PEEK/AS4 ,,,,,,
+    MATERIAL          = 1
+    DENSITY           = 1.6E-1
+    CONSTITUTIVE_MODEL: ORTLIN \
+     122.7e+3 10.1e+3 10.1e+3 0.25 0.25 0.45 5.5e+3 5.5e+3 3.7e+3
+    $ ,,,,,, COHESIVE,,,,,,
+    MATERIAL          = 2
+    DENSITY           = 1.6E-2 1.227e+4
+    COHESIVE_LAW: TURON \
+     0.969 1.719 80.0 1.0e+5 2.284 0.0
+    $ ,,,,,, Material CSYS ,,,,,,
+    CSYS_MATERIAL      FIELD = 1, 2, 3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:     EXPLICIT
+  TIME_INTEGRATION:   NEWMARK, CDIFF
+  SAFETY_FACTOR       0.85
+  NO_STEADY_STATE
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP  = 0
+  POSTPROCESS DISPL,   STEPS = 1E+2
+  POSTPROCESS FRXID,   STEPS = 1E+2
+  POSTPROCESS SIGMA,   STEPS = 1
+  POSTPROCESS DCOHE,   STEPS = 1E+2
+  NODE_SET
+    DISPX
+    FRXIX
+  END_NODE_SET
+  WITNESS_POINTS
+    DISPX
+    SIGXX
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1  000  0.0 0.0 0.0 0
+    2  000  0.0 0.0 0.0 0
+    3  000  0.0 0.0 0.0 0
+    4  000  0.0 0.0 0.0 0
+    5  111  0.0 0.0 0.0 0
+    6  111  0.0 0.0 0.0 0
+    7  111  0.0 0.0 0.0 0
+    8  111  0.0 0.0 0.0 0
+    9  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   10  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   11  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   12  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   13  000  0.0 0.0 0.0 0
+   14  000  0.0 0.0 0.0 0
+   15  000  0.0 0.0 0.0 0
+   16  000  0.0 0.0 0.0 0
+  END_CODES
+  $-----------------
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER:   1
+      TIME_SHAPE: DISCRETE,SMOOTH
+      SHAPE_DEFINITION
+        2
+        0.0 0.00 0.00 0.00
+        1.0 0.04 0.00 0.00
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

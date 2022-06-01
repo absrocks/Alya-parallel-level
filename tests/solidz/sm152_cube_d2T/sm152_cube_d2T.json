@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "sm152_cube_d2T-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test validates the damage law for matrix cracking (d2+) by using the constitutive model 152. The model consist of a cube 1x1x1mm with fibres perpendicular to the loading direction (90 degrees ply respect to the reference). The cube is divided in two regions or materials: center (with damage) and each side (elastic). Alya Implicit integration scheme is used.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "sm152_cube_d2T",
+    "postprocess": "alya2pos"
+}

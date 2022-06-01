@@ -1,0 +1,42 @@
+{
+    "authors": [
+        "matias.avila@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "keHill-VELOC-00000003.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "keHill-KEY-00000003.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "keHill-EPSIL-00000003.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Turbul ke model periodic with for ABL with Coriolis force over 2 hills stabilizing output with bazilev's.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {   
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "turbul"
+    ],
+    "name": "keHill",
+    "postprocess": "mpio2txt"
+}

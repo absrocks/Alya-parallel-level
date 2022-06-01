@@ -1,0 +1,8 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+NODAL_POINTS=       10023
+ELEMENTS=           19456
+SPACE_DIMENSIONS=   2
+BOUNDARIES=         588
+TYPES_OF_ELEMS=     TRI03
+$--------------------------------------------------

@@ -1,0 +1,75 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  mesh/mesh3d.dims.dat
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=       HEX08
+  
+  FIELDS = 7
+	FIELD: 1, DIMEN= 1, NODES
+	FIELD: 2, DIMEN= 1, NODES
+	FIELD: 3, DIMEN= 1, NODES
+	FIELD: 4, DIMEN= 1, NODES
+	FIELD: 5, DIMEN= 1, NODES
+	FIELD: 6, DIMEN= 1, NODES
+	FIELD: 7, DIMEN= 3, NODES
+  END_FIELDS
+  
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN  
+  DOMAIN_INTEGRATION_POINTS: 0 
+  GROUPS:                    10, SEQUENTIAL
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF   
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  $
+  $ gx  = 0.031415926535897934;       
+  $ gy  = 0.015707963267948967;       
+  $ gz  = 0.015707963267948967;      
+  $ nGapx = 11;
+  $ nGapy = 4;
+  $ nGapz = 4;
+  $
+  INCLUDE mesh/mesh3d.geo.dat
+
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE  mesh/mesh3d.fix.bou.real
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITION
+  ON_BOUNDARIES
+    INCLUDE mesh/mesh3d.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE mesh/TEMPE.alya
+  END_FIELD
+  FIELD= 2
+    INCLUDE mesh/CON01.alya
+  END_FIELD
+  FIELD= 3
+    INCLUDE mesh/CON02.alya
+  END_FIELD
+  FIELD= 4
+    INCLUDE mesh/CON03.alya
+  END_FIELD
+  FIELD= 5
+    INCLUDE mesh/CON04.alya
+  END_FIELD
+  FIELD= 6
+    INCLUDE mesh/ENTHA.alya
+  END_FIELD
+  FIELD= 7
+    INCLUDE mesh/VELOC.alya
+  END_FIELD
+END_FIELDS
+$--------------------------------------------------

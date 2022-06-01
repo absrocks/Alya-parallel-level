@@ -1,0 +1,46 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03.nsi.wit",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        }
+    ],
+    "description": "Test the nastin module equations, with the basic solver options.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1
+        },
+        {
+            "mpi": 4
+        },
+        {
+            "mpi": 5
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03",
+    "postprocess": "alya2pos"
+}

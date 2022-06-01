@@ -1,0 +1,51 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+  NUMERICAL_TREATMENT 
+
+
+      DEFORMATION:           BOUNDARY, STEPS=1
+      ALGEBRAIC_SOLVER
+        SOLVER:                CG
+        CONVERGENCE:           ITERA=1000, TOLER=1.0e-10
+        OUTPUT:                CONVERGENCE
+        PRECONDITIONER:        DIAGONAL
+        STEADY_STATE_TOLERANCE=-1.0e-10
+      END_ALGEBRAIC_SOLVER
+
+
+  END_NUMERICAL_TREATMENT 
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+    START_POSTPROCESS_AT    STEP = 0
+$$    POSTPROCESS DISPM
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+  CODES, NODES
+
+
+1 11 0.0 0.0      $$ inputs
+2 11 0.0 0.0      $$ walls
+3 11 0.0 0.0      $$ outputs
+5 00 0.0 0.0      $$ contact bottom
+
+1 & 2 11 0.0 0.0       $$ in and walls
+
+1 & 5 00 0.0 0.0       $$ contact osci and walls
+
+2 & 3 11 0.0 0.0       $$ out and walls
+
+3 & 5 11 0.0 0.0       $$ contact bottom and walls
+
+
+
+
+  END_CODES
+
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+ 
+ 

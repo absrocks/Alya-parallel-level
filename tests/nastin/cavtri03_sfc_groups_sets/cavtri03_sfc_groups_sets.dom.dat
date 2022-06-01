@@ -1,0 +1,39 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          121
+  ELEMENTS=              200
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10
+  BOUNDARIES=             40
+  MATERIALS=               2
+  SUBDOMAINS=              1
+  FIELDS:                  2
+    FIELD = 1, DIMENSIONS=2, ELEMENTS
+    FIELD = 2, DIMENSIONS=1, NODES  
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0
+  BOUNDARY_ELEMENT:                ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  GROUPS=                          20, PARALLEL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  ./cavtri03_sfc_groups_sets.geo.dat
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  INCLUDE  ./cavtri03_sfc_groups_sets.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  ./cavtri03_sfc_groups_sets.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  INCLUDE ./cavtri03_sfc_groups_sets.fie.dat
+END_FIELDS
+$-------------------------------------------------------------

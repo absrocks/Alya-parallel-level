@@ -1,0 +1,30 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "jazmin.aguado@bsc.es",
+        "guillaume.houzeaux@bsc.es",
+	"mariano.vazquez@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "VT_4mat_ohara_nomodel_repart.exm.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Exmedi test case, cube with 4 materials, using ohara and nomodel and repartitioning.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_4mat_ohara_nomodel_repart",
+    "postprocess": "alya2pos"
+}

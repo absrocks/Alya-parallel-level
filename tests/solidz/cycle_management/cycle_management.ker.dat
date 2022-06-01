@@ -1,0 +1,28 @@
+$-------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  MESH
+    DIVISION: 0
+    EXTENDED_GRAPH: OFF
+    ROTATE: ANGLE=33.33333,Z
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER: 10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+
+
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  POSTPROCESS CODNO, STEPS=1
+  POSTPROCESS LBSET, STEPS=1
+  POSTPROCESS LNSET, STEPS=1
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------

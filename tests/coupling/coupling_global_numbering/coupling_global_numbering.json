@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coupling_global_numbering2.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Coupling using the global numbering of the nodes with temper",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 4 [ALYA] [NAME]1 [SEP] [NP] 4 [ALYA] [NAME]2",
+                "postprocess": "[POST] [NAME]2"
+            },
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "coupling_global_numbering",
+    "postprocess": "alya2pos"
+}

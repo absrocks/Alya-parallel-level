@@ -1,0 +1,21 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    MULTIPLICATION
+      LEVEL = 0
+    END_MULTIPLICATION
+    EXTENDED_GRAPH: OFF
+    FULL_GRAPH_ROW: OFF
+    ROTATION: Z, ANGLE=0.0
+  END_MESH
+  LOCALIZE: BILATERAL
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS= 50
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

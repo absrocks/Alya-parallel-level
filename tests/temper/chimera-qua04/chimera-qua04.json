@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "chimera-qua04.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Dirichlet-Dirichlet coupling inside the solver for linear temperatue solution. To test kernel coupling",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "chimera-qua04",
+    "postprocess": "alya2pos"
+}

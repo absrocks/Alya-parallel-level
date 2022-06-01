@@ -1,0 +1,34 @@
+{
+    "authors": [
+        "lucas.gasparino@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "chan_hex-ENVIT-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-11
+        },
+        {
+            "file": "chan_hex-TEMPE-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-11
+        }
+    ],
+    "description": "Test for the Entropy Viscosity stabilization of TEMPER.",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "chan_hex",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

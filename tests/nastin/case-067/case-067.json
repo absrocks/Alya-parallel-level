@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "case-067.post.res",
+            "method": "absolute",
+            "tolerance": 1e-10
+        }
+    ],
+    "description": "Geometrical bc for nastin and turbul. Test initial conditions.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5
+        }
+    ],
+    "modules": [
+        "nastin",
+        "turbul"
+    ],
+    "name": "case-067",
+    "postprocess": "alya2pos"
+}

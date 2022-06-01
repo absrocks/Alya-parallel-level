@@ -1,0 +1,29 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+ INCLUDE: config.dat
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+$   ELEMENT_SEARCH: BIN
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+$   NEWMARK: GAMMA=1.0, BETA=0.5625    $ Very diffusive
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  LEVEL     = 1
+  FREQUENCY = 10
+  $START_POSTPROCES_AT    STEP =0
+  OUTPUT DEPOSITION
+  POSTPROCESS DEPOSITION, STEPS=10
+  POSTPROCESS PARTICLES,  STEPS=10
+  POSTPROCESS PARTICLE_NUMBE, STEPS = 10
+  POSTPROCESS RESIDENCE, STEPS = 10
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  INJE1: SQUARE,PARAM=0.3,0.3,0.5,0.7,0.7,0.5 50 
+  INJE2: SQUARE,PARAM=0.3,0.3,0.5,0.7,0.7,0.5 50 
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0E06
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

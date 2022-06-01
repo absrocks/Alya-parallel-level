@@ -1,0 +1,49 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+NODAL_POINTS    4410
+ELEMENTS        20664
+BOUNDARIES      3616
+
+  SPACE_DIMENSIONS=             3
+  NODES=                        4
+  SKEW_SYSTEMS=                 0 
+  SLAVES=                       0
+  FIELDS =                      2
+    FIELD: 1, DIMENSIONS=3, NODES
+    FIELD: 2, DIMENSIONS=1, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  BOUNDARY_ELEMENT:                 OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+
+   INCLUDE  VT_diff.geo.dat
+
+END_GEOMETRY
+
+SETS
+    include VT_diff.defsets
+END_SETS
+
+BOUNDARY_CONDITIONS
+    include VT_diff.fix.bou
+END_BOUNDARY_CONDITIONS
+ 
+   FIELDS, NUMBER = 2
+        FIELD=1
+             INCLUDE  VT_diff.fiber.dat
+        END_FIELD
+
+
+        FIELD=2
+            INCLUDE  VT_diff.cell.dat
+        END_FIELD
+
+    END_FIELDS

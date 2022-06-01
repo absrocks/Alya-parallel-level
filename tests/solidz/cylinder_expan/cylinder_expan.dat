@@ -1,0 +1,31 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cylinder_expan
+  LIVE_INFO:              SCREEN
+  LOG_FILE:               ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, Prescribed
+  TIME_INTERVAL=          0.0, 1.1  
+  TIME_STEP_SIZE=         0.01  
+  NUMBER_OF_STEPS=        10
+  MAXIMUM_NUMBER_GLOBAL=  1
+
+  SOLIDZ_PROBLEM:         ON
+  END_SOLIDZ
+  PARALL_SERVICE:         ON
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+    PARTITIONING:         
+      METHOD:             METIS
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY:    On
+  RESTART:     On
+  POSTPROCESS: On
+END_MPI_IO
+$-------------------------------------------------------------------

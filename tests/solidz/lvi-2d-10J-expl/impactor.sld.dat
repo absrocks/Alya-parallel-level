@@ -1,0 +1,67 @@
+$-------------------------------------------------------------------
+$
+$ impactor
+$
+$ Details:   Low velocity impact test (10J)
+$            Impactor radius: 8mm
+$            Impactor mass: 2kg
+$            Impactor-plate gap: 0.01mm
+$            Impactor is assumed as a rigid body
+$            Alya RK4 solver
+$
+$ Units:     SI (mm)
+$
+$ Reference: -
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+    RIGID_BODY:           ON
+    GRAVITY:              NORM=9810.0, GX=0.0, GY=-1.0
+    INITIAL_CONDITION:    VELOCITY, VX=0.0, VY=-3162.247
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL= 1
+    MASS=     2.0E-3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_INTEGRATION:    RUNGE_KUTTA
+  NO_STEADY_STATE
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT STEP = 0
+$  POSTPROCESS CELEN
+$  POSTPROCESS PARTI
+$  POSTPROCESS BOCOD
+$  POSTPROCESS FIXNO
+$  POSTPROCESS DISPL
+$  POSTPROCESS VELOC
+$  POSTPROCESS ACCEL
+  NODE_SET
+    DISPY
+    VELOY
+    ACCEY
+  END_NODE_SET
+  ELEMENT_SET
+    VELOC
+  END_ELEMENT_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  PARAMETERS
+    CONTACT_PDN
+      RBO_DEFORMABLE
+      BOUNDARY=   2
+      PROJECTION: Y
+    END_CONTACT_PDN
+  END_PARAMETERS
+  CODES, NODES
+        3 10 0.0 0.0 $ TOP-LINE
+    2 & 3 10 0.0 0.0 $ TOP-POINTS
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

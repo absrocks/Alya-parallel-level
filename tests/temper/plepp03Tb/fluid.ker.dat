@@ -1,0 +1,67 @@
+$$Create by J. MIGUEL ZAVALA-AKE 
+$-------------------------------------------------------xxx.ker.dat
+$
+$ http://www.engineeringtoolbox.com/dry-air-properties-d_973.html 
+$
+$ Pr = mu * cp/ k                               -> 0.713560 = 1.714920e-05 * 1003.574 / 0.024119  
+$ Re = rho * v * L / mu                         ->       Re = 1.294240 / 1.714920e-5 * v * L      ->  Re = 1.294240 / 1.714920e-5 * 265.13317440000003 * 4.5e-3 = 9.0e5  
+$ Ma = v/c = v / sqrt( gamma * Rair / Mair * T) ->       Ma = v / 331.416468                      ->   v = 0.8 * 331.416468 = 265.13317440000003  
+$            
+PHYSICAL_PROBLEM
+  $$ LOWMACH:
+  PROPERTIES
+    MATERIAL = 1
+     $DENSITY       = CONSTANT, PARAMETER =    1.294240
+      DENSITY       = LOW_MACH, GMIXT 
+      SPECIFIC_HEAT = CONSTANT, PARAMETER = 1003.574        # J/kg/K
+     VISCOSITY     = CONSTANT, PARAMETER =    1.714920e-5  # Ns/m2  
+     CONDUCTIVITY  = CONSTANT, PARAMETER =    0.024119     # W/M/K 
+$
+$ PARECE QUE ESTA VERSION DE ALYA NO TIENE LOS CAMBIOS DEL KERNEL...
+$
+$CONDU = SUTHE, GAUSS = 0.02411900, 300.0, 110.0 #  mu0, T0, S0
+$VISCO = SUTHE, GAUSS = 1.71492e-5, 300.0, 194.0 #  mu0, T0, S0
+    END_MATERIAL
+  END_PROPERTIES
+  $
+  COUPLING
+    TEMPER, NASTIN = 1 1
+    NASTIN, TEMPER = 1 1
+  END_COUPLING
+  $
+END_PHYSICAL_PROBLEM
+
+NUMERICAL_TREATMENT
+  MESH
+   $DIVISION=1
+  END_MESH
+  $                                           _ tmax       _ initial value
+  $                                          /            /
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INFLOW 
+    ( 1.5 + 0.5*tanh( 0.5*(-10.0 + 20.0*t/0.66e-4) ) ) * 300.0
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+  $  
+  ELSEST: ON
+    STRATEGY: BIN
+    NUMBER: 50,50,50
+  END_ELSEST
+  $ 
+END_NUMERICAL_TREATMENT
+
+OUTPUT_&_POST_PROCESS
+  ON_LASTMESH
+  STEPS = 100  
+ $POSTPROCESS  CODNO 
+ POSTPROCESS  DENSI 
+
+  WITNESS_POINTS, NUMBER=3  
+    0.0 0.0 0.0 
+    0.1 0.0 0.0
+    0.2 0.0 0.0 
+  END_WITNESS_POINTS
+
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+

@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cantilever_shell_expl-boundary.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-07
+        }
+    ],
+    "description": "Cantilever beam under displacement load using Continuum shell elements and Explicit analysis.\r . Geometry and mesh are the same as cantilever_shell test. ",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cantilever_shell_expl",
+    "postprocess": "alya2pos"
+}

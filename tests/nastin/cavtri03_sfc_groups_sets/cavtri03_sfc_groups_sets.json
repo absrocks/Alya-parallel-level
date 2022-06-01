@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_sfc_groups_sets.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_sfc_groups_sets.post.msh",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_sfc_groups_sets-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_sfc_groups_sets-element.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_sfc_groups_sets-node.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Parallel partitioning, and parallel frontal approach to generate groups. Results of sets on elements, boundaries and nodes, compare results and meshes while ordering elements with alya2pos as well element, boundary and node sets. alya2pos with element ordering (to compare sfc with classical sfc)",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_sfc_groups_sets",
+    "postprocess": "alya2pos"
+}

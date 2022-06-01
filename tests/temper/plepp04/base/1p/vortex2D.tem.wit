@@ -1,0 +1,41 @@
+# ALYA Witness set results
+#
+# HEADER
+# ISET , Column :   1
+# TEMPE , Column :   2
+# NUMVARIABLES :       2
+# NUMSETS      :       1
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+         1  0.30000000E+003 
+# Iterations  =       1      1      1
+# Time        =  0.18154387E-004
+         1  0.30000000E+003 
+# Iterations  =       2      1      1
+# Time        =  0.36304286E-004
+         1  0.30000000E+003 
+# Iterations  =       3      1      1
+# Time        =  0.54455828E-004
+         1  0.30000000E+003 
+# Iterations  =       4      1      1
+# Time        =  0.72607806E-004
+         1  0.30000000E+003 
+# Iterations  =       5      1      1
+# Time        =  0.90759968E-004
+         1  0.30000000E+003 
+# Iterations  =       6      1      1
+# Time        =  0.10891223E-003
+         1  0.30000000E+003 
+# Iterations  =       7      1      1
+# Time        =  0.12706456E-003
+         1  0.30000000E+003 
+# Iterations  =       8      1      1
+# Time        =  0.14521694E-003
+         1  0.30000000E+003 
+# Iterations  =       9      1      1
+# Time        =  0.16336935E-003
+         1  0.30000000E+003 
+# Iterations  =      10      1      1
+# Time        =  0.18152178E-003
+         1  0.30000000E+003 

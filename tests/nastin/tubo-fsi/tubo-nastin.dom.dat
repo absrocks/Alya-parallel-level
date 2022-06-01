@@ -1,0 +1,33 @@
+$--------------------------------------------------
+ DIMENSIONS
+   NODAL_POINTS=                          836
+   ELEMENTS=                             3900
+   BOUNDARIES=                            660
+   SPACE_DIMENSIONS=                        3 
+   TYPES_OF_ELEMS=0,0,0,0,0,30,0,      0,      0,       0,      0
+   NO_SETS
+   ZONES                                   1
+ END_DIMENSIONS
+ $--------------------------------------------------
+ STRATEGY
+   INTEGRATION_RULE:          OPEN 
+   DOMAIN_INTEGRATION_POINTS:    1         
+   SCALE XSCAL= 20.0 , YSCAL= 100.0 , ZSCAL= 100.0
+   EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          ON
+  GROUPS=                    400
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+END_STRATEGY
+ $--------------------------------------------------
+ GEOMETRY
+   INCLUDE  spl-fluid.geo.dat
+ END_GEOMETRY
+
+
+ SETS
+ END_SETS
+
+ BOUNDARY_CONDITIONS
+   INCLUDE  spl-bocon-fluid.geo.dat
+$    INCLUDE Flap.fix.bou
+ END_BOUNDARY_CONDITIONS

@@ -1,0 +1,22 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 2
+  COUPLING=1
+     TARGET, SUBDOM: 1
+     SOURCE, SUBDOM: 2
+     WHERE_TYPE:     CHIMERA
+     WHAT=           UNKNOWN
+     TYPE:           BOUNDARY_INTERPOLATION
+  END_COUPLING
+  COUPLING=2
+     TARGET, SUBDOM: 2
+     SOURCE, SUBDOM: 1
+     WHERE_TYPE:     CODE, NUMBER=5
+     WHAT=           RESIDUAL
+     TYPE:           BOUNDARY_INTERPOLATION
+  END_COUPLING
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+END_NUMERICAL_TREATMENT 
+$------------------------------------------------------------

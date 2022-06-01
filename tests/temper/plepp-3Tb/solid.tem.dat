@@ -1,0 +1,81 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+$
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   On  
+    CONVECTIVE_TERM:        Off
+    CONDUCTION_TERM:        On
+   $SOURCE_TERMS:           FIELD=1
+  END_PROBLEM_DEFINITION
+$
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  TAU_STRATEGY:            Codina
+ $ELEMENT_LENGTH:          Minimum
+  ELEMENT_LENGTH:          FLOWD                             $ (2016MAY02a00)
+ $SHOCK_CAPTURING=         Anisotropic, VALUE: 0.9
+  TIME_INTEGRATION:        Trapezoidal, ORDER: 1, EULER=5
+ $SAFETY_FACTOR=           1                                 $ (a) 
+ $SAFETY_FACTOR:           1.0 EXPON 1.02 1e3                $ (b)
+ $SAFETY_FACTOR:           1e2 EXPON 1.02 1e3                $ (2016MAY03a00) ...    
+  SAFETY_FACTOR            1e10    
+  STEADY_STATE_TOLERANCE= -1e-8  
+  NORM_OF_CONVERGENCE:     L2   
+  MAXIMUM_NUMBER_OF_ITER=  10  
+  RELAXATION_FACTOR=       1.0 
+  CONVERGENCE_TOLERANCE=   1e-6  
+  $
+  ALGEBRAIC_SOLVER
+    SOLVER:                GMRES, KRYLOV=90
+    CONVERGENCE:           ITERA=1000, TOLER=1.0e-10
+    OUTPUT:                CONVERGENCE
+    PRECONDITIONER:        DIAGONAL
+$$$$OPTION:                ZERO_FIXITY
+    OPTION:                FIXITY
+  END_ALGEBRAIC_SOLVER
+  $
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS INITIAL
+  POSTPROCESS TEMPER
+  POSTPROCESS GRATE
+ $POSTPROCESS HEATN
+ $POSTPROCESS BVNAT
+$
+ WITNESS_POINTS
+   TEMPE
+  $FLUXX
+  $FLUXY
+  $FLUXZ
+ END_WITNESS_POINTS
+$
+$  BOUNDARY_SET
+$    MEAN_TEMPERATURE
+$    MEAN_HEAT
+$  END_BOUNDARY_SET
+$
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+$
+BOUNDARY_CONDITIONS
+ $
+ PARAMETERS
+   INITIAL, CONSTANT = 900.0
+ END_PARAMETERS
+ $
+ $INITIAL: VALUE = 1 
+ $
+ CODES, NODES
+   INCLUDE solid.tem.codes 
+ END_CODES
+ $
+ CODES, BOUNDARIES
+   3  2  0.0  0.0  0.0  $ NEUMANN  
+ END_CODES_BOUNDARIES
+ $
+END_BOUNDARY_CONDITIONS
+$-----------------------------------------------------------------------
+

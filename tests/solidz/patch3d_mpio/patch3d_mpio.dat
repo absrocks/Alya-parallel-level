@@ -1,0 +1,26 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   patch3d_mpio
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1.0
+  TIME_STEP_SIZE=         0.5
+  NUMBER_OF_STEPS=        2
+  SOLIDZ_PROBLEM:         On
+  END_SOLIDZ
+  PARALL_SERVICE:         On
+  END_PARALL
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:                  ON
+  GEOMETRY:              OFF
+  RESTART:               OFF
+  POSTPROCESS:           ON
+  RESTART:               OFF
+  MERGE:                 OFF
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------

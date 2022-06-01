@@ -1,0 +1,29 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+      DENSITY:    CONSTANT,  PARAMETERS = 1.0
+      VISCOSITY:  CONSTANT,  PARAMETERS = 0.1
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT    
+  MESH
+    DIVISION=0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   100,10
+  END_ELSEST
+  OPTIMIZATION
+    OPTFUNCTIONAL: ON
+    COSTTYPE: 5
+    DVARTYPE: 5
+    ADJOINT: ON
+  END_OPTIMIZATION
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS=1000
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------ 

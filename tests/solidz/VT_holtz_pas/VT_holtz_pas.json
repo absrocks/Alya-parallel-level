@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "VT_holtz_pas-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Testing the holtzapfel-ogden (model 132) implicit.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "VT_holtz_pas",
+    "postprocess": "alya2pos",
+    "timeout": "00:05:00"
+}

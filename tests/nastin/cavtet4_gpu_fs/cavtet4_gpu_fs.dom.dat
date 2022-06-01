@@ -1,0 +1,29 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=         2437
+  ELEMENTS=            10751
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=   TET04
+  BOUNDARIES=           2400
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 1
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          10, SEQUENTIAL_FRONTAL $ PARALLEL_FRONTAL, SFC, PARTITION, FIELD
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  cavtet4_gpu_fs.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  cavtet4_gpu_fs.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  cavtet4_gpu_fs.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

@@ -1,0 +1,82 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+    PROBLEM_DEFINITION
+
+   STARTING_POTENTIAL, TABLE
+       NSTIM= 1, NOBOU, CURDE
+     $$CURDE    COORDX   COORDY    COORDZ  RADIUS  TSTART DURATION
+        -100   9.51994  9.09379  10.84390    0.10       0     0.05
+    END_STARTING_POTENTIAL
+
+    GEO_COUPLING: LAGRANGIAN
+
+    END_PROBLEM_DEFINITION
+
+$------------------------------------------------------------
+    PROPERTIES
+            CONTINUUM_MODEL
+                IN_DIFFUSION=    0.001 0.001 0.001 [mS/cm]
+            ENDCONTINNUM_MODEL
+
+            CELL_MODEL: OHARA INA_PASSINI $  TTHET
+                CM_CONST=  1.0 $[muF/cm2]
+            END_CELL_MODEL
+
+            INI_CELL, HETEROGENEOUS
+                INCLUDE TThet_framework.txt
+            END_INI_CELL
+
+        PARAMETERS
+            ISOCHRONES HIGHER 0.0
+        END_PARAMETERS
+
+    END_PROPERTIES
+
+$------------------------------------------------------------
+    FIBER_MODEL:              FIELD=1
+    CELL_TYPE:                FIELD=2
+
+   CREATE_STREETER
+        FUNCTION= LINEAR
+        VAXIS=    0.0 0.0 1.0
+        EPICARDIUM=        3
+        LEFT_ENDOCARDIUM=  1
+        RIGHT_ENDOCARDIUM=  2
+        ANGLE= 60, -60
+   END_CREATE_STREETER
+
+
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+    CONSTANT_MATRIX
+    SAFETY_FACTOR=           1.0
+
+    TIMETREATMENT: IMPLICIT
+
+    ALGEBRAIC_SOLVER
+        SOLVER:                CG
+        CONVERGENCE:           ITERA=1000, TOLER=1.0e-5, ADAPTIVE, RATIO=0.01
+        OUTPUT:                CONVERGENCE
+        PRECONDITIONER:        DIAGONAL
+    END_ALGEBRAIC_SOLVER
+
+END_NUMERICAL_TREATMENT
+
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+    START_POSTPROCESS_AT STEP = 0
+    POSTPROCESS  INTRA, STEPS=10
+    NODE_SET
+       INTRA
+    END_NODE_SET
+
+END_OUTPUT_&_POST-PROCESS
+
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, CONSTANT
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

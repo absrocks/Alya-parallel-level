@@ -1,0 +1,17 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  CODE=                   1
+  ALYA:                   periodic
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL=          0.0, 700
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        1
+  TEMPER_MODULE:          On
+  END_TEMPER_MODULE
+  PARALL_SERVICE:         On
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

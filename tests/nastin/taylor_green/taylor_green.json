@@ -1,0 +1,39 @@
+{
+    "authors": [
+        "lucas.gasparino@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "taylor_green-LAMB2-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-11
+        },
+        {
+            "file": "taylor_green-VORTI-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-11
+        },
+        {
+            "file": "taylor_green-QCRIT-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-11
+        }
+    ],
+    "description": "Taylor-Green vortex case to test new postprocessing variables LAMB2, QCRIT and VORTI.",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "taylor_green",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

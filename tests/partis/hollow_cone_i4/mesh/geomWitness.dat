@@ -1,0 +1,20 @@
+WITNESS, GEOMETRY NUMBER = 18
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.22, DR=0.01, DN=0.1
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.23, DR=0.01, DN=0.1
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.24000000000000002, DR=0.01, DN=0.1
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.25, DR=0.01, DN=0.1
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.26, DR=0.01, DN=0.1
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.27, DR=0.01, DN=0.1
+    RING   X=0.25, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.28, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.45, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.46, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.47000000000000003, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.48000000000000004, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.49000000000000005, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.5, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.51, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.52, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.53, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.54, DR=0.01, DN=0.1
+    RING   X=0.5, Y=0, Z=0, NX=1, NY=0, NZ=0, R=0.55, DR=0.01, DN=0.1
+END_WITNESS

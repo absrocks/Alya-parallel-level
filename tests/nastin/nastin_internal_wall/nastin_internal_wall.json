@@ -1,0 +1,26 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "nastin_internal_wall.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        }
+    ],
+    "description": "Test the internal in nastin. Check that pressure is not prescribed on these internal boundaries",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 8
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "nastin_internal_wall",
+    "postprocess": "alya2pos"
+}

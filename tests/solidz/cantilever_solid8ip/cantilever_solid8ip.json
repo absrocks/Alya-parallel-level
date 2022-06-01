@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cantilever_solid8ip-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This is a classical test used to assess the behaviour of a given finite element (HEX08), but in this case we are also interested in the energetic balance. The model consists of a cantilever beam clamped at one end; and carrying a tip load of 5 N at the free end.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cantilever_solid8ip",
+    "postprocess": "alya2pos",
+	"timeout": "00:02:00"
+}

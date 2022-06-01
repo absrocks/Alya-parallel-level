@@ -1,0 +1,34 @@
+ $------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:       CONSTANT, PARAMETERS = 1.0
+      SPECIFIC_HEAT: CONSTANT, PARAMETERS = 1.0
+      CONDUCTIVITY:  CONSTANT, PARAMETERS = 0.01
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=1
+    EXTENDED_RAPH: ON
+  END_MESH
+$  DIRECT_SOLVER: PASTIX
+  ELSEST
+    STRATEGY: BIN 
+    NUMBER:   10,10,10
+    DATAF:    LINKED_LIST
+  END_ELSES
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=SOURCE
+      1.0
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+  ON_ORIGINAL_MESH
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+ 

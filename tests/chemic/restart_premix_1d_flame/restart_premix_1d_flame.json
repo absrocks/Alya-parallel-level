@@ -1,0 +1,42 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "restart_premix_1d_flame-CON01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "restart_premix_1d_flame-TEMPE-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "restart_premix_1d_flame-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+    ],
+    "description": "Initialize laminar premixed flame in 1D domain from reastart files.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+			"commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 5 [NAME] ; [RUN] [NP] [MPI] [ALYA] --read-rst --time-steps 10 [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "restart_premix_1d_flame",
+    "postprocess": "mpio2txt"
+}

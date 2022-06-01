@@ -1,0 +1,75 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            SPRAY, LES
+    SPRAY:            LEVEL_SET
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        ON
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    SURFACE_TENSION   = 0.01
+    TURBULENT_SCHMIDT = 1.0
+  END_PROPERTIES
+
+  FIELDS: SPECI = 1
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           GALERKIN 
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE,  ORDER: 3
+  SAFETY_FACTOR=           0.2
+
+  STEADY_STATE_TOLERANCE  = 1e-8
+  NORM_OF_CONVERGENCE     = L2
+  CONVERGENCE_TOLERANCE=   1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS CONCE
+  POSTPROCESS VISCO
+  POSTPROCESS SIGMA
+  POSTPROCESS SIGM0
+  POSTPROCESS D32
+  POSTPROCESS AVL
+  POSTPROCESS AVDEN
+  POSTPROCESS AVL2
+  POSTPROCESS AVD32
+  POSTPROCESS AVS
+  POSTPROCESS AVS0
+  WITNESS_POINTS
+    CONCE
+    D32
+	 SIGMA
+	 SIGM0
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ CODES, NODES, CLASS = 1
+   1    1   0.0
+ 1 & 3  1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 2
+   1    1   0.0
+ 1 & 3  1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 3
+   1    1   0.0
+ 1 & 3  1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 4
+   1    1   0.0
+ 1 & 3  1   0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

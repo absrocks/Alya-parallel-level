@@ -1,0 +1,35 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   swirl-partis
+  CODE=                   1
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1e6
+  TIME_STEP_SIZE=         0.05
+  NUMBER_OF_STEPS=        10
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+    PARTITIONING
+      METHOD:             RANDOM
+      EXECUTION_MODE:     PARALLEL
+    END_PARTITIONING
+    REPARTITIONING:       On
+      CRITERION:          ALWAYS
+      FREQUENCY=          1
+      POSTPROCESS:        NONE
+    END_REPARTITIONING
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:         On
+  GEOMETRY:     OFF 
+  RESTART:      OFF 
+  POSTPPROCESS: On
+  MERGE:        On
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------

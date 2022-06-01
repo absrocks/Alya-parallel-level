@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "jazmin.aguado@bsc.es",
+        "mariano.vazquez@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "VT_4mat_ohara_nomodel.exm.wit",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "VT_4mat_ohara_nomodel.exm.vin",
+            "method": "absolute",
+            "tolerance": 0
+        }
+
+    ],
+    "description": "Testcase for diffusion, cube with 4 materials, using ohara and nomodel. Testing ECG as well.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_4mat_ohara_nomodel",
+    "postprocess": "alya2pos",
+    "timeout": "00:03:00"
+}

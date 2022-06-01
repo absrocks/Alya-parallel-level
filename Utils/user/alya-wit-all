@@ -1,0 +1,66 @@
+#!/usr/bin/perl
+#
+#
+print "\n";
+print "--| alya-wit-all |-- \n";
+print "--| \n";
+print "--| Extract witness point values for all time steps\n";
+print "--| The output file is \"alya-wit-all.out\" \n";
+print "--| \n";
+
+$fils = $ARGV[0];
+
+if ((@ARGV < 1) || ($ARGV[0] =~ /-h/)) { 
+  print "    Usage:   alya-wit \"file-name.sld.wit\" \n\n";
+  exit 1;
+}
+
+shift(@ARGV);
+@sets   =  @ARGV;
+$ksets  =  @sets; 
+$outfils = ">alya-wit-all.out";
+
+open (IN,$fils);
+open (OUT,$outfils);
+
+print "--| \n";
+print "--| Show times loaded in the input file \n";
+print "--| \n";
+system("grep -n Time $fils");
+print "--| \n";
+
+$i=0;
+$kread=0;
+while (<IN>) {
+    $i++;    
+    if ($kread == 0) {
+	@myline = split;
+	if ($myline[1] =~ /NUMSETS/)     {
+	    print "--| \n";
+	    print "--| Witness points = $myline[3] \n";
+	    print "--| \n";	    
+	    $totwit= $myline[3];
+	    $kread = 1;
+	} 
+    }elsif ($kread == 1) {
+    	@myline = split;
+	if ($myline[1] =~ /Time/)     {
+	   $timei = $myline[3];
+   	   $kread = 2;
+	   $icout=0;
+	}	    
+    }elsif ($kread == 2) {	
+	$icout++;
+	print OUT "$timei $_";	    			
+	if ($icout == $totwit) {
+	   $kread = 1;
+	}	
+    }
+}
+
+close(IN);
+close(OUT);
+
+print "--| bye! \n";
+print "--| \n";
+

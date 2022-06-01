@@ -1,0 +1,7 @@
+$> 'Interior', id:1, n_nodes:256 
+	1 000 0.0 0.0 0.0 
+$> 'All', id:3, n_nodes:10370 
+	3 000 0.0 0.0 0.0 
+$> 'Exterior', id:2, n_nodes:256 
+	2 000 0.0 0.0 0.0 
+

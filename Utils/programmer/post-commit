@@ -1,0 +1,303 @@
+#!/usr/bin/perl
+# configuration
+$min = 15;
+$svnlook = '/usr/bin/svnlook';
+
+
+#---------------functions------------------------
+
+sub getVars {
+        local($line) = @_;
+
+	my @locvars;
+	# do this if line is not starting with a ! meaning a fortran comment
+	if ($line!~/^\!/) {
+		$line =~ s/.*:://;
+		#quitamos los posibles comentarios del final
+		$line =~ s/\!.*//;
+		#quitamos los parentesis
+		$line =~ s/\(.*?\)//g;
+		@vars = split(",", $line);
+		for $i ( 0 .. $#vars ) {
+			$var = $vars[$i];
+			#remove spaces
+			$var =~ s/^\s+//;
+			$var =~ s/\s+$//;
+			#remove post data
+			if($var =~ m/^(\w+)\(*/) {
+				push @locvars, $1;
+			}
+		}
+	}
+	
+	return @locvars;	
+}
+
+
+sub haveDocumentation {
+	my($lines, $lineIdx) = @_;
+  	
+	my $warnings;
+	my $finish = 0;
+	my $finded = 0;
+	my $idx = $lineIdx;
+	my $commentPart;
+	#!> @addtogroup groupName
+	while (!$finish && $idx >= 0) {
+		$line = $lines->[$idx];
+		$commentPart = $commentPart . $line . "\n";
+		#si es lo que buscamos salimos
+		if ($line =~ m/^\t*\s*\!\>\s*\@addtogroup\s+\w+/) {
+			$finded = 1;
+			$finish = 1;
+		}
+		#si no es una linea de comentario o una linea en blanco salimos
+		elsif (!($line =~ m/^\t*\s*\!/) && !($line =~ m/^\t*\s*$/)) {
+			$finish = 1;
+		}
+
+		if (!$finish) {
+			$idx = $idx - 1;
+		}		
+	}
+	
+	if (!$finded) {
+		$warnings = "The \@addtogroup comment is not present\n";
+	}
+	#en el trozo de código que hemos obtenido checkeamos el resto de tags
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@\{/m)) {
+		$warnings = $warnings . "The \@{ comment is not present\n";
+	}
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@file\s+\w+/m)) {
+		$warnings = $warnings . "The \@file comment is not present\n";
+	}
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@author\s+\w+/m)) {
+		$warnings = $warnings . "The \@author comment is not present\n";
+	}
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@date\s+\w+/m)) {
+		$warnings = $warnings . "The \@date comment is not present\n";
+	}
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@brief\s+\w+/m)) {
+		$warnings = $warnings . "The \@brief comment is not present\n";
+	}
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@details/m)) {
+		$warnings = $warnings . "The \@details comment is not present\n";
+	}
+	if (!($commentPart =~ m/^\t*\s*\!\>\s*\@}/m)) {
+		$warnings = $warnings . "The \@} comment is not present\n";
+	}
+
+	return $warnings;
+}
+
+sub getSubroutineParams {
+	my($lines, $lineIdx) = @_;
+  	
+	my $warnings;
+	my $finish = 0;
+	my $finded = 0;
+	my $idx = $lineIdx;
+	my $max = $lineIdx + 20;
+	my @parameters;
+	# get the parameters list
+        # iterate over each parameter subroutine line
+	while (!$finish && $idx < $max) {
+		$line = $lines->[$idx];
+		while($line =~ m/(\w+)\s*,/g) {
+			push @parameters, $1;
+		}
+		if ($line =~ m/(\w+)\s*\)/) {
+			push @parameters, $1;
+		}
+		if ($line =~ m/(\w+)\s*\&/) {
+			push @parameters, $1;
+		}
+		if ($line =~ m/\)/) {
+			$finish = 1;
+		}
+		if (!$finish) {
+			$idx = $idx + 1;
+		}		
+	}
+
+	return @parameters;
+}
+
+sub getMemchk {
+	my($lines, $lineIdx) = @_;
+  	
+	my $warnings;
+	my $finish = 0;
+	my $finded = 0;
+	my $idx = $lineIdx + 1;
+	my $max = $lineIdx + 20;
+	# get the parameters list
+        # iterate over each parameter subroutine line
+	while (!$finish && $idx < $max) {
+		$line = $lines->[$idx];
+		if ($line =~ m/w+/) {
+			$finish = 1;
+		}
+		if ($line =~ m/call memchk/) {
+			$finded = 1;
+		}
+		$idx = $idx + 1;
+	}
+
+	return $finded;
+}
+
+#------------------------------------------------
+#---------------main-----------------------------
+#------------------------------------------------
+my $repos = $ARGV[0];
+my $rev = $ARGV[1];
+
+#--------Individual files checking
+my $changes = `$svnlook changed -r "$rev" "$repos"`;
+my @files = split(/\n/, $changes);
+my @report;
+#process files and make validations
+foreach $file (@files) {
+	my $file = substr $file, 4;
+	#File content
+	my $content = `$svnlook cat -r "$rev" "$repos" "$file"`;
+	if ($content && ($file =~ m/.f90/)) {
+		my $fileWarn = {};
+		my @warnList;
+		$fileWarn->{file} = $file;
+		while($content =~ m/(rexcha\s*\([i|j|k|l|m|n|o|p|q])/g) {
+      my $warnData = {};
+      $warnData->{message} = "It contains a call to rexcha with an integer parameter:$1";
+      $warnData->{importance} = "Normal";
+			push @warnList, $warnData;
+		}
+		while($content =~ m/(iexcha\s*\([a|b|c|d|e|f|g|h|r|s|t|u|v|w|x|y|z])/g) {
+      my $warnData = {};
+      $warnData->{message} = "It contains a call to rexcha with an integer parameter:$1";
+      $warnData->{importance} = "Normal";
+			push @warnList, $warnData;
+		}
+		while($content =~ m/(getint\s*\(.*\))/g) {
+			my $sentence = $1;
+			#get the second parameter
+			if (($sentence =~ m/,\s*(.+)\s*,/)) {
+				$aux = $1;
+				if (!($1 =~ m/_ip/)) {
+          my $warnData = {};
+          $warnData->{message} = "It contains a call to getint without a _ip parameter:$sentence";
+          $warnData->{importance} = "Normal";
+          push @warnList, $warnData;
+				}				
+			}
+			else {
+        my $warnData = {};
+        $warnData->{message} = "It contains a call to getint without a correct second parameter:$sentence";
+        $warnData->{importance} = "Normal";
+			  push @warnList, $warnData;
+			}											
+		}
+		while($content =~ m/(getrea\s*\(.*\))/g) {
+			my $sentence = $1;
+			#get the second parameter
+			if (($sentence =~ m/,\s*(.+)\s*,/)) {
+				$aux = $1;
+				if (!($1 =~ m/_rp/)) {
+          my $warnData = {};
+          $warnData->{message} = "It contains a call to getrea without a _rp parameter:$sentence";
+          $warnData->{importance} = "Normal";
+          push @warnList, $warnData;
+				}				
+			}
+			else {
+        my $warnData = {};
+        $warnData->{message} = "It contains a call to getrea without a correct second parameter:$sentence";
+        $warnData->{importance} = "Normal";
+        push @warnList, $warnData;
+			}											
+		}		
+		if (!($file =~ m/def_/)) {
+			my @lines = split /\n/, $content;
+			my $lineIdx = 0;
+			foreach my $line (@lines) {
+				#nullify
+				if ($line =~ m/pointer/ && !($line =~ m/intent/) && $line =~ m/real|integer|type/) {
+					#Its a pointer declaration, get the vars
+					@vars = getVars($line);
+					foreach my $var (@vars) {
+						#search if have a nullify or if it point to other var with =>
+						if(!($content =~ m/nullify\s*\(.*$var.*/) and !($content =~ m/$var\s*\t*=>/)) {
+              my $warnData = {};
+              $warnData->{message} = "The pointer $var shoud be nullified: nullify($var);";
+              $warnData->{importance} = "Priority";
+              push @warnList, $warnData;
+						}
+					}
+				}
+				#doxygen subroutine declaration
+				if ($line =~ m/^\t*\s*subroutine\s*(\w+)\s*\(/) {
+					my $subrout = $1;
+					#check if has header documentation
+					my $warnings = haveDocumentation(\@lines, $lineIdx - 1);					
+					#check if each subroutine parameter is documented
+					my @parameters = getSubroutineParams(\@lines, $lineIdx);
+					foreach my $parameter (@parameters) {
+						#search if have a comment
+						if(!($content =~ m/::\s*$parameter\s*(\(.*\))?\s*\!\>\s*\w+/)) {
+							$warnings = $warnings . "The \"$parameter\" parameter has no doxygen comments\n";
+						}
+					}
+					if ($warnings) {
+            my $warnData = {};
+            $warnData->{message} = "The \"$subrout\" subroutine has no doxygen comments:\n" . $warnings ;
+            $warnData->{importance} = "Normal";
+            push @warnList, $warnData;
+					}
+				}
+				#check allocate
+				if ($line =~ m/^\t*\s*allocate\s*\(/ && $line =~ m/stat=istat/) {
+					my $finded = getMemchk(\@lines, $lineIdx);
+					if (!$finded) {
+						my $errorLine = $lineIdx + 1;
+            
+            my $warnData = {};
+            $warnData->{message} = $warnings . "The line $errorLine has an allocate without a memchk\n";
+            $warnData->{importance} = "Priority";
+            push @warnList, $warnData;
+					}
+				}
+				$lineIdx = $lineIdx + 1;
+			}	
+		}
+		#doxygen subroutines documentation
+		if (scalar(@warnList) > 0) {
+			$fileWarn->{warnings} = [ @warnList ];
+			push @report, $fileWarn;
+		}
+	}
+}
+
+#create validations report
+$warnings;
+if (scalar(@report) > 0) {
+	$warnings = "-----------------------------------------------------------------------\n";
+	$warnings = $warnings . "-------------------------------WARNINGS--------------------------------\n";
+	$warnings = $warnings . "-----------------------------------------------------------------------\n\n";
+}
+for $i ( 0 .. $#report ) {
+     my $file = $report[$i]->{file};
+     $warnings = $warnings . "------------------------File:$file\n";
+     foreach $j ( 0 .. $#{ $report[$i]->{warnings} } ) {
+	$message = $report[$i]->{warnings}[$j]->{message};
+  $importance = $report[$i]->{warnings}[$j]->{importance};
+        $warnings = $warnings . "----WARNING!! $j\[$importance\]: $message\n";
+     }
+     $warnings = $warnings . "-----------------------------------------------------------------------\n";
+}
+
+if ($warnings) {
+	print STDERR $warnings;
+	exit(1);
+}
+
+exit(0);

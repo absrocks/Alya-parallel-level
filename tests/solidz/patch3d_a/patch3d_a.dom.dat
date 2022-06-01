@@ -1,0 +1,29 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 16
+  ELEMENTS          = 7
+  BOUNDARIES        = 6
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open
+  DOMAIN_INTEGRATION_POINTS:       0
+  BOUNDARY_ELEMENT:                OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./patch3d_a.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./patch3d_a.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./patch3d_a.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

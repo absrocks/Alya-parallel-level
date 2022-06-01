@@ -1,0 +1,33 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           22
+  ELEMENTS=               10
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0,      0,      0,      0,      0,      0,      0
+  BOUNDARIES=             22
+  SKEW_SYSTEMS=            0
+  SLAVES=                  0
+  PERIODIC_NODES=          0
+  ZONES=                   1
+  SUBDOMAINS=              1
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL 
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  distance.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  distance.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  distance.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

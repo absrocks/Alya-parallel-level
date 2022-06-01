@@ -1,0 +1,42 @@
+$-------------------------------------------------------------
+  PHYSICAL_PROBLEM
+    PROPERTIES
+    END_PROPERTIES
+
+    COUPLING
+$$        SOLIDZ EXMEDI
+    END_COUPLING
+
+  END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------
+  NUMERICAL_TREATMENT 
+     MESH
+     $  DIVISION=1
+     END_MESH
+    ELSEST
+       TOLER: 1e-16
+       STRATEGY: BIN
+       NUMBER:   10,10,10
+       DATAF: LINKED_LIST
+    END_ELSEST
+
+  END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------
+
+$-------------------------------------------------------------
+  OUTPUT_&_POST_PROCESS
+    ON_LAST_MESH
+
+     POSTPROCESS CODNO
+     POSTPROCESS MATER
+$    POSTPROCESS SUBDO  
+    
+    WITNESS_POINTS, NUMBER=4
+        0.2,  0.0, 0.2
+        0.05, 0.0, 0.2
+        -0.05,  0.0, 0.2
+        -0.15, 0.0, 0.2
+    END_WITNESS_POINTS
+
+  END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------

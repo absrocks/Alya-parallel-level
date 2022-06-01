@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "solver-dn.post.res",
+            "method": "absolute",
+            "tolerance": "1e-10"
+        }
+    ],
+    "description": "Dirichlet-Neumann coupling inside the solver for linear temperature solution. To test kernel coupling",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "solver-dn",
+    "postprocess": "alya2pos"
+}

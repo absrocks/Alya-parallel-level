@@ -1,0 +1,68 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "differ_heated_cav_implicit-VELOC-00000030.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "differ_heated_cav_implicit-TEMPE-00000030.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "differ_heated_cav_implicit-DENSI-00000030.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "differ_heated_cav_implicit-VISCO-00000030.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "differ_heated_cav_implicit-low-mach.nsi.cvg-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "differ_heated_cav_implicit-boundary.tem.set-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "differ_heated_cav_implicit-boundary.tem.set-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Differentially heated cavity with implicit time integration.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-low-mach.nsi.cvg 3; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.tem.set 3 4; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-low-mach.nsi.cvg 3; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.tem.set 3 4; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper"
+    ],
+    "name": "differ_heated_cav_implicit",
+    "postprocess": "mpio2txt"
+}

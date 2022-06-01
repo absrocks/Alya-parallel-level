@@ -1,0 +1,43 @@
+{
+    "authors": [
+        "cbutakoff@elem.bio"
+    ],
+    "comparisons": [
+        {
+            "file": "oneOHR_drug.exm.wit",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "ohara_ode.m1c1.csv",
+            "method": "absolute",
+            "tolerance": 1e-8
+        },
+        {
+            "file": "ohara_ode.m1c2.csv",
+            "method": "absolute",
+            "tolerance": 1e-8
+        },
+        {
+            "file": "ohara_ode.m1c3.csv",
+            "method": "absolute",
+            "tolerance": 1e-8
+        }
+    ],
+    "description": "Check FEM part of the O'Hara-Rudy-Passini model on drugs",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "oneOHR_drug",
+    "postprocess": "alya2pos",
+    "timeout": "00:02:00"
+}

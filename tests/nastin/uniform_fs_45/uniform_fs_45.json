@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "uniform_fs_45.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "Check that the fraction step method captures an inclined uniform flow including axes from field as a boundary condition",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 6,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "uniform_fs_45",
+    "postprocess": "alya2pos"
+}

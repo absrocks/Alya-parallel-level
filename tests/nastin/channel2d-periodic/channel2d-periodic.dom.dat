@@ -1,0 +1,46 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          121
+  ELEMENTS=              100
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=             40
+  PERIODIC_NODES=         11
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                          100, Sequential_frontal  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  channel2d-periodic.geo.dat
+  LMAST
+   111 1   
+   112 2   
+   113 3   
+   114 4   
+   115 5   
+   116 7   
+   117 11  
+   118 13  
+   119 16  
+   120 18  
+   121 21  
+  END_LMAST
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  channel2d-periodic.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  channel2d-periodic.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------

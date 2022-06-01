@@ -1,0 +1,45 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "adria.quintanas@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exmsld_cou_unidir_exm.exm.wit",
+            "method": "relative",
+            "tolerance": 1e-07
+        },
+        {
+            "file": "exmsld_cou_unidir_sld.sld.wit",
+            "method": "absolute",
+            "tolerance": 1e-16
+        },
+        {
+            "file": "exmsld_cou_unidir_sld.ensi.CALCI-000001",
+            "method": "relative",
+            "tolerance": 1e-07
+        }
+    ],
+    "description": "Test of  the unidirectional exmedi solidz coupling",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] exmsld_cou_unidir_exm [SEP] [NP] 3 [ALYA] exmsld_cou_unidir_sld",
+                "postprocess": "[POST] exmsld_cou_unidir_sld"
+            },
+            "mpi": 6,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi",
+        "solidz"
+    ],
+    "name": "exmsld_cou_unidir",
+    "postprocess": "alya2pos",
+    "timeout": "00:05:00"
+}

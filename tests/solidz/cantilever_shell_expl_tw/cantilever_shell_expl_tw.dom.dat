@@ -1,0 +1,34 @@
+$-------------------------------------------------------------------
+ DIMENSIONS
+   NODAL_POINTS      = 68
+   ELEMENTS          = 16
+   SPACE_DIMENSIONS  = 3
+   TYPES_OF_ELEMENTS = HEX08
+   BOUNDARIES        = 3
+   MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+   INTEGRATION_RULE:               OPEN
+   DOMAIN_INTEGRATION_POINTS:      0
+   SCALE:                          XSCAL=1.0  YSCAL=1.0  ZSCAL=1.0
+   TRANSLATION:                    XTRAN=0.0  YTRAN=0.0  ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                ON
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./cantilever_shell_expl_tw.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./cantilever_shell_expl_tw.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./cantilever_shell_expl_tw.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------------

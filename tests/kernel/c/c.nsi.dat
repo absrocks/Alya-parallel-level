@@ -1,0 +1,82 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On  
+ CONVECTIVE_TERM:          SKEWSYM
+  VISCOUS_TERM:             DIVERGE
+  GRAVITY:                  Off 
+  TURBULENCE_COUPLING:      LESMO, WALE , PARAM=0.25 
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            OFF
+  ELEMENT_LENGTH:           Minimum
+  TIME_INTEGRATION:         RUNGE-KUTTA, ORDER:3
+  SAFETY_FACTOR             0.8 
+  STEADY_STATE_TOLER:       1e-15
+  TIME_STEP:                EIGENVALUE
+  
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  
+  ALGORITHM:                FRACTIONAL_STEP
+    GAMMA = 0.0
+  END_ALGORITHM
+  
+  MOMENTUM
+    ALGEBRAIC_SOLVER
+      SOLVER:                MATRIX_RICHARDSON
+      CONVERGENCE:           ITERA=1
+      PRECONDITIONER:        CLOSE_MASS_MATRIX
+    END_ALGEBRAIC_SOLVER
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-14, ADAPTIVE, RATIO=1.0e-3
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL $LINELET
+    END_ALGEBRAIC_SOLVER
+  END_CONTINUITY
+  DIRICHLET MATRIX
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  =  0
+  POSTPROCESS VELOCITY,     STEPS =  1
+  POSTPROCESS PRESSURE,     STEPS =  1
+  POSTPROCESS VISCO,        STEPS =  1
+$ POSTPROCESS FIXNO,        STEPS =  1  
+$ POSTPROCESS FIXPR,        STEPS =  1  
+  POSTPROCESS YPLUS ,       STEPS =  1
+$ POSTPROCESS SCHUR ,       STEPS =  1 
+$ POSTPROCESS TANGE ,       STEPS =  1 
+  BOUNDARY_SET
+   FORCE
+  END_BOUNDARY_SET
+  WITNESS_POINTS
+    VELOX
+    VELOY
+    VELOZ
+    PRESS
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE:      OFF
+    INITIAL:      Constant, Value= 50.0, 0.0, 0.0
+  END_PARAMETERS 
+$1    inlet
+$2    outlet
+$3    road
+$4    top
+$5    sides
+$6    body
+$7    underbody
+$8    road_underbody
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

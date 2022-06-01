@@ -1,0 +1,97 @@
+$-------------------------------------------------------------------
+$
+$ multiple-local-axes_impl
+$ Details: Example on the use of different boundary conditions local
+$          using local basis. The solution is solved using
+$          an Implicit solver.
+$
+$ CODE 1 INLET
+$ CODE 3 OUTER SURFACE
+$ CODE 4 INNER SURFACE
+$ CODE 5 OUTLET X-NEGATIVE
+$ CODE 6 OUTLET X-NEGATIVE
+$
+$ Units:   SI (mm)
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL=           1
+    CONSTITUTIVE_MODEL: ISOLIN \
+      70.0e+3 0.3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:        IMPLICIT
+  TIME_INTEGRATION:      NEWMARK
+  ALGEBRAIC_SOLVER:
+$    SOLVER:              DIRECT
+    SOLVER:              DEFLATEDCG, COARSE: SPARSE
+    CONVERGENCE:         ITERA=5000, TOLER=1.0e-8
+    OUTPUT:              CONVERGENCE
+    PRECONDITIONER:      DIAGONAL
+  END_ALGEBRAIC_SOLVER
+  MAXIMUM_ITERATION=       50
+  RESIDUAL:                DISPL
+  CONVERGENCE_TOLER=       1.0E-4
+  SAFETY_FACTOR=           1.0
+  STEADY_STATE_TOLERANCE: -1E-10
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT:  STEP  = 0
+  POSTPROCESS DISPL
+$  POSTPROCESS ROTM1
+$  POSTPROCESS ROTM2
+$  POSTPROCESS ROTM3
+$  POSTPROCESS FIXRS
+$  POSTPROCESS BOCOD
+$  POSTPROCESS FIXNO
+$  POSTPROCESS FEXTE
+$  POSTPROCESS PRESS
+  NODE_SET
+    DISPX
+    DISPY
+    DISPZ
+  END_NODE_SET
+  BOUNDARY_SET
+    PRESS
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+        1 011   0.0  0.0  0.0, AXES: LOCAL_BASIS=3 $ Inlet
+    1 & 3 011   0.0  0.0  0.0, AXES: LOCAL_BASIS=3
+    1 & 4 011   0.0  0.0  0.0, AXES: LOCAL_BASIS=3
+        5 100   0.0  0.0  0.0, AXES: LOCAL_BASIS=2 $ Outlet-2
+    3 & 5 100   0.0  0.0  0.0, AXES: LOCAL_BASIS=2
+    4 & 5 100   0.0  0.0  0.0, AXES: LOCAL_BASIS=2
+        6 100   0.0  0.0  0.0, AXES: LOCAL_BASIS=1 $ Outlet-1
+    3 & 6 100   0.0  0.0  0.0, AXES: LOCAL_BASIS=1
+    4 & 6 100   0.0  0.0  0.0, AXES: LOCAL_BASIS=1
+  END_CODES
+  CODES, BOUNDARIES
+      4   3 0.0 0.0 0.0, MODULE_FUNCTION= 1
+  END_CODES
+  PARAMETERS
+    FOLLOWER_LOADS: OFF
+  END_PARAMETERS
+  FUNCTIONS
+    TOTAL_NUMBER= 1
+    CONDITION
+      FUNCTION_NUMBER= 1
+      TIME_SHAPE:       DISCRETE, SMOOTH
+      SHAPE_DEFINITION: PRESSURE
+        2
+        0.0      0.0
+        0.005 -1000.0
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

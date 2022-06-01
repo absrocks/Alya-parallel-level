@@ -1,0 +1,29 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=         2600
+  ELEMENTS=             3746
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10,      0,     12,      0,      0,      0,      0,      0,      0,      0,      0
+  BOUNDARIES=             75
+  SKEW_SYSTEMS=            0
+  SLAVES=                  0
+  PERIODIC_NODES=          0
+  ZONES=              2
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  ale-barra-degid.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS, EXTRAPOLATE
+  INCLUDE ale-barra-degid.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

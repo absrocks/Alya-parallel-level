@@ -1,0 +1,18 @@
+# ALYA Witness set results
+#
+# HEADER
+# ISET , Column :   1
+# TEMPE , Column :   2
+# NUMVARIABLES :       2
+# NUMSETS      :       3
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+         1  0.90000000E+003
+         2  0.90000000E+003
+         3  0.83612756E+003
+# Iterations  =       1      1     10
+# Time        =  0.18067732E-001
+         1  0.90000000E+003
+         2  0.90000000E+003
+         3  0.90000000E+003

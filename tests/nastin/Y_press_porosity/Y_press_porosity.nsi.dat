@@ -1,0 +1,104 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          ON $SKEW_SYMMETRIC
+  VISCOUS_TERM:             LAPLACIAN
+END_PROBLEM_DEFINITION  
+
+END_PHYSICAL_PROBLEM  
+
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+   TRACKING:                 TIME
+
+  STABILIZATION:            ASGS
+  SAFETY_FACTOR:            100.0
+$  TIME_INTEGRATION:         Trapezoidal, ORDER: 1, EULER=10
+  TIME_INTEGRATION:         BDF, ORDER: 2, EULER=20
+  STEADY_STATE_TOLER:       -1e-14
+
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     100
+  CONVERGENCE_TOLERANCE:    1e-2
+
+
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING
+$    SOLVER:                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER:         DT
+    ELEMENT_LENGTH:         Minimum
+    TAU_STRATEGY:           Codina
+  END_ALGORITHM
+  MOMENTUM
+    ALGEBRAIC_SOLVER     
+      SOLVER:                GMRES, KRYLOV=20
+      CONVERGENCE:           ITERA=1000, TOLER=1.0e-5, ADAPTIVE, RATIO=1e-5
+      OUTPUT:                CONVERGENCE
+      PRECONDITIONER:        DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+  CONTINUITY 
+    ALGEBRAIC_SOLVER
+       SOLVER:               DEFLATED_CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-6, ADAPTIVE, RATIO=1e-6
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+
+$  DIRICHLET: MATRIX
+$ INTERNAL_FORCE: RESIDUAL
+
+
+END_NUMERICAL_TREATMENT   
+$------------------------------------------------------------
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT STEP=5
+  POSTPROCESS PRESS, STEPS=5
+  POSTPROCESS VELOC, STEPS=5
+  BOUNDARY_SET
+   MASS
+   MEANP
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+  PARAMETERS
+     INITIAL: CONSTANT, VALUE= 0.0, 0.0, 0.0  $COARSE
+     VARIATION: NON_CONSTANT
+  END_PARAMETERS 
+ 
+  CODES, BOUNDARIES
+    6 2 100
+    5 2 0
+    8 2 0
+  END_CODES
+
+
+  CODES, NODES
+$        6      11 1.0 0.0, SPACE_TIME_FUNCTION=PULSE   $ INFLOW
+        6 & 7  11 0.0 0.0 , AXES_LOCAL 
+$        5      00 0.0 0.0   $ OUTFLOW 2
+        5 & 7  11 0.0 0.0 , AXES_LOCAL  
+$        8      00 0.0 0.0   $ OUTFLOW 1
+        8 & 7  11 0.0 0.0 , AXES_LOCAL   
+        7      11 0.0 0.0 , AXES_LOCAL  $WALL
+        7 & 2  11 0.0 0.0 , AXES_LOCAL   
+        7 & 1  11 0.0 0.0 , AXES_LOCAL
+        7 & 3  11 0.0 0.0 , AXES_LOCAL 
+        7 & 4  11 0.0 0.0 , AXES_LOCAL
+        2      00 0.0 0.0   $ INTERNAL BOUNDARY LEJOS OUTFLOW
+        1      00 0.0 0.0   $ INTERNAL BOUNDARY CERCA OUTFLOW
+        3      00 0.0 0.0   $ INTERNAL BOUNDARY LEJOS OUTFLOW
+        4      00 0.0 0.0   $ INTERNAL BOUNDARY CERCA OUTFLOW
+   END_CODES   
+
+$   FLOW_RATE = -1.0 , CODE 3
+
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

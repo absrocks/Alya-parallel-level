@@ -1,0 +1,183 @@
+[Paraview] Clean Ensight C binary format with Fortran 2003
+
+Christophe Peyret christophe.peyret at onera.fr 
+Mon Mar 12 10:11:39 EST 2007
+Previous message: [Paraview] elevation data read as image data
+Next message: [Paraview] Missing File for 2.6.0
+Messages sorted by: [ date ] [ thread ] [ subject ] [ author ]
+With Fortran 2003, it is now possible to write generic C binary files.
+
+
+To illustrate, I join 2 files for those who would be interested into  
+writing binary ensight directly from fortran. In the exemple it is is  
+'BIG_ENDIAN' but you can also choose 'LITTLE_ENDEAN' .
+
+
+
+   subroutine EnsightCase(FileOut,nf)
+     !------------------------------------------------------
+     !
+     !  EnsightCase helps to write a Ensight's case file
+     !
+     !------------------------------------------------------
+     implicit none
+
+     character(50) :: FileOut
+     integer       :: icase
+     integer       :: i,nf
+     !------------------------------------------------------
+
+     write(*,'(/a)') ' Creating case file for Ensight and Paraview...'
+     write(*,'(2a)')'File: ',trim(FileOut)//'.case'
+
+     icase = 35
+     open(icase,file=trim(FileOut)//'.case')
+
+     !    Writing header file
+     write(icase,'(a)')'FORMAT'
+     write(icase,'(a/)')'type: ensight gold'
+
+     write(icase,'(a)')'GEOMETRY'
+     write(icase,'(a,a,a/)')'model: ',trim(FileOut),'.geom'
+
+
+   !  write(icase,'(a)')'VARIABLE'
+   !  if( nf/=1 )then
+   !    write(icase,'(3a)')'scalar per node:           pressure       
+',trim(FileOut),'_pres_0000.scl'
+   !    write(icase,'(3a)')'scalar per node:           pressure       
+',trim(FileOut),'_vel_0000.vec'
+   !  else
+   !    write(icase,'(3a)')'scalar per node:           pressure       
+',trim(FileOut),'_pres_0***.scl'
+   !    write(icase,'(3a)')'scalar per node:           pressure       
+',trim(FileOut),'_vel_0***.vec'
+   !
+   !    write(icase,'(/a)')'TIME'
+   !    write(icase,'( a)')'time set: 1'
+   !    write(icase,'(a,i6)')'number of steps:',nf
+   !    write(icase,'(f5.2)') (real(i,kind=4),i=0,nf-1)
+   !  endif
+
+     close(icase)
+
+   end subroutine EnsightCase
+
+
+
+
+   subroutine m_ensight_WriteEnsightMeshBIN(FileOut, vertices, tetra,  
+trian, edges)
+     !------------------------------------------------------
+     use,intrinsic :: ISO_C_BINDING
+     !------------------------------------------------------
+     !
+     ! WriteEnsightMeshBIN writes mesh data in Ensight's binary format
+     !
+     !------------------------------------------------------
+     implicit none
+     character(50)    , intent(in) :: FileOut
+     real(c_float)    , intent(in) :: vertices(:,:)
+     integer(c_int)   , optional   :: tetra   (:,:)
+     integer(c_int)   , optional   :: trian   (:,:)
+     integer(c_int)   , optional   :: edges   (:,:)
+     !------------------------------------------------------
+     integer(4)                :: geo  =0
+     integer(4)                :: nVert=0
+     integer(4)                :: nT4  =0
+     integer(4)                :: nT3  =0
+     integer(4)                :: nL2  =0
+     !
+
+     character(80)             :: cbuffer
+     character(80)             :: header(5)                ! EnSight  
+Gold character const buffer
+     character(80) , parameter :: vert      ='coordinates' ! EnSight  
+Gold character const buffer
+     character(80) , parameter :: part      ='part'
+     character(80) , parameter :: tetrahedra='tetra4'
+     character(80) , parameter :: triangles ='tria3'
+     character(80)             :: id_part(10)
+     integer(4)                ::   ipart(10)
+
+     integer(4)                :: i,ierr
+     integer(4)                :: reclength
+     integer(4)   , parameter  :: iens=11
+     !------------------------------------------------------
+     geo  =size(vertices,1)
+     nVert=size(vertices,2)
+     if( present(tetra) )nT4= size(tetra,2)
+     if( present(trian) )nT3= size(trian,2)
+     if( present(edges) )nL2= size(edges,2)
+
+
+     write(*,'(3a)')'Writing Binary Format File: ',trim 
+(FileOut)//'.geom'
+     write(*,*)'Number of Vertices:  ',nVert
+     write(*,*)'Number of Tetrahedra:',nT4
+     write(*,*)'Number of Triangles: ',nT3
+     write(*,*)'Number of Edges:     ',nL2
+     !
+     !     Header
+     !
+     header(1) = 'C Binary'
+     header(2) = 'Ensight Binary Model Geometry'
+     header(3) = 'File Created with WriteEnsightMeshBIN'
+     header(4) = 'node id given'
+     header(5) = 'element id given'
+     !
+     !   nodal coordinates
+     !
+     ipart  (1)=1
+     id_part(1)= 'Volume'
+
+     open (unit=iens,file=trim(FileOut)//'.geom',&
+     &     form='unformatted'                   ,&
+     &     recordtype='stream'                  ,&
+     &     action='write'                       ,&
+     &     convert='BIG_ENDIAN'                 ,&
+     &     access='sequential'                   )
+
+
+     cbuffer = 'C Binary'                            ; write(iens)  
+cbuffer
+     cbuffer = 'Ensight Binary Model Geometry'       ; write(iens)  
+cbuffer
+     cbuffer = 'File Created by WriteEnsightMeshBIN' ; write(iens)  
+cbuffer
+     cbuffer = 'node id given'                       ; write(iens)  
+cbuffer
+     cbuffer = 'element id given'                    ; write(iens)  
+cbuffer
+
+     cbuffer = 'extents'                             ; write(iens)  
+cbuffer
+     write (iens)minval(vertices(1,:)),maxval(vertices(1,:)),&
+     &           minval(vertices(2,:)),maxval(vertices(2,:)),&
+     &           minval(vertices(3,:)),maxval(vertices(3,:))
+
+     cbuffer = 'part'                                ; write(iens)  
+cbuffer
+     write(iens)int(1,kind=c_int)
+
+     cbuffer = 'Volumes'                             ; write(iens)  
+cbuffer
+     cbuffer = 'coordinates'                         ; write(iens)  
+cbuffer
+
+     write(iens) nVert
+     write(iens) (i,i=1,nVert)
+     write(iens) (real(vertices(1,i),kind=4),i=1,nVert)
+     write(iens) (real(vertices(2,i),kind=4),i=1,nVert)
+     write(iens) (real(vertices(3,i),kind=4),i=1,nVert)
+
+    cbuffer = 'tetra4'                              ; write(iens)  
+cbuffer
+    write(iens) nT4
+    write(iens) (i, i=1,nT4)
+    write(iens) (tetra(1:4,i) ,i=1,nT4)
+
+    close(iens)
+
+
+   end subroutine m_ensight_WriteEnsightMeshBIN

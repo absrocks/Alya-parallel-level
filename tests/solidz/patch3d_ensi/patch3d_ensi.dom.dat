@@ -1,0 +1,41 @@
+$------------------------------------------------------------
+DIMENSIONS
+   INCLUDE patch3d_ensi.dims.dat
+   SPACE_DIMENSIONS=                        3
+   TYPES_OF_ELEMS=                      HEX08
+   MATERIALS         = 1
+   SKEW_SYSTEMS=            0
+   SLAVES=                  0
+   NO_SETS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open
+  DOMAIN_INTEGRATION_POINTS: 0
+$  ESCALE XSCAL= 1.0E-3, YSCAL= 1.0E-3, ZSCAL= 1.0E-3
+  BOUNDARY_ELEMENT:                 OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  patch3d_ensi.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+$  INCLUDE  patch3d_ensi.set.dat
+NODES
+ 1 1
+ 2 2
+ 3 3
+ 4 4
+ 5 5
+ 6 6
+ 7 7
+ 8 8
+END_NODES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  patch3d_ensi.fix.bou
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

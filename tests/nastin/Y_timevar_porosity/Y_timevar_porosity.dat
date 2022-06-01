@@ -1,0 +1,43 @@
+$-------------------------------------------------------------------
+RUN_DATA
+   INCLUDE Y_timevar_porosity.run.dat
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+   TIME_COUPLING = GLOBAL,  PRESCRIBED 
+   TIME_INTERVAL = 0.0, 0.15
+   TIME_STEP_SIZE = 0.01
+   NUMBER_OF_STEPS=      10000
+
+$-------------------------------------------------------------------  
+  NASTIN_PROBLEM=        ON
+  END_NASTIN
+
+  ALEFOR_MODULE:        OFF
+  END_ALEFOR_MODULE 
+
+   BLOCK, 1
+      1 ALEFOR NASTIN
+   END_BLOCK
+   ZONES
+     ALEFOR 1
+     NASTIN 1
+   END_ZONES
+
+
+  PARALL_SERVICE:       ON
+   COMMUNICATIONS:       SYNCHRONOUS
+   OUTPUT_FILE:          NO
+   POSTPROCESS:          MASTER
+   PARTITION:            FACES
+    PARTITIONING:
+        METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL     
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: OFF
+    GEOMETRY:    OFF
+    RESTART:     OFF
+    POSTPROCESS: 0FF
+END_MPI_IO

@@ -1,0 +1,62 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  NODAL_POINTS=       14864
+  ELEMENTS=           29152
+  SPACE_DIMENSIONS=   2
+  BOUNDARIES=         576
+$ NODES=              -5
+  TYPES_OF_ELEMS=     TRI03 
+$ BOUNDARIES=         576 
+$ PERIODIC_NODES=     -8 
+END_DIMENSIONS
+
+
+$----------------------------------------- gauss points
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS:  1
+$ INTEGRATION_RULE:           OPEN
+$ PERIODICITY:                MATRIX
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+$GEOMETRY, GID, WALL_DISTANCE= 0.0, ROUGHNESS=0.0
+GEOMETRY
+  GROUPS=100
+  FIELDS, NUMBER = 3
+    FIELD= 1, DIMENSION 3, NODES
+      INCLUDE Placzek01_VELOCITY.alya
+    END_FIELD
+    FIELD= 2, DIMENSION 1, NODES
+      INCLUDE Placzek01_DENSITY.alya
+    END_FIELD
+    FIELD= 3, DIMENSION 1, NODES
+      INCLUDE Placzek01_TEMPERATURE.alya
+    END_FIELD
+
+  END_FIELDS
+$
+  INCLUDE Placzek01_TYPES.alya
+  INCLUDE Placzek01_ELEMENTS.alya
+  INCLUDE Placzek01_COORDINATES.alya
+  INCLUDE Placzek01_BOUNDARIES.alya
+$
+$ PERIODIC_NODES
+$   INCLUDE Placzek01_PERIODIC.alya
+$ END_PERIODIC_NODES
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$ BOUNDARIES
+$  INCLUDE Placzek01_ON_BOUNDARIES.alya
+$ END_BOUNDARIES
+END_SETS
+
+$------------------------------
+BOUNDARY_CONDITIONS, EXTRAPOLATE
+    INCLUDE Placzek01_ON_BOUNDARIES.alya
+END_BOUNDARY_CONDITIONS
+$--------------------------------------------------
+

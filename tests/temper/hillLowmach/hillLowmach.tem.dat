@@ -1,0 +1,85 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+PROBLEM_DEFINITION
+  TEMPORAL_DERIVATIVES:   On
+  CONVECTIVE_TERM:        On
+  CONDUCTION_TERM:        On
+  TURBULENCE_MODEL:       LES_MODEL, WALE , PARAMETER = 0.25
+  REGIME :                LOWMACH
+  SOURCE_TERMS:           off
+END_PROBLEM_DEFINITION
+$------------------------------------------------------------------------
+PROPERTIES:
+  TURBULENT_PRANDTL = 0.9
+END_PROPERTIES
+$------------------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  TAU_STRATEGY:            Codina
+  ELEMENT_LENGTH:          Minimum
+  SHOCK_CAPTURING=         Anisotropic, VALUE: 1.0
+  TIME_INTEGRATION:        Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR=           10.0  
+  STEADY_STATE_TOLERANCE=  -1e-8  
+  NORM_OF_CONVERGENCE:     L2   
+  MAXIMUM_NUMBER_OF_ITER=  2
+  RELAXATION_FACTOR=       0.9
+  CONVERGENCE_TOLERANCE=   1e-5  
+  ALGEBRAIC_SOLVER:        GMRES, ITERA=200, TOLERANCE=1.0E-10, ADAPTIVE, RATIO=0.0001, KRYLOV=30, UNSYMM, CONVERGENCE
+  PRECOND:                 DIAGONAL
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  $POSTPROCESS INITIAL
+  POSTPROCESS TEMPER
+  BOUNDARY_SET
+  END_BOUNDARY_SET
+  ELEMENT_SET
+  END_ELEMENT_SET
+  $WITNESS_POINTS
+  $   TEMPER
+  $END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ PARAMETERS
+   INITIAL, CONSTANT = 296.0 296.0 296.0
+ END_PARAMETERS
+ CODES, NODES
+       3       1   320.00 
+       6       0    0.00 
+       7       0    0.00 
+       8       0    0.00
+     1 & 3     1   320.00 
+     1 & 6     0    0.00
+     2 & 3     0   320.00 
+     2 & 6     0    0.00
+     5 & 6     0    0.00
+     5 & 8     0    0.00   
+     5 & 3     1   320.00  
+     3 & 4     1   320.00 
+     2 & 8     0    0.00
+     6 & 7     0    0.00
+     7 & 8     0    0.00 
+     5 & 7     0    0.00  
+     4 & 8     0    0.00    
+     4 & 7     0    0.00   
+     4 & 6     0    0.00    
+   4 & 8 & 7   0    0.00   
+   4 & 6 & 7   0    0.00
+   5 & 8 & 7   0    0.00   
+   5 & 6 & 7   0    0.00  
+   1 & 4 & 6   0    0.00   
+   5 & 3 & 1   1   320.00   
+   4 & 3 & 1   1   320.00    
+   6 & 5 & 1   0    0.00   
+   4 & 6 & 1   0    0.00  
+   5 & 3 & 2   1   320.00 
+   4 & 3 & 2   1   320.00    
+   8 & 5 & 2   0    0.00   
+   4 & 8 & 2   0    0.00  
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

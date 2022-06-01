@@ -1,0 +1,29 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=1e-2
+    END_MATERIAL
+  END_PROPERTIES
+  WALL_LAW:               REICHARDT , CONSTANT, WALL_DISTANCE=0.1 
+  WALL_EXCHANGE_LOCATION, BOUN1=2
+  TIME_AVERAGING,         PERIOD = 1.0
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=0
+  END_MESH
+  ELSEST 
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1e6
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "patch3d_a.sld.wit",
+            "method": "absolute",
+            "tolerance": 1e-18
+        },
+        {
+            "file": "patch3d_a-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This 3D patch test verifies the correctness of the computer implementation of the 8-node hexahedral element, using a quasi-static implicit algorithm. This validation was performed against Code_Aster and Ostero codes, taken as reference an uniaxial displacement test case. A detailed explanation can be found in the technical report called \"Solidz benchmarked\" written by Guido Giuntoli. This report is located in the documentation section of solidz's Redmine project.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "patch3d_a",
+    "postprocess": "alya2pos"
+}

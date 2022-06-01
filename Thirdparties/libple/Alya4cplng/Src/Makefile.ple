@@ -1,0 +1,44 @@
+PROGRAM  = alya4cplng
+
+CCOMPILER = mpicc
+FCOMPILER = mpif90
+
+ROOT_PLE    = /home/bsc21/bsc21704/z2014/Orgia/Code_saturne303/libple
+LIBS_PLE    = -L$(ROOT_PLE)/src/.libs/ -lple 
+INCLUDE_PLE = -I$(ROOT_PLE)/src/
+INCLUDE_PLE+= -I$(ROOT_PLE)/
+
+
+all: fortran_test.x lib  
+
+clean:
+	rm -rf *~ *.o *.x *.mod *.so *.a  
+
+fortran_test.x: alya_coupling.o fortran_test.o fortran.o  
+	$(FCOMPILER) $^ -o $@ $(LIBS_PLE) $(INCLUDE_PLE) 
+	@mpirun -np 2 ./fortran_test.x A1 : -np 3 ./fortran_test.x B23 : -np 4 ./fortran_test.x C567
+
+alya_coupling.o: alya_coupling.f90
+	$(FCOMPILER) -c $^ $(INCLUDE_PLE)
+ 
+fortran_test.o: fortran_test.f90 
+	$(FCOMPILER) -c $^ $(INCLUDE_PLE)
+
+lib: fortran.o
+	ar -cvq lib$(PROGRAM).a $^ 
+
+fortran.o: fortran.c 
+	$(CCOMPILER) -c $^ $(INCLUDE_PLE)
+
+#
+#SOURCES  = $(wildcard $(SRC_DIR)*.c) 
+#OBJECTS  = $(patsubst %.c,%.o, $(SOURCES))
+#
+#all: $(PROGRAM) 
+#
+#$(PROGRAM): $(OBJECTS) 
+#	$(COMPILER) $^ -o $@ $(LIBS_PLE)  
+#
+#%.o: $(SRC_DIR)/%.c 
+#	$(COMPILER) $^ -c $(INCLUDE_PLE) 
+#

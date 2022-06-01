@@ -1,0 +1,43 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  CODE:                   2
+  ALYA:                   FSI3
+  LIVE_INFO:              screen
+  POSTPROCESS:            domain
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING = GLOBAL  $, FROMCRITICAL
+  TIME_INTERVAL = 0.0, 10.0    
+  TIME_STEP_SIZE = 4e-4 
+  NUMBER_OF_STEPS= 1
+$-------------------------------------------------------------------  
+  NASTIN_PROBLEM=        ON
+  END_NASTIN
+
+  ALEFOR_MODULE:         ON
+  END_ALEFOR_MODULE 
+
+   BLOCK, 1
+      1 ALEFOR NASTIN
+   END_BLOCK
+   ZONES
+     ALEFOR 1
+     NASTIN 1
+   END_ZONES
+
+   PARALL_SERVICE:       ON
+     COMMUNICATIONS:       SYNCHRONOUS
+     OUTPUT_FILE:          NO
+     POSTPROCESS:          MASTER
+     PARTITION:            FACES
+   END_PARALL     
+
+  $
+  $ HDF5 service
+  $ 
+  HDFPOS_SERVICE:         OFF
+  END_HDFPOS_SERVICE
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

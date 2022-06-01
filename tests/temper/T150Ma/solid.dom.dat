@@ -1,0 +1,55 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  INCLUDE ./MESHES/CERFACS01/Solid02_SIZES.alya 
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  SCALE:                     XSCALE=1e-3 YSCALE=1e-3, ZSCALE=1.0
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    100
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+  INCLUDE ./MESHES/CERFACS01/Solid02_TYPES.alya
+  INCLUDE ./MESHES/CERFACS01/Solid02_ELEMENTS.alya
+  INCLUDE ./MESHES/CERFACS01/Solid02_COORDINATES.alya
+  INCLUDE ./MESHES/CERFACS01/Solid02_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$      INCLUDE  ../Solid02_CHARACTERISTICS.alya
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$
+ BOUNDARIES
+  INCLUDE ./MESHES/CERFACS01/Solid02_ON_BOUNDARIES.dat 
+ END_BOUNDARIES
+$
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./MESHES/CERFACS01/Solid02_ON_BOUNDARIES.alya
+$
+$  VALUES, FUNCTION = -1, DIMENSION = -3 
+$    INCLUDE FIELD_3D.alya
+$  END_VALUES
+$
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------
+

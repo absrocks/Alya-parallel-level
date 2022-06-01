@@ -1,0 +1,45 @@
+MANUAL TO INTERPOLATE SOLUTIONS FROM EXTERNAL DATA
+31/07/2014
+
+Miguel Zavala (miguel.zavala@bsc.es)
+Daniel Mira   (daniel.mira@bsc.es)
+
+The scripts can be found in:
+
+Alya/Thirdparties/libple/PLEPP/Tools/VTK
+
+ ------- alya2vtu.py -------
+
+Create mesh from a vtu (vtk unstructured) file (this is the target mesh) 
+   1. Include the path of the mesh in:
+
+       ALYA_PTs = "../mesh_2d/fort.777"
+       ALYA_ELEMs = "../mesh_2d/fort.777"
+       ALYA_TYPES = "../mesh_2d/fort.777"
+       being fort.777 the name.geo file.
+
+   2. *.vtu file with the mesh is created.
+
+
+ ------- vtu2alya.py -------
+
+It reads and extracts the information from the *.vtu file to obtain:
+
+     (1) Geometry in Alya format
+     (2) Extract the variables contained in the *.vtu files to create fields that
+         can be used in Alya as initial condition.
+
+
+ ------- Initialization of Alya using external data using paraview -------
+         (meshes do not need to be identical, so  
+         coarse to fine and fine to coarse should wok)
+ 
+
+  1. Running the python script alya2vtu.py --> geo_mesh.vtu file is created: this is the targeted mesh.
+  2. In Paraview, load the two meshes (geo_mesh.vtu and the external mesh) 
+  3. Use Paraview filter 'Resample with dataset' (the source mesh should be the external mesh)
+  4. Save the mesh with the interpolated solution in *.vtu format.
+  5. Use the python script vtu2alya.py to create the fields required to start the simulations
+
+  Enjoy!!
+

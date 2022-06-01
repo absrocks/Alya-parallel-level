@@ -1,0 +1,38 @@
+{
+    "authors": [
+        "matias.avila@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "keDisc-VELOC-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "keDisc-KEY-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        }
+    ],
+    "description": "3D Actuator disc model for Wind Turbine solved with k-e",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {   
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "turbul"
+    ],
+    "name": "keDisc",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

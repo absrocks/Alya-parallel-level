@@ -1,0 +1,71 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "reset"                             >  ./gnuplot.tmp
+
+echo "set multiplot "                    >> ./gnuplot.tmp
+echo "set size noratio 1.0,2.0 "         >> ./gnuplot.tmp
+#----------------------------------------------------------------
+# Top-Left
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.5 "               >> ./gnuplot.tmp   
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Density kg/m3'"             >> ./gnuplot.tmp
+#echo "set log y"                         >> ./gnuplot.tmp
+echo "plot '$1.nsa.mxm' u 1:4 t 'Density min.' w l, '$1.nsa.mxm' u 1:5 t 'Density max.' w l" >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Top-Right
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "                 >> ./gnuplot.tmp
+echo "set origin 0.5,0.5"                  >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"              >> ./gnuplot.tmp
+echo "set ylabel 'Pressure Pa'"                   >> ./gnuplot.tmp
+#echo "set log y "                          >> ./gnuplot.tmp   
+echo "plot '$1.nsa.mxm' u 1:6 t 'Pressure min.' w l, '$1.nsa.mxm' u 1:7 t 'Pressure max.' w l "   >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Left
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.0"                >> ./gnuplot.tmp
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Temperature K'"             >> ./gnuplot.tmp
+#echo "set y2label 'Pressure'"            >> ./gnuplot.tmp
+#echo "set y2tics  "                      >> ./gnuplot.tmp
+#echo "set ytics nomirror"                >> ./gnuplot.tmp
+#echo "unset log y "                      >> ./gnuplot.tmp   
+#echo "set y2range [0:5]"                 >> ./gnuplot.tmp
+echo "plot '$1.nsa.mxm' u 1:8 t 'Temper. min.' w l, '$1.nsa.mxm' u 1:9 t 'Temper. max.' w l "   >> ./gnuplot.tmp
+#echo "unset log y "                      >> ./gnuplot.tmp   
+
+
+#echo "unset y2label "                    >> ./gnuplot.tmp
+#  echo "unset y2tics  "                 >> ./gnuplot.tmp   
+
+#----------------------------------------------------------------
+# Bot-Right
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.5,0.0"                >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Mach number'"    >> ./gnuplot.tmp
+#echo "set y2tics  "                      >> ./gnuplot.tmp
+#echo "unset log y"                       >> ./gnuplot.tmp   
+echo "plot '$1.nsa.mxm' u 1:10 t 'Mach min.' w l, '$1.nsa.mxm' u 1:11 t 'Mach max.' w l" >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Replot
+#----------------------------------------------------------------
+
+echo "unset multiplot "                  >> ./gnuplot.tmp
+echo "load './gnuplot.tmp'"              >  ./gnuplot2.tmp
+echo "pause 2"                           >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"             >> ./gnuplot2.tmp
+gnuplot ./gnuplot2.tmp 

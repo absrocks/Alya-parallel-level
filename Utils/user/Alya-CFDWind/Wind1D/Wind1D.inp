@@ -1,0 +1,84 @@
+-------------------
+GENERAL
+--------------------
+model    = 0     ! 0 = Limited length   1=RNG    2= REALIZABLE  
+nstep    = 800   ! # of time steps
+miite    = 1     ! global iterations
+timstep  = 1.0   ! initial time step (defaul =2.0)
+logva    = NO    ! works with logarithm of unknowns (default =NO ) 
+ABL2     = NO    ! works wit ABL2 wall law (default =NO  (ABL1)
+LOCAL    = NO    ! Local time step (default no)
+--------------------
+RESTART
+--------------------
+write    = YES   ! YES/NO (default=NO)
+freq     = 100   ! Frequency output time in SECONDS
+read     = NO    ! YES/NO uses previous restart file as IC
+--------------------
+PHYSICAL
+--------------------
+fcori = 1.13e-4  ! 2*Omega*sin(latitud) If 0.0 then fixes vegeo at top!!!!
+vegeo = 10.0d0
+ustar = 0.65d0   ! fix ustar, valid for initial condition
+l_max = 36.0d0   ! if zero, calculates lmax in terms of fcori
+rough = 0.30d0 
+--------------------
+MESH
+--------------------
+ztop = 3000.0d0 
+hele1= 0.1       ! if Dirichlet at least rough /50
+nelem = 150      ! num of vertical elements
+--------------------
+BOUNDARY
+! top temperature always left free
+--------------------
+bouco = 2        ! 0: Dirichlet nonsip veloc, 1: fix ustar, 2: wall law
+topco = 0        ! 0: constant geostrophyc velocity, 1:variable velocity from WRF (default =0)
+-------------------- 
+NUMERICAL
+--------------------
+dwall = 0.1    ! wall distance (if zero = hele1)
+toler = 1.0e-4 ! converg tolerance
+mitve = 1      ! max # iterations for velocity
+mittu = 3      ! max # iterations for turbulence
+--------------------
+THERMAL
+--------------------
+thmod   = 1      ! Thermal model,  0 = No thermal coupl  1=Apsley-Castro, 4= Sogachev
+heatfl  = 20.0   ! heat flux over the ground,   >0 stable, <0 unstable.    if =0.0 = no thermal model 
+height  = 200.0  ! SBL height: heat flux decreases linearly up to z_sbl if Apsl Castro Model
+molen   = 100.0  ! M-O length, L>0 stable, L<0 unstable
+trans   = NO     ! transitory thermal (default NO)
+case    = cycle1 ! GABLS2, CYCLE or GABLS3
+tewall  = 300.0  ! tem over wall (initial condition)
+gradbot = 0.005  ! temp gradient bottom (initial condition)
+gradtop = -0.001 ! temp gradient top (initial condition
+zinfle  = 200.0  ! coordinate where gradient changes (if 0, infle = ztop)
+tsfc    = t2m_qw ! t2m_qw, TSK or t2m    (just in case GABLS3)
+th_adv  = no     ! Temperature advection (just in case GABLS3)
+mom_adv = no     ! Moment advection (just in case GABLS3)
+press_gr = no    ! Pressure gradient due to variable geostrophic wind along the vertical (just in case GABLS3)
+meso_file = gabls3_inputs_corrected.nc
+--------------------
+CANOPY
+---------------------
+canopy   =  no    ! Yes or no
+model    =  LOPES ! SOGAC  , GREEN, SVENS, SANZ, LOPES (da Costa)
+cd       =  0.2   ! drag coefficient
+LAD      =  0.2   ! Leaf Area density 
+LAI      =  5.0   ! Leaf Area index (For table distribution)
+height   =  20.00 ! Canopy height 
+distribution = TABLE ! uniform, lalic, table (LAD distri)
+--------------------
+POSTPROCESS 
+--------------------
+steps     = 1200  ! Profiles files frequency output in TIME STEPS
+cutheight = 2.0 10.0 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+netCDF    = YES   ! Write a netCDF for transient cases (YES or NO)
+freq      = 600   ! netCDF frequency output time in SECONDS
+append    = YES 
+
+
+
+
+

@@ -1,0 +1,35 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          121
+  ELEMENTS=              100
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0,      0,      0,      0,      0,      0,      0
+  BOUNDARIES=             40
+  SKEW_SYSTEMS=            0
+  SLAVES=                  0
+  PERIODIC_NODES=          0
+  ZONES=                   1
+  SUBDOMAINS=              1
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL 
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  coupling_wall_exchange.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  coupling_wall_exchange.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  coupling_wall_exchange.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+

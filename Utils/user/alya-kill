@@ -1,0 +1,4 @@
+#!/bin/bash 
+killall -9 Alya.x
+killall -9 Alya.g
+

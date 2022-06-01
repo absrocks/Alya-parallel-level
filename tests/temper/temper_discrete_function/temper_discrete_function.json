@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "temper_discrete_function.post.res",
+            "method": "absolute",
+            "tolerance": "1e-06"
+        }
+    ],
+    "description": "tests dirichlet boundary conditions imposed as a discrete function",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "temper_discrete_function",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,61 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=      21341
+  ELEMENTS=          101322
+  BOUNDARIES=        17374
+  MATERIALS=         4
+  SPACE_DIMENSIONS=  3
+  NODES=             4
+  SKEW_SYSTEMS=      0 
+  SLAVES=            0 
+  NO_SETS 
+  FIELDS = 2
+    FIELD= 1, DIMENSION= 3, NODES 
+    FIELD= 2, DIMENSION= 1, NODES 
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       1
+  BOUNDARY_ELEMENT:                ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  GROUPS:                          10
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+  INCLUDE    streeter.ELE.dat
+  INCLUDE    streeter.ELTYPE.dat
+  INCLUDE    streeter.NODE.dat
+  BOUNDARIES
+    INCLUDE  streeter.BOUNDARIES.dat
+  END_BOUNDARIES
+  LELBO
+    INCLUDE  streeter.LELBO.dat
+  END_LELBO 
+END_GEOMETRY
+$------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE   streeter.BC_NBOUN_STREET.dat
+  END_BOUNDARIES
+  NODES
+    INCLUDE   streeter.NSET.dat
+  END_NODES
+END_SETS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE   streeter.BC_NBOUN.dat
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE   streeter.FIBERS.dat
+  END_FIELD
+  FIELD= 2
+    INCLUDE   streeter.CELLS.dat
+  END_FIELD
+END_FIELDS
+$------------------------------------------------------------

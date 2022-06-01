@@ -1,0 +1,11 @@
+$-------------------------------------------------------------------
+DATA
+  FORMAT:                   ensight
+  MARK_ELEMENTS:            TYPE
+  MULTIPLE_FILE:            OFF
+  BOUNDARY:                 ON
+  ELIMINATE_BOUNDARY:       YES
+  SUBDOMAINS, ALL
+  END_SUBDOMAINS
+END_DATA
+$-------------------------------------------------------------------

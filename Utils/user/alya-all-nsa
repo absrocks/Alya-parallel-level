@@ -1,0 +1,63 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "reset"                             >  ./gnuplot.tmp
+
+echo "set multiplot "                    >> ./gnuplot.tmp
+echo "set size noratio 1.0,2.0 "         >> ./gnuplot.tmp
+#----------------------------------------------------------------
+# Top
+#----------------------------------------------------------------
+
+echo "set size   1.0,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.5 "               >> ./gnuplot.tmp   
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Residual'"             >> ./gnuplot.tmp
+echo "set log y"                         >> ./gnuplot.tmp
+echo "plot '$1.nsa.cvg' u 6 t 'TOTAL' w l " >> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bottom
+#----------------------------------------------------------------
+
+echo "set size   1.0,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.0"                >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Solver iterations'"    >> ./gnuplot.tmp
+echo "set y2tics  "                      >> ./gnuplot.tmp
+echo "unset log y"                       >> ./gnuplot.tmp   
+echo "plot '$1-PHYSICAL_VARIABLES.nsa.sol' u 1 t 'SOLVER' w l " >> ./gnuplot.tmp
+
+
+#----------------------------------------------------------------
+# Bot-Left
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.0,0.0"                >> ./gnuplot.tmp
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Residual'"             >> ./gnuplot.tmp
+echo "set log y "                          >> ./gnuplot.tmp   
+#echo "plot '$1.nsa.cvg' u 7 t 'ENERGY' w l ">> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Right
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "               >> ./gnuplot.tmp
+echo "set origin 0.5,0.0"                >> ./gnuplot.tmp    
+echo "set xlabel 'Iteration'"            >> ./gnuplot.tmp
+echo "set ylabel 'Residual'"    >> ./gnuplot.tmp
+echo "set log y "                          >> ./gnuplot.tmp   
+#echo "plot '$1.nsa.cvg' u 5 t 'ENERGY' w l ">> ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Replot
+#----------------------------------------------------------------
+
+echo "unset multiplot "                  >> ./gnuplot.tmp
+echo "load './gnuplot.tmp'"              >  ./gnuplot2.tmp
+echo "pause 2"                           >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"             >> ./gnuplot2.tmp
+gnuplot ./gnuplot2.tmp 

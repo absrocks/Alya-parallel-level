@@ -1,0 +1,18 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   exacsoLineal
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL:          0.0, 700
+  TIME_STEP_SIZE:         1.0
+  NUMBER_OF_STEPS:        200
+  SOLIDZ_MODULE:          On
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

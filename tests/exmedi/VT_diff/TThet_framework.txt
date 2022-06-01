@@ -1,0 +1,34 @@
+BEATS= 1
+CYCLELENGTH=  857
+MYOCYTE= NORMAL
+ON_DRUGS= NO
+$------------------------
+CONDUCTANCES
+INAME= HEART_FAILURE
+$--- conductance ito channel (GIto)
+0.65
+$--- conductance slow potasium channel (GKs)
+0.40
+$--- conductance potasium channel  (GK1)
+0.5
+$--- Voltage Leak (Vleak)
+1.3227
+$--- Sarcoplasmic Reticulum Voltage (V_SR)
+0.6014
+END_CONDUCTANCES
+$------------------------
+DOSIS
+INAME= AMIODARONE
+$--- Dosis to affect L-type Calcium current (ICaL_dosis)
+0.0
+$--- IC50 of L-type Calcium current (ICAL_IC50)
+270.0
+$--- Dosis to affect the Rapid Potassium Current (KR_DOSIS)
+0.0
+$--- IC50 of Rapid Potasium Current (IKR_IC50)
+30.0
+$--- Dosis to affect the Sodium Channel (NA_DOSIS)
+0.0
+$--- IC50 of Sodium Channel (INA_IC50)
+4800.0
+END_DOSIS

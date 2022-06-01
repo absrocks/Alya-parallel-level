@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "inclusion-test-pyr05.nsi.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Inclusion test for pyramid. This test fails if tolerances on the Jacobian near the apex are not 0.0_rp",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "inclusion-test-pyr05",
+    "postprocess": "alya2pos"
+}

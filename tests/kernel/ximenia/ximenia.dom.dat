@@ -1,0 +1,46 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           22
+  ELEMENTS=               10
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=             22
+  PERIODIC_NODES=         11
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                             100, Sequential_frontal  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  ximenia.geo.dat
+  LMAST
+1   3
+2   4
+5   6
+7   8
+9  10
+11 12
+13 14
+15 16
+17 18
+19 20
+21 22
+  END_LMAST
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  ximenia.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  ximenia.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------

@@ -1,0 +1,23 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   temper_dirichlet_field
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, Prescribed
+  TIME_INTERVAL=          0.0, 1.0  
+  TIME_STEP_SIZE=         0.1  
+  NUMBER_OF_STEPS=        1e5   
+  MAXIMUM_NUMBER_GLOBAL=  0
+  TEMPER_MODULE:          On
+  END_TEMPER_MODULE
+  PARALL_SERVICE:         On
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: Off
+  GEOMETRY:    Off 
+  RESTART:     Off
+  POSTPROCESS: Off
+END_MPI_IO
+$-------------------------------------------------------------------

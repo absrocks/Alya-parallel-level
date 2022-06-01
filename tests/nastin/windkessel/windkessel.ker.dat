@@ -1,0 +1,46 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+  COUPLING
+  END_COUPLING
+
+  PROPERTIES
+    MATERIAL=1
+      DENSITY:   CONSTANT, VALUE = 1.0
+      VISCOSITY: CONSTANT, VALUE = 0.03
+    END_MATERIAL
+  END_PROPERTIES
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+  TIME_FUNCTIONS
+      FUNCTION=inlet_vel , DISCRETE , NUMBER_OF_SAMPLES= 83
+        INCLUDE  in_pau_vel.func
+      END_FUNCTION
+  END_TIME_FUNCTIONS
+
+  WINDKESSEL_FUNCTIONS
+    FUNCTION=aorta, FOUR_ELEMENTS, 10.0, 0.0001, 10.0, 0.0001
+  END_WINDKESSEL_FUNCTIONS
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS = 100
+WITNESS_POINTS, NUMBER=1
+6, 0.11, 0
+END_WITNESS_POINTS
+
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

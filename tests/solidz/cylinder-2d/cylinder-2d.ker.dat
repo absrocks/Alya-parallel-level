@@ -1,0 +1,20 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    MULTIPLICATION
+      LEVEL= 0
+    END_MULTIPLICATION
+    LOCAL_BASIS, NUMBER=1
+      LOCAL_BASIS: 1, BASIS: CYLINDRICAL, PARAMETERS= 0.0 0.0  1.0 0.0
+    END_LOCAL_BASIS
+  END_MESH
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS= 100
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

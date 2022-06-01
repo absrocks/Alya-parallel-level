@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "nastin-periodic_fs.ensi.PRESS-000001",
+            "method": "absolute",
+            "tolerance": 1e-10
+        },
+        {
+            "file": "nastin-periodic_fs.ensi.VELOC-000001",
+            "method": "absolute",
+            "tolerance": 1e-10
+        }
+    ],
+    "description": "This case is used to test the explicit low dissipative formulation of nastin combined with periodic boundary conditions.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "nastin-periodic_fs",
+    "postprocess": "alya2pos"
+}

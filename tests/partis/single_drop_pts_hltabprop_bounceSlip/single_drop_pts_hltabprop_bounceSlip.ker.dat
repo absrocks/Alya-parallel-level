@@ -1,0 +1,84 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:       CONSTANT, VALUE= 1.127 
+      VISCOSITY:     CONSTANT, VALUE= 1.918e-5
+      SPECIFIC_HEAT: CONSTANT, VALUE= 1.023e3
+      CONDUCTIVITY:  CONSTANT, VALUE= 0.02662 
+    END_MATERIAL
+  END_PROPERTIES
+  VELOCITY:      SPACE_TIME_FUNCTION=V_CONSTANT
+  TEMPERATURE:   SPACE_TIME_FUNCTION=T_CONSTANT
+  CONCENTRATION: SPACE_TIME_FUNCTION=C_CONSTANT
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+
+  MESH
+    DIVISION=0
+  END_MESH
+  SPACE_&_TIME_FUNCTIONS
+    $
+    $  Dry air enthalpies:
+    $  298.0  K: -112.326666559
+    $  373.15 K: 76094.4256129
+    $  673.15 K: 389117.295797 
+    $ 
+
+    FUNCTION=T_CONSTANT
+      76094.4256129
+    END_FUNCTON
+
+    FUNCTION=C_CONSTANT, DIMENSION=4
+       0.0 
+       0.0 
+       0.0
+       0.0  
+    END_FUNCTON
+
+    FUNCTION=V_CONSTANT, DIMENSION=3
+       0.0 
+       0.0 
+       0.0
+    END_FUNCTON
+
+  END_SPACE_&_TIME_FUNCTIONS
+
+
+
+  WALL_DISTANCE                                
+    ALGEBRAIC_SOLVER    CG, ITERA= 5000,TOLER= 1e-9
+    PRECONDITIONING     DIAGONAL               
+    CODES, BOUNDARIES
+         3      1 "WallBottom"
+         4      1 "WallTop"
+         5      1 "WallFront"
+         6      1 "WallBack"  
+    END_CODES
+  END_WALL_DISTANCE 
+
+  WALL_NORMAL
+    ALGEBRAIC_SOLVER    CG, ITERA= 5000,TOLER= 1e-9
+    PRECONDITIONING     DIAGONAL               
+    CODES, BOUNDARIES
+         3      1 "WallBottom"
+         4      1 "WallTop"
+         5      1 "WallFront"
+         6      1 "WallBack"  
+    END_CODES
+  END_WALL_NORMAL
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=80
+$  POSTPROCESS WALLD
+  POSTPROCESS WALLN
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

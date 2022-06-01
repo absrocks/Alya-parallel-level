@@ -1,0 +1,59 @@
+#BSUB -n 32  
+#BSUB -R"span[ptile=16]"
+#BSUB -o out00.run
+#BSUB -e err00.run 
+#BSUB -J SerialMPMD  
+#BSUB -W 00:09  
+# #BSUB -q bsc_case  
+
+#-------------------------------------------------------------------------||--# 
+# 
+ALYA_PATH=/home/bsc21/bsc21704/z2017/REPOSITORY/ALYA_2017JAN10/Executables/plepp03
+#
+export PATH=$PATH:/home/bsc21/bsc21704/z2016/REPOSITORY/HPCTOOLKIT/HPCTK/hpctoolkit/build_gcc_papi/Execs/bin
+# 
+ALYAi=4
+ALYAj=4 
+#
+#-------------------------------------------------------------------------||--# 
+echo "RUNNIG:" $(date +'%Y-%m-%d') $(date +'%T')
+#-------------------------------------------------------------------------||--# 
+#
+CASEi=fluid
+CASEj=solid 
+#
+ALYAij=32
+ALYAj=4 
+ALYAi=$((ALYAij-ALYAj))
+#
+time mpirun \
+-np $ALYAi  \
+ hpcrun -t --event WALLCLOCK@100001 --output hpc${ALYAij}_measurements \
+ $ALYA_PATH/Alya.x $CASEi --name NEUMA \
+ : \
+-np $ALYAj \
+ hpcrun -t --event WALLCLOCK@100001 --output hpc${ALYAij}_measurements \
+ $ALYA_PATH/Alya.x $CASEj --name DIRIC  
+
+#-------------------------------------------------------------------------||--# 
+echo "RUNNIG:" $(date +'%Y-%m-%d') $(date +'%T')
+#-------------------------------------------------------------------------||--#
+
+Exec01()
+{
+  mpirun -np 4 hpcprof-mpi  \
+  -S $ALYA_PATH/Alya.x.hpcstruct \
+  -I $ALYA_PATH/../../Sources/+ \
+  -o $1$2_database \
+     $1$2_measurements
+
+  rm hpc.tar
+  tar -cf hpc.tar *database* *measurements*
+  ls hpc.tar 
+}
+
+##Exec01 'D' $ALYAi
+##Exec01 'N' $ALYAj
+Exec01 'hpc' $((ALYAi+ALYAj)) 
+
+#-------------------------------------------------------------------------||--#

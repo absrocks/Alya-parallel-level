@@ -1,0 +1,30 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 1852
+  ELEMENTS          = 7221
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = TET04
+  BOUNDARIES        = 2326
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  SCALE:                           XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+ END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./indenter.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./indenter.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

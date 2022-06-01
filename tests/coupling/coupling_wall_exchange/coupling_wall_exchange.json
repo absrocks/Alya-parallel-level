@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coupling_wall_exchange.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Test of the wall exchange strategy ",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "coupling_wall_exchange",
+    "postprocess": "alya2pos"
+}

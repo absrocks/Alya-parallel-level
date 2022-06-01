@@ -1,0 +1,36 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          129
+  ELEMENTS=              216
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10,      0,      0,      0,      0
+  BOUNDARIES=             40
+  FIELDS=              1
+    FIELD=1, DIMENSION=1, Elements
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                             100, Sequential_frontal  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  partitioning_field.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  partitioning_field.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  partitioning_field.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  INCLUDE partitioning_field.fie.dat  
+END_FIELDS
+$-------------------------------------------------------------

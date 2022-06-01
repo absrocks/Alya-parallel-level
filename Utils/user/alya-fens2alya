@@ -1,0 +1,636 @@
+#!/usr/bin/perl
+#
+#
+print "\n";
+print "--| alya-fens2alya |-- \n";
+print "\n";
+print "--| Convert Fensap input files to Alya input files.\n";
+print "\n";
+$fils= $ARGV[0];
+$filc= $ARGV[1];
+$bcop= $ARGV[2];
+$tufi= $ARGV[3];
+
+if ((@ARGV < 3) || ($ARGV[0] =~ /-h/)) { 
+  print "    Usage:   alya-fens2alya \"file-name.grd\" \"file-name.grd.cfg\"  boundary_option \"turbul\" \n";
+  print "             where boundary_option is either \"faces\" or \"nodes\" and \n";
+  print "             keyword \"turbul\" is necessary to produce a turbul fixities file.\n\n";
+  exit 1;
+}
+
+my @bocon;
+my @eltyp;
+my @coord;
+my @lnods;
+my @lnodb;
+
+$outdom = $fils . "-alya.dom.dat";
+$outgeo = $fils . "-alya.dom.geo";
+$outfix = $fils . "-alya.fix";
+$outtur = $fils . "-turbul-alya.fix";
+
+open (IN,$filc);
+$i=0;
+print "--|   Reading cfg boundary conditions codes file...   \n";
+while (<IN>) {
+    @myline = split;
+    $bocon[0,$i] =$myline[0]; #code
+    $bocon[1,$i] =$myline[2]; #part name
+    $alyacode    ="UNDEFINED";
+    if (($myline[0] > 0) && ($myline[1] > 0)) {
+      $alyacode= "Far boundary          - 1- " if (($myline[0]==11));
+      $alyacode= "Exit                  - 0- " if (($myline[0]==31));
+      $alyacode= "Solid wall            - 3- " if (($myline[0]==21)||($myline[0]==22)||($myline[0]==32));
+      $alyacode= "Symetry wall          - 4- " if (($myline[0]==41));
+      $alyacode= "Moving floors         -11- " if (($myline[0]==51));
+      print "--|      Part: $myline[2]  -->  FensapCode: $myline[0]  -->  AlyaCode: $alyacode \n";      
+    }
+    $i++;
+}
+close(IN);
+print "--|   Done!   \n";
+
+
+open (IN,$fils);
+$iflag= 0;
+$nelem=  0;
+$npoin=  0;
+$nfabc=  0;
+$ndime=  3;
+$iline=  0;
+$nelts=  0;
+
+while (<IN>) {
+    $iline++;
+    @myline = split;
+
+    if ($iflag == 0)   {
+	if ($iline == 1)   {
+	    $npoin= $myline[0];
+	    $nfabc= $myline[1];
+	    $nboun = $nfabc;
+	    print "--|   Total nodes:  $npoin \n";
+	    print "--|   Faces with boundary conditions: $nfabc \n";
+	    # because perl vectors starts at 0 position:
+	    $ntotc = $npoin * ($ndime+1) + 1;
+	    $ipoin = 1;
+	    $coord[$ntotc] = 0;	    
+	    print "--|      Size of coordinate vector: $ntotc \n";	    
+	} else {
+	    $iflag = 1;
+	    print "--|   Volume elements: \n";		
+	}
+    } elsif ($iflag == 1)   {
+	if ($_=~/fensap/i){
+	    $iflag = 2;
+	    $netet= $eltyp[1,1];
+	    $nepyr= $eltyp[1,2];
+	    $nepri= $eltyp[1,3];
+	    $nelem= $netet + $nepyr + $nepri;
+	    $tytet= " ";
+	    $typry= " ";
+	    $typir= " ";
+	    if ($netet >= 1) {$tytet= " 10 "} 
+	    if ($nepri >= 1) {$typri= " , 12 "} 
+	    if ($nepyr >= 1) {$typyr= " , 14 "} 
+	    $tytot= $tytet . $typri . $typyr;
+
+	    $wout = ">".$outdom;	    
+	    open (OUT,$wout);
+	    print OUT "\$--------------------------------------------------\n";
+	    print OUT "DIMENSIONS\n";
+	    print OUT "  NODAL_POINTS=                 $npoin \n";
+	    print OUT "  ELEMENTS=                     $nelem \n";
+	    print OUT "  SPACE_DIMENSIONS=               3\n";
+	    print OUT "  TYPES_OF_ELEMS=                 $tytot \n";
+	    print OUT "  BOUNDARIES=                  $nboun \n";
+	    print OUT "  SKEW_SYSTEMS=            0\n";
+	    print OUT "  SLAVES=                  0\n";
+	    print OUT "  NO_SETS\n";
+	    print OUT "END_DIMENSIONS\n";
+	    print OUT "\$--------------------------------------------------\n";
+	    print OUT "STRATEGY\n";
+	    print OUT "  DOMAIN_INTEGRATION_POINTS: 1\n";
+	    print OUT "  WRITE_EXTERIOR_NORMAL:     NO\n";
+	    print OUT "  OUTPUT_MESH_DATA:          YES\n";
+	    print OUT "END_STRATEGY\n";
+	    print OUT "\$--------------------------------------------------\n";
+	    print OUT "GEOMETRY, GID\n";
+	    print OUT "  INCLUDE   $outgeo\n";
+	    print OUT "END_GEOMETRY\n";
+	    print OUT "SETS\n";
+	    print OUT "END_SETS\n";
+	    
+	    close (OUT);
+		
+	    print "--|   Reading nodes... \n";		
+	} elsif ($_=~/\./) {
+	    # no hago nada
+	} else {
+	    $nelts++;
+	    $eltyp[0,$nelts]=  $myline[0];
+	    $eltyp[1,$nelts]=  $myline[1];	    
+	    if ($myline[0]== 2) {
+		print "--|      Tetras:    $myline[1] \n";		
+	    } elsif ($myline[0]== 3) {
+		print "--|      Prisms:    $myline[1] \n";		
+	    } elsif ($myline[0]== 5) {
+		print "--|      Pyramids:  $myline[1] \n";
+	    } else {
+		print "--|   Unknown types of elements!\n";		
+		die;
+	    }
+	}
+    } elsif ($iflag == 2)   {
+	$itotc  =($ipoin - 1) * ($ndime+1) + 1; 
+	$coord[$itotc]   = $myline[0];   # x
+	$coord[$itotc+1] = $myline[1];   # y
+	$coord[$itotc+2] = $myline[2];   # z
+
+	$coord[$itotc+3] = $myline[3];   # code 
+
+	if ($ipoin== $npoin) {
+		print "--|   Read $npoin nodes. Done!\n";		
+		$iflag = 3;
+		print "--|   \n";		
+		$ietet=0;
+		$iepyr=0;
+		$iepri=0;
+		$ielem=0;
+		$iboun=0;
+		print "--|   Reading $nelem elements... \n";		
+# freeing @coord:
+#		undef @coord;
+		$ntote = $nelem * 7 + 1;
+		$lnods[$ntote] = 0;
+	}
+	$ipoin++;	
+    } elsif ($iflag == 3)   {
+	$ielem++;
+	$itote  =($ielem - 1) * 7 + 1; 
+	if ($ietet < $netet) {
+	    $ietet++;
+	    if ($ietet == 1) {
+		print "--|      Reading $netet tetras... \n";
+	    }
+	    $lnods[$itote  ] = 10;
+	    $lnods[$itote+1] = $myline[0];
+	    $lnods[$itote+2] = $myline[1];
+	    $lnods[$itote+3] = $myline[2];
+	    $lnods[$itote+4] = $myline[3];
+	    
+	} elsif ($iepyr < $nepyr) {
+	    $iepyr++;
+	    if ($iepyr == 1) {
+		print "--|      Reading $nepyr pyramids... \n";
+	    }
+	    $lnods[$itote]   = 12;
+	    $lnods[$itote+1] = $myline[0];
+	    $lnods[$itote+2] = $myline[1];
+	    $lnods[$itote+3] = $myline[2];
+	    $lnods[$itote+4] = $myline[3];
+	    $lnods[$itote+5] = $myline[4];	    
+	} elsif ($iepri < $nepri) {
+	    $iepri++;
+	    if ($iepri == 1) {
+		print "--|      Reading $nepri prisms... \n";
+	    }
+	    $lnods[$itote]   = 14;
+	    $lnods[$itote+1] = $myline[0];
+	    $lnods[$itote+2] = $myline[1];
+	    $lnods[$itote+3] = $myline[2];
+	    $lnods[$itote+4] = $myline[3];
+	    $lnods[$itote+5] = $myline[4];
+	    $lnods[$itote+6] = $myline[5];
+
+	} else {	    
+	    print "--|   Read $nelem elements. Done!\n";		
+	    $iflag = 4;
+
+	    $wout = ">".$outgeo;	    
+	    open (OUT,$wout);
+	    # element types
+	    $ielem = 1;
+	    print "--|   Writing volume connectivities in $outgeo... \n";
+	    print OUT "TYPES\n";
+	    while ($ielem <= $nelem) {
+		$itote  =($ielem - 1) * 7 + 1; 		
+		print OUT "     $ielem    $lnods[$itote]\n";		
+		$ielem++;
+	    }		
+	    print OUT "END_TYPES\n";
+	    # connectivities
+	    $ielem = 1;
+	    print OUT "ELEMENTS\n";
+	    while ($ielem <= $nelem) {
+		$itote  =($ielem - 1) * 7 + 1; 		
+		print OUT "     $ielem"; 
+		if ($lnods[$itote]==10) {
+		    print OUT "     $lnods[$itote+1]     $lnods[$itote+2]";
+		    print OUT "     $lnods[$itote+3]     $lnods[$itote+4]\n";
+		} elsif ($lnods[$itote]==12) {
+		    print OUT "     $lnods[$itote+1]     $lnods[$itote+2]";
+		    print OUT "     $lnods[$itote+3]     $lnods[$itote+4]";
+		    print OUT "     $lnods[$itote+5]\n";
+		} elsif ($lnods[$itote]==14) {
+		    print OUT "     $lnods[$itote+1]     $lnods[$itote+2]";
+		    print OUT "     $lnods[$itote+3]     $lnods[$itote+4]";
+		    print OUT "     $lnods[$itote+5]     $lnods[$itote+6]\n";
+		}
+		$ielem++;
+	    }		
+	    print OUT "END_ELEMENTS\n";
+	    # coordinates
+	    print "--|   Writing coordinates in $outgeo... \n";		
+	    print OUT "COORDINATES\n";
+	    $ipoin = 1;
+	    while ($ipoin <= $npoin) {
+		$itotc  =($ipoin - 1) * ($ndime+1) + 1; 
+		print OUT "     $ipoin";
+		print OUT "     $coord[$itotc]     $coord[$itotc+1]";
+		print OUT "     $coord[$itotc+2]\n";
+		$ipoin++;
+	    }
+	    print OUT "END_COORDINATES\n";
+
+	    print "--|   \n";		
+	    print "--|   Reading boundary conditions on $nfabc faces... \n";
+	    print "--|   \n";		
+	    $ntotb = $nfabc * 7 + 1;
+	    $lnodb[$ntotb] = 0;	
+	    $ifbou= $myline[0];
+	    $kface= $myline[1];
+	    $kelem= $myline[2];
+	}
+    } elsif ($iflag == 4)   {
+	
+#	
+#   Face number Node Ordering:
+#
+#   4-node tetrahedron
+#   ielgeom = 2
+#   1 2-3-4
+#   2 1-4-3
+#   3 1-2-4
+#   4 1-3-2
+# 
+#   5-node pyramid
+#   ielgeom = 5
+#   1 1-4-3-2
+#   2 1-2-5
+#   3 2-3-5
+#   4 3-4-5
+#   5 4-1-5
+# 
+#   6-node prism
+#   ielgeom = 3
+#   1 2-3-6-5
+#   2 3-1-4-6
+#   3 1-2-5-4
+#   4 1-3-2
+#   5 4-5-6
+# 
+#   8-node brick
+#   ielgeom = 1
+#   1 1-4-3-2
+#   2 1-5-8-4
+#   3 4-8-7-3
+#   4 2-3-7-6
+#   5 1-2-6-5
+#   6 5-6-7-8
+#	
+	
+	$iboun++;
+	
+	$itotb  =($iboun - 1) * 7 + 1; 
+	$itote  =($kelem - 1) * 7 + 1; 
+	$ielty  = $lnods[$itote];
+
+	$lnodb[$itotb]     = $ifbou;
+	$lnodb[$itotb+6]   = $kelem;
+	
+	if ($ielty == 10) {	    
+	    if  ($kface == 1) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+2];
+		$lnodb[$itotb+3] = $lnods[$itote+3];
+		$lnodb[$itotb+4] = $lnods[$itote+4];
+	    } elsif ($kface == 2) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+4];
+		$lnodb[$itotb+4] = $lnods[$itote+3];
+	    } elsif ($kface == 3) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+2];
+		$lnodb[$itotb+4] = $lnods[$itote+4];
+	    } elsif ($kface == 4) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+3];
+		$lnodb[$itotb+4] = $lnods[$itote+2];
+	    }
+	} elsif ($ielty == 12) {
+	    if  ($kface == 1) {
+		$lnodb[$itotb+1] = 4;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+4];
+		$lnodb[$itotb+4] = $lnods[$itote+3];
+		$lnodb[$itotb+5] = $lnods[$itote+2];
+	    } elsif ($kface == 2) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+2];
+		$lnodb[$itotb+4] = $lnods[$itote+5];
+	    } elsif ($kface == 3) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+2];
+		$lnodb[$itotb+3] = $lnods[$itote+3];
+		$lnodb[$itotb+4] = $lnods[$itote+5];
+	    } elsif ($kface == 4) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+3];
+		$lnodb[$itotb+3] = $lnods[$itote+4];
+		$lnodb[$itotb+4] = $lnods[$itote+5];
+	    } elsif ($kface == 5) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+4];
+		$lnodb[$itotb+3] = $lnods[$itote+1];
+		$lnodb[$itotb+4] = $lnods[$itote+5];
+	    }	    
+	} elsif ($ielty == 14) {
+	    if  ($kface == 1) {
+		$lnodb[$itotb+1] = 4;
+		$lnodb[$itotb+2] = $lnods[$itote+2];
+		$lnodb[$itotb+3] = $lnods[$itote+3];
+		$lnodb[$itotb+4] = $lnods[$itote+6];
+		$lnodb[$itotb+5] = $lnods[$itote+5];
+	    } elsif ($kface == 2) {
+		$lnodb[$itotb+1] = 4;
+		$lnodb[$itotb+2] = $lnods[$itote+3];
+		$lnodb[$itotb+3] = $lnods[$itote+1];
+		$lnodb[$itotb+4] = $lnods[$itote+4];
+		$lnodb[$itotb+5] = $lnods[$itote+6];
+	    } elsif ($kface == 3) {
+		$lnodb[$itotb+1] = 4;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+2];
+		$lnodb[$itotb+4] = $lnods[$itote+5];
+		$lnodb[$itotb+5] = $lnods[$itote+4];
+	    } elsif ($kface == 4) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+1];
+		$lnodb[$itotb+3] = $lnods[$itote+3];
+		$lnodb[$itotb+4] = $lnods[$itote+2];
+	    } elsif ($kface == 5) {
+		$lnodb[$itotb+1] = 3;
+		$lnodb[$itotb+2] = $lnods[$itote+4];
+		$lnodb[$itotb+3] = $lnods[$itote+5];
+		$lnodb[$itotb+4] = $lnods[$itote+6];
+	    }	    
+	}
+	$ifbou= $myline[0];
+	$kface= $myline[1];
+	$kelem= $myline[2];
+	
+    }
+    
+}
+
+# the last boundary...
+$iboun++;
+
+$itotb  =($iboun - 1) * 7 + 1; 
+$itote  =($kelem - 1) * 7 + 1; 
+$ielty  = $lnods[$itote];
+
+$lnodb[$itotb]   = $ifbou;
+$lnodb[$itotb+6]   = $kelem;
+
+if ($ielty == 10) {	    
+    if  ($kface == 1) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+2];
+	$lnodb[$itotb+3] = $lnods[$itote+3];
+	$lnodb[$itotb+4] = $lnods[$itote+4];
+    } elsif ($kface == 2) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+4];
+	$lnodb[$itotb+4] = $lnods[$itote+3];
+    } elsif ($kface == 3) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+2];
+	$lnodb[$itotb+4] = $lnods[$itote+4];
+    } elsif ($kface == 4) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+3];
+	$lnodb[$itotb+4] = $lnods[$itote+2];
+    }
+} elsif ($ielty == 12) {
+    if  ($kface == 1) {
+	$lnodb[$itotb+1] = 4;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+4];
+	$lnodb[$itotb+4] = $lnods[$itote+3];
+	$lnodb[$itotb+5] = $lnods[$itote+2];
+    } elsif ($kface == 2) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+2];
+	$lnodb[$itotb+4] = $lnods[$itote+5];
+    } elsif ($kface == 3) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+2];
+	$lnodb[$itotb+3] = $lnods[$itote+3];
+	$lnodb[$itotb+4] = $lnods[$itote+5];
+    } elsif ($kface == 4) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+3];
+	$lnodb[$itotb+3] = $lnods[$itote+4];
+	$lnodb[$itotb+4] = $lnods[$itote+5];
+    } elsif ($kface == 5) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+4];
+	$lnodb[$itotb+3] = $lnods[$itote+1];
+	$lnodb[$itotb+4] = $lnods[$itote+5];
+    }	    
+} elsif ($ielty == 14) {
+    if  ($kface == 1) {
+	$lnodb[$itotb+1] = 4;
+	$lnodb[$itotb+2] = $lnods[$itote+2];
+	$lnodb[$itotb+3] = $lnods[$itote+3];
+	$lnodb[$itotb+4] = $lnods[$itote+6];
+	$lnodb[$itotb+5] = $lnods[$itote+5];
+    } elsif ($kface == 2) {
+	$lnodb[$itotb+1] = 4;
+	$lnodb[$itotb+2] = $lnods[$itote+3];
+	$lnodb[$itotb+3] = $lnods[$itote+1];
+	$lnodb[$itotb+4] = $lnods[$itote+4];
+	$lnodb[$itotb+5] = $lnods[$itote+6];
+    } elsif ($kface == 3) {
+	$lnodb[$itotb+1] = 4;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+2];
+	$lnodb[$itotb+4] = $lnods[$itote+5];
+	$lnodb[$itotb+5] = $lnods[$itote+4];
+    } elsif ($kface == 4) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+1];
+	$lnodb[$itotb+3] = $lnods[$itote+3];
+	$lnodb[$itotb+4] = $lnods[$itote+2];
+    } elsif ($kface == 5) {
+	$lnodb[$itotb+1] = 3;
+	$lnodb[$itotb+2] = $lnods[$itote+4];
+	$lnodb[$itotb+3] = $lnods[$itote+5];
+	$lnodb[$itotb+4] = $lnods[$itote+6];
+    }	    
+}
+
+print "--|   Writing boundary elements in $outgeo... \n";		
+# boundaries
+$iboun = 1;
+print OUT "BOUNDARIES, ELEMENTS\n";
+while ($iboun <= $nboun) {
+    $itotb  =($iboun - 1) * 7 + 1;
+    $nnodb  = $lnodb[$itotb+1];
+    $inodb  = 1;    
+    print OUT "     $iboun";
+    while ($inodb <= $nnodb){
+	print OUT "     $lnodb[$itotb+1+$inodb]";	
+	$inodb++;
+    }
+    $kelem = $lnodb[$itotb+6];
+    print OUT "     $kelem";
+    print OUT "\n";
+    $iboun++;
+}
+print OUT "END_BOUNDARIES\n";
+
+# tail 
+print OUT "SKEW_SYSTEMS\n";
+print OUT "END_SKEW_SYSTEMS\n";
+close(OUT);
+
+close(IN);
+
+# 
+# boundary conditions
+# 
+
+print "--|   Writing boundary conditions in $outfix... \n";		
+print "--|   As required, boundary conditions set on ---> $bcop <--- \n";		
+$wout = ">".$outfix;	    
+open (OUT,$wout);
+if ($bcop =~ /faces/i) {
+    print OUT "ON_BOUNDARIES , CODED\n";
+    $iboun= 1;
+    while ($iboun <= $nboun) {    
+	$itotb  =($iboun - 1) * 7 + 1; 
+	$ifbou  = $lnodb[$itotb];
+	$nnodb  = $lnodb[$itotb+1];
+	$bvess  = " ";
+	$invel  = "  0.0   0.0   0.0    " ;
+	$iffix  = "nofix";
+	if ($ifbou == 20){
+	    $iffix = " 3   ";
+	} elsif ($ifbou == 11){
+	    $iffix = " 1   ";	    
+#	    $inodb=1;
+#	    while ($inodb <= $nnodb){$bvess = $bvess . $invel ; $inodb++}
+	} elsif ($ifbou == 21){
+	    $iffix = " 3   ";
+	} elsif ($ifbou == 22){
+	    $iffix = " 3   ";
+	} elsif ($ifbou == 32){
+	    $iffix = " 3   ";
+	} elsif ($ifbou == 41){
+	    $iffix = " 4   ";
+	} elsif ($ifbou == 31){
+	    $iffix = " 0   ";
+	} elsif ($ifbou == 51){
+	    $iffix = "11   ";
+	}
+	if (!($iffix  =~ /nofix/)) {print OUT "   $iboun  $iffix  $bvess  \n"}
+	$iboun++;
+    }
+    print OUT "END_ON_BOUNDARIES\n";
+} elsif ($bcop =~ /nodes/i) {
+    print OUT "ON_NODES , CODED\n";
+    $ipoin = 1;
+    while ($ipoin <= $npoin) {
+	$itotc  =($ipoin - 1) * ($ndime+1) + 1; 
+	$ifpoi  = $coord[$itotc+3];
+	$iffix  = "nofix";
+	if ($ifpoi == 20){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 51){
+	    $iffix = "11   ";
+	} elsif ($ifpoi == 32){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 21){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 22){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 41){
+	    $iffix = " 4   ";
+	} elsif ($ifpoi == 31){
+	    $iffix = " 0   ";
+	} elsif ($ifpoi == 11){
+	    $iffix = " 1   ";	    
+	}
+	if (!($iffix  =~ /nofix/)) {print OUT "   $ipoin   $iffix    \n"}
+	$ipoin++;
+    }   
+    print OUT "END_ON_NODES\n";    
+}
+close(OUT);
+
+print "--|   Mean flow boundary conditions. Done!\n";		
+print "--|   \n";		
+
+# 
+# boundary conditions for turbulence
+# 
+
+if ($tufi =~ /turbul/) {
+    
+    print "--|   Writing boundary conditions in $outfix... \n";		
+    print "--|   Turbulence boundary conditions are set on ---> nodes <--- \n";		
+    $wout = ">".$outtur;	    
+    open (OUT,$wout);
+    print OUT "ON_NODES , CODED\n";
+    $ipoin = 1;
+    while ($ipoin <= $npoin) {
+	$itotc  =($ipoin - 1) * ($ndime+1) + 1; 
+	$ifpoi  = $coord[$itotc+3];
+	$iffix  = "nofix";
+	if ($ifpoi == 20){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 32){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 21){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 22){
+	    $iffix = " 3   ";
+	} elsif ($ifpoi == 11){
+	    $iffix = " 1   ";	    
+	}
+	if (!($iffix  =~ /nofix/)) {print OUT "   $ipoin   $iffix    \n"}
+	$ipoin++;
+    }   
+    print OUT "END_ON_NODES\n";    
+    
+    close(OUT);
+    
+    print "--|   Turbulence boundary conditions. Done!\n";		
+    print "--|   \n";		
+
+}
+
+print "--| \n";		
+print "--| Bye!\n";		
+print "--| \n";		

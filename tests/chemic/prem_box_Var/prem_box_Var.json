@@ -1,0 +1,91 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "prem_box_Var.chm.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "prem_box_Var.chm.wit-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "prem_box_Var.chm.wit-col10.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "prem_box_Var.chm.wit-col11.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "prem_box_Var-CON01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "prem_box_Var-CON02-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "prem_box_Var-TEMPE-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "prem_box_Var-XYR-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "prem_box_Var-XYS-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        },
+        {
+            "file": "prem_box_Var-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+    ],
+    "description": "Premixed flame in square shaped duct, variance model on.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": " [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 3 10 11; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": " [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 3 10 11; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": " [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 3 10 11; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "prem_box_Var",
+    "postprocess": "mpio2txt"
+}

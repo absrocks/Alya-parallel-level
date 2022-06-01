@@ -1,0 +1,29 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   hollow_cone
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 3000
+  TIME_STEP_SIZE=         0.05
+  NUMBER_OF_STEPS=        20
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  PARALL_SERVICE:         On
+    PARTITION
+        METHOD:         FIELD=1
+        EXECUTION_MODE: PARALLEL 
+    END_PARTITION
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: OFF
+  RESTART: ON
+  POSTPROCESS: ON 
+  SYNCHRONOUS: ON
+END_MPI_IO
+$-------------------------------------------------------------------
+

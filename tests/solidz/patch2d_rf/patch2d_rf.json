@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "patch2d_rf.sld.wit",
+            "method": "absolute",
+            "tolerance": 1e-10
+        },
+        {
+            "file": "patch2d_rf-node.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-13
+        }
+    ],
+    "description": "This patch test validates the reaction forces calculated in the solidz module. The model consists of five plane stress elements QUA4 with four integration points each. The material is linear isotropic. The boundary condition of the model imposes a Dirichlet displacement on the four exterior nodes. The theoretical solution of the problem is the following: reaction forces in x-direction are respectively -2, 3, 2 and -3 in nodes 1, 2, 3, 4; reaction forces in y-direction are null; constant stress of 2 in x-direction and stresses at transverse and in-plane shear are null",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "patch2d_rf",
+    "postprocess": "alya2pos"
+}

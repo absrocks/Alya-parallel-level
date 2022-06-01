@@ -1,0 +1,43 @@
+$$Create by J. MIGUEL ZAVALA-AKE 
+$--------------------------------------------------------XXX_nsi.dat 
+RUN_DATA
+  CODE:               2    
+  ALYA:               NEUMANN  
+ $CODE:               1
+ $ALYA:               DIRICHL
+  MEMORY:             yes
+  $LIVE_INFO:          FILE
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_INTERVAL:     0.0, 30.0
+  NUMBER_OF_STEPS:   1 $ 1e7
+ $TIME_COUPLING:     Global, From_critical
+  TIME_STEP_SIZE:    0.4e-5
+  TIME_COUPLING:     Global, prescribed
+$
+$ MAXIMUM_NUMBER_GLOBAL: -1 -2 -3  
+$ BLOCK_ITERATION: -3 
+$ END_BLOCK_ITERATION
+$
+  TEMPER_MODULE:      ON
+  END_TEMPER_MODULE
+$
+$  XXXXX_MODULE:      OFF
+$  END_TEMPER_MODULE
+$
+  PARALL_SERVICE:     ON
+	 PARTITION_TYPE:       FACES
+	$COMMUNICATIONS:       SYNCHRONOUS
+	$FILE_HIERARCHY:       ON
+	$FILE_OPEN_CLOSE:      Yes
+	$VIRTUAL_FILE:         On, MAXIMUM_MEMORY=0.5
+	$$TASK:                READ_PREPROCESS, BINARY                 $ TO RUN
+	$TASK:                 ONLY_PREPROCESS, BINARY, SUBDOMAIN = -1 $ N_DOMs-1
+  END_PARALL_SERVICE
+$
+ $HDFPOS_SERVICE:     ON
+ $END_HDFPOS_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

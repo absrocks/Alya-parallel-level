@@ -1,0 +1,80 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       FORCE
+      THERMODYNAMIC_MODEL:  ON, FLAMELET_TABLE
+      BROWNIAN_MOTION:      OFF
+      FORCES:               DRAG: SCHILLER_NEUMANN
+      WSEEN=                0.3333333333333333
+      HT_CORRECTION:        OFF          $ AB_SIRIGNANO
+      MASS_POTENTIAL:       QUASI_STEADY $, NON_EQUIL
+      PROPERTIES
+        LIQ_NAME= H2O
+        D=        3000.0e-06
+        TABLE
+            INCLUDE ./water_turbulent_table.dat
+        END_TABLE
+        YC_SCALING
+            INCLUDE ./water_turbulent_scaling_gen0.dat 
+        END_YC_SCALING
+        HEAT_LOSS
+            INCLUDE ./water_turbulent_scaling_gen1.dat 
+        END_HEAT_LOSS
+      END_PROPERTIES
+  END_TYPE
+
+  SINK_TERMS: MOMENTUM, HEAT , MASS
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK:    GAMMA=0.5, BETA=0.25       $ Diffusive
+
+  SLIP_WALL
+    ALGEBRAIC_SOLVER    CG, ITERA= 5000,TOLER= 1e-9
+    PRECONDITIONING     DIAGONAL               
+  END_SLIP_WALL
+
+  BOUNCE_WALL
+    ALGEBRAIC_SOLVER    CG, ITERA= 5000,TOLER= 1e-9
+    PRECONDITIONING     DIAGONAL               
+  END_BOUNCE_WALL
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  FREQUENCY = 1
+  VARIABLES, ADD
+    DIAMK
+  END_VARIABLES
+  POSTPROCESS BOUNCE
+  POSTPROCESS SLIPW
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  INJECTOR: 1
+    GEOMETRY:    POINT,    PARAM = 0.1, 0.0, 0.0, 1
+    VELOCITY:    CONSTANT, VALUE = 9.0, 17.0, 10.0
+    TEMPERATURE: CONSTANT, VALUE = 350
+  END_INJECTOR
+  CODES, BOUNDARIES
+     1  0
+     2  0
+     3  4
+     4  4
+     5  3
+     6  4
+  END_CODES  $ 0: out, 1:wall, 3:slip, 4:bounce
+$  1   "Left"
+$  2   "Right"
+$  3   "WallBottom"
+$  4   "WallTop"
+$  5   "WallFront"
+$  6   "WallBack"
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e6
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

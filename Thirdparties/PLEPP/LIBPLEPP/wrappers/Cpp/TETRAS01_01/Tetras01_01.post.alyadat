@@ -1,0 +1,19 @@
+$$Create by J. MIGUEL ZAVALA-AKE
+$------------------------------------------------- xxx.post.alyadat
+DATA
+  FORMAT:                   ensight
+  MARK_ELEMENTS:            type
+  ELIMINATE_BOUNDARY_NODES: yes
+  MULTIPLE_FILE:            OFF
+  BOUNDARY:                 ON
+  SUBDOMAINS, ALL
+  END_SUBDOMAINS
+ $SUBDOMAINS
+ $ ID 
+ $END_SUBDOMAINS
+ $ONLY_STEP
+ $ ID
+ $END_ONLY_STEP
+END_DATA
+$-------------------------------------------------------------------
+

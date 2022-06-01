@@ -1,0 +1,25 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  WALL_DISTANCE
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-14, ADAPTIVE, RATIO=0.01
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER
+    CODES, BOUNDARIES
+        1  1
+    END_CODES 
+  END_WALL_DISTANCE
+END_NUMERICAL_TREATMENT  
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+   STEPS = 1
+   POSTPROCESS: WALLD
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------

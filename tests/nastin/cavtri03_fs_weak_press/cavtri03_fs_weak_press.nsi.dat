@@ -1,0 +1,61 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          EMAC
+  VISCOUS_TERM:             DIVERGENCE
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+PROPERTIES
+END_PROPERTIES  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            OFF
+  TIME_INTEGRATION:         RUNGE, ORDER:3
+  STEADY_STATE_TOLER        -1e-12
+  MAXIMUM_NUMBER_OF_IT:     1
+  SAFETY_FACTOR:            1.4
+  TIME_STRATEGY:            EIGENVALUE
+  ASSEMBLY:                 GPU2
+  GRAD_DIV =                ON
+
+  ALGORITHM:                FRACTIONAL_STEP
+  END_ALGORITHM
+
+  MOMENTUM
+     ALGEBRAIC_SOLVER
+     SOLVER:                EXPLICIT, LUMPED
+     END_ALGEBRAIC_SOLVER 
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER
+       SOLVER:              DEFLATED_CG 
+       CONVERGENCE:         ITERA=1000, TOLER=-1.0e-10, ADAPTIVE, RATIO=1.0e-3
+       PRECONDITIONER:      DIAGONAL
+       OUTPUT:              CONVERGENCE
+    END_ALGEBRAIC_SOLVER   
+  END_CONTINUITY
+
+  DIRICHLET: ALGORITHM
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS VELOCITY,     STEPS = 1
+  POSTPROCESS PRESSURE,     STEPS = 1
+END_OUTPUT_&_POST_PROCESS   
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE: WEAK, ON_NODE=121, VALUE=0.0, MULTIPLICATIVE=10.0
+  END_PARAMETERS
+  CODES, NODES
+        1  11  1.000000  0.000000 
+        2  11  0.000000  0.000000 
+    1 & 2  11  0.000000  0.000000 
+  END_CODES
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

@@ -1,0 +1,41 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   Off
+    CONVECTIVE_TERM:        On
+    CONDUCTION_TERM:        On
+    REACTION=               2000.0
+  END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  ELEMENT_LENGTH:          Minimum 
+  SAFETY_FACTOR=           50.0
+  STEADY_STATE_TOLERANCE=  -1e-10  
+  MAXIMUM_NUMBER_OF_ITER=  1
+  RELAXATION_FACTOR=       1.0
+  CONVERGENCE_TOLERANCE=   -1e-10
+  ALGEBRAIC_SOLVER     
+    SOLVER:                GMRES, KRYLOV=10
+    CONVERGENCE:           ITERA=1000, TOLER=1.0e-16
+    OUTPUT:                CONVERGENCE
+    PRECONDITIONER:        DIAGONAL
+    OPTIONS:               FIXITY
+  END_ALGEBRAIC_SOLVER         
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT      STEP  = 0
+  POSTPROCESS TEMPER,      STEPS = 10 
+  POSTPROCESS ERROR,       STEPS = 10 
+  OUTPUT      ERROR,       SOLUTION=16
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS, NON_CONSTANT
+  CODES, NODES
+    1  1 1.0, SPACE_TIME_FUNCTION=INFLOW
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------
+ 

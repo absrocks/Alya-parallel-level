@@ -1,0 +1,54 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "lagrange.pts.res-col6.out",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "lagrange.pts.res-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "lagrange.pts.res-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "fluid-ENTHA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e0"
+        },
+        {
+            "file": "fluid-CON03-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        }
+    ],
+    "description": "Heat and mass transfer of a single droplet with built in water liquid properties and a flamelet table with heat loss. Partis, Chemic, and Temper coupled with two instances of Alya.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] fluid [SEP] [NP] 3 [ALYA] lagrange",
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh lagrange.pts.res 6 13 14; echo | [POST] fluid; echo | [POST] lagrange"
+            },
+            "mpi": 6,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "chemic",
+        "temper",
+        "partis"
+    ],
+    "name": "single_drop_code_coupl_pts_chm_tem_hltabprop",
+    "postprocess": "mpio2txt",
+	"timeout": "00:02:00"
+}

@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "beatriz.eguzkitza@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "channel2d-periodic.post.res",
+            "method": "absolute",
+            "tolerance": 1e-11
+        }
+    ],
+    "description": "Only tests the nastin module equations, it contains the basic solver options,\n        is not intented to test any kernek feature. It has 200 iterations and 1e-12 convergence tolerance",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "channel2d-periodic",
+    "postprocess": "alya2pos"
+}

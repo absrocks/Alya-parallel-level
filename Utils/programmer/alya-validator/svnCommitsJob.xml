@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alyaValidatorJob>
+    <user>bsc21967</user>
+    <password>12eSOS6g</password>
+    <svnURL>svn+ssh://bsc21967\@mt2.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk</svnURL>
+    <mail>
+        <mailServer>mail.bsc.es</mailServer>
+        <mailPort>465</mailPort>
+        <mailUser>redmine</mailUser>
+        <mailPassword>.R3dM1ne</mailPassword>
+        <mailFrom>antoni.artigues@bsc.es</mailFrom>
+        <mailTo>antoni.artigues@gmail.com</mailTo>
+	     <mailTo>antoni.artigues.feina@gmail.com</mailTo>
+    </mail>
+</alyaValidatorJob>

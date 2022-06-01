@@ -1,0 +1,26 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   name
+$  RUN_TYPE:               Preliminary, Frequency=1e6
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  $TIME_COUPLING:          local, From_critical
+  TIME_INTERVAL=          0.0, 1e6
+  TIME_STEP_SIZE=         0.05  
+  NUMBER_OF_STEPS=        20
+  MAXIMUM_NUMBER_GLOBAL=  1
+  NASTIN_MODULE:          Off
+  END_NASTIN_MODULE
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+  MPI_IO $: On
+   GEOMETRY: Export
+  END_MPI_IO
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

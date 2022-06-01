@@ -1,0 +1,38 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "hillLowmach.ensi.TEMPE-000001",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "hillLowmach.ensi.VELOC-000001",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This a coarse simulation of the 2DHills problem in 3D using Low-Mach. We have set periodical conditions in the streamwise and spanwise directions. Two thermal conditions are set: adiabatic top wall and isothermal bottom wall. We have two modules: temper and nastin.",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper",
+        "nastin"
+    ],
+    "name": "hillLowmach",
+    "postprocess": "alya2pos"
+}

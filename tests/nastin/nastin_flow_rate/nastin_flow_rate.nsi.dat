@@ -1,0 +1,78 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On  
+  CONVECTIVE_TERM:          SKEWSYM
+  VISCOUS_TERM:             DIVERGENCE
+  GRAVITY:                  Off 
+  TURBULENCE_COUPLING:      LESMO, VRMAN , PARAM=0.07
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+PROPERTIES
+END_PROPERTIES  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+ NUMERICAL_TREATMENT 
+
+  TIME_STEP: EIGENVALUE
+  ELEMENT_LENGTH:           Minimum
+  STABILIZATION:            OFF
+  TIME_INTEGRATION:         RUNGE_KUTTA, ORDER:3
+  SAFETY_FACTOR:            0.95
+  STEADY_STATE_TOLER:       1e-15
+  VECTOR:ON
+
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+
+$  GRAD_DIV : ON
+  ALGORITHM:FRACTIONAL_STEP
+      GAMMA = 0.0
+  END_ALGORITHM
+
+  MOMENTUM
+     ALGEBRAIC_SOLVER     
+        SOLVER:                MATRIX_RICHARDSON
+        CONVERGENCE:           ITERA=1
+        PRECONDITIONER:        CLOSE_MASS_MATRIX
+     END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+
+  CONTINUITY 
+     ALGEBRAIC_SOLVER
+         SOLVER:               CG, COARSE: SPARSE
+         CONVERGENCE:          ITERA=10, TOLER=1.0e-14, ADAPTIVE, RATIO=1.0e-3
+         PRECONDITIONER:       DIAGONAL,NEVER_CHANGE
+     END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+ DIRICHLET:ALGORITHM
+ END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  =  0
+  POSTPROCESS VELOCITY
+  BOUNDARY_SET
+    MASS
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE:      OFF
+    INITIAL_CONDITION: CONSTANT, VALUES= 0.0 , 0.0 , 0.
+    VARIATION: NON_CONSTANT
+  END_PARAMETERS 
+
+  CODES, NODES
+      1  111 0.0 0.0 0.0 
+  1 & 2  111 0.0 0.0 0.0
+      2  111 1.0 0.0 0.0, AXES=LOCAL 
+  END_CODES   
+            
+  FLOW_RATE = 7.625333333333332e-05, CODE = 2
+$  FLOW_RATE = 2.0, CODE = 2
+
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

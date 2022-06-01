@@ -1,0 +1,71 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL = 1
+      DENSITY       = LOWMA, GP_LOOKUP, UPDP1=ENDSTE, UPDP2=NEVER
+      VISCOSITY     = MU_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      SPECIFIC_HEAT = CP_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      CONDUCTIVITY  = K_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES 
+
+  GAS_CONSTANT    = 8.3144621
+
+  COUPLING
+    TEMPER, CHEMIC = 1 1
+    CHEMIC, TEMPER = 1 1
+  END_COUPLING
+
+  VELOC: FIELD=7
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  MESH
+    DIVISION=0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+  
+  SPACE_&_TIME_FUNCTIONS  
+    FUNCTION=VEL_IN
+      ( 0.1 * (y+0.00785398)*(y-0.00785398)*(z+0.00785398)*(z-0.00785398) * 262809145.7  )
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+  
+  LOOKUP_TABLES
+    TABLE: 1
+      INCLUDE cam_diff_turbulent_table.dat
+    END_TABLE
+    TABLE: 2
+      INCLUDE cam_diff_turbulent_scaling_gen0.dat
+    END_TABLE
+
+    FRAMEWORK: 1
+      MAIN_TABLE= 1
+      SCALING
+        ZMEAN UNSCALED
+        ZVAR  OFF
+        CMEAN TABLE 2
+        CVAR  OFF
+      END_SCALING
+    END_FRAMEWORK
+  END_LOOKUP_TABLES
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_ORIGINAL_MESH
+  STEPS=1
+
+  POSTP DENSI
+
+  WITNESS_POINTS, NUMBER= 1
+     0.015707963267948967  0.0   0.0
+  END_WITNESS_POINTS
+
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

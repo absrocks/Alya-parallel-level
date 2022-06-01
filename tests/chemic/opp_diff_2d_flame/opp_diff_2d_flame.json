@@ -1,0 +1,77 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "opp_diff_2d_flame-CON01-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "opp_diff_2d_flame-CON03-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "opp_diff_2d_flame-ENTHA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "opp_diff_2d_flame-SCO01-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "opp_diff_2d_flame-SOURC-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "opp_diff_2d_flame-TEMPE-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "opp_diff_2d_flame-VELOC-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "opp_diff_2d_flame-VISCO-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "opp_diff_2d_flame-XZR-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Laminar opposing diffusion flame in 2D domain with entropy viscosity.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "opp_diff_2d_flame",
+    "postprocess": "mpio2txt"
+}

@@ -1,0 +1,43 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+	    "jenny.wang@cs.ox.ac.uk"
+    ],
+    "comparisons": [
+		{
+		    "file": "torord_ode.m1c1.csv",
+			"method": "absolute",
+			"tolerance": "1.0e-4"
+	    },
+        {
+		    "file": "torord_ode.m1c2.csv",
+			"method": "absolute",
+			"tolerance": 0
+		},
+		{
+		    "file": "torord_ode.m1c3.csv",
+			"method": "absolute",
+			"tolerance": 0
+		}
+    ],
+    "description": "Tests the ToR-ORd Cell model, reaction portion of the equation",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_reac_torord",
+    "postprocess": "none",
+    "timeout": "00:02:00"
+}

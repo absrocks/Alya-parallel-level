@@ -1,0 +1,38 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "beatriz.eguzkitza@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "Y_press_porosity.ensi.PRESS-000001",
+            "method": "power",
+            "tolerance": "6"
+        },
+        {
+            "file": "Y_press_porosity.ensi.VELOC-000001",
+            "method": "power",
+            "tolerance": "6"
+        },
+        {
+            "file": "Y_press_porosity-boundary.nsi.set",
+            "method": "power",
+            "tolerance": "6"
+        }
+    ],
+    "description": "Test for the pressure driven porosity. Can be used for valves. \n",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "Y_press_porosity",
+    "postprocess": "alya2pos"
+}

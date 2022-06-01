@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "ximenia.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        }
+    ],
+    "description": "Test the exterior normal and mass matrix with internal boundaries and periodicity with only one layer of elements in 2D",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "ximenia",
+    "postprocess": "alya2pos"
+}

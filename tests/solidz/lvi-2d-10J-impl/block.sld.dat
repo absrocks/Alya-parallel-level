@@ -1,0 +1,80 @@
+$-------------------------------------------------------------------
+$
+$ block
+$ Details:   Block in 2-d
+$            Dimensions: 1 x 8 mm
+$            Block is assumed as a deformable body
+$            Alya Implicit solver
+$
+$
+$ Units:     SI (mm)
+$
+$ Reference: -
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   STATIC
+ $   GRAVITY:                NORM=9810.0, GX=0.0, GY=-1.0
+    PLANE:                  STRAIN
+    THICKNESS_OUT_OF_PLANE: 1.0
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL=           1
+    DENSITY=            1.59E-9
+    CONSTITUTIVE_MODEL: ISOLIN  \
+      138.4E+3 0.311
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:       IMPLICIT
+  NO_STEADY_STATE
+  TIME_INTEGRATION:     NEWMARK, DAMPED
+  RESIDUAL:             DISPL
+  MAXIMUM_ITERATION:    20
+  CONVERGENCE_TOLER:    1.0E-6
+  SAFETY_FACTOR:        1
+  ALGEBRAIC_SOLVER
+    SOLVER:             GMRES, KRYLOV=400
+    CONVERGENCE:        ITERA=1000, TOLER=1.0E-8
+    PRECONDITIONER:     DIAGONAL
+    OPTION:             ZERO_FIXITY, REACTION
+    OUTPUT:             CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT  STEP = 0
+$  POSTPROCESS CELEN
+  POSTPROCESS PARTI
+  POSTPROCESS DISPL
+$  POSTPROCESS BOCOD
+$  POSTPROCESS FIXNO
+$  POSTPROCESS FCONT
+  BOUNDARY_SET
+    FCONX
+    FCONY
+    FCONT
+  END_BOUNDARY_SET
+  NODE_SET
+    FCONX
+    FCONY
+    FCONZ
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+     2 11 0.0 0.0
+  END_CODES
+  PARAMETERS
+    CONTACT_PDN
+      RBO_DEFORMABLE
+      BOUNDARY=   3
+      PROJECTION: Y
+    END_CONTACT_PDN
+  END_PARAMETERS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+

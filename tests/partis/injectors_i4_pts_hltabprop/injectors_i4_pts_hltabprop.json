@@ -1,0 +1,53 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "injectors_i4_pts_hltabprop.pts.res-col5.out",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "injectors_i4_pts_hltabprop.pts.res-col6.out",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        },
+        {
+            "file": "injectors_i4_pts_hltabprop.pts.res-col7.out",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        },
+        {
+            "file": "injectors_i4_pts_hltabprop.pts.res-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "injectors_i4_pts_hltabprop.pts.res-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        }
+    ],
+    "description": "Circle and annular injectors with defined number or mass-flow with different size distributions.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 5 6 7 13 14; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i4"
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "injectors_i4_pts_hltabprop",
+    "postprocess": "mpio2txt"
+}

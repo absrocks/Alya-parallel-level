@@ -1,0 +1,47 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=         24790
+  ELEMENTS=             125276
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=      30
+  BOUNDARIES=            19830
+  FIELDS:                  2
+    FIELD = 1, DIMENSIONS=1, NODES
+    FIELD = 2, DIMENSIONS=3, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    500
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  cylinder3d.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  cylinder3d.set.dat  
+$  BOUNDARIES
+$     INCLUDE cylinder.fix.dat
+$  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE  cylinder3d.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD: 1
+    INCLUDE PRESS_FORW.dat
+  END_FIELD
+  FIELD: 2
+    INCLUDE VELOC_FORW.dat
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

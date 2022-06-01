@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "block-boundary.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "impactor-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "impactor-element.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This is a 3-dimension low velocity impact test at 10J. This test validates the PDN contact between Rigid and Deformable bodies. It uses the Newmark-Beta Implicit scheme. The block is meshed using hexahedron elements.",
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] block --name SOLID [SEP] [NP] 3 [ALYA] impactor --name FLUID"
+            },
+            "mpi": 6,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 5 [ALYA] block --name SOLID [SEP] [NP] 3 [ALYA] impactor --name FLUID"
+            },
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "ple_cnt2"
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "lvi-3d-10J-impl-hexa",
+    "postprocess": "alya2pos"
+}

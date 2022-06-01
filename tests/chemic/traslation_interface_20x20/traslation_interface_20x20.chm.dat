@@ -1,0 +1,62 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            SPRAY, LAMINAR
+    SPRAY:            LEVELS  $$EULERIAN  $$ LEVEL_SET / EULERIAN
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        OFF
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    SURFACE_TENSION =   0.001
+  END_PROPERTIES
+
+  FIELDS: SPECIES = 1
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:             GALER
+  ELEMENT_LENGTH:            MINIMUM
+  TIME_INTEGRATION:          RUNGE,  ORDER: 3
+  SAFETY_FACTOR=             1.0
+
+  STEADY_STATE_TOLERANCE =   -1e-8
+  NORM_OF_CONVERGENCE =      L2
+  CONVERGENCE_TOLERANCE =    1e-4
+
+  ALGEBRAIC_SOLVER
+    SOLVER:                  EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT       STEP =0
+  POSTPROCESS CONCE
+  WITNESS_POINTS
+    CONCE
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ 
+ CODES, NODES, CLASS = 1
+     1      1   0.0
+     2      1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 2
+     1      1   0.0
+     2      1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 3
+     1      1   0.0
+     2      1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 4
+     1      1   0.0
+     2      1   0.0
+ END_CODES
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

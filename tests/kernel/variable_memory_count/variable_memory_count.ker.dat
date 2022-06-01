@@ -1,0 +1,67 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=0.01
+    END_MATERIAL
+$    MATERIAL: 2
+$      DENSITY:   CONSTANT, VALUE=1.0
+$      VISCOSITY: CONSTANT: VALUE=0.01
+$    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=0
+$    RENUMBERING: NODES,    OFF
+$    RENUMBERING: ELEMENTS, OFF
+  END_MESH
+$  FINITE_VOLUME: ON
+  ELSEST  
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF:    TYPE 
+  END_ELSEST
+  WALL_DISTANCE
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-14, ADAPTIVE, RATIO=0.01
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER
+    CODES, BOUNDARIES
+        1  1
+    END_CODES 
+  END_WALL_DISTANCE
+  WALL_NORMAL
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-14, ADAPTIVE, RATIO=0.01
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER
+    CODES, BOUNDARIES
+        1  1
+    END_CODES 
+  END_WALL_NORMAL
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_ORIGINAL_MESH
+  STEPS=1e6
+  POSTPROCESS WALLD
+  POSTPROCESS WALLN
+  WITNESS_POINTS, NUMBER=8
+     0.4 0.5 
+     0.0 0.9
+     0.2 0.2
+     0.8 0.8
+     0.5 0.5
+     0.5 0.1
+     0.4 0.4
+     0.2 0.1
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

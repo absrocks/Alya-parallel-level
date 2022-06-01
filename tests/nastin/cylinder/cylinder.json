@@ -1,0 +1,37 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cylinder.ensi.PRESS-000001",
+            "method": "power",
+            "tolerance": "6"
+        },
+        {
+            "file": "cylinder.ensi.VELOC-000001",
+            "method": "power",
+            "tolerance": "6"
+        },
+        {
+            "file": "cylinder.ensi.SENSM-000001",
+            "method": "power",
+            "tolerance": "6"
+        }
+    ],
+    "description": "Este ejemplo contiene el modulo NASTIN para comprobar la parte de solucion de adjunto en 2D en el que se calculan derivadas del drag respecto a las coordenadas del cilindro.\n",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cylinder",
+    "postprocess": "alya2pos"
+}

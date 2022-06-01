@@ -1,0 +1,339 @@
+# with slurm instead or %r it is %t  and it is pur in the .bat file
+#
+# I guess the impi.supp should ideally be the one of the impi you are using according to module load
+# thus for 2018 I will change to /apps/INTEL/2018.1.038/itac/2018.1.017/intel64/lib/
+#
+# run with: mpirun  -np 3 -errfile-pattern=error.%r -outfile-pattern=output.%r valgrind -v --gen-suppressions=all --suppressions=${ALYA_DIR}/Utils/user/valgrind/alya.supp  --suppressions=/apps/INTEL/2018.1.038/itac/2018.1.017/intel64/lib/impi.supp --leak-check=full  --track-origins=yes  ${ALYA_DIR}/Executables/unix_deb/Alya.g c
+#
+# run with: mpirun  -np 3 -errfile-pattern=error.%r -outfile-pattern=output.%r valgrind -v --gen-suppressions=all --suppressions=${ALYA_DIR}/Utils/user/valgrind/alya.supp  --suppressions=/apps/INTEL/2016.1.056/itac/9.1.2.024/lib/impi.supp --leak-check=full  --track-origins=yes  ${ALYA_DIR}/Executables/unix_deb/Alya.g c
+# or 
+# run with: mpirun  -np 3 valgrind -v --gen-suppressions=all --suppressions=${ALYA_DIR}/Utils/user/valgrind/alya.supp  --suppressions=/apps/INTEL/2016.1.056/itac/9.1.2.024/lib/impi.supp --leak-check=full  --track-origins=yes  --log-file=valgrind.out ${ALYA_DIR}/Executables/unix_deb/Alya.g c
+#
+# With all these supp I still get 2 error for 1 of the process
+#==29314== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 78 from 59) 
+# But I do not see them - ask Toni
+#for the other one I get 0
+# in any case these errors appear when --leak-check=full  is used so they are not very important.
+# Strangelly despite I run 3 mpi process I get only 2 differnt number in the log file?? 
+#
+# Will using it in a run where I had the filename wrong ALYA  ABORTED. ERROR WHEN OPENING THE DATA FILE:
+# I still got lots of errors: all of this errors should be cancelled.
+#
+#
+#
+#
+# These suppresions are needed even running in serial
+#
+# comentarie porque em daba problemas  esto es lo ultimo que habia agregado en 6216
+#{
+#   <memchk>
+#   Memcheck:Cond
+#}
+{
+   <mod_iofile_mp_iofile:intel_sse2_strlen>
+   Memcheck:Addr16
+   fun:__intel_sse2_strlen
+   fun:for__add_to_lf_table
+   fun:for__open_proc
+   fun:for_open
+   fun:mod_iofile_mp_iofile_
+}
+# comentarie porque esto tambien lo  habia agregado en 6216
+#{
+#   <intel_sse2_strlen>
+#   Memcheck:Addr16
+#   fun:__intel_sse2_strlen
+#}
+
+# Supongo que esta se podría unir con la anterior
+{
+   <mod_iofile_mp_iofile:intel_sse2_strlen_bis>
+   Memcheck:Addr16
+   fun:__intel_sse2_strlen
+   fun:for__io_return
+   fun:for_open
+   fun:mod_iofile_mp_iofile_
+}
+{
+   <openfi:2>
+   Memcheck:Addr16
+   fun:__intel_sse2_strcpy
+   fun:for__add_to_lf_table
+   fun:for__open_proc
+   fun:for_open
+   fun:mod_iofile_mp_iofile_
+   fun:openfi_
+   fun:reapro_
+   fun:turnon_
+   fun:MAIN__
+   fun:main
+}
+{
+   <ecoute_read_strlen>
+   Memcheck:Addr16
+   fun:__intel_sse2_strlen
+   fun:for__io_return
+   fun:for_read_seq_fmt
+   fun:ecoute_
+}
+#
+# These suppresions are needed in parrallel to avoid errors of Intel MPI not included in their own supp
+# note that the lines that appeared when running with --gen-suppressions=all where longer ej 
+#{
+#   <insert_a_suppression_name_here>
+#   Memcheck:Cond
+#   fun:__I_MPI___intel_sse2_strncmp
+#   obj:/.statelite/tmpfs/gpfs/apps/MN3/INTEL/2016.1.056/compilers_and_libraries_2016.1.150/linux/mpi/intel64/lib/release_mt/libmpi.so.12.0
+#   fun:iPMI_Init
+#   fun:init_pg
+#   fun:MPID_Init
+#   fun:MPIR_Init_thread
+#   fun:PMPI_Init
+#   fun:mpi_init
+#   fun:mod_communications_mp_par_init_
+#   fun:par_code_split_universe_
+#   fun:turnon_
+#   fun:MAIN__
+#   fun:main
+#}
+# By leaving only the upper lines they apply to several errors at a time
+#
+#
+{
+   <I_MPI___intel_sse2_strchr>
+   Memcheck:Addr16
+   fun:__I_MPI___intel_sse2_strchr
+}
+{
+   <ojo no se porque esta no la elimina la anterior>
+   Memcheck:Addr16
+   fun:__I_MPI___intel_sse2_strchr
+   fun:iPMI_Get_r2h_table
+   fun:iPMI_Init_Ext
+   fun:init_pg
+   fun:MPID_Init
+   fun:MPIR_Init_thread
+   fun:PMPI_Init
+   fun:mpi_init
+   fun:mod_communications_mp_par_init_
+   fun:par_code_split_universe_
+   fun:turnon_
+   fun:MAIN__
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr16
+   fun:__I_MPI___intel_ssse3_rep_memcpy
+   obj:/.statelite/tmpfs/gpfs/apps/MN3/INTEL/2016.1.056/compilers_and_libraries_2016.1.150/linux/mpi/intel64/lib/release_mt/libmpi.so.12.0
+   fun:MPIDI_CH3U_Request_unpack_uebuf
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr16
+   fun:iPMI_Get_r2h_table
+   fun:iPMI_Init_Ext
+#   fun:init_pg
+#   fun:MPID_Init
+#   fun:MPIR_Init_thread
+#   fun:PMPI_Init
+#   fun:mpi_init
+#   fun:mod_communications_mp_par_init_
+#   fun:par_code_split_universe_
+#   fun:turnon_
+#   fun:MAIN__
+#   fun:main
+}
+{
+   <I_MPI___intel_sse2_strncmp>
+   Memcheck:Cond
+   fun:__I_MPI___intel_sse2_strncmp
+}
+{
+   <I_MPI_Processor_model_number>
+   Memcheck:Cond
+   fun:I_MPI_Processor_model_number
+}
+{
+   <I_MPI___intel_sse2_strcpy>
+   Memcheck:Cond
+   fun:__I_MPI___intel_sse2_strcpy
+}
+{
+   <I_MPI_Processor_arch_code>
+   Memcheck:Cond
+   fun:I_MPI_Processor_arch_code
+}
+{
+   <I_MPI_Processor_segment_code>
+   Memcheck:Cond
+   fun:I_MPI_Processor_segment_code
+}
+{
+   <I_MPI_Processor_model_number>
+   Memcheck:Cond
+   fun:I_MPI_Processor_model_number
+}
+{
+   <MPID_Init>
+   Memcheck:Addr16
+   obj:/.statelite/tmpfs/gpfs/apps/MN3/INTEL/2016.1.056/compilers_and_libraries_2016.1.150/linux/mpi/intel64/lib/release_mt/libmpi.so.12.0
+   fun:MPID_Init
+}
+#
+# These suppresions are needed in parrallel to avoid Leaks of Intel MPI not included in their own supp
+# They only appear when --leak-check=full is used
+#
+{
+   <par_bouedg_:leak>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:par_bouedg_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:mod_parall_mp_par_sub_communication_array_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:par_bin_structure_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:mod_memory_mp_memory_alli41_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:mod_opebcs_mp_opnbcs_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:mod_opebcs_mp_opbbcs_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:mod_memory_mp_memory_allrp2_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:/.statelite/tmpfs/gpfs/apps/MN3/INTEL/2016.1.056/compilers_and_libraries_2016.1.150/linux/mpi/intel64/lib/release_mt/libmpi.so.12.0
+   fun:MPID_Init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:/.statelite/tmpfs/gpfs/apps/MN3/INTEL/2016.1.056/compilers_and_libraries_2016.1.150/linux/mpi/intel64/lib/release_mt/libmpi.so.12.0
+   fun:MPID_Init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:chkcod_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr16
+   fun:__intel_sse2_strcpy
+   fun:for__add_to_lf_table
+   fun:for__open_proc
+   fun:for__open_default
+   fun:for_write_seq_fmt
+   fun:livinf_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr16
+   fun:__intel_sse2_strlen
+   fun:for__add_to_lf_table
+   fun:for__open_proc
+   fun:for__open_default
+   fun:for_write_seq_fmt
+   fun:livinf_
+}
+
+
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:for_allocate
+   fun:mod_ghost_geometry_mp_par_ghost_geometry_
+}
+
+#
+# MUMPS leaks
+#
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:mkl_serv_allocate
+   fun:mkl_blas_avx_xdtrsm
+   fun:DTRSM
+   fun:dmumps_fac_front_aux_m_mp_dmumps_fac_fr_update_cbrows_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:mm_account_ptr
+   fun:mkl_serv_allocate
+   fun:mkl_blas_avx_xdtrsm
+   fun:DTRSM
+   fun:dmumps_fac_front_aux_m_mp_dmumps_fac_fr_update_cbrows_
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:mm_account_ptr
+   fun:mkl_serv_allocate
+   fun:mkl_blas_avx_xdtrsm
+   fun:DTRSM
+   fun:dmumps_fac_front_aux_m_mp_dmumps_fac_fr_update_cbrows_
+}
+

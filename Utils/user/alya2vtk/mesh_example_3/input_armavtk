@@ -1,0 +1,5 @@
+nodes_file Small01coord.dom.geo
+elements_file Small01elem.dom.geo
+boundaries_file Small01bound.dom.geo
+codes_file Small01.fix.bou
+output_file Small01Square.vtk

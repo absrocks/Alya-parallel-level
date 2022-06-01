@@ -1,0 +1,69 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   On
+    CONVECTIVE_TERM:        On
+    CONDUCTION_TERM:        On
+    REGIME :                LOWMACH
+    SOURCE_TERMS:           off
+  END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  TAU_STRATEGY:            Codina
+  ELEMENT_LENGTH:          Minimum
+  SHOCK_CAPTURING=         Anisotropic, VALUE: 0.9
+TIME_INTEGRATION:        Trapezoidal, ORDER: 1, EULER=5
+$$TIME_INTEGRATION:        BDF, ORDER:2, EULER=10
+  SAFETY_FACTOR=           1e30                            $ b) 
+  STEADY_STATE_TOLERANCE= -1e-8  
+  NORM_OF_CONVERGENCE:     L2   
+  MAXIMUM_NUMBER_OF_ITER=  10   
+  RELAXATION_FACTOR=       1.0  
+  CONVERGENCE_TOLERANCE=   1e-16    
+  $ 
+  ALGEBRAIC_SOLVER
+    SOLVER:                GMRES, KRYLOV=90
+    CONVERGENCE:           ITERA=1000, TOLER=1.0e-18, ADAPTIVE, RATIO=0.001
+    OUTPUT:                CONVERGENCE
+    PRECONDITIONER:        DIAGONAL
+    OPTIONS:               FIXITY
+  END_ALGEBRAIC_SOLVER
+  $
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS INITIAL
+  POSTPROCESS TEMPER
+  POSTPROCESS GRATE
+$$POSTPROCESS FIXTE
+$$POSTPROCESS FIXNO
+$$POSTPROCESS TOUCH
+$$POSTPROCESS HEATN
+  $
+  WITNESS_POINTS
+    TEMPE  
+  END_WITNESS_POINTS
+  $
+  BOUNDARY_SET
+    MEANT
+    MEANH
+  END_BOUNDARY_SET
+  $
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS $, NON_CONSTANT
+  $
+  CODES, NODES
+    INCLUDE fluid.tem.codes  
+  END_CODES
+  $
+ $INITIAL:  VALUE = 2
+  $
+  PARAMETERS
+    INITIAL, CONSTANT = 432.225000 432.225000 432.225000  
+  END_PARAMETERS
+  $
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

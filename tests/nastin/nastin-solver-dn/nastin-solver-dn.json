@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "nastin-solver-dn.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "Implicit D/N coupling for nastin with exact solution",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 7,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "nastin-solver-dn",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "ricard.borrell@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_repart_wlr-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "cavtri03_repart_wlr-PRESS-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "cavtri03_repart_wlr-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_repart_wlr-node.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_repart_wlr-element.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Repartitioning of Alya at each time step, should give same solution as cavtri03 test. Testing WLR options.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_repart_wlr",
+    "postprocess": "mpio2txt"
+}

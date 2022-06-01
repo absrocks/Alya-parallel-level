@@ -1,0 +1,37 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:   CONSTANT, VALUE=1.0
+      VISCOSITY: CONSTANT: VALUE=0.01
+    END_MATERIAL
+  END_PROPERTIES
+  VELOCITY: FUNCTION=2
+  GRAVITY:  NORM=9.81,GX=0.0,GY=-1.0
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+    DIVISION=0
+  END_MESH
+  WALL_DISTANCE
+      ALGEBRAIC_SOLVER:        CG, ITERA= 1000,TOLER= 1e-8
+      PRECONDITIONING:         DIAGONAL
+      CODES, NODES 
+         1      1
+         2      1
+      END_CODES
+  END_WALL_DISTANCE
+  ELSEST
+$    STRATEGY: OCT_TREE
+$    MAXIMUM:  10
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST 
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_ORIGINAL_MESH
+  STEPS=1
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

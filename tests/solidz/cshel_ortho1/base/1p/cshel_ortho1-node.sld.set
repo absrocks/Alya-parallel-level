@@ -1,0 +1,14 @@
+# ALYA Node set results
+#
+# HEADER
+# ISET , Column :   1
+# DISPZ , Column :   2
+# NUMVARIABLES :       2
+# NUMSETS      :       1
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+        85  0.00000000E+000
+# Iterations  =       1      1      1
+# Time        =  0.10000000E+001
+        85 -0.60199797E+002

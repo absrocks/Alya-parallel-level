@@ -1,0 +1,29 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=         1331
+  ELEMENTS=             1000
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=   HEX08
+  BOUNDARIES=            600
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 8
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL 
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  nastin_flow_rate_2.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  nastin_flow_rate_2.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  nastin_flow_rate_2.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

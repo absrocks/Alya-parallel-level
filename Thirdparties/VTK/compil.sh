@@ -1,0 +1,1 @@
+gcc vtkXMLWriterF.c -c -DVTK_FORTRAN_NAME -I/apps/VTK/6.1.0/include/vtk-6.1 -L/apps/VTK/6.1.0_patched/lib

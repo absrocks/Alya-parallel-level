@@ -1,0 +1,22 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [],
+    "description": "Testing of the MPI connectivity matrix files, *-connectivity-*.par.res, both for parallelization and coupling",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        ""
+    ],
+    "name": "mpi_connectivity",
+    "postprocess": "none"
+}

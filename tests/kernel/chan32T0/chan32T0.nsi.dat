@@ -1,0 +1,87 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On
+  CONVECTIVE_TERM:          EMAC
+  VISCOUS_TERM:             DIVERGENCE
+  FORCE_TERM:               MATERIAL
+     MATERIAL=1, MODEL=CONSTANT, PARAMETERS= 2.125985e-3 0.0 0.0
+  END_FORCE_TERM
+  TURBULENCE_MODEL:         LES_MODEL, VRMAN , PARAM=0.1
+  BOUSSINESQ_COUPLING:      Off
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+
+  TIME_STEP:                EIGENVALUE
+  VECTOR:                   ON
+  GRAD_DIV:                 ON
+  ASSEMBLY:                 GPU2
+  STABILIZATION:            OFF
+  ELEMENT_LENGTH:           MINIM
+  TIME_INTEGRATION:         RUNGE_KUTTA, ORDER:4
+  SAFETY_FACTOR:            2.5
+  STEADY_STATE_TOLER:       1e-15
+  MAXIMUM_NUMBER_OF_IT:     1
+  NORM_OF_RESIDUAL:         LAGGED_ALGEBRAIC_RESIDUAL
+
+  ALGORITHM:                FRACTIONAL_STEP
+    GAMMA = 0.0
+    ROTAT = 0.0
+  END_ALGORITHM
+  MOMENTUM
+    ALGEBRAIC_SOLVER
+      SOLVER:                MATRIX_RICHARDSON
+      CONVERGENCE:           ITERA=1
+      PRECONDITIONER:        CLOSE_MASS_MATRIX
+    END_ALGEBRAIC_SOLVER
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER
+       SOLVER:               DEFLATED_CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-14, ADAPTIVE, RATIO=1.0e-3
+       PRECONDITIONER:       LINELET,NEVER_CHANGE
+    END_ALGEBRAIC_SOLVER
+  END_CONTINUITY
+  DIRICHLET:ALGORITHM
+  INTERNAL_FORCES:      RESIDUAL
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  =  0
+  POSTPROCESS VELOCITY,     STEPS = 100
+  POSTPROCESS PRESSURE,     STEPS = 100
+  POSTPROCESS TANGE,        STEPS = 100
+  POSTPROCESS AVVEL,        STEPS = 100
+$ POSTPROCESS AVVE2,        STEPS = 100
+$ POSTPROCESS AVVXY,        STEPS = 100
+  POSTPROCESS AVPRE,        STEPS = 100
+$ POSTPROCESS AVPR2,        STEPS = 100
+  POSTPROCESS AVTAN,        STEPS = 100
+  POSTPROCESS AVVAF,        STEPS = 100
+  POSTPROCESS VAFOR,        STEPS = 100
+  POSTPROCESS NOTRA,        STEPS = 100
+  POSTPROCESS AVNTR,        STEPS = 100
+  POSTPROCESS AVGTR,        STEPS = 100
+  POSTPROCESS FANSW,        STEPS = 100
+  BOUNDARY_SET
+    MASS
+    MEANV
+    FORCE
+    INT_FX
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, NON_CONSTANT
+ PARAMETERS
+  INITIAL VALUE_FUNCTION = 1
+ END_PARAMETERS
+  CODES, NODES
+      1    111  0.0 0.0 0.0
+      2    111  0.0 0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS  

@@ -1,0 +1,119 @@
+#!/usr/bin/perl
+
+my @locvars;
+
+$vardef= 0;
+# 
+# global variables comes from object files
+# 
+#$glos= `nm def_nastal.o`;
+$glos= `nm nsa_elchea.o`;
+# 
+# local variables comes from source files
+# 
+#open (SOURC,"def_nastal.f90");
+open (SOURC,"nsa_elchea.f90");
+while (<SOURC>) {
+    @line = split;
+    if ($line[0]=~/^!\$CHK-STARTVARDEF/) {$vardef=1} ;    
+    last if ($line[0]=~/^!\$CHK-ENDVARDEF/) ;    
+# do this if line is not starting with a ! meaning a fortran comment
+    if ($line[0]!~/^\!/) {	
+	if ($vardef=~1) { 
+# remove new line character
+	    chomp;
+# recursively, remove all between parentheses in the line
+	    while ($_ =~ /\(([^\)]+)/g) {
+# $1 is what is going to be removed
+#		print $1;
+# remove it from $_
+		s/$1//;
+# remove real(), integer()
+		s/real\(\)//;
+		s/integer\(\)//;
+# remove remaining parentheses
+		s/\(\)//;
+	    }	    
+# remove remaining blank spaces, :: and & 
+	    s/\&//;
+	    s/\:\://;
+	    s/\s+//;
+# remove pointer, target, allocatables, logical
+	    s/pointer//;
+	    s/target//;
+	    s/logical//;
+	    s/allocatable//;
+# remove all comments within the line
+	    @nocomments= split(/\!/);
+# convert the line to an array	    
+	    @auxi= split(/,|\s+/,$nocomments[0]);
+# add variables found to locvars array
+	    @locvars= (@locvars, @auxi);
+	}
+    }
+}
+
+print "Local variables: \n";
+foreach (@locvars) {
+    if ($_=~/^i/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^j/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^k/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^l/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^m/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^n/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^o/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^p/) {
+	print "integer:  $_ \n";
+    } elsif ($_=~/^q/) {
+	print "integer:  $_ \n";
+    } else {
+	print "real   :  $_ \n";
+    }
+}
+print "\n";
+
+# remove newlines
+@auxi= split(/\n/,$glos);
+
+my @defnastal;
+my @defdomain;
+my @defmaster;
+my @defkintyp;
+my @defelmtyp;
+my @defsolidz;
+print "Global variables: \n";
+foreach (@auxi) {
+    if ($_=~/def_domain/) {
+	@pirucho= split(/_MOD_/);
+	@defdomain= (@defdomain,$pirucho[1]);
+	print "$_:  $pirucho[1]\n";
+    } elsif ($_=~/def_nastal/) {
+	@pirucho= split(/_MOD_/);
+	@defnastal= (@defnastal,$pirucho[1]);
+	print "$_:  $pirucho[1]\n";
+    } elsif ($_=~/def_solidz/) {
+	@pirucho= split(/_MOD_/);
+	@defsolidz= (@defsolidz,$pirucho[1]);
+	print "$_:  $pirucho[1]\n";
+    } elsif ($_=~/def_master/) {
+	@pirucho= split(/_MOD_/);
+	@defmaster= (@defmaster,$pirucho[1]);
+	print "$_:  $pirucho[1]\n";
+    } elsif ($_=~/def_kintyp/) {
+	@pirucho= split(/_MOD_/);
+	@defkintyp= (@defkintyp,$pirucho[1]);
+	print "$_:  $pirucho[1]\n";
+    } elsif ($_=~/def_elmtyp/) {
+	@pirucho= split(/_MOD_/);
+	@defelmtyp= (@defelmtyp,$pirucho[1]);
+	print "$_:  $pirucho[1]\n";
+    }
+}
+

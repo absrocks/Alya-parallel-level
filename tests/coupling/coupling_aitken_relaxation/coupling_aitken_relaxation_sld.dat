@@ -1,0 +1,45 @@
+$-------------------------------------------------------------------
+$-------------------------------------------------------------------
+$-------------------------------------------------------------------
+RUN_DATA
+  CODE:                   2
+  ALYA:                   ab_sld
+  LIVE_INFORMATION:       screen
+  POSTPROCESS:            domain
+  $ RUN_TYPE:               INITIAL, PRELIMINARY, FREQUENCY=10
+   RUN_TYPE                NO_CONTINUE, APPEND, FREQUENCY=10
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, Prescribed
+  TIME_INTERVAL=          0.0, 10.0 
+  TIME_STEP_SIZE=         0.1
+
+  NUMBER_OF_STEPS=        1
+$-------------------------------------------------------------------
+
+
+  SOLIDZ_MODULE:          ON
+  END_SOLIDZ_MODULE
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+    PARTITIONING:
+        METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL_SERVICE 
+
+
+
+$-------------------------------------------------------------------
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+$-------------------------------------------------------------------
+$-------------------------------------------------------------------
+MPI_IO: ON
+    GEOMETRY:    OFF $ ON / OFF/  Expor
+    RESTART:     OFF
+    POSTPROCESS: ON
+END_MPI_IO

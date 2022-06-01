@@ -1,0 +1,72 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-CON04-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-ELEMO-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-ELEMH-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-ELEMC-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-DIVEN-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e5"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-ENTHA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e3"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-SPHEA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e0"
+        },
+        {
+            "file": "fin_rate_opp_diff_2d_flame_no_nsi-TEMPE-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e0"
+        }
+    ],
+    "description": "Laminar opposing diffusion flame in 2D domain with finite rate chemistry.",
+    "enabled": true,
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "include": [
+        "cantera"
+    ],
+    "modules": [
+        "temper",
+        "chemic"
+    ],
+    "name": "fin_rate_opp_diff_2d_flame_no_nsi",
+    "postprocess": "mpio2txt"
+}

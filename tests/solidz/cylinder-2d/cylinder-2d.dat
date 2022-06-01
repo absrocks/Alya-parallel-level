@@ -1,0 +1,35 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  cylinder-2d
+  CODE=                  1
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, FROM_CRITICAL
+  TIME_INTERVAL:         0.0, 0.05
+  NUMBER_OF_STEPS=       1E+3
+  MAXIMUM_NUMBER_GLOBAL= 1
+  $------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING:
+      METHOD:            METIS
+$      EXECUTION_MODE:    PARALLEL
+    END_PARTITIONING
+    REPARTITIONING:      OFF
+$      MODULE:           SOLIDZ
+$      THRESHOLD_LOAD_BALANCE= 0.9
+$      CRITERION:       ASSEMBLY
+      CRITERION:        ALWAYS
+      FREQUENCY=         1
+      POSTPROCESS:       NONE
+    END_REPARTITIONING
+    ORDER_COMMUNICATIONS: ON
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

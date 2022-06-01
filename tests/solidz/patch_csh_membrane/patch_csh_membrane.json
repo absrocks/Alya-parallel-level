@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "patch_csh_membrane-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Membrane patch test for validation of continuum shell elements. Prescribed kinematic boundary conditions are applied at corner nodes of 5 distortioned elements.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "patch_csh_membrane",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,63 @@
+$-------------------------------------------------------------------
+$
+$ indenDrop_expl_tw
+$
+$ Author:  Gerard Guillamet
+$ Details: Indenter drop test with gravitation and initial
+$          velocity (Runge-Kutta RK4)
+$          Deformable body
+$          Energy: 35J
+$          Impactor radius: 8mm
+$          Impactor mass: 3.41kg
+$          Impactor height: 4.53mm
+$          Alya Dissipative Tchamwa-Wielgosz Explicit Scheme
+$
+$ Units:   SI (mm)
+$
+$ Reference:
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+    GRAVITY:              NORM=9810.0, GX=0.0, GY=0.0, GZ=-1.0
+    INITIAL_CONDITION:    VELOCITY, FIELD=1
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL       = 1
+    DENSITY        = 7.95E-07
+   CONSTITUTIVE_MODEL: ISOLIN \
+     210.0e+3 0.35
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      EXPLICIT
+  TIME_INTEGRATION:    TCHAMWA_WIELGOSZ, PHITW=1.033
+  SAFETY_FACTOR=       0.9
+  NO_STEADY_STATE
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT  STEP  = 0
+  POSTPROCESS DISPL
+  POSTPROCESS VELOC
+  POSTPROCESS ACCEL
+  NODE_SET
+    DISPZ
+    VELOZ
+    ACCEZ
+  END_NODE_SET
+  ELEMENT_SET
+    VELOC
+    TMASS
+    ALLKE
+  END_ELEMENT_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1 & 2 110 0.0 0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

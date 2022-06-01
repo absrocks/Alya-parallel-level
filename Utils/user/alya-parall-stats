@@ -1,0 +1,258 @@
+#!/bin/bash
+
+
+# chnage format_ echo 'set format x "%.2t{/Symbol \327}10^{%L}"': 3.27.10^5
+# chnage format: echo 'set format x "%.2t{/Symbol \264}10^{%L}"': 3.27x10^5
+
+usage="
+
+$(basename "$0") [-h] [-o filename] alya-problem-name -- output partition statistics
+
+where:
+    -h  show this help text
+    -o  [filename] Output in eps format in *-partition.par.post.ps or filename
+    -k  Keep output files to postprocess individually
+
+"
+
+KEPP=""
+OUTPUT=""
+POSITIONAL=()
+
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -o|--output)
+    OUTPUT="$2"
+    shift # past argument
+    shift # past value
+    if [ "$OUTPUT" == "" ]
+    then
+	OUTPUT="yes"
+    fi
+    ;;
+    -h|--help)
+    SEARCHPATH="$2"
+    shift # past argument
+    echo "$usage"
+    exit 1
+    ;;
+    -k|--keep)
+    SEARCHPATH="$2"
+    shift # past argument
+    KEEP="yes"
+    ;;
+    --default)
+    DEFAULT=YES
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+## inputs
+case=$1
+
+#error
+if [ "$case" == "" ]
+then
+    echo "
+
+Error: problem name is required"
+    echo "$usage"
+    exit 1
+fi
+
+## prepare files
+filein="$case-partition.par.post.res"
+
+## take data from filein
+echo "Parsing result file: $filein"
+
+num_neighbors=`cat $filein | awk '/ComponentNames\ NUM_NEIGHBORS/,/End\ Values/' | sed -e '1,3d' | sed -e '$d' | sed -e 's/^[ ]*//' | sed 's/  \+/ /g'`
+num_elements=`cat $filein | awk '/ComponentNames\ NUM_ELEMENTS/,/End\ Values/' | sed -e '1,3d' | sed -e '$d' | sed -e 's/^[ ]*//' | sed 's/  \+/ /g'`
+num_interior_nodes=`cat $filein | awk '/ComponentNames\ NUM_INTERIOR_NODES/,/End\ Values/' | sed -e '1,3d' | sed -e '$d' | sed -e 's/^[ ]*//' | sed 's/  \+/ /g'`
+num_boundary_nodes=`cat $filein | awk '/ComponentNames\ NUM_BOUNDARY_NODES/,/End\ Values/' | sed -e '1,3d' | sed -e '$d' | sed -e 's/^[ ]*//' | sed 's/  \+/ /g'`
+num_weighted_elements=`cat $filein | awk '/ComponentNames\ WEIGHTED_ELEMENTS/,/End\ Values/' | sed -e '1,3d' | sed -e '$d' | sed -e 's/^[ ]*//' | sed 's/  \+/ /g'`
+ 
+echo "$num_neighbors"         | awk -F' ' 'BEGIN{t=1} {printf "%8s%14s\n", t, $2; t+=1}' > num_neighbors_tmp.tmp
+echo "$num_elements"          | awk -F' ' 'BEGIN{t=1} {printf "%8s%14s\n", t, $2; t+=1}' > num_elements_tmp.tmp
+echo "$num_interior_nodes"    | awk -F' ' 'BEGIN{t=1} {printf "%8s%14s\n", t, $2; t+=1}' > num_interior_nodes_tmp.tmp
+echo "$num_boundary_nodes"    | awk -F' ' 'BEGIN{t=1} {printf "%8s%14s\n", t, $2; t+=1}' > num_boundary_nodes_tmp.tmp
+echo "$num_weighted_elements" | awk -F' ' 'BEGIN{t=1} {printf "%8s%14s\n", t, $2; t+=1}' > num_weighted_elements_tmp.tmp
+
+paste num_neighbors_tmp.tmp num_elements_tmp.tmp num_interior_nodes_tmp.tmp num_boundary_nodes_tmp.tmp num_weighted_elements_tmp.tmp | column -s $'\t' -t > results_tmp.tmp
+
+###########################################################################################3
+#
+#                                   Ouput gnuplot
+#
+###########################################################################################3
+
+echo " "                                                         >  ./gnuplot.tmp
+
+if [ "$OUTPUT" != "" ]
+then
+ if [ "$OUTPUT" == "yes" ]
+ then
+     OUTPUT="$case-partition.par.post.ps"
+ fi
+echo "set term post eps enhanced color dashed defaultplex 'Helvetica' 10" >>  ./gnuplot.tmp
+echo "set output '$OUTPUT'"                                               >>  ./gnuplot.tmp
+fi
+
+if [ "$OUTPUT" != "" ]
+then
+    echo "Output in file:      $OUTPUT" 
+else
+   echo "Output in window" 
+fi
+
+echo "reset"                                                     >>  ./gnuplot.tmp
+echo "set multiplot "                                            >>  ./gnuplot.tmp
+echo "set size noratio 1.0,2.0 "                                 >>  ./gnuplot.tmp 
+
+#----------------------------------------------------------------
+# Top-Left
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "                                       >>  ./gnuplot.tmp
+echo "set origin 0.0,0.5 "                                       >>  ./gnuplot.tmp   
+echo "set xrange [*:*]"                                          >>  ./gnuplot.tmp
+echo "set yrange [*:*]"                                          >>  ./gnuplot.tmp
+
+echo "plot 'results_tmp.tmp' u 1:2 w l"                          >>  ./gnuplot.tmp
+echo "min = GPVAL_DATA_Y_MIN"                                    >>  ./gnuplot.tmp
+echo "max = GPVAL_DATA_Y_MAX"                                    >>  ./gnuplot.tmp
+echo "clear"                                                     >>  ./gnuplot.tmp
+echo "set size   0.45,0.45"                                      >>  ./gnuplot.tmp
+echo "n=100"                                                     >>  ./gnuplot.tmp
+echo "width=(max-min)/n "                                        >>  ./gnuplot.tmp
+echo "hist(x,width)=width*floor(x/width)+width/2.0"              >>  ./gnuplot.tmp
+echo "set xrange [min:max]"                                      >>  ./gnuplot.tmp
+echo "set yrange [0:]"                                           >>  ./gnuplot.tmp
+echo "#set offset graph 0.05,0.05,0.05,0.0"                      >>  ./gnuplot.tmp 
+echo "set xtics min,(max-min)/5,max"                             >>  ./gnuplot.tmp
+echo "set boxwidth width*0.9"                                    >>  ./gnuplot.tmp
+echo "set style fill solid 0.5"                                  >>  ./gnuplot.tmp 
+echo "set tics out nomirror"                                     >>  ./gnuplot.tmp
+echo "set xlabel 'Number of neighbors'"                          >>  ./gnuplot.tmp
+echo "set ylabel 'Frequency'"                                    >>  ./gnuplot.tmp
+echo 'set format x'                                              >>  ./gnuplot.tmp
+echo "plot 'results_tmp.tmp' u (hist(\$2,width)):(1.0) smooth freq w boxes lc rgb'blue' notitle" >>  ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Top-Right
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "                                       >>  ./gnuplot.tmp
+echo "set origin 0.5,0.5"                                        >>  ./gnuplot.tmp    
+echo "set xrange [*:*]"                                          >>  ./gnuplot.tmp
+echo "set yrange [*:*]"                                          >>  ./gnuplot.tmp
+
+echo "plot 'results_tmp.tmp' u 1:4 w l"                          >>  ./gnuplot.tmp
+echo "min = GPVAL_DATA_Y_MIN"                                    >>  ./gnuplot.tmp
+echo "max = GPVAL_DATA_Y_MAX"                                    >>  ./gnuplot.tmp
+echo "clear"                                                     >>  ./gnuplot.tmp
+echo "set size   0.45,0.45"                                      >>  ./gnuplot.tmp
+echo "n=100"                                                     >>  ./gnuplot.tmp
+echo "width=(max-min)/n "                                        >>  ./gnuplot.tmp
+echo "hist(x,width)=width*floor(x/width)+width/2.0"              >>  ./gnuplot.tmp
+echo "set xrange [min:max]"                                      >>  ./gnuplot.tmp
+echo "set yrange [0:]"                                           >>  ./gnuplot.tmp
+echo "#set offset graph 0.05,0.05,0.05,0.0"                      >>  ./gnuplot.tmp 
+echo "set xtics min,(max-min)/5,max"                             >>  ./gnuplot.tmp
+echo "set boxwidth width*0.9"                                    >>  ./gnuplot.tmp
+echo "set style fill solid 0.5"                                  >>  ./gnuplot.tmp 
+echo "set tics out nomirror"                                     >>  ./gnuplot.tmp
+echo "set xlabel 'Number of elements'"                           >>  ./gnuplot.tmp
+echo "set ylabel 'Frequency'"                                    >>  ./gnuplot.tmp
+if [ "$OUTPUT" == "" ]
+then
+    echo 'set format x "%.2te%L"'                                >>  ./gnuplot.tmp
+else
+    echo "set format x '%.2t{/Symbol \327}10^{%L}'"              >>  ./gnuplot.tmp
+fi
+echo "set format y"                                              >>  ./gnuplot.tmp
+echo "plot 'results_tmp.tmp' u (hist(\$4,width)):(1.0) smooth freq w boxes lc rgb'blue' notitle" >>  ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Left
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5"                                        >>  ./gnuplot.tmp
+echo "set origin 0.0,0.0"                                        >>  ./gnuplot.tmp
+echo "set xrange [*:*]"                                          >>  ./gnuplot.tmp
+echo "set yrange [*:*]"                                          >>  ./gnuplot.tmp
+
+echo "plot 'results_tmp.tmp' u 1:10 w l"                         >>  ./gnuplot.tmp
+echo "min = GPVAL_DATA_Y_MIN"                                    >>  ./gnuplot.tmp
+echo "max = GPVAL_DATA_Y_MAX"                                    >>  ./gnuplot.tmp
+echo "clear"                                                     >>  ./gnuplot.tmp
+echo "set size   0.45,0.45"                                      >>  ./gnuplot.tmp
+echo "n=100"                                                     >>  ./gnuplot.tmp
+echo "width=(max-min)/n "                                        >>  ./gnuplot.tmp
+echo "hist(x,width)=width*floor(x/width)+width/2.0"              >>  ./gnuplot.tmp
+echo "set xrange [min:max]"                                      >>  ./gnuplot.tmp
+echo "set yrange [0:]"                                           >>  ./gnuplot.tmp
+echo "#set offset graph 0.05,0.05,0.05,0.0"                      >>  ./gnuplot.tmp 
+echo "set xtics min,(max-min)/5,max"                             >>  ./gnuplot.tmp
+echo "set boxwidth width*0.9"                                    >>  ./gnuplot.tmp
+echo "set style fill solid 0.5"                                  >>  ./gnuplot.tmp 
+echo "set tics out nomirror"                                     >>  ./gnuplot.tmp
+echo "set xlabel 'Number of weighted elements'"                  >>  ./gnuplot.tmp
+echo "set ylabel 'Frequency'"                                    >>  ./gnuplot.tmp
+if [ "$OUTPUT" == "" ]
+then
+    echo 'set format x "%.2te%L"'                                >>  ./gnuplot.tmp
+else
+    echo 'set format x "%.2t{/Symbol \327}10^{%L}"'              >>  ./gnuplot.tmp
+fi
+echo "plot 'results_tmp.tmp' u (hist(\$10,width)):(1.0) smooth freq w boxes lc rgb'blue' notitle" >>  ./gnuplot.tmp
+
+#----------------------------------------------------------------
+# Bot-Right
+#----------------------------------------------------------------
+
+echo "set size   0.5,0.5 "                                       >>  ./gnuplot.tmp
+echo "set origin 0.5,0.0"                                        >>  ./gnuplot.tmp  
+echo "set xrange [*:*]"                                          >>  ./gnuplot.tmp
+echo "set yrange [*:*]"                                          >>  ./gnuplot.tmp
+
+echo "plot 'results_tmp.tmp' u 1:(100*\$8/(\$6+\$8)) w l"        >>  ./gnuplot.tmp
+echo "min = GPVAL_DATA_Y_MIN"                                    >>  ./gnuplot.tmp
+echo "max = GPVAL_DATA_Y_MAX"                                    >>  ./gnuplot.tmp
+echo "clear"                                                     >>  ./gnuplot.tmp
+echo "set size   0.45,0.45"                                      >>  ./gnuplot.tmp
+echo "n=100"                                                     >>  ./gnuplot.tmp
+echo "width=(max-min)/n "                                        >>  ./gnuplot.tmp
+echo "hist(x,width)=width*floor(x/width)+width/2.0"              >>  ./gnuplot.tmp
+echo "set xrange [min:max]"                                      >>  ./gnuplot.tmp
+echo "set yrange [0:]"                                           >>  ./gnuplot.tmp
+echo "#set offset graph 0.05,0.05,0.05,0.0"                      >>  ./gnuplot.tmp 
+echo "set xtics min,(max-min)/5,max"                             >>  ./gnuplot.tmp
+echo "set boxwidth width*0.9"                                    >>  ./gnuplot.tmp
+echo "set style fill solid 0.5"                                  >>  ./gnuplot.tmp 
+echo "set tics out nomirror"                                     >>  ./gnuplot.tmp
+echo "set xlabel '% boundary nodes'"                             >>  ./gnuplot.tmp
+echo "set ylabel 'Frequency'"                                    >>  ./gnuplot.tmp
+echo "set format x"                                              >>  ./gnuplot.tmp
+echo "set format x '%3.1f'"                                      >>  ./gnuplot.tmp
+echo "plot 'results_tmp.tmp' u (hist((100*\$8/(\$6+\$8)),width)):(1.0) smooth freq w boxes lc rgb'blue' notitle" >>  ./gnuplot.tmp
+echo "pause -1"                                                  >>  ./gnuplot.tmp
+echo "Press enter to continue..."
+
+gnuplot ./gnuplot.tmp
+
+
+if [ "$KEPP" != "yes" ]
+then
+    rm -rf *_tmp.tmp
+    rm -rf gnuplot.tmp
+fi

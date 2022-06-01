@@ -1,0 +1,57 @@
+{
+    "authors": [
+        "adria.quintanas@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "patch3d_mpio.sld.wit",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "patch3d_mpio-SIGXX-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_mpio-SIGYY-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_mpio-SIGZZ-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_mpio-SIGXY-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_mpio-SIGYZ-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-08
+        },
+        {
+            "file": "patch3d_mpio-SIGXZ-00000002.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-08
+        }
+    ],
+    "description": "This test is the same as patch3d but posptprocess is performed using mpio.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "patch3d_mpio",
+    "postprocess": "mpio2txt"
+}

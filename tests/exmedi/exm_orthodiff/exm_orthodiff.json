@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "adria.quintanas@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exm_orthodiff-node.exm.set",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        }
+    ],
+    "description": "Tests the orthotropic diffusion",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "exm_orthodiff",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "damien.dosimont@bsc.es",
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_rst_merge-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "cavtri03_rst_merge-PRESS-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "cavtri03_rst_merge-VELOC-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "cavtri03_rst_merge-PRESS-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+    ],
+    "description": "MPI-IO test based on cavtri03: write and read restart with merge, and also repartitioning with random subdomains!",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 10 [NAME] ; [RUN] [NP] 4 [ALYA] --read-rst --time-steps 20 [NAME]"
+            },
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_rst_merge",
+    "postprocess": "mpio2txt"
+}
+ 

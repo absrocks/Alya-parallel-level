@@ -1,0 +1,36 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "temper-left.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "temper-right.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "coupling: gauss-seidel coupling of a laplacian using temper",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] temper-left [SEP] [NP] 4 [ALYA] temper-right",
+                "postprocess": "echo | [POST] temper-left; echo | [POST] temper-right"
+            },
+            "mpi": 7,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "temper-left-right",
+    "postprocess": "alya2pos"
+}

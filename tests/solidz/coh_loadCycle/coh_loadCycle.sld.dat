@@ -1,0 +1,105 @@
+$------------------------------------------------------------
+$
+$ coh_loadCycle
+$ Author:  Gerard Guillamet and Adria Quintanas
+$ Details: This test validates the damage state variables of
+$          cohesive elements formulated by Turon et al. 2006.
+$          Dirichlet BCs are applied to the bulk material.
+$ Note:    Bulk material is assumed as rigid as possible
+$          (prop. scaled 1e4 times) in order to read the
+$          cohesive tractions at the bulk.
+$
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, PEEK/AS4 ,,,,,,
+    MATERIAL           = 1
+    CONSTITUTIVE_MODEL: ORTLIN \
+      122.7e+7 10.1e+7 10.1e+7 0.25 0.25 0.45 5.5e+7 5.5e+7 3.7e+7
+    $ ,,,,,, COHESIVE,,,,,,
+    MATERIAL           = 2
+    COHESIVE_LAW: TURON, ORIGINAL, ANALYTICAL \
+      0.969 1.719 80.0 1.0e+5 2.284 0.0
+    $ ,,,,,, Material CSYS ,,,,,,
+    CSYS_MATER: FIELD = 1, 2, 3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+    SOLVER:            GMRES, KRYLOV=100
+    CONVERGENCE:       ITERA=100, TOLER=1.0E-8
+    PRECONDITIONER:    DIAGONAL, RIGHT
+    RESIDUAL:          RHS
+    OPTIONS:           UNSYM, $ZERO_FIXITY
+    COARSE:            OFF
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-6
+  MAXIMUM_ITERATION:   100
+  RESIDUAL:            TOTAL
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP  = 0
+  POSTPROCESS DISPL,   STEPS = 1
+  POSTPROCESS FRXID,   STEPS = 1
+  POSTPROCESS DCOHE,   STEPS = 1
+$  POSTPROCESS DCOHG,   STEPS = 1
+$  POSTPROCESS NCOHE,   STEPS = 1
+  NODE_SET
+    DISPZ
+    FRXIZ
+  END_NODE_SET
+  WITNESS_POINTS
+    DISPZ
+    FRXIZ
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1  111  0.0 0.0 0.0 0
+    2  111  0.0 0.0 0.0 0
+    3  111  0.0 0.0 0.0 0
+    4  111  0.0 0.0 0.0 0
+    5  000  0.0 0.0 0.0 0
+    6  000  0.0 0.0 0.0 0
+    7  000  0.0 0.0 0.0 0
+    8  000  0.0 0.0 0.0 0
+    9  000  0.0 0.0 0.0 0
+   10  000  0.0 0.0 0.0 0
+   11  000  0.0 0.0 0.0 0
+   12  000  0.0 0.0 0.0 0
+   13  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   14  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   15  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+   16  111  0.0 0.0 0.0, MODULE_FUNCTION= 1
+  END_CODES
+  $-----------------
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE, LINEAR
+      SHAPE_DEFINITION
+        7
+        0.00 0.0 0.0  0.0
+        0.25 0.0 0.0  8.000E-04   $ Max. traction
+        0.50 0.0 0.0  1.251E-02   $ Damage half law
+        0.75 0.0 0.0  0.00        $ Return to initial point
+        1.00 0.0 0.0 -1.000E-03   $ Compression stage
+        1.25 0.0 0.0  2.423E-02   $ Dissipate all energy
+        1.50 0.0 0.0  3.000E-02   $ Increase disp. for full damage
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+

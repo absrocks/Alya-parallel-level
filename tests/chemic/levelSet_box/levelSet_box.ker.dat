@@ -1,0 +1,50 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL = 1
+      DENSITY       = SPRAY, PARAMETER = 1000.0 1.0, UPDP1=ENDSTE, UPDP2=NEVER 
+      VISCOSITY     = SPRAY, PARAMETER = 6.4e-4 1.8e-5, UPDP1=ENDSTE, UPDP2=NEVER 
+      TURBULENCE    = VRMAN, PARAMETER = 0.1, UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES
+
+  COUPLING
+    NASTIN, CHEMIC = 1 1
+    CHEMIC, NASTIN = 1 1
+  END_COUPLING
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  MESH
+    DIVISION=0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+  
+  SPACE_&_TIME_FUNCTIONS  
+    FUNCTION=VEL_IN
+      ( 0.1 * (y+0.000785398)*(y-0.000785398)*(z+0.000785398)*(z-0.000785398) * 2628091457000.0  )
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+  
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_ORIGINAL_MESH
+  STEPS=10
+
+  POSTPROCESS DENSI
+  POSTPROCESS VISCO
+  POSTPROCESS TURBU
+  
+  WITNESS_POINTS, NUMBER= 1  $ 5/8 pi mm
+     0.001963495408493621  0.0   0.0
+  END_WITNESS_POINTS
+
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------

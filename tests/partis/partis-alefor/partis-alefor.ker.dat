@@ -1,0 +1,38 @@
+ $------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+       MATERIAL=1 $ DOMAIN
+         DENSITY   = CONSTANT, PARAMETER=  1.1     $ in g/cm3 (40% glycerol @ 20C)
+         VISCOSITY = CONSTANT, PARAMETER=  0.0372  $ in poise
+$         POROSITY  = CONSTANT, VALUE=0.0
+       END_MATERIAL
+  END_PROPERTIES
+  VELOCITY:  FUNCTION=3
+  COUPLING
+    PARTIS ALEFOR
+  END_COUPLING 
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+   DIVISION=0
+  END_MESH
+  ELSEST 
+    STRATEGY: OCT
+    NUMBER:   10,10
+    DATAF:    TYPE 
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=DISPLACEMENT, DIMENSION=2
+      -0.05*t
+       0.0
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+ 

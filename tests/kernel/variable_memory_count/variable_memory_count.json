@@ -1,0 +1,22 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [],
+    "description": "Testing of memory files containg the variable count (used for debugging). Does not compare anything, but just tests everything is ok",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        ""
+    ],
+    "name": "variable_memory_count",
+    "postprocess": "none"
+}

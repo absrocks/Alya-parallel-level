@@ -1,0 +1,146 @@
+ !   
+--------
+ALYA_FIX
+--------
+  !
+  problemname  = 2DHills_Test
+  casename     = Test_Suite
+  year         = 2018
+  month        = 05
+  day          = 04
+  hour         = 12
+  version      = 4.1
+  !   
+-------
+GENERAL
+-------
+  !
+  !  costumer           options  : cfdwind1/cfdwind2/Realizable/RNG/WRF STEPS it1 it2 (-1 all)
+  !  density                     : value. For standard atmosphere 1.229d+00
+  !  viscosity                   : value. For standard atmosphere 1.730d-06
+  !
+  !  wall_law_distance           : value, if 0.0 automatically set from WindMesh first element height
+  !  outflow_condition   options : velocity/pressure 
+  !  wind_at_top         options : homogeneous/from_WRF/from_WRF_homogeneous
+  !
+  costumer          = cfdwind2 
+  density           = 1.229d+00
+  viscosity         = 1.730d-06
+  !
+  wall_law_distance = 0.0           
+  outflow_condition = pressure
+  wind_at_top       = homogeneous  
+  !
+-----------
+COORDINATES
+-----------
+  !
+  !  utm_zone    :  value in format 30T
+  !  utm_datum   :  WGS_84/NAD_83/ED_50/ETRS_89/HGRS_87/OSGB_36/SIRGAS_00
+  !  utm_x_ref   :  x-coordinate shift (x-UTM of origin, only if coordinates are not given in UTM)
+  !  utm_y_ref   :  y-coordinate shift (y-UTM of origin, only if coordinates are not given in UTM)
+  !
+  !  Note: this block is only used if costumer = WRF. It is necessary to ensure that the Alya mesh and
+  !        WRF are equally georeferenced
+  !
+  utm_zone  = 31T
+  utm_datum = WGS_84
+  utm_x_ref = 0.0
+  utm_y_ref = 0.0
+  !
+----------------------------
+GEOSTROPHIC_WIND_HOMOGENEOUS
+----------------------------
+  !
+  !  number_time_steps    : number of steps (ndt).
+  ! 
+  !  use_usref    options : yes/no
+  !  usref                : ndt values. Only used if costumer =  cfdwind1 and use_usref = yes
+  !  u_reference          : ndt values. Only used if costumer =  cfdwind1 and use_usref = no
+  !  h_reference          : ndt values. Only used if costumer =  cfdwind1 and use_usref = no
+  !  wind_intensity       : ndt values. Only used if costumer <> cfdwind1
+  !  wind_angle           : ndt values. Inflow direction criterion; 0 is North direction; clockwise rotation 
+  !  latitude             :     value . Used to compute the Coriolis parameter Fc = 2*W*sin(latitude)
+  !  l_maxi               : ndt values. Mixing lenght (optional). If l_maxi does not exist or l_maxi=0.0
+  !                                     the value is estimated from fc and the geostrophic wind modulus
+  !
+  number_time_steps = 1
+  !
+  use_usref      = no
+  usref          = 0.65
+  u_reference    = 12.5 
+  h_reference    = 60.0
+  wind_intensity = 17.5 
+  !
+  wind_angle     = 270
+  latitude       = 51.0   
+  l_maxi         = 0.0 
+  !
+--------------------
+GEOSTROPHIC_WIND_WRF
+--------------------
+  !
+  !  wfr_file    : name (including path) of the WRF file in netCDF format. The ndt time steps are
+  !                extracted from the WRF file.
+  !
+  wrf_file = xxx
+  !
+--------------
+WITNESS POINTS
+--------------
+  !
+  !  witness_points      options : yes/no
+  !  witness_points_file         : filename (including relative path)
+  !
+  witness_points      = no
+  witness_points_file = ../../Data/TestSuit.tps
+  !
+--------------
+CANOPY
+--------------
+  !
+  !  insert_canopy      options : yes/no
+  !  canopy_file                : filename (including relative path)
+  !
+  insert_canopy = no
+  canopy_file   = ../../Data/Stationary.can
+  !
+--------------
+OUTPUT
+--------------
+  !
+  !  binary             options : yes/no (default: no)
+  !  include_id         options : yes/no (only for binary format, default: no)
+  !  real_precision     options : int2/real4/real8 (only for binary format, default: int2)
+  !                               int2: integer*2 compression with variable range
+  !                               real4: real*4 format
+  !                               real8: real*8 format
+  !
+  binary         = no
+  include_id     = no
+  real_precision = int2
+
+----------------
+THERMAL_COUPLING
+----------------
+  !
+  !  th_model     : 0 = No thermal coupl  1=Apsley-Castro 2= Alinot-Masson 3= C3=0.8  4= Sogachev&Koblitz
+  !  transient    : yes/no 
+  !  time_step    : seconds (preferible minute divisors or take care about flux outputs)
+  !  cycles       : Number of 24h-complete-diurnal-cycles 1D model will run (overwrites ndt)
+  !  spinup       : Number of diurnal cycles considered spin-up
+  !  z_elems      : Number of elements for 1D profiler model. (10m max size elem. recommended)
+  !  sfc_inp      : temp/heat -> temperature or heat flux surface cycle
+  !  th_case      : surface temperature or heat flux case cycle (GABLS2,CYCLE1,CYCLE2)
+  !  output       : number of steps betwen cycle outputs
+  !
+  th_model  = 4
+  transient = yes
+  time_step = 10
+  cycles    = 2    
+  spinup    = 1
+  z_elems   = 450
+  sfc_inp   = temp
+  th_case   = CYCLE1
+  output    = 120 
+  !  

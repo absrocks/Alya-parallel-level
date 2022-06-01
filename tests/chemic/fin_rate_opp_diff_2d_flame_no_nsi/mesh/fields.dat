@@ -1,0 +1,32 @@
+  FIELD=2
+    INCLUDE ./Fields/ENTHA.alya
+  END_FIELD
+
+  FIELD=3
+    INCLUDE ./Fields/TEMPE.alya
+  END_FIELD
+
+  FIELD=4
+    INCLUDE ./Fields/CON01.alya
+  END_FIELD
+
+  FIELD=5
+    INCLUDE ./Fields/CON02.alya
+  END_FIELD
+
+  FIELD=6
+    INCLUDE ./Fields/CON03.alya
+  END_FIELD
+
+  FIELD=7
+    INCLUDE ./Fields/CON04.alya
+  END_FIELD
+
+  FIELD=8
+    INCLUDE ./Fields/CON05.alya
+  END_FIELD
+
+  FIELD=9
+    INCLUDE ./Fields/CON06.alya
+  END_FIELD
+

@@ -1,0 +1,166 @@
+
+
+
+        --------------------------
+     |- NASTIN OUTPUT FOR PROBLEM: exatet10
+        --------------------------
+
+
+        ---------------------
+     |- DIFFERENTIAL EQUATION
+        ---------------------
+
+
+          rho*du/dt + rho*(u.grad)u - div[mu*grad(u)] + grad(p) =0
+          div(u)=0
+
+
+
+
+          FINITE ELEMENT ERRORS
+          =====================
+
+          TIME STEP NO.    0,  ITERATION NO.     0
+          --------------------------------------------
+          NORM       VELOCITY                 PRESSURE 
+          --------------------------------------------
+          W(0,1)  1.26108431E-016      1.44688988E-015
+          W(0,2)  2.10454460E-016      3.63952406E-016
+          W(0,i)  5.81008575E-016      7.75021543E-016
+          W(1,1)  9.70869965E-016      7.70188253E-016
+          W(1,2)  1.30086784E-015      1.04479637E-015
+          W(1,i)  2.72597975E-015      3.02886639E-015
+          --------------------------------------------
+
+
+
+          FINITE ELEMENT ERRORS
+          =====================
+
+          TIME STEP NO.    1,  ITERATION NO.     1
+          --------------------------------------------
+          NORM       VELOCITY                 PRESSURE 
+          --------------------------------------------
+          W(0,1)  1.26108431E-016      1.44688988E-015
+          W(0,2)  2.10454460E-016      3.63952406E-016
+          W(0,i)  5.81008575E-016      7.75021543E-016
+          W(1,1)  9.70869965E-016      7.70188253E-016
+          W(1,2)  1.30086784E-015      1.04479637E-015
+          W(1,i)  2.72597975E-015      3.02886639E-015
+          --------------------------------------------
+
+
+        --------------------------
+     |- SUMMARY OF COMPUTING TIMES
+        --------------------------
+
+
+        TOTAL CPU TIME:                  0.00
+        SOLVER   MOMENTUM=               0.00 (  8.19 % )
+        SOLVER   CONTINUITY=             0.00 ( 11.72 % )
+        VELOCITY CORRECTION=             0.00 (  0.00 % )
+        OTHERS                           0.00 ( 80.10 % )
+
+
+        ---------------------------------------------------
+     |- SUMMARY OF ASSEMBLY COMPUTING TIMES (AVERAGE TIMES)
+        ---------------------------------------------------
+
+
+        TOTAL TIME:                 3.946E-04
+          Gather=                   9.209E-06 (  2.33 % )
+          Element Jacobian=         4.744E-05 ( 12.02 % )
+          Properties=               2.037E-05 (  5.16 % )
+          Residual and GP values=   5.339E-05 ( 13.53 % )
+          Subgrid scale=            0.000E+00 (  0.00 % )
+          Stabilization parameters= 8.215E-06 (  2.08 % )
+          Element matrix=           2.148E-04 ( 54.43 % )
+          Scatter in global matrix= 4.121E-05 ( 10.44 % )
+
+
+        -----------------
+     |- SUMMARY OF SOLVER
+        -----------------
+
+
+        MOMENTUM:
+        ---------
+
+        SOLVER:               GMRES
+        # SOLVES=                    2
+        PRECONDITIONER:       DIAGONAL diag(A)
+        MIN. # ITERATIONS=           0
+        MAX. # ITERATIONS=           0
+        AVE. # ITERATIONS=           0
+        TOT. # ITERATIONS=           0
+        TOT. CPU TIME=         0.19867E-003
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME (AVERAGE):  1.986E-04
+          Initial operations:             1.230E-04 ( 61.90 % )
+          Preconditioning:                4.454E-06 (  2.24 % )
+          Coarse system solver (DCG):     0.000E+00 (  0.00 % )
+          Orthogonalization (GMRES):      0.000E+00 (  0.00 % )
+          Others:                         7.122E-05 ( 35.85 % )
+
+
+        |- SPMV:                            3
+
+           Computation:             
+              Average CPU time:      8.082E-06 
+              Maximum CPU time:      8.840E-06 
+              Load balance:          9.143E-01
+           Point-to-point comm.:    
+              Average CPU time:      4.499E-05 
+              Maximum CPU time:      4.805E-05 
+              Load balance:          9.363E-01
+           Overall:                 
+              Average CPU time:      5.307E-05 
+              Maximum CPU time:      5.689E-05 
+              Load balance:          9.329E-01
+
+        CONTINUITY:
+        -----------
+
+        SOLVER:               DEFLATED CONJUGATE GRADIENT
+        # SOLVES=                    1
+        NUMBER OF GROUPS=          120
+        PRECONDITIONER:       DIAGONAL diag(A)
+        MIN. # ITERATIONS=           0
+        MAX. # ITERATIONS=           0
+        AVE. # ITERATIONS=           0
+        TOT. # ITERATIONS=           0
+        TOT. CPU TIME=         0.33557E-003
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME (AVERAGE):  3.354E-04
+          Initial operations:             2.346E-04 ( 69.96 % )
+          Preconditioning:                2.155E-07 (  0.06 % )
+          Coarse system solver (DCG):     0.000E+00 (  0.00 % )
+          Orthogonalization (GMRES):      0.000E+00 (  0.00 % )
+          Others:                         1.005E-04 ( 29.97 % )
+
+
+        |- SPMV:                            3
+
+           Computation:             
+              Average CPU time:      3.823E-06 
+              Maximum CPU time:      4.128E-06 
+              Load balance:          9.262E-01
+           Point-to-point comm.:    
+              Average CPU time:      3.673E-05 
+              Maximum CPU time:      4.710E-05 
+              Load balance:          7.799E-01
+           Overall:                 
+              Average CPU time:      4.056E-05 
+              Maximum CPU time:      5.082E-05 
+              Load balance:          7.980E-01
+
+
+
+     |- END OF NASTIN RUN
+

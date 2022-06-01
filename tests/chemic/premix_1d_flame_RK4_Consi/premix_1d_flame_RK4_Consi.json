@@ -1,0 +1,52 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "premix_1d_flame_RK4_Consi-CON01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "premix_1d_flame_RK4_Consi-PRESS-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "premix_1d_flame_RK4_Consi-TEMPE-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "premix_1d_flame_RK4_Consi-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        }
+    ],
+    "description": "Laminar premixed flame in 1D domain with 4th order Runge-Kutta, solving the pressure equation in each substep.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "premix_1d_flame_RK4_Consi",
+    "postprocess": "mpio2txt"
+}

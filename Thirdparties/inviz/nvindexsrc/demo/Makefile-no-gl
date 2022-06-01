@@ -1,0 +1,62 @@
+#*****************************************************************************
+# Copyright 1986, 2016 NVIDIA Corporation. All rights reserved.
+#*****************************************************************************
+
+CXX      ?= g++
+CC       ?= gcc
+CPPFLAGS ?= \
+        -DBIT64 -D_GNU_SOURCE -D_THREAD_SAFE -D_REENTRANT \
+        -D__USE_XOPEN2K8 -pthread -DLINUX                 \
+        -march=nocona -m64 -fPIC -fno-strict-aliasing     \
+         -I../../include -I.. -I.                         \
+
+LDFLAGS  ?= -L../../linux-x86-64/lib
+LIBS     := -ldl -lz
+
+ifdef LLIBS
+    LIBS += $(LLIBS)
+endif
+
+EXEC_PATH := ../../linux-x86-64/bin
+COMMONLIB := $(EXEC_PATH)/../common/libcommon.a
+
+LIBS      += -lcudart
+
+# Optimize build options
+# For gcc
+# CPPFLAGS  += -O3 -DNDEBUG
+# For icc
+CPPFLAGS  += -O2 -DNDEBUG
+# Debug build options
+# CPPFLAGS += -g -DDEBUG
+
+# Defines $(SRC)
+include sources.mk
+
+# Add source files for no-GL version
+SRC += $(SRC_NO_GL)
+
+OBJS := $(SRC:.cpp=.o)
+OBJS := $(OBJS:.c=.o)
+OBJS := $(addprefix $(EXEC_PATH)/,$(OBJS))
+
+EXEC := nvindex_demo_nogl
+
+$(EXEC_PATH)/%.o: %.cpp
+	$(CXX) -c $(CPPFLAGS) -o $@ $<
+
+$(EXEC_PATH)/%.o: %.c
+	$(CC)  -c $(CPPFLAGS) -o $@ $<
+
+$(EXEC_PATH)/$(EXEC) : $(OBJS) $(COMMONLIB) $(SHAREDLIB)
+	$(CXX) $(CPPFLAGS) -o $@ $(OBJS) $(SHAREDLIB) $(COMMONLIB) $(LDFLAGS) $(LIBS)
+
+$(COMMONLIB):
+	$(MAKE) -C ../common
+
+clean:
+	rm -rf $(OBJS) $(EXEC_PATH)/$(EXEC)
+
+# Local Variables: ***
+# mode: Makefile ***
+# End: ***

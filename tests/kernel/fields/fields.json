@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "fields.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "parallel reading, parallel partitioning: check element, boundary and node fields. ",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "fields",
+    "postprocess": "alya2pos"
+}

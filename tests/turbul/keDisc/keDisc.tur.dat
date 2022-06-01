@@ -1,0 +1,58 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+ PROBLEM_DEFINITION
+    MODEL                     std_k_epsilon, ABL kefp
+    TEMPORAL_DERIVATIVES      On
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    L_MAXI     0.1000000E+21
+    TURBULENT_PRANDTL    0.9
+    REAL_PARAMETERS     1.0000   1.2381   1.1760   1.9200   0.0000   0.0333 $sigma_k, sigma_e, c1, c2, c3, cmu
+    INTEGER_PARAMETERS   AUTOMATIC
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STRATEGY                   ASGS
+  ELEMENT_LENGTH             Minimum
+  TIME_INTEGRATION           Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR              5.0 expon 1.1  maxim 20.0 mingl 10.0 
+  STEADY_STATE_TOLER         -1d-8  
+  NORM_OF_CONVERGENCE        ALGEBRAIC
+  RELAXATION_FACTOR          0.5    
+  MAXIMUM_NUMBER_OF_IT       2
+  INNER_ITERATIONS           1
+  CONVERGENCE_TOLERANCE      1d-8  
+  ALGEBRAIC_SOLVER           GMRES, KRYLOV=50, ITERA= 70, TOLER= 1d-8, ADAPTIVE, RATIO = 1d-5
+  PRECONDITIONING            DIAGONAL
+  CLIPPING                   ALMOST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT        STEP =0
+  POSTPROCESS KEY            STEPS=100
+  WITNESS_POINTS
+    KEY
+    EPSILON
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES, GEOMETRICAL, VARIABLE=1
+    -11 2         ! use field 2 for inflow profile
+    -20 2         ! outflow                       
+  END_CODES
+  CODES, NODES, GEOMETRICAL, VARIABLE=2
+    -11 3         ! use field 3 for inflow profile
+    -20 3         ! outflow                       
+  END_CODES
+ CODES, BOUNDARIES   $, VARIABLE=1  
+     1                20      1000  
+     2                20      1000  
+     3                20      1000  
+     4                20      1000  
+  END_CODES 
+   INITIAL VALUE_FUNCTION=2, VARIABLE = 1  ! use field 2 for initial condition for k
+   INITIAL VALUE_FUNCTION=3, VARIABLE = 2  ! use field 3 for initial condition for e
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

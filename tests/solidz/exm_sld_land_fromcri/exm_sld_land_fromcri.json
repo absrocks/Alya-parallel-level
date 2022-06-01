@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "adria.quintanas@bsc.es"
+        
+    ],
+    "comparisons": [
+        {
+            "file": "exm_sld_land_fromcri-node.exm.set",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "exm_sld_land_fromcri-node.sld.set",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        }
+    ],
+    "description": "Tests the three-coupled model Ohara-Rudy-land(bidir)-OH using form_critical time step",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi",
+        "solidz"
+    ],
+    "name": "exm_sld_land_fromcri",
+    "postprocess": "none",
+	"timeout": "00:01:00"
+}

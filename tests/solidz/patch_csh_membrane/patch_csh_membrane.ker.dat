@@ -1,0 +1,23 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+    EXTENDED_GRAPH: OFF
+  END_MESH
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTIONS=BCKINE, DIMENSIONS=3
+      x*1e-3 + y/2*1e-3
+      y*1e-3 + x/2*1e-3
+      0
+    END_FUNCTIONS
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+

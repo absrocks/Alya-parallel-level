@@ -1,0 +1,53 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:       CONSTANT, VALUE= 1.127 
+      VISCOSITY:     CONSTANT, VALUE= 1.918e-5
+      SPECIFIC_HEAT: CONSTANT, VALUE= 1.023e3
+      CONDUCTIVITY:  CONSTANT, VALUE= 0.02662 
+    END_MATERIAL
+  END_PROPERTIES
+  VELOCITY:      NULL
+  GRAVITY:       NORM=9.81, GX=0.0,GY=-1.0,GZ=0.0
+  TEMPERATURE:   SPACE_TIME_FUNCTION=T_CONSTANT
+  CONCENTRATION: FIELD=1
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+
+  MESH
+    DIVISION=0
+  END_MESH
+  SPACE_&_TIME_FUNCTIONS
+    $
+    $ Tests for flamelet models
+    $
+    $      IN OXIDIZER    IN STOI FLUE G    IN A RICH GAS
+    $                     AT EQUILIBRIUM    PHI=4  C=0.25
+    $ Yc        0.0      0.0241574969866   0.00547516765747 
+    $ Ycv       0.0             0.0              0.0        
+    $ Z         0.0      0.0621838694456   0.209628874155
+    $ Zv        0.0             0.0              0.0        
+    $ h    -10206.0423   -118209.37472     -374297.52104
+    $
+    $ T    287.9999994    2156.4166662      680.37852488
+    $
+
+
+    FUNCTION=T_CONSTANT
+      -10206.0423
+    END_FUNCTON
+  END_SPACE_&_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=30
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

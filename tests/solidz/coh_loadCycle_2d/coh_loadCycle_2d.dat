@@ -1,0 +1,27 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  coh_loadCycle_2d
+  CODE=                  1
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, PRESCRIBED
+  TIME_INTERVAL:         0.0, 1.50
+  TIME_STEP_SIZE=        0.25
+  NUMBER_OF_STEPS=       6
+  $------------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    OUTPUT_FILE:         OFF
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING:
+      METHOD:            FIELD= 3
+      EXECUTION_MODE:    PARALLEL
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

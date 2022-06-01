@@ -1,0 +1,67 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       FORCE
+      THERMODYNAMIC_MODEL:  ON, FLAMELET_TABLE
+      BROWNIAN_MOTION:      OFF
+      FORCES:               DRAG: SCHILLER_NEUMANN
+      PROPERTIES
+        LIQ_NAME=               H2O
+        D=                      80.0e-06
+		  N_DROPLETS_PER_PARCEL=  3
+        TABLE
+            INCLUDE ./water_turbulent_table.dat
+        END_TABLE
+        YC_SCALING
+            INCLUDE ./water_turbulent_scaling_gen0.dat 
+        END_YC_SCALING
+        HEAT_LOSS
+            INCLUDE ./water_turbulent_scaling_gen1.dat 
+        END_HEAT_LOSS
+      END_PROPERTIES
+  END_TYPE
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+	TIME_STEP=  0.0006
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  WITNESS, GEOMETRY
+    NUMBE, ACCUMUL, FREQUENCY=0.05
+    DIA10, AVERAGE, FREQUENCY=0.05
+    DIA32, AVERAGE, FREQUENCY=0.05
+    TEMPE, AVERAGE, FREQUENCY=0.05
+    VELOC, AVERAGE, FREQUENCY=0.05
+    DIA20, AVERAGE, FREQUENCY=0.05
+    TEMP2, AVERAGE, FREQUENCY=0.05
+    VELO2, AVERAGE, FREQUENCY=0.05
+$$$    MASS,  ACCUMUL, FREQUENCY=0.05
+    MASS
+    MFLUX, AVERAGE, FREQUENCY=0.05
+  END_WITNESS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  $
+  $ Number determined by mass flow and uniform size discribution
+  $
+  INJECTOR: 1
+    TYPE=          1
+    GEOMETRY:      POINT,    PARAM = 0.0, 0.0, 0.0
+    N_PARTICLES:   MASS_FLO, CONSTANT= 0.0005e-3 
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      CONSTANT, PARAM = 0.5, 0.0, 0.0
+    SIZE_DISTRIB:  UNIFORM   PARAM = 20.0e-06 120.0e-06
+  END_INJECTOR
+
+
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e-20
+  $FINAL_TIME=      0.015
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

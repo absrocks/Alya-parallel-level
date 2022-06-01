@@ -1,0 +1,34 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 185
+  ELEMENTS          = 312
+  SPACE_DIMENSIONS  = 2
+  TYPES_OF_ELEMENTS = TRI03
+  BOUNDARIES        = 56
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       1
+  TRANSLATION:                     XTRAN=4.0 YTRAN=1.001
+  SCALE:                           XSCAL=1.0 YSCAL=1.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./impactor.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./impactor.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./impactor.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------------

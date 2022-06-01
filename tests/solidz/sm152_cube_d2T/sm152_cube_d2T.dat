@@ -1,0 +1,27 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  sm152_cube_d2T
+  CODE:                  1
+  LIVE_INFO:             Screen
+  LOG_FILE:              ON
+  OUTPUT:                GID
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, PRESCRIBED
+  TIME_INTERVAL:         0.0, 1.00
+  TIME_STEP_SIZE:        0.05
+  NUMBER_OF_STEPS:       19 $ 20
+  MAXIMUM_NUMBER_GLOBAL: 1
+  $------------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING:
+      METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

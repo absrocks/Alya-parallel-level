@@ -1,0 +1,42 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  re3900
+  RUN_TYPE:              NOCONTI, PRELIMINARY, FREQUENCY=100
+  LATEX_INFO_FILE:       YES
+  LIVE_INFORMATION:      Screen
+  TIMING:                ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL=          0.0, 2000000
+  $$TIME_STEP_SIZE=         1.0e-4
+  NUMBER_OF_STEPS=        10
+
+  $MAXIMUM_NUMBER_GLOBAL: 1
+  $BLOCK_ITERATION: 1
+  $  1 TEMPER, NASTIN
+  $END_BLOCK_ITERATION
+
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+
+  $TEMPER_MODULE:          ON
+  $END_TEMPER_MODULE
+
+  PARALL_SERVICE:         On
+    OUTPUT_FILE           No
+    POSTPROCESS           MASTER
+    PARTITION_TYPE:       FACES
+    PARTITIONING
+     METHOD:              METIS
+    END_PARTITIONING
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY: OFF $ Export
+  RESTART: OFF
+  POSTPROCESS: ON
+END_MPI_IO
+$-------------------------------------------------------------------

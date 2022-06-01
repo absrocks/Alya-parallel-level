@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_full_rows.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "cavity flow using a matrix full row format",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_full_rows",
+    "postprocess": "alya2pos"
+}

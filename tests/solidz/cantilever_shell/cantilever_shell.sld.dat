@@ -1,0 +1,97 @@
+$-------------------------------------------------------------------
+$
+$ cantilever_shell
+$ Author:     Eva Casoni and Gerard Guillamet
+$
+$ Details:    Validation test continuum shells using elastic
+$             isotropic material.
+$             The model consist of cantilever beam (out-of-plane
+$             bending
+$
+$ Dimensions: L = 10; W = 1; h = 0.1
+$
+$ BCs:        Fully clamped at one end
+$             Force F = 4 is applied in 10 time steps
+$
+$ Mesh:       16 x 1 elements
+$
+$ Notes:      Displacement is measured at end tip
+$
+$ Units:      -
+$
+$ Results:    Tip deflections:
+$               Results compared with Reinoso paper.
+$
+$ Warning:    Follower loads are not implemented in Alya so results
+$             may difer from the literaturue.
+$
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL=            1
+    CONSTITUTIVE_MODEL:  CSHEL ISOLIN 1.2E+06 0.0
+    CSHEL_PARAMETERS:    EAS, ANS_SHEAR, ANS_TRAPEZOIDAL
+    FORCE:               FIELD=1
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:        IMPLICIT
+  TIME_INTEGRATION:      NEWMARK
+  ALGEBRAIC_SOLVER:
+$    SOLVER:              DIRECT
+    SOLVER:              GMRES, KRYLOV=200
+    CONVERGENCE:         ITERA=400, TOLER=1.0E-9
+    OUTPUT:              CONVERGENCE
+    PRECONDITIONER:      DIAGONAL
+  END_ALGEBRAIC_SOLVER
+  SAFETY_FACTOR=         1
+  RESIDUAL:              TOTAL
+  MAXIMUM_ITERATIONS=    20
+  CONVERGENCE_TOLERANCE= 1.0E-4
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  RESIDUAL_FORCE: DIMENSION=3, POSITION=9.95
+  START_POSTPROCESS_AT   STEP = 0
+  POSTPROCESS FRXID      STEPS = 1
+  POSTPROCESS DISPL      STEPS = 1
+  WITNESS_POINTS
+    DISPY
+    DISPZ
+    FRXIY
+  END_WITNESS_POINTS
+  NODE_SET
+    DISPY
+    DISPZ
+    FRXIY
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+      1  111  0.0  0.0  0.0
+      2  111  0.0  0.0  0.0
+      3  111  0.0  0.0  0.0
+      4  111  0.0  0.0  0.0
+    $  5  010  0.0  0.0  0.0, MODULE_FUNCTION=  1
+    $  6  010  0.0  0.0  0.0, MODULE_FUNCTION=  1
+  END_CODES
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE:      DISCRETE
+      SHAPEDEFINITION
+        2
+        0.0  0.0  0.0  0.0
+        1.0  0.0  6.6516  0.0
+      END_SHAPEDEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

@@ -1,0 +1,47 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+   ROUGHNESS  FIELD = 4
+   CANOPY_HEIGHT   CONSTANT
+   HEIGHT_OVER_TERRAIN   WALL_DISTANCE
+   WALL_LAW   ABL2, WALL_DISTANCE    1.0000 , Cmu =   0.0900
+   PROPERTIES
+     MATERIAL 1
+       DENSITY   = CONSTANT, PARAMETER=  0.1000000E+01
+       VISCOSITY = CONSTANT, PARAMETER=  0.1800000E-04
+       TURBUL    = KOMEGA    UPDP1 = ENDINN  UPDP2=ENDSTE  
+       POROSITY  = CONSTANT, PARAMETER=    0.0  
+                                                            
+                                                            
+     END_MATERIAL
+   END_PROPERTIES
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT                           
+ELSEST, ON                                     
+  STRATEGY: BIN                               
+  NUMBER:   50,50,50                          
+END_ELSEST                                    
+WALL_DISTANCE                                 
+  ALGEBRAIC_SOLVER    CG, ITERA= 200,TOLER= 1e-6
+  PRECONDITIONING     DIAGONAL                
+  CODES, BOUNDARIES                           
+    5   1                                     
+  END_CODES                                   
+END_WALL_DISTANCE                             
+HESSIAN OFF                                   
+LAPLACIAN OFF                                 
+$regularization second exp_log                                 
+END_NUMERICAL_TREATMENT                       
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS                         
+  MESH                                        
+  STEP_OVER     100                           
+  ON_ORIGINAL_MESH                            
+$  POSTPROCESS LMATE                            
+$  POSTPROCESS TURBU                            
+$  POSTPROCESS WALL_DISTANCE                   
+$  POSTPROCESS ROUGHNESS                       
+$  POSTPROCESS GEONO                           
+$   INCLUDE ./2DcosHill.wit
+END_OUTPUT_&_POST_PROCESS                     
+$------------------------------------------------------------

@@ -1,0 +1,30 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "Laplacian1D.post.res",
+            "method": "absolute",
+            "tolerance": "1e-12"
+        }
+    ],
+    "description": "test the one-dimensional laplacian using mesh multiplication",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i4"
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "Laplacian1D",
+    "postprocess": "alya2pos"
+}

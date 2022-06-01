@@ -1,0 +1,88 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+PROBLEM_DEFINITION
+  TEMPORAL           STATIC $$DYNAMIC
+END_PROBLEM_DEFINITION
+
+PROPERTIES
+  DENSITY=              15.0  $$ g/cm3
+  LAW_DENSITY=         CONSTANT
+$  RAYLEIGH_DUMPING, RAYALPHA= 100.0
+
+  CONSTITUTIVE_MODEL    ISOLIN \
+                        200000 0.3
+  
+END_PROPERTIES 
+
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+
+  TIME_TREATMENT:    IMPLICIT
+
+  TIME_INTEGRATION:  NEWMARK, NEWBE=0.25, NEWGA=0.5, NEWAL=0.0        $ Average acceleration
+
+
+  ALGEBRAIC_SOLVER:
+       SOLVER:               GMRES, KRYLOV=1000
+$$$$     SOLVER:               DEFLATEDCG, COARSE: SPARSE
+     CONVERGENCE:          ITERA=3000, TOLER=1.0e-8, ADAPTIVE, RATIO=0.001
+     OUTPUT:               CONVERGENCE
+    PRECONDITIONER:       BLOCK_DIAGONAL
+$$$$       PRECONDITIONER:       DIAGONAL, RIGHT
+$$$       PRECONDITIONER:       RAS
+     OPTIONS:              ZERO_FIXITY
+  END_ALGEBRAIC_SOLVER
+
+  SUBITERATIONS
+    CONVERGENCE_TOLER:        1.00E-4
+    MAXIMUM_ITERATION:        500
+   END_SUBITERATIONS
+
+  ROTATION:                 ON
+
+  SAFETY_FACTOR:            1e2
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+$------------------------------------------------------------
+OUTPUT_&_POST-PROCESS 
+    POSTPROCESS DISPL, STEPS=10
+
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+$------------------------------------------------------------
+
+CODES, NODES
+
+      1 11 0.0 0.0, MODULE_FUNCTION= 2 $$ fixed top
+
+  1 & 4 01 0.0 0.0   $$ top and contact 
+
+      3 11 0.0 0.0   $$ fixed bottom
+      4 00 0.0 0.0   $$ contact bottom
+
+  3 & 4 11 0.0 0.0   $$ fixed and bottom
+
+
+END_CODES
+
+FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+    FUNCTION_NUMBER:   2
+        TIMESHAPE: DISCRETE
+        SHAPEDEFINITION
+            51
+            include send01.func
+        END_SHAPEDEFINITION
+    END_CONDITION
+END_FUNCTIONS
+
+
+
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

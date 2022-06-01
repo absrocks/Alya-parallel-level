@@ -1,0 +1,24 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+    EXTENDED_GRAPH: ON
+  END_MESH
+  ELSEST:       ON
+    STRATEGY:   BIN
+    NUMBER:     50,50,50
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS = 500
+  WITNESS_POINTS, NUMBER=2
+    1.0 0.1 0.0
+    1.0 0.1 10.0
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

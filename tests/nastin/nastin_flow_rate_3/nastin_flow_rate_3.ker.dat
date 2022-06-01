@@ -1,0 +1,35 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL=1  
+      DENSITY:   CONSTANT, VALUE = 1.0
+      VISCOSITY: CONSTANT, VALUE = 1.78e-2
+    END_MATERIAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+
+  MESH:
+    DIVISION=1
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   50,50,50
+    TOLER :   1e-8
+  END_ELSEST
+
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=VELOCITY, DIMENSION=1
+       2.0*t
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+ STEPS=1
+ ON_LAST_MESH
+ POSTPROCESS CODNO
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

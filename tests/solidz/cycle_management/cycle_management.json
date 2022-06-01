@@ -1,0 +1,37 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "adria.quintanas@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cycle_management-cardiac-cycle.sld.res",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "cycle_management-cardiac-cycle.sld.cvg",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        }
+    ],
+    "description": "Test the cycle management for two cavities",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cycle_management",
+    "postprocess": "alya2pos"
+}

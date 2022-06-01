@@ -1,0 +1,46 @@
+#!/bin/csh
+#
+#  Submit jobs in MN-IV  
+#     sbatch Script
+#
+# You can choose the parallel environment through modules
+# module load intel openmpi
+#
+#SBATCH --job-name=case-067
+#SBATCH --time=00:20:00
+#SBATCH --ntasks=16
+#SBATCH --output=case-067.out
+#SBATCH --error=case-067.err
+#SBATCH --qos=debug
+#
+set PROBLEMNAME=case-067
+#
+# Launches ALYA
+#
+date
+srun ${ALYA_DIR}/Executables/unix/Alya.x ${PROBLEMNAME}
+#srun ${ALYA_DIR}/Executables/unix/Alya.mn4.x ${PROBLEMNAME}
+date
+#
+#  Moves some output files to output folder
+#  Some files are left for the restart option
+#
+#set OUTDIR=./output
+#if ( ! -d ${OUTDIR} ) then
+#   mkdir ${OUTDIR}
+#endif
+#  copy
+#cp *.log* ${OUTDIR}/
+#cp *.cvg  ${OUTDIR}/
+#cp *.sol  ${OUTDIR}/
+#cp *.wit  ${OUTDIR}/
+#cp *post.alyafil ${OUTDIR}/
+#cp *post.alyalog ${OUTDIR}/
+#cp *post.alyapar ${OUTDIR}/
+#cp *cso ${OUTDIR}/
+# move
+#mv *.par.log* ${OUTDIR}/
+#mv *.post.alyabin ${OUTDIR}/
+#mv *latex*  ${OUTDIR}/
+#mv *-time-* ${OUTDIR}/
+#

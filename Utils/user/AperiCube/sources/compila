@@ -1,0 +1,7 @@
+ifort -g -c def_cputim.f90  
+ifort -g -c AperiCube.f90 def_cputim.f90 \
+             acubeDB.f90     \
+             cputim.f90  
+ifort -g -openmp *.o -o ../acube  
+rm -rf *.o *.mod
+

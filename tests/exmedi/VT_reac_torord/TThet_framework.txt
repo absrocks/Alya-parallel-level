@@ -1,0 +1,63 @@
+BEATS= 500
+CYCLELENGTH=  1000
+CELLTYPE = ENDO MID EPI
+STEADY_STATE = CALCIUM
+MYOCYTE= NORMAL $ MODIFIED or NORMAL + MALE OR FEMALE (AT 600bcl) or NORMAL PIG $ FDA model optimization
+ON_DRUGS= NO
+$------------------------
+CONDUCTANCES
+$!! Male Phenotype. Female Phenotype is commented below!!
+INAME= HUMAN
+$---1 conductance ito channel (GIto)
+$1.0 1.0 0.6
+0.64 1.0 0.26  
+$---2 conductance slow potassium channel (GKs) ****
+$1.87 1.87 1.04
+0.83 1.87 0.87 
+$---3 conductance potassium channel (GK1)  ****
+$1.698 1.698 0.98
+0.86 1.698 0.74 
+$---4 conductance rapid potassium channel (GKr) ****
+$1.013 1.013 1.09
+0.79 1.013 0.875
+$---5 conductance sodium channel (GNa)  ****
+1.0 1.0 1.0
+$---6 conductance late sodium channel (GNaL)  ****
+2.661 2.661 2.661
+$---7 conductance sodium calcium exchanger (GNaCa) ****
+1.0 1.0 1.0
+$---8 background potassium background current conductance (gKb) ****
+1.0 1.0 1.0
+$---9 L-type calcium current permeability (pCa equiv to gCaL)  ****
+$1.007 1.007 0.88
+1.6 1.007 1.6
+$---10 sodium potassium pump current permeability (pNaK)
+$1.0 1.0 0.94
+0.79 1.0 0.7
+$---11 Calmodulin
+$1.0 1.0 1.07
+1.21 1.0 1.41
+$---12 Serca Pump (Jup)
+$1.0 1.0 1.42
+1.15 1.0 1.97
+END_CONDUCTANCES
+$------------------------
+ DOSIS
+  INAME= AMIODARONE
+$--- Dosis to affect L-type Calcium current (ICaL_dosis)
+   0.0
+$--- IC50 of L-type Calcium current (ICAL_IC50)
+   270.0       
+$--- Dosis to affect the Rapid Potassium Current (KR_DOSIS)
+   0.0
+$--- IC50 of Rapid Potasium Current (IKR_IC50)
+   30.0  
+$--- Dosis to affect the Sodium Channel (NA_DOSIS)
+   0.0  
+$--- IC50 of Sodium Channel (INA_IC50)
+   4800.0 
+$--- Dosis to affect the ITO Channel (ITO_DOSIS)
+   0.0  
+$--- IC50 of ITO Channel (ITO_IC50)
+   4800.0 
+ END_DOSIS

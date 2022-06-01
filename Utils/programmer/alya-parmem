@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+#
+#
+$fils="parall.mem";
+open (IN,$fils);  
+$lines=0;
+while (<IN>) {$lines++} 
+close (IN);
+
+@memofi[$lines] = "nada";
+
+$lines=0;
+open (IN,$fils);  
+while (<IN>) {@memofi[$lines]=$_;$lines++} 
+close (IN);
+
+%memochk;
+
+foreach (@memofi) {
+    @myline= split(/\|/,$_);
+    $cosa = uc $myline[5];
+    $memochk{$cosa}= $memochk{$cosa} + $myline[3];
+}
+
+
+foreach (sort keys %memochk) {
+    print " $_    ---   $memochk{$_} \n";
+}

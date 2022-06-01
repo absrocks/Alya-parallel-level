@@ -1,0 +1,512 @@
+#! index_app_project 0
+# -*- mode: Conf; coding: utf-8; -*-
+#
+# Options are defined one per line by <option-name> = <value>
+# All other lines are either comments or are used in generating documentation.
+# A single pound sign (#) followed by a space is a comment and is ignored.
+# Two pound signs (##) specify documentation text for the options that follow.
+# Two keywords are used in formatting the documentation:
+# A line beginning with #section defines a new group of options.
+# Single quotes (') define fixed font; double ('') defines italic.
+# A * creates an item in a bullet list.
+# A & creates an item in a numbered list.
+# A line containing only ## generates a line break.
+# Blank lines are ignored.
+
+#------------------------------------------------------------
+#section Network mode, logging, library, viewer run mode
+
+## DiCE logging level.
+## Messages with a higher level than configured here will be discarded.
+## fatal: 0, error: 1, warn: 2, info: 3, verbose: 4, debug: 5
+dice::verbose = 4
+# Add hostname to log messages
+dice::log_hostname = no
+## Add timestamp to log messages
+dice::log_timestamp = no
+## Local or cluster logging.
+## If yes, each host outputs only its local log messages.
+## If no, DiCE transfers the log messages to the entire cluster.
+dice::log_locally = yes
+
+## Service of the current host
+index::service = rendering_and_compositing
+
+## Host mode.
+## The host mode (role) can either be 'viewer' or 'remote_service'.
+app::host_mode = viewer
+
+## Controls additional internal run-time checks for potential CUDA errors.
+##
+## These checks potentially impair run-time performance and should be only enabled
+## to generate additional debug information in order to track down certain problems
+## related to otherwise hard to track CUDA errors. The default setting disables the
+## additional run-time checks.
+index::cuda_debug_checks = no
+
+## Automatic server reconnect.
+## When it has lost the connection to the server, the Flash viewer
+## will try to reconnect at the interval (in seconds) given by this setting.
+## A value of 0 disables the automatic reconnect.
+#app::auto_reconnect = 2
+
+## Flash viewer client path.
+## File path to the .swf file of the viewer.
+dice::rtmp_video_streaming::flash_client = ./demo_viewer.swf
+
+## Batch mode rendering.
+## The viewer can be started in a batch mode to render single frames and then shut down again.
+## The number of frames (iterations) that the viewer shall rendering in total as well as a
+## list of selected frames for actually rendering to an image file can be defined.
+## It makes sense to disable the video streaming 'dice::rtmp_video_streaming::enabled = no' 
+## when runnning in batch mode.
+#app::run_mode = batch
+## The name of the output image files to be rendered in batch mode.
+#app::batch::output_image_fname = index_batch_mode_rendering_snapshot_%03d.ppm
+## Number of selected frames that shall be rendered to an image file.
+#app::batch::snapshot_frame_list = 0 2 4 5
+## Number of frames to rendering in batch mode before shutting down the viewer again.
+#app::batch::max_iteration = 10
+
+## Animation mode.
+## In animation mode an individual project file snippet will be loaded
+## for each frame and the rendering result stored as a snapshot. The
+## settings from the project files snippets are added to the existing
+## settings, i.e. they only need to contain those scene element or
+## camera settings that should be modified.
+##
+## See also  app::camera::snapshot_filename
+#app::animation::enabled = yes
+## Format string (sprintf()) of the project file that will be loaded
+## for each animation step.
+#app::animation::project_files = anim_%03d.prj
+## Animation range. There needs to be a project file for each animation step.
+#app::animation::range = 0 99
+## When you are only animating the camera then you can use this
+## setting for optimization.
+#app::animation::update_scene = no
+## Format string (sprintf()) for snapshot files
+#app::camera::snapshot_filename = animation_%03d.ppm
+## When you want the numbering of the snapshot files to always start
+## at 0 then uncomment this option
+#app::snapshot::is_sequence_mode = 0
+
+#------------------------------------------------------------
+#section RTMP Video streaming settings
+
+## RTMP Video streaming
+dice::rtmp_video_streaming::enabled = yes
+
+## RTMP video streaming port (default: 1935)
+dice::rtmp_video_streaming::port = 1935
+
+## RTMP Video codec name
+## * 'screen video'
+## * 'h264'
+## * 'h264_nvenc'
+dice::rtmp_video_streaming::video_codec = screen video
+
+## RTMP Fallback video codec, will be used if the primary video codec is not available.
+## * 'screen video'
+## * 'h264'
+## * 'h264_nvenc'
+dice::rtmp_video_streaming::video_codec_fallback = h264
+
+## RTMP Video bitrate (not supported by screen video)
+dice::rtmp_video_streaming::video_bitrate = 30000000
+
+## RTMP Video frame rate
+dice::rtmp_video_streaming::video_framerate = 25
+
+## RTMP Video bitrate error
+dice::rtmp_video_streaming::video_bitrate_error = 0.5
+
+## RTMP Video preset(h264)
+## * 'veryfast'
+## * 'ultrafast'
+#dice::rtmp_video_streaming::video_preset = veryfast
+
+## Pause rendering when no client is connected.
+## By default the server will render continuously even if no video
+## streams are connected. When setting this to 'no', rendering will be
+## paused in this case and automatically restarted if a video stream
+## is connected.
+#app::render_always = no
+
+#------------------------------------------------------------
+#section NVIDIA IndeX library settings
+
+## Subcube size used for data subdivision.
+## The physical size of the subcube will be subcube_size + 2 * subcube_border_size.
+index::subcube_size = 510 510 510
+
+## Border size around each subcube.
+## Some advanced filtering techniques require a border size of 2.
+## Changing this value will influence the physical subcube size, see index::subcube_size.
+index::subcube_border_size = 1
+
+## Activate support for rotated scene elements.
+## This will automatically decrease the usable subcube size.
+index::support_rotation = no
+
+## Activate support for scaling factors < 1.
+## This will automatically decrease the usable subcube size.
+## The given minimal scale value should therefore be as large as possible.
+index::minimal_scale = 1 1 1
+
+## Texture filter mode used for volume rendering.
+## * 'nearest'
+## * 'trilinear_post_hw'
+## * 'trilinear_post_sw'
+## * 'trilinear_pre_sw'
+## * 'tricubic_catmull'
+## * 'tricubic_catmull_post_hw'
+## * 'tricubic_bspline'
+## * 'tricubic_bspline_post_hw'
+index::volume_filter = nearest
+
+## Activate/deactivate dynamic memory management.
+## This setting is 'on' by default.
+index::dynamic_memory_management = on
+
+## Sub-cluster mechanism for large display support.
+##
+## There are two ways IndeX can handle sub-clustering of the machines.
+## 
+## * ''User-based'' : By specifying a sub-cluster id for individual machines and thus defining the cluster configuration.
+## * ''DiCE-based'' : By specifying minimum size of a sub-cluster and total number of sub-clusters, DiCE defines the cluster configuration.
+## ''User-based''
+##
+## Sub-cluster id of the machine. Machines having the same 'sub_cluster_id' are grouped into a sub-cluster.
+## Subsequent occurences of 'sub_cluster_id' are continuous numbers.
+## To avoid having multiple project files, this can also be set from the command-line.
+## The 'sub_cluster_id' of the viewer machine is set to '0' by default.
+##
+## ''DiCE-based''
+##
+## When using DiCE-based sub-clustering, please comment out the user-based 'index::sub_cluster_id'.
+## To avoid having multiple project files, this can also be set from the command-line.
+## * 'min_sub_cluster_size'   : Minimum number of machines in sub-cluster.
+## * 'max_nr_of_sub_clusters' : Maximum number of sub-clusters.
+index::sub_cluster_id = 0
+#dice::min_sub_cluster_size = 1
+#dice::max_nr_of_sub_clusters = 1
+
+## Automatic span control mechanism
+##  * 'no'  : Manual span control; 'index::horizontal_spans_per_machine'/GUI is taken into account.
+##  * 'yes' : Automatic span control; 'index::horizontal_spans_per_machine'/GUI has no effect.
+index::enable_automatic_span_control = yes
+
+## Maximum number of spans per machine
+## * 'N' :  A value in the range [1, (number of CPU cores of a machine - number of GPUs)].
+##          If Hyper Threading (HT) is enabled, the number of CPU threads (logical cores) that can run
+##          in parallel is doubled. For example, value of 'N' on an eight core machine with 
+##          two GPUs and HT enabled is [1, 14], but [1, 6] if HT is disabled.
+##          Recommended value is half the number of CPU cores, i.e., 4 in case of an eight core machine.
+index::max_spans_per_machine = 10
+
+## Number of horizontal spans and size of results queue at start up
+index::horizontal_spans_per_machine = 4
+#index::horizontal_spans = 2
+index::result_queue = 1
+
+## Force data uploading to the cluster regardless of the data's visibility in the view frustum.
+## If enabled, then the uploading of all data to the cluster machines will be ensured
+## before rendering.
+#index::force_data_uploading = yes
+
+## Enable fail safety feature. If fail safety is enabled ('yes'), then
+## all machines of the cluster used by the reference implementation will
+## not shut down on a failing machine. Instead the data
+## distribution will recover and rendering will continue with a smaller sized
+## cluster at lessened performance.
+#app::enable_fail_safety = yes
+
+#------------------------------------------------------------
+#section DiCE related networking settings
+
+## DiCE cluster network mode (protocol).
+## * 'OFF'
+## * 'UDP'
+## * 'TCP_WITH_DISCOVERY'
+dice::network::mode = UDP
+
+## Multicast address. Only effective value for 'dice::network::mode' is 'UDP'.
+## Address configuration procedure:
+##   & If this setting is defined (not empty), use it.
+##   & else: If host list is defined (not empty), use host list.
+##   & else: There is no host configuration.
+dice::network::multicast_address = 224.1.3.2
+
+## Discovery address. Only effective value for 'dice::network::mode' is 'TCP_WITH_DISCOVERY'.
+#dice::network::discovery_address = 224.1.3.3:5555
+
+## Cluster interface address.
+## Sets the network interface to be used for outgoing packets.
+## If not set, any address is valid. The string may end with : and a port number to select
+## which port to listen to for UDP and TCP unicasting.
+## If no port is set and unicast only mode is set, port 10000 will be used.
+#dice::network::cluster_interface_address = 192.168.123.0/24:10001
+
+#------------------------------------------------------------
+#section DiCE networking parameters
+
+## These network parameters have not yet officially supported by DiCE
+## yet and may be changed without any notice.
+
+## The maximum bandwidth leveraged by DiCE for packet transfers.
+## The default bandwidth is set to 1,000,000,000 bits per second, i.e., 1 Gigabit.
+## Please increase the maximum bandwidth to leverage the bandwidth of 10 Gigabit
+## Ethernet clusters.
+#dice::network::max_bandwidth = 1000000000
+
+## The unicast nak interval controls how fast missing packets
+## are reported in case of unicast transmissions.
+## The default in IndeX is 0.001 seconds (DiCE default is 0.01).
+#dice::network::unicast_nak_interval = 0.001
+
+## The bandwidth increment controls how fast the bandwidth increases
+## if a packet was confirmed as going through without loss (in bit/s).
+## The default in IndeX is 32000 (DiCE default is 8000).
+#dice::network::bandwidth_increment = 32000
+
+## The bandwidth decrement controls how much the bandwidth is cut down
+## in case of a lost packet. The factor is multiplied with the bandwidth.
+## The default in IndeX is 0.95 (DiCE default is 0.5).
+#dice::network::bandwidth_decrement = 0.95
+
+## The retransmission_interval controls how fast the sender
+## will retransmit a packet if it was not confirmed by the receivers.
+## The default is 0.01 seconds.
+#dice::network::retransmission_interval = 0.01
+
+## Additional unicast sockets to data receiving make more parallel.
+## If set to 0, the receiving of data in the UDP layer is not
+## optionally multi-threaded. This option can be used to enable
+## multi-threaded data receiving, by specifiying the number of
+## additional sockets. The senders will select one of those sockets
+## based on the host id. The default value is 1.
+#dice::network::additional_unicast_sockets = 1
+
+## By default, data is multicast to all hosts in the cluster to manage redundancy.
+## Sending data to just the owning hosts allows for redundancy for large datasets.
+## Restricing the transfer of data to the owning host can be enabled with this option.
+#dice::network::send_elements_only_to_owners = 1
+
+## Large datasets that don't fit into main memory can be
+## flushed to disk and restored later on request. This feature allows for redundancy
+## of very large datasets.
+## This setting defines the location where data shall be stored to disk.
+## The path must be double quoted.
+#dice::network::disk_cache_path = "."
+
+## The retention time controls host timeouts.
+## The default value is 30.
+#dice::network::retention = 30
+
+## Enables or disabled the usage of RDMA Infiniband support in the networking layer.
+## By default RDMA is disabled in DiCE.
+#dice::network::use_rdma = 1
+
+#------------------------------------------------------------
+#section DiCE debug configuration
+
+## The alive factor controls host timeouts.
+## The default value is 10.
+## Increase the timeout interval to avoid workers
+## dropping out in case of extremely high load.
+#dice::debug_configuration::alive_factor = 10
+
+#------------------------------------------------------------
+#section Compression settings for NVIDIA IndeX image transfers.
+
+## For lower through-put networks such as a 1 Gigabit Ethernet networks the 
+## amount of data should be reduced to increase the rendering performance.
+## Enabling compression and encoding techniques for tile and span image data
+## reduces image data transferred for distributed rendering and compositing. 
+## For higher through-put networks such as 10 Gigabit Ethernet networks or 
+## InfiniBand networks, enabling image compression and encoding is not required
+## and could even harm the performance because it introduces additional 
+## latencies to image data transfer procedures.
+
+## Compressing the horizontal span images transferred to the viewer machine.
+dice::network::span_compression = 1
+## Compressing the tile images transferred to the compositing stages.
+dice::network::tile_compression = 1
+## Encoding the RGBA values of the horizontal span images.
+dice::network::span_encoding = yes
+## Encoding the RGBA values of tile images.
+dice::network::tile_encoding = yes
+## Disable the alpha channel for span transfers. The alpha value
+## is only required for OpenGL integration. Disabling this might improve
+## cluster rendering performance.
+dice::network::span_alpha = no
+
+#------------------------------------------------------------
+#section Port configurations
+
+## Web interface (default: 8080)
+dice::http_port = 8080
+
+## DiCE admin interface, comment out the line to disable
+dice::admin_http_port = 8081
+
+## HTTP authentication (optional)
+#dice::http_auth_user = user
+#dice::http_auth_password = secret
+
+#------------------------------------------------------------
+#section Performance monitoring
+
+## Enable performance monitoring functionality
+index::config::set_monitor_performance_values = yes
+
+## Performance logger type.
+##   {csv, human_readable, qa}
+app::performance::logger_type = human_readable
+
+## Global performance value
+##  enable log
+app::performance::global::enable_log = no
+##  performance result file name
+## /dev/null means no output, even enable_log == yes
+app::performance::global::file = stdout:
+##  performance monitoring item list
+##  <all> ... log all the entries.
+##  string list of the performance value keys ... selected items
+app::performance::global::item_list = <all>
+# app::performance::global::item_list = time_total_rendering time_total_compositing frames_per_second
+## extra option (depends on the logger implementation)
+##  human_readable_type: {simple, transfer}
+app::performance::global::human_readable_type = transfer
+
+## Per-host performance value
+##  enable log
+app::performance::per_host::enable_log = no
+##  performance result file name
+## /dev/null means no output, even enable_log == yes
+app::performance::per_host::file = stdout:
+##  performance monitoring item list
+##  <all> ... log all the entries.
+##  string list of the performance value keys ... selected items
+app::performance::per_host::item_list = <all>
+# app::performance::per_host::item_list = time_total_rendering time_total_compositing frames_per_second
+## extra option (depends on the logger implementation)
+app::performance::per_host::human_readable_type = simple
+
+## Enable logging: per-span performance value
+app::performance::per_span::enable_log = no
+##  performance result file name
+## /dev/null means no output, even enable_log == yes
+app::performance::per_span::file = stdout:
+##  performance monitoring items
+##  <all> ... log all the entries.
+##  string list of the performance value keys ... selected items
+app::performance::per_span::item_list = <all>
+
+## User-defined data affinity.
+## Set the number of user-defined affinity informations in the project file.
+index::domain_subdivision::use_affinity_only = 0
+index::domain_subdivision::nb_spatial_regions = 1
+## The bounding box for which the first affinity information is defined.
+index::domain_subdivision::spatial_region_0::bbox = -100 -100 -100 100 100 100
+#index::domain_subdivision::spatial_region_0::bbox = -100 -100 -100 100 100 0.1
+## The first host affinity.
+index::domain_subdivision::affinity_information_0::host = 1
+## The first GPU affinity.
+index::domain_subdivision::affinity_information_0::gpu = 0
+
+#index::domain_subdivision::spatial_region_1::bbox = -100 -100 0.1 -100 100 100
+#index::domain_subdivision::affinity_information_1::host = 1
+#index::domain_subdivision::affinity_information_1::gpu = 0
+
+#------------------------------------------------------------
+#section Additional experimental features
+
+## Attribute manipulation (inset filter) option
+app::distributed_seismic_filter_filter_job::parallel_count = 1
+
+## Enable automatic fallback to CPU rendering if no GPUs are available.
+## This should generally not be enabled when doing cluster rendering,
+## since a single machine falling back to CPU rendering can slow down
+## an entire GPU cluster significantly.
+#index::allow_cpu_fallback = yes
+
+## OpenGL rendering integration, toggle using 'Ctrl+0' key.
+## Make sure that 'dice::network::span_alpha' is enabled as well when
+## using cluster rendering.
+app::experimental::enable_opengl_z_buffer_for_rendering = no
+
+## Triangle mesh (example well)
+##
+##   Values for 'example_well::type'
+## * 'simple'
+## * 'joint'
+## * 'common' : All types
+app::experimental::example_well::type = joint
+app::experimental::example_well::n_gon = 6
+app::experimental::example_well::segment_count = 20
+app::experimental::example_well::i_count = 2
+app::experimental::example_well::j_count = 3
+app::experimental::example_well::base_radius = 10.0
+app::experimental::example_well::joint_interval = 4
+app::experimental::example_well::joint_radius = 19.0
+app::experimental::example_well::joint_h_ratio = 0.1
+app::experimental::example_well::zig_degree = 10.0
+
+#------------------------------------------------------------
+#section OpenGL statistics overlays
+
+## Rendering statistics OpenGL overlay, toggle using 'Ctrl+1' key
+app::statistics::enable_opengl_rendering_statistics = no
+
+## Compositing statistics OpenGL overlay, toggle using 'Ctrl+2' key
+app::statistics::enable_opengl_compositing_statistics = no
+
+#------------------------------------------------------------
+#section Custom startup messages
+
+## Output warning message when starting up
+#app::startup_message::warn = startup warning message
+
+## Output custom info message when starting up
+#app::startup_message::info = startup info message
+
+#------------------------------------------------------------
+#section DiCE bridge
+
+## DiCE bridge enable/disable
+dice::bridge_video_streaming::enabled = false
+
+## DiCE bridge connection setup
+#dice::bridge_video_streaming::disk_cache_path = disk_cache
+#dice::bridge_video_streaming::app_path = /test
+#dice::bridge_video_streaming::security_token = YOUR_PASSWORD
+
+## Application server/client command communication debug output
+#dice::bridge_video_streaming::is_output_command = no
+
+#------------------------------------------------------------
+#section DiCE html5 video streaming
+## DiCE html5 video streaming enable/disable
+dice::html5_video_streaming::enabled = false
+## DiCE html5 video streaming port number string
+dice::html5_video_streaming::port = 3333
+## DiCE html5 video streaming redirect html path
+dice::html5_video_streaming::redirect_html = /html5_video_stream.html
+## mp4 video encoder option: which encoder {h264, h264_nvenc}
+## The creation of the encoder is in this comma separated list order.
+dice::html5_video_streaming::mp4_video_encoder = h264,h264_nvenc
+## h264 encoder option for mp4_encoder: bitrate (MBit)
+dice::html5_video_streaming::h264::bitrate = 30000000
+## h264 encoder option for mp4_encoder: bitrate error
+dice::html5_video_streaming::h264::bitrate_error = 0.5
+## mp4 video encoder option: h264 encoder option: preset
+#dice::html5_video_streaming::h264::preset = veryfast
+## h264_nvenc encode option: draw_frame_number {true, false}
+dice::html5_video_streaming::h264_nvenc::draw_frame_number = false
+## h264_nvenc encode option: video_bitrate
+dice::html5_video_streaming::h264_nvenc::bitrate = 30000000
+## h264_nvenc encode option: framerate
+dice::html5_video_streaming::h264_nvenc::framerate = 25
+

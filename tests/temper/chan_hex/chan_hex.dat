@@ -1,0 +1,27 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   CHAN_HEX
+  RUN_TYPE:               NOCONTI,PRELIMINARY,FREQUENCY=1
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          GLOBAL, PRESCRIBED
+  NUMBER_OF_STEPS:        1
+  TIME_INTERVAL=          0.0, 400000000000.0
+  TIME_STEP=              0.008
+
+  TEMPER_PROBLEM:         ON
+  END_TEMPER
+
+  PARALL_SERVICE:         ON
+    METHOD:               METIS
+    PARTITION_TYPE:       FACES
+  END_PARALL
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: ON
+  GEOMETRY:    OFF $ ON / OFF/  Expor
+  RESTART:     OFF
+  POSTPROCESS: ON
+END_MPI_IO

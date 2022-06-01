@@ -1,0 +1,144 @@
+
+
+
+        --------------------------
+     |- KERMOD OUTPUT FOR PROBLEM: fluidda
+        --------------------------
+
+
+
+        -----------------
+     |- SUMMARY OF SOLVER
+        -----------------
+
+
+        WALL_DISTANCE:
+        --------------
+
+        SOLVER:               DEFLATED CONJUGATE GRADIENT
+        # SOLVES=                    1
+        NUMBER OF GROUPS=          108
+        PRECONDITIONER:       DIAGONAL diag(A)
+        MIN. # ITERATIONS=         135
+        MAX. # ITERATIONS=         135
+        AVE. # ITERATIONS=         135
+        TOT. # ITERATIONS=         135
+        TOT. CPU TIME=         9.936E-03
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME (AVERAGE):  9.936E-03
+          Initial operations:             1.092E-03 ( 10.99 % )
+          Preconditioning:                1.700E-04 (  1.71 % )
+          Coarse system solver (DCG):     6.707E-04 (  6.75 % )
+          Orthogonalization (GMRES):      0.000E+00 (  0.00 % )
+          Others:                         8.003E-03 ( 80.55 % )
+
+
+        |- SpMV:                          140
+
+           Computation:             
+              Average CPU time:      2.876E-03 
+              Maximum CPU time:      2.876E-03 
+              Load balance:               1.00
+           Point-to-point comm.:    
+              Average CPU time:      0.000E+00 
+              Maximum CPU time:      0.000E+00 
+              Load balance:               0.00
+           Overall:                 
+              Average CPU time:      2.876E-03 
+              Maximum CPU time:      2.876E-03 
+              Load balance:               1.00
+                                    
+           Flops:                   
+              Average:               7.185E+02 Mflop/s
+              Maximum:               7.185E+02 Mflop/s
+
+
+        |- Dot product:                   276
+
+           Computation:             
+              Average CPU time:      3.667E-04 
+              Maximum CPU time:      3.667E-04 
+              Load balance:               1.00
+           Point-to-point comm.:    
+              Average CPU time:      1.407E-05 
+              Maximum CPU time:      1.407E-05 
+              Load balance:               1.00
+           Overall:                 
+              Average CPU time:      3.808E-04 
+              Maximum CPU time:      3.808E-04 
+              Load balance:               1.00
+                                    
+           Flops:                   
+              Average:               1.248E+00 Gflop/s
+              Maximum:               1.248E+00 Gflop/s
+
+        WALL_NORMAL:
+        ------------
+
+        SOLVER:               DEFLATED CONJUGATE GRADIENT
+        # SOLVES=                    2
+        NUMBER OF GROUPS=          108
+        PRECONDITIONER:       DIAGONAL diag(A)
+        MIN. # ITERATIONS=         121
+        MAX. # ITERATIONS=         133
+        AVE. # ITERATIONS=         127
+        TOT. # ITERATIONS=         254
+        TOT. CPU TIME=         1.298E-02
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME (AVERAGE):  1.298E-02
+          Initial operations:             1.616E-04 (  1.25 % )
+          Preconditioning:                2.615E-04 (  2.02 % )
+          Coarse system solver (DCG):     9.270E-04 (  7.14 % )
+          Orthogonalization (GMRES):      0.000E+00 (  0.00 % )
+          Others:                         1.163E-02 ( 89.60 % )
+
+
+        |- SpMV:                          264
+
+           Computation:             
+              Average CPU time:      4.183E-03 
+              Maximum CPU time:      4.183E-03 
+              Load balance:               1.00
+           Point-to-point comm.:    
+              Average CPU time:      0.000E+00 
+              Maximum CPU time:      0.000E+00 
+              Load balance:               0.00
+           Overall:                 
+              Average CPU time:      4.183E-03 
+              Maximum CPU time:      4.183E-03 
+              Load balance:               1.00
+                                    
+           Flops:                   
+              Average:               9.317E+02 Mflop/s
+              Maximum:               9.317E+02 Mflop/s
+
+
+        |- Dot product:                   520
+
+           Computation:             
+              Average CPU time:      6.726E-04 
+              Maximum CPU time:      6.726E-04 
+              Load balance:               1.00
+           Point-to-point comm.:    
+              Average CPU time:      1.502E-05 
+              Maximum CPU time:      1.502E-05 
+              Load balance:               1.00
+           Overall:                 
+              Average CPU time:      6.876E-04 
+              Maximum CPU time:      6.876E-04 
+              Load balance:               1.00
+                                    
+           Flops:                   
+              Average:               1.302E+00 Gflop/s
+              Maximum:               1.302E+00 Gflop/s
+
+
+
+     |- END OF KERMOD RUN
+

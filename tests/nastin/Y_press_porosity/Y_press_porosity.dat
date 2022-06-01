@@ -1,0 +1,32 @@
+$-------------------------------------------------------------------
+RUN_DATA
+   INCLUDE Y_press_porosity.run.dat
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+   TIME_COUPLING = GLOBAL, PRESCRIBED 
+   TIME_INTERVAL = 0.0,100.0
+   TIME_STEP_SIZE = 0.1
+   NUMBER_OF_STEPS= 5
+
+$-------------------------------------------------------------------  
+  NASTIN_PROBLEM=        ON
+  END_NASTIN
+
+
+  PARALL_SERVICE:       ON
+   COMMUNICATIONS:       SYNCHRONOUS
+   OUTPUT_FILE:          NO
+   POSTPROCESS:          MASTER
+   PARTITION:            FACES
+    PARTITIONING:
+        METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL     
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: OFF
+    GEOMETRY:    OFF
+    RESTART:     OFF
+    POSTPROCESS: 0FF
+END_MPI_IO

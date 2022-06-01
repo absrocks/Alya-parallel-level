@@ -1,0 +1,33 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "windkessel.nsi.wit",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+		  
+    ],
+    "description": "Checks convergence using 4 element windkessel",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "windkessel",
+    "postprocess": "alya2pos",
+    "timeout": "00:03:00"
+}

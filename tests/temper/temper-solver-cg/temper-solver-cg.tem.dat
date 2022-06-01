@@ -1,0 +1,45 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   Off
+    CONVECTIVE_TERM:        Off
+    CONDUCTION_TERM:        On
+$    SOURCE:                 SPACE_TIME_FUNCTION: SOURCE
+  END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  ELEMENT_LENGTH:          Minimum 
+  SAFETY_FACTOR=           50.0
+  TRACKING:                TIME 
+  TIME_INTEGRATION:        BDF, ORDER=1
+  STEADY_STATE_TOLERANCE=  -1e-10  
+  MAXIMUM_NUMBER_OF_ITER=  1
+  RELAXATION_FACTOR=       1.0
+  CONVERGENCE_TOLERANCE=   -1e-8
+  ALGEBRAIC_SOLVER     
+    SOLVER:                CG
+    CONVERGENCE:           ITERA=10, TOLER=-1.0e-12
+    OUTPUT:                CONVERGENCE
+    PRECONDITIONER:        DIAGONAL
+  END_ALGEBRAIC_SOLVER  
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS TEMPERATURE
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS, NON_CONSTANT
+  CODES, NODES
+    1 1 1.0
+1 & 3 1 1.0
+1 & 4 1 1.0
+    3 1 3.0
+    2 1 2.0
+2 & 3 1 2.0
+2 & 4 1 2.0
+    4 1 4.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

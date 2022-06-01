@@ -1,0 +1,70 @@
+{
+    "authors": [
+        "damien.dosimont@bsc.es",
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_mpio_i8_hybrid-COORD.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-LELCH.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-LNODS.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-LTYPE.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-PRESS-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-PRESS-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-VELOC-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i8_hybrid-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "MPI-IO test based on cavtri03 (i8): geometry reading, asynchronous and hybrid (sequential if block size < 0.1 MB) post and restart writing",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i8"
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_mpio_i8_hybrid",
+    "postprocess": "mpio2txt"
+}

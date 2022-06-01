@@ -1,0 +1,44 @@
+ROOT          :=$(shell pwd)
+ROOT_LIBPLE   :=$(ROOT)/LIBPLE
+ROOT_LIBPLEPP :=$(ROOT)/LIBPLEPP
+
+
+all: libple libplepp 
+
+
+.PHYTON: clean ple plepp  
+
+clean:
+	@$(MAKE) -C $(ROOT_LIBPLE)                    clean 
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Fortran clean 
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp     clean 
+
+
+ple:
+	@cd $(ROOT_LIBPLE); ./configure --enable-static CC=mpicc  --prefix=$(ROOT_LIBPLE)/Execs
+	@$(MAKE) -C $(ROOT_LIBPLE)/src CFLAGS_OPT=''
+	@$(MAKE) -C $(ROOT_LIBPLE) install
+
+
+plepp:
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test01 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90 
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test02 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90   
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test03 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90   
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp scf01 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90   
+
+
+pyplepp:  
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Python Commdomm HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90 
+
+
+
+tau:
+	@export TAU_PATH:=/home/bsc21/bsc21704/z2016/REPOSITORY/TAU/TAU2251/EXEC2/x86_64
+	@export TAU_MAKEFILE:=$(TAU_PATH)/lib/Makefile.tau-icpc-mpi-pdt
+	@export PATH:=$(PATH):$(TAU_PATH)/bin
+	@cd $(ROOT_LIBPLE); ./configure --enable-static CC=tau_cc.sh  --prefix=$(ROOT_LIBPLE)/Execs
+	@$(MAKE) -C $(ROOT_LIBPLE)/src CFLAGS_OPT=''
+	@$(MAKE) -C $(ROOT_LIBPLE) install
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test02 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CPPCOMPILER=tau_cxx.sh CCOMPILER=tau_cc.sh FCOMPILER=tau_f90.sh  
+
+

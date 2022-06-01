@@ -1,0 +1,35 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   BoatFin 
+$ RUN_TYPE:               noCONTI , PRELIMINARY, FREQUENCY=40
+  LATEX_INFO_FILE:        Yes
+  LIVE_INFORMATION:       Screen
+  TIMING:                 ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          LOCAL, FROM_CRITICAL
+  TIME_INTERVAL=          0.0,100000000.0
+  TIME_STEP_SIZE=         0.006
+  NUMBER_OF_STEPS=        2000000
+  MAXIMUM_NUMBER_GLOBAL=  1 
+  BLOCK_ITERATION: 1
+    1 ALEFOR, NASTIN, TURBU, LEVELS
+  END_BLOCK_ITERATION
+  ALEFOR_MODULE=          On
+     DELAY, STEPS=100
+  END_ALEFOR_MODULE
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  LEVELS_MODULE:          On
+  END_LEVELS_MODULE
+  TURBUL_MODULE:          On
+  END_TURBUL_MODULE
+  PARALL_SERVICE:         On
+    OUTPUT_FILE:          OFF
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+$   COMMUNICATION:        ASYNCRONOUS
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

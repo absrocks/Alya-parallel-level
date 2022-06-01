@@ -1,0 +1,18 @@
+# ALYA Element set results
+#
+# HEADER
+# ISET , Column :   1
+# SIZES , Column :   2
+# VELOC , Column :   3
+# NUMVARIABLES :       3
+# NUMSETS      :       1
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+         1  0.42174206E+004  0.45209500E+004
+# Iterations  =       1      1      1
+# Time        =  0.50000000E-003
+         1  0.42174206E+004  0.45258550E+004
+# Iterations  =       2      1      1
+# Time        =  0.10000000E-002
+         1  0.42174206E+004  0.45307600E+004

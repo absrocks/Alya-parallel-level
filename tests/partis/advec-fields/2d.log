@@ -1,0 +1,971 @@
+
+
+
+        --------
+     |- A L Y A: fluidda
+        --------
+
+
+
+        ------------------------
+*    |- PARTITIONS BIN STRUCTURE
+        ------------------------
+
+        BIN DIMENSIONS=                 1    1    1
+
+
+        ----------------------
+*    |- HYBRID PARALLELIZATION
+        ----------------------
+
+        OFF
+
+
+        ------------------------
+*    |- BOUNDARY CONDITION CODES
+        ------------------------
+
+
+        CODE=             1  & **  & **
+        CODE=             1  &  2  & **
+        CODE=             1  &  4  & **
+        CODE=             2  & **  & **
+        CODE=             2  &  3  & **
+        CODE=             3  & **  & **
+        CODE=             3  &  4  & **
+        CODE=             4  & **  & **
+
+
+        -----------------
+*    |- INTEGRATION RULES
+        -----------------
+
+
+        ELEMENT TYPE:                 BAR02
+           Rule:                       OPEN
+           Number Gauss points=           1
+           Max. polynomial order=         1
+        ELEMENT TYPE:                 QUA04
+           Rule:                       OPEN
+           Number Gauss points=           1
+           Max. polynomial order=         1
+
+
+        -----------------------------
+*    |- TIMES OF ALGEBRAIC OPERATIONS: AVERAGE OVER     2 RUNS
+        -----------------------------
+
+
+        |- SpMV IN CSR FORMAT (without OpenMP):   
+
+           Computation:             
+              Average CPU time:      402.92740 mus
+              Maximum CPU time:      402.92740 mus
+              Load balance:            1.00000
+           Point-to-point comm.:    
+              Average CPU time:        0.00000 mus
+              Maximum CPU time:        0.00000 mus
+              Load balance:            0.00000
+           Overall:                 
+              Average CPU time:      402.92740 mus
+              Maximum CPU time:      402.92740 mus
+              Load balance:            1.00000
+
+        |- DOT PRODUCT (without OpenMP):
+
+           Computation:             
+              Average CPU time:        1.43051 mus
+              Maximum CPU time:        1.43051 mus
+              Load balance:            1.00000
+           Global comm.:            
+              Average CPU time:        0.59605 mus
+              Maximum CPU time:        0.59605 mus
+              Load balance:            1.00000
+           Overall:                 
+              Average CPU time:        2.02656 mus
+              Maximum CPU time:        2.02656 mus
+              Load balance:            1.00000
+
+
+        -----------------------
+*    |- SUMMARY OF PROBLEM DATA
+        -----------------------
+
+
+        |- GENERAL DATA:
+
+           Modules solved:       PARTIS,KERMOD
+           Blok definition:      1:PARTIS
+           Time step strategy:   PRESCRIBED
+           Time step=             1.0000E-02
+           Time range=           [ 0.0000E+00, 1.0000E+00]
+
+        |- DOMAIN DATA:
+
+           Domain dimension=               2
+           --------------------- 
+           Bandwith (average)=           51
+           Profile (average)=     1.9117E+04
+           --------------------- 
+           Total volume=          3.2000E+00
+           Ave. element volume=   4.0000E-03
+           Min. element volume=   4.0000E-03 (element 428)
+           Max. element volume=   4.0000E-03 (element 389)
+           --------------------- 
+           Total elements=               800
+           Extension elements=             0
+           Hole elements=                  0
+           Elements used:        800 QUA04
+           Gauss points (rule)=  1(open)
+           --------------------- 
+           Total boundaries=             120
+           Extension boundaries=           0
+           Hole boundaries=                0
+           Boundaries used:      120 BAR02
+           Gauss points (rule)=  1(open)
+           --------------------- 
+           Total nodes=                  861
+           Hole nodes=                     0
+
+
+
+        ----------------------
+*    |- SUMMARY OF CONVERGENCE
+        ----------------------
+
+
+        |- TIME STEP NUMBER:            1
+           Current time step dt =  1.000E-02
+           Current time t       =  1.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.365E+00
+           Elapsed CPU time:         1.365E+00
+
+        |- TIME STEP NUMBER:            2
+           Current time step dt =  1.000E-02
+           Current time t       =  2.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.451E+00
+           Elapsed CPU time:         8.575E-02
+
+        |- TIME STEP NUMBER:            3
+           Current time step dt =  1.000E-02
+           Current time t       =  3.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.542E+00
+           Elapsed CPU time:         9.059E-02
+
+        |- TIME STEP NUMBER:            4
+           Current time step dt =  1.000E-02
+           Current time t       =  4.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.624E+00
+           Elapsed CPU time:         8.209E-02
+
+        |- TIME STEP NUMBER:            5
+           Current time step dt =  1.000E-02
+           Current time t       =  5.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.714E+00
+           Elapsed CPU time:         8.979E-02
+
+        |- TIME STEP NUMBER:            6
+           Current time step dt =  1.000E-02
+           Current time t       =  6.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.802E+00
+           Elapsed CPU time:         8.844E-02
+
+        |- TIME STEP NUMBER:            7
+           Current time step dt =  1.000E-02
+           Current time t       =  7.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.888E+00
+           Elapsed CPU time:         8.566E-02
+
+        |- TIME STEP NUMBER:            8
+           Current time step dt =  1.000E-02
+           Current time t       =  8.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.976E+00
+           Elapsed CPU time:         8.784E-02
+
+        |- TIME STEP NUMBER:            9
+           Current time step dt =  1.000E-02
+           Current time t       =  9.000E-02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.064E+00
+           Elapsed CPU time:         8.835E-02
+
+        |- TIME STEP NUMBER:           10
+           Current time step dt =  1.000E-02
+           Current time t       =  1.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.144E+00
+           Elapsed CPU time:         8.022E-02
+
+        |- TIME STEP NUMBER:           11
+           Current time step dt =  1.000E-02
+           Current time t       =  1.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.232E+00
+           Elapsed CPU time:         8.788E-02
+
+        |- TIME STEP NUMBER:           12
+           Current time step dt =  1.000E-02
+           Current time t       =  1.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.314E+00
+           Elapsed CPU time:         8.167E-02
+
+        |- TIME STEP NUMBER:           13
+           Current time step dt =  1.000E-02
+           Current time t       =  1.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.405E+00
+           Elapsed CPU time:         9.153E-02
+
+        |- TIME STEP NUMBER:           14
+           Current time step dt =  1.000E-02
+           Current time t       =  1.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.504E+00
+           Elapsed CPU time:         9.829E-02
+
+        |- TIME STEP NUMBER:           15
+           Current time step dt =  1.000E-02
+           Current time t       =  1.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.599E+00
+           Elapsed CPU time:         9.592E-02
+
+        |- TIME STEP NUMBER:           16
+           Current time step dt =  1.000E-02
+           Current time t       =  1.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.683E+00
+           Elapsed CPU time:         8.374E-02
+
+        |- TIME STEP NUMBER:           17
+           Current time step dt =  1.000E-02
+           Current time t       =  1.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.773E+00
+           Elapsed CPU time:         8.972E-02
+
+        |- TIME STEP NUMBER:           18
+           Current time step dt =  1.000E-02
+           Current time t       =  1.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.860E+00
+           Elapsed CPU time:         8.717E-02
+
+        |- TIME STEP NUMBER:           19
+           Current time step dt =  1.000E-02
+           Current time t       =  1.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         2.946E+00
+           Elapsed CPU time:         8.615E-02
+
+        |- TIME STEP NUMBER:           20
+           Current time step dt =  1.000E-02
+           Current time t       =  2.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.044E+00
+           Elapsed CPU time:         9.734E-02
+
+        |- TIME STEP NUMBER:           21
+           Current time step dt =  1.000E-02
+           Current time t       =  2.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.138E+00
+           Elapsed CPU time:         9.433E-02
+
+        |- TIME STEP NUMBER:           22
+           Current time step dt =  1.000E-02
+           Current time t       =  2.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.223E+00
+           Elapsed CPU time:         8.506E-02
+
+        |- TIME STEP NUMBER:           23
+           Current time step dt =  1.000E-02
+           Current time t       =  2.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.317E+00
+           Elapsed CPU time:         9.439E-02
+
+        |- TIME STEP NUMBER:           24
+           Current time step dt =  1.000E-02
+           Current time t       =  2.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.405E+00
+           Elapsed CPU time:         8.785E-02
+
+        |- TIME STEP NUMBER:           25
+           Current time step dt =  1.000E-02
+           Current time t       =  2.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.498E+00
+           Elapsed CPU time:         9.273E-02
+
+        |- TIME STEP NUMBER:           26
+           Current time step dt =  1.000E-02
+           Current time t       =  2.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.593E+00
+           Elapsed CPU time:         9.510E-02
+
+        |- TIME STEP NUMBER:           27
+           Current time step dt =  1.000E-02
+           Current time t       =  2.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.680E+00
+           Elapsed CPU time:         8.666E-02
+
+        |- TIME STEP NUMBER:           28
+           Current time step dt =  1.000E-02
+           Current time t       =  2.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.772E+00
+           Elapsed CPU time:         9.272E-02
+
+        |- TIME STEP NUMBER:           29
+           Current time step dt =  1.000E-02
+           Current time t       =  2.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.876E+00
+           Elapsed CPU time:         1.035E-01
+
+        |- TIME STEP NUMBER:           30
+           Current time step dt =  1.000E-02
+           Current time t       =  3.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.982E+00
+           Elapsed CPU time:         1.058E-01
+
+        |- TIME STEP NUMBER:           31
+           Current time step dt =  1.000E-02
+           Current time t       =  3.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.076E+00
+           Elapsed CPU time:         9.443E-02
+
+        |- TIME STEP NUMBER:           32
+           Current time step dt =  1.000E-02
+           Current time t       =  3.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.175E+00
+           Elapsed CPU time:         9.832E-02
+
+        |- TIME STEP NUMBER:           33
+           Current time step dt =  1.000E-02
+           Current time t       =  3.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.297E+00
+           Elapsed CPU time:         1.229E-01
+
+        |- TIME STEP NUMBER:           34
+           Current time step dt =  1.000E-02
+           Current time t       =  3.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.402E+00
+           Elapsed CPU time:         1.043E-01
+
+        |- TIME STEP NUMBER:           35
+           Current time step dt =  1.000E-02
+           Current time t       =  3.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.497E+00
+           Elapsed CPU time:         9.494E-02
+
+        |- TIME STEP NUMBER:           36
+           Current time step dt =  1.000E-02
+           Current time t       =  3.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.592E+00
+           Elapsed CPU time:         9.526E-02
+
+        |- TIME STEP NUMBER:           37
+           Current time step dt =  1.000E-02
+           Current time t       =  3.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.680E+00
+           Elapsed CPU time:         8.819E-02
+
+        |- TIME STEP NUMBER:           38
+           Current time step dt =  1.000E-02
+           Current time t       =  3.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.768E+00
+           Elapsed CPU time:         8.753E-02
+
+        |- TIME STEP NUMBER:           39
+           Current time step dt =  1.000E-02
+           Current time t       =  3.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.854E+00
+           Elapsed CPU time:         8.625E-02
+
+        |- TIME STEP NUMBER:           40
+           Current time step dt =  1.000E-02
+           Current time t       =  4.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         4.943E+00
+           Elapsed CPU time:         8.879E-02
+
+        |- TIME STEP NUMBER:           41
+           Current time step dt =  1.000E-02
+           Current time t       =  4.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.029E+00
+           Elapsed CPU time:         8.618E-02
+
+        |- TIME STEP NUMBER:           42
+           Current time step dt =  1.000E-02
+           Current time t       =  4.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.120E+00
+           Elapsed CPU time:         9.145E-02
+
+        |- TIME STEP NUMBER:           43
+           Current time step dt =  1.000E-02
+           Current time t       =  4.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.211E+00
+           Elapsed CPU time:         9.062E-02
+
+        |- TIME STEP NUMBER:           44
+           Current time step dt =  1.000E-02
+           Current time t       =  4.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.300E+00
+           Elapsed CPU time:         8.926E-02
+
+        |- TIME STEP NUMBER:           45
+           Current time step dt =  1.000E-02
+           Current time t       =  4.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.395E+00
+           Elapsed CPU time:         9.458E-02
+
+        |- TIME STEP NUMBER:           46
+           Current time step dt =  1.000E-02
+           Current time t       =  4.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.485E+00
+           Elapsed CPU time:         8.984E-02
+
+        |- TIME STEP NUMBER:           47
+           Current time step dt =  1.000E-02
+           Current time t       =  4.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.579E+00
+           Elapsed CPU time:         9.401E-02
+
+        |- TIME STEP NUMBER:           48
+           Current time step dt =  1.000E-02
+           Current time t       =  4.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.673E+00
+           Elapsed CPU time:         9.416E-02
+
+        |- TIME STEP NUMBER:           49
+           Current time step dt =  1.000E-02
+           Current time t       =  4.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.767E+00
+           Elapsed CPU time:         9.400E-02
+
+        |- TIME STEP NUMBER:           50
+           Current time step dt =  1.000E-02
+           Current time t       =  5.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.854E+00
+           Elapsed CPU time:         8.734E-02
+
+        |- TIME STEP NUMBER:           51
+           Current time step dt =  1.000E-02
+           Current time t       =  5.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         5.948E+00
+           Elapsed CPU time:         9.396E-02
+
+        |- TIME STEP NUMBER:           52
+           Current time step dt =  1.000E-02
+           Current time t       =  5.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.045E+00
+           Elapsed CPU time:         9.724E-02
+
+        |- TIME STEP NUMBER:           53
+           Current time step dt =  1.000E-02
+           Current time t       =  5.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.142E+00
+           Elapsed CPU time:         9.678E-02
+
+        |- TIME STEP NUMBER:           54
+           Current time step dt =  1.000E-02
+           Current time t       =  5.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.239E+00
+           Elapsed CPU time:         9.686E-02
+
+        |- TIME STEP NUMBER:           55
+           Current time step dt =  1.000E-02
+           Current time t       =  5.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.334E+00
+           Elapsed CPU time:         9.538E-02
+
+        |- TIME STEP NUMBER:           56
+           Current time step dt =  1.000E-02
+           Current time t       =  5.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.427E+00
+           Elapsed CPU time:         9.250E-02
+
+        |- TIME STEP NUMBER:           57
+           Current time step dt =  1.000E-02
+           Current time t       =  5.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.514E+00
+           Elapsed CPU time:         8.735E-02
+
+        |- TIME STEP NUMBER:           58
+           Current time step dt =  1.000E-02
+           Current time t       =  5.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.606E+00
+           Elapsed CPU time:         9.136E-02
+
+        |- TIME STEP NUMBER:           59
+           Current time step dt =  1.000E-02
+           Current time t       =  5.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.698E+00
+           Elapsed CPU time:         9.300E-02
+
+        |- TIME STEP NUMBER:           60
+           Current time step dt =  1.000E-02
+           Current time t       =  6.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.804E+00
+           Elapsed CPU time:         1.058E-01
+
+        |- TIME STEP NUMBER:           61
+           Current time step dt =  1.000E-02
+           Current time t       =  6.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.899E+00
+           Elapsed CPU time:         9.433E-02
+
+        |- TIME STEP NUMBER:           62
+           Current time step dt =  1.000E-02
+           Current time t       =  6.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         6.982E+00
+           Elapsed CPU time:         8.376E-02
+
+        |- TIME STEP NUMBER:           63
+           Current time step dt =  1.000E-02
+           Current time t       =  6.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.068E+00
+           Elapsed CPU time:         8.530E-02
+
+        |- TIME STEP NUMBER:           64
+           Current time step dt =  1.000E-02
+           Current time t       =  6.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.149E+00
+           Elapsed CPU time:         8.093E-02
+
+        |- TIME STEP NUMBER:           65
+           Current time step dt =  1.000E-02
+           Current time t       =  6.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.236E+00
+           Elapsed CPU time:         8.748E-02
+
+        |- TIME STEP NUMBER:           66
+           Current time step dt =  1.000E-02
+           Current time t       =  6.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.316E+00
+           Elapsed CPU time:         7.968E-02
+
+        |- TIME STEP NUMBER:           67
+           Current time step dt =  1.000E-02
+           Current time t       =  6.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.403E+00
+           Elapsed CPU time:         8.760E-02
+
+        |- TIME STEP NUMBER:           68
+           Current time step dt =  1.000E-02
+           Current time t       =  6.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.484E+00
+           Elapsed CPU time:         8.047E-02
+
+        |- TIME STEP NUMBER:           69
+           Current time step dt =  1.000E-02
+           Current time t       =  6.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.574E+00
+           Elapsed CPU time:         8.970E-02
+
+        |- TIME STEP NUMBER:           70
+           Current time step dt =  1.000E-02
+           Current time t       =  7.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.652E+00
+           Elapsed CPU time:         7.873E-02
+
+        |- TIME STEP NUMBER:           71
+           Current time step dt =  1.000E-02
+           Current time t       =  7.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.740E+00
+           Elapsed CPU time:         8.745E-02
+
+        |- TIME STEP NUMBER:           72
+           Current time step dt =  1.000E-02
+           Current time t       =  7.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.821E+00
+           Elapsed CPU time:         8.168E-02
+
+        |- TIME STEP NUMBER:           73
+           Current time step dt =  1.000E-02
+           Current time t       =  7.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.910E+00
+           Elapsed CPU time:         8.889E-02
+
+        |- TIME STEP NUMBER:           74
+           Current time step dt =  1.000E-02
+           Current time t       =  7.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         7.990E+00
+           Elapsed CPU time:         7.989E-02
+
+        |- TIME STEP NUMBER:           75
+           Current time step dt =  1.000E-02
+           Current time t       =  7.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.075E+00
+           Elapsed CPU time:         8.518E-02
+
+        |- TIME STEP NUMBER:           76
+           Current time step dt =  1.000E-02
+           Current time t       =  7.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.161E+00
+           Elapsed CPU time:         8.570E-02
+
+        |- TIME STEP NUMBER:           77
+           Current time step dt =  1.000E-02
+           Current time t       =  7.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.245E+00
+           Elapsed CPU time:         8.419E-02
+
+        |- TIME STEP NUMBER:           78
+           Current time step dt =  1.000E-02
+           Current time t       =  7.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.327E+00
+           Elapsed CPU time:         8.195E-02
+
+        |- TIME STEP NUMBER:           79
+           Current time step dt =  1.000E-02
+           Current time t       =  7.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.411E+00
+           Elapsed CPU time:         8.340E-02
+
+        |- TIME STEP NUMBER:           80
+           Current time step dt =  1.000E-02
+           Current time t       =  8.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.497E+00
+           Elapsed CPU time:         8.624E-02
+
+        |- TIME STEP NUMBER:           81
+           Current time step dt =  1.000E-02
+           Current time t       =  8.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.581E+00
+           Elapsed CPU time:         8.415E-02
+
+        |- TIME STEP NUMBER:           82
+           Current time step dt =  1.000E-02
+           Current time t       =  8.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.667E+00
+           Elapsed CPU time:         8.630E-02
+
+        |- TIME STEP NUMBER:           83
+           Current time step dt =  1.000E-02
+           Current time t       =  8.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.746E+00
+           Elapsed CPU time:         7.894E-02
+
+        |- TIME STEP NUMBER:           84
+           Current time step dt =  1.000E-02
+           Current time t       =  8.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.831E+00
+           Elapsed CPU time:         8.488E-02
+
+        |- TIME STEP NUMBER:           85
+           Current time step dt =  1.000E-02
+           Current time t       =  8.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         8.913E+00
+           Elapsed CPU time:         8.175E-02
+
+        |- TIME STEP NUMBER:           86
+           Current time step dt =  1.000E-02
+           Current time t       =  8.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.001E+00
+           Elapsed CPU time:         8.858E-02
+
+        |- TIME STEP NUMBER:           87
+           Current time step dt =  1.000E-02
+           Current time t       =  8.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.083E+00
+           Elapsed CPU time:         8.150E-02
+
+        |- TIME STEP NUMBER:           88
+           Current time step dt =  1.000E-02
+           Current time t       =  8.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.170E+00
+           Elapsed CPU time:         8.686E-02
+
+        |- TIME STEP NUMBER:           89
+           Current time step dt =  1.000E-02
+           Current time t       =  8.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.251E+00
+           Elapsed CPU time:         8.171E-02
+
+        |- TIME STEP NUMBER:           90
+           Current time step dt =  1.000E-02
+           Current time t       =  9.000E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.336E+00
+           Elapsed CPU time:         8.446E-02
+
+        |- TIME STEP NUMBER:           91
+           Current time step dt =  1.000E-02
+           Current time t       =  9.100E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.421E+00
+           Elapsed CPU time:         8.511E-02
+
+        |- TIME STEP NUMBER:           92
+           Current time step dt =  1.000E-02
+           Current time t       =  9.200E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.506E+00
+           Elapsed CPU time:         8.460E-02
+
+        |- TIME STEP NUMBER:           93
+           Current time step dt =  1.000E-02
+           Current time t       =  9.300E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.594E+00
+           Elapsed CPU time:         8.831E-02
+
+        |- TIME STEP NUMBER:           94
+           Current time step dt =  1.000E-02
+           Current time t       =  9.400E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.674E+00
+           Elapsed CPU time:         8.017E-02
+
+        |- TIME STEP NUMBER:           95
+           Current time step dt =  1.000E-02
+           Current time t       =  9.500E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.763E+00
+           Elapsed CPU time:         8.857E-02
+
+        |- TIME STEP NUMBER:           96
+           Current time step dt =  1.000E-02
+           Current time t       =  9.600E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.845E+00
+           Elapsed CPU time:         8.190E-02
+
+        |- TIME STEP NUMBER:           97
+           Current time step dt =  1.000E-02
+           Current time t       =  9.700E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         9.932E+00
+           Elapsed CPU time:         8.736E-02
+
+        |- TIME STEP NUMBER:           98
+           Current time step dt =  1.000E-02
+           Current time t       =  9.800E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.002E+01
+           Elapsed CPU time:         8.773E-02
+
+        |- TIME STEP NUMBER:           99
+           Current time step dt =  1.000E-02
+           Current time t       =  9.900E-01
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.010E+01
+           Elapsed CPU time:         8.383E-02
+
+        |- TIME STEP NUMBER:          100
+           Current time step dt =  1.000E-02
+           Current time t       =  1.000E+00
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         1.019E+01
+           Elapsed CPU time:         8.754E-02
+
+
+        --------------------------
+*    |- SUMMARY OF REQUIRED MEMORY
+        --------------------------
+
+
+        |- MASTER COUNT:
+
+           Total memory:                  6.84 Mbytes
+           Construction of the domain:    2.72 Mbytes
+           Element search strategy:       0.07 Mbytes
+           PARTIS module:                 3.89 Mbytes
+           KERMOD module:                 0.04 Mbytes
+           Solvers:                       0.13 Mbytes
+
+
+        --------------------------
+*    |- SUMMARY OF COMPUTING TIMES
+        --------------------------
+
+
+        TOTAL CPU TIME:                   10.23
+        STARTING OPERATIONS:               1.11 ( 10.84 % )
+          Geometry reading:                0.01 (  0.07 % )
+          Set Reading:                     0.00 (  0.00 % )
+          Boundary cond. reading:          0.00 (  0.01 % )
+          Fields reading:                  0.65 (  6.39 % )
+          Mesh partitioning:               0.00 (  0.00 % )
+          Mesh multiplication:             0.00 (  0.00 % )
+          Domain construction:             0.02 (  0.22 % )
+          Additional arrays:               0.43 (  4.16 % )
+
+
+     |- END OF ANALYSIS
+

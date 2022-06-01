@@ -1,0 +1,35 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cyl_nastin
+  LIVE_INFO:              screen
+  POSTPROCESS:            domain
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING = GLOBAL, PRESCRIBED
+  TIME_INTERVAL = 0.0, 10.0    
+  TIME_STEP_SIZE = 4e-4 
+  NUMBER_OF_STEPS= 3
+$-------------------------------------------------------------------  
+  NASTIN_PROBLEM=        ON
+  END_NASTIN
+
+   BLOCK, 1
+      1 NASTIN
+   END_BLOCK
+   ZONES
+     NASTIN 1
+   END_ZONES
+
+   PARALL_SERVICE:       ON
+     COMMUNICATIONS:       SYNCHRONOUS
+     OUTPUT_FILE:          NO
+     POSTPROCESS:          MASTER
+     PARTITION:            FACES
+     PARTITIONING:
+        METHOD:            METIS
+     END_PARTITIONING
+   END_PARALL     
+
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

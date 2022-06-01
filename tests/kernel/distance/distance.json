@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "distance.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test compute the wall distance. The domain is a bar formed by 10 quadrilateral elements. ",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "distance",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,56 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      1092
+  ELEMENTS           500
+  SPACE_DIMENSIONS   3
+  TYPES_OF_ELEMENTS HEX08
+  BOUNDARIES          90
+  PERIODIC_NODES=     546
+  FIELDS: 4 
+    FIELD=1, DIMENSIONS=3, NODES 
+    FIELD=2, DIMENSIONS=1, NODES 
+    FIELD=3, DIMENSIONS=1, NODES 
+    FIELD=4, DIMENSIONS=1, NODES 
+  END_FIELDS 
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           open
+  DOMAIN_INTEGRATION_POINTS  0
+  PERIODICITY:    MATRIX
+  BOUNDARY_ELEMENT: Off 
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  GROUPS= 500, SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  TYPES, ALL =HEX08
+  END_TYPES
+  INCLUDE ./kwHill.geo.dat
+  INCLUDE ./kwHill.mat
+  LMAST 
+    INCLUDE ./kwHill.per
+  END_LMAST 
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./kwHill.fix
+END_BOUNDARY_CONDITIONS          
+FIELDS  
+  FIELD=1 
+     INCLUDE ./kwHill.vel.ini
+  END_FIELD
+  FIELD=2 
+     INCLUDE ./kwHill.tur1.ini
+  END_FIELD
+  FIELD=3 
+     INCLUDE ./kwHill.tur2.ini
+  END_FIELD
+  FIELD=4 
+     INCLUDE ./kwHill.zo.dat
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

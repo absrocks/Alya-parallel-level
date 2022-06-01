@@ -1,0 +1,26 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_fs_weak_press.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "FS with weak imposition of pressure.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_fs_weak_press",
+    "postprocess": "alya2pos"
+}

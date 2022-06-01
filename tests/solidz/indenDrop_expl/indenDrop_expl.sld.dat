@@ -1,0 +1,50 @@
+$============================================================
+$
+$ indenDrop_expl
+$ Author:  Gerard Guillamet
+$ Details: Indenter drop test with gravitation and initial
+$          velocity (Explicit scheme)
+$ Units:   SI (mm)
+$
+$============================================================
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+ PROBLEM_DEFINITION
+  TEMPORAL_DERIVATIVES: DYNAMIC
+  GRAVITY: NORM=-9810.0, GX=0.0, GY=0.0, GZ=1.0
+  INITIAL_CONDITION: VELOCITY, FIELD=1
+ END_PROBLEM_DEFINITION
+ PROPERTIES
+  $ ,,,,,, STEEL ,,,,,,
+  MATERIAL       = 1
+  DENSITY        = 7.95E-07
+  CONSTITUTIVE_MODEL: ISOLIN \
+    210.0e+3 0.35
+ END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+ TIME_TREATMENT:       EXPLICIT
+ TIME_INTEGRATION:     NEWMARK, CDIFF
+ SAFETY_FACTOR         0.9
+ NO_STEADY_STATE
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+ START_POSTPROCES_AT,  STEP  = 0
+ POSTPROCESS DISPL,    STEPS = 2
+ POSTPROCESS VELOC,    STEPS = 2
+ POSTPROCESS ACCEL,    STEPS = 2
+ NODE_SET
+  DISPZ
+  VELOZ
+  ACCEZ
+ END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+ CODES, NODES
+  1 & 2 110 0.0 0.0 0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

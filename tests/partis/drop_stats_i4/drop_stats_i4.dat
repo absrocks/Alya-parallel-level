@@ -1,0 +1,22 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   statistics
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 3000
+  TIME_STEP_SIZE=         0.01
+  NUMBER_OF_STEPS=        10
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  PARALL_SERVICE:         On
+    PARTITION
+        METHOD:         FIELD=1
+        EXECUTION_MODE: PARALLEL 
+    END_PARTITION
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

@@ -1,0 +1,37 @@
+{
+    "authors": [
+        "cbutakoff@elem.bio"
+    ],
+    "comparisons": [
+        {
+            "file": "restart_windkessel-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Restart test for windkessel and constant flowrate boundary condition",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+		    "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 5 [NAME] ; [RUN] [NP] [MPI] [ALYA] --read-rst --time-steps 8 [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+		    "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 5 [NAME] ; [RUN] [NP] [MPI] [ALYA] --read-rst --time-steps 8 [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "restart_windkessel",
+    "postprocess": "alya2pos"
+}

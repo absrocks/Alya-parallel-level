@@ -1,0 +1,40 @@
+LMAST
+ 
+ 
+ 
+all disable
+argument non-option
+arguments remaining
+automatic suppress
+bug E-mail
+display --help
+extended use
+files consider
+files edit
+ --follow-symlinks
+help General
+--in-place[=SUFFIX] -i[SUFFIX],
+lines separate
+minimal load
+N, -l
+no If
+--null-data -z,
+output the
+output --version
+ --posix
+--quiet, -n,
+--regexp-extended -r,
+script, -e
+script-file, -f
+sed GNU
+sed Usage:
+--separate -s,
+stream. long
+sure Be
+symlinks follow
+the add
+the add
+then specified,
+the specify
+--unbuffered -u,
+END_LMAST

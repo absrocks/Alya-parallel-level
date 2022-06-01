@@ -1,0 +1,36 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "adria.quintanas@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cycle_management_rst-cardiac-cycle.sld.res",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "cycle_management_rst-cardiac-cycle.sld.cvg",
+            "method": "absolute",
+            "tolerance": "1.0e-3"
+        }
+    ],
+    "description": "Restart for the cycle management",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 4 [NAME] ; [RUN] [NP] [MPI] [ALYA] --read-rst --time-steps 6 [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cycle_management_rst",
+    "postprocess": "alya2pos"
+}

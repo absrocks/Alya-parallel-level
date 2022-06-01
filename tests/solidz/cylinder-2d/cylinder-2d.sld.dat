@@ -1,0 +1,56 @@
+$-------------------------------------------------------------------
+$
+$ cylinder-2d
+$ Author:  Gerard Guillamet
+$ Details: Cylinder in 2d with a prescribed displacement using
+$          a cylindrical coordinate system at the center.
+$
+$          Diameter cylinder:  10mm
+$          Expansion:        0.25mm
+$
+$ Units:   SI (mm)
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+    PLANE:                STRAIN
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL          = 1
+    DENSITY           = 9.2174E-9
+    CONSTITUTIVE_MODEL: ISOLIN \
+      243.0E+3 0.3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      EXPLICIT
+  TIME_INTEGRATION:    NEWMARK, CDIFF
+  NO_STEADY_STATE
+  MASS_SCALING:        1.0E+7
+  SAFETY_FACTOR:       0.70
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP = 0
+$  POSTPROCESS BOCOD
+$  POSTPROCESS FIXNO
+$  POSTPROCESS FIXRS
+$  POSTPROCESS BVESS
+$  POSTPROCESS DISPL
+$  POSTPROCESS ROTM1
+$  POSTPROCESS ROTM2
+$  POSTPROCESS FRXID
+  BOUNDARY_SET
+    DIBOU
+    FRBOU
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1 11  0.25 0.0, AXES: LOCAL_BASIS=1
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

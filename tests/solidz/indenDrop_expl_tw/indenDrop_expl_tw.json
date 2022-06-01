@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "indenDrop_expl_tw-node.sld.set",
+            "method": "power",
+            "tolerance": 8
+        },
+        {
+            "cols": [
+                0,
+                1,
+                6,
+                7,
+                8,
+                9
+            ],
+            "file": "indenDrop_expl_tw.sld.cvg",
+            "method": "absolute",
+            "tolerance": 1e-26
+        }
+    ],
+    "description": "This test is the same as indenDrop_expl but using the Dissipative Tchamwa-Wielgosz Explicit scheme.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "indenDrop_expl_tw",
+    "postprocess": "alya2pos"
+}

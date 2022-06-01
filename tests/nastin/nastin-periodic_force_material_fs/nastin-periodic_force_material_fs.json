@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "nastin-periodic_force_material_fs.post.res",
+            "method": "absolute",
+            "tolerance": 1e-10
+        }
+    ],
+    "description": "This case is used to test the periodic channel flow imposing force on materials.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "nastin-periodic_force_material_fs",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,75 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          On
+  VISCOUS_TERM:             LAPLACIAN
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+PROPERTIES
+END_PROPERTIES  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELEMENT_LENGTH:           Minimum
+  STABILIZATION:            ASGS
+  TIME_INTEGRATION:         Trapezoidal, ORDER: 1, EULER=20
+  SAFETY_FACTOR:            100.0
+
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  CONVERGENCE_TOLERANCE:    1e-12
+
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER:         TAU
+    ELEMENT_LENGTH:         Minimum
+    TAU_STRATEGY:           Codina
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER     
+      SOLVER:                GMRES, KRYLOV=10
+      CONVERGENCE:           ITERA=0, TOLER=10.0, ADAPTIVE, RATIO=0.01
+      OUTPUT:                CONVERGENCE
+      PRECONDITIONER:        DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+  CONTINUITY 
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG
+       CONVERGENCE:          ITERA=0, TOLER=1.0e-12
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS VELOCITY,     STEPS = 1
+  POSTPROCESS PRESSURE,     STEPS = 1
+END_OUTPUT_&_POST_PROCESS   
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE: On, ON_NODE=1, VALUE=0.0
+    VARIATION:    NON_CONSTANT
+  END_PARAMETERS
+  CODES, NODES
+        1  11  1.0  1.0, FIELD=1
+    1 & 2  11  1.0  1.0, FIELD=1
+        2  11  1.0  1.0, SPACE_TIME=VELOCITY
+    2 & 3  11  1.0  1.0, SPACE_TIME=VELOCITY
+        3  11  1.0  1.0
+    3 & 4  11  1.0  1.0 
+        4  11  1.0  1.0
+    4 & 1  11  1.0  1.0 
+   END_CODES
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------
+
+

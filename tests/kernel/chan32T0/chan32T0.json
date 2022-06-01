@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "herbert.owen@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "chan32T0-VELOC-00179968.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        }
+    ],
+    "description": "Test for no slip wall law, just runs 20 steps using restart CONTI,         from an already developed flow. Since it is a restart it needs to be run with 48 mpi.",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 48,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "chan32T0",
+    "postprocess": "mpio2txt"
+}

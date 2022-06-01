@@ -1,0 +1,43 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       FORCE
+      THERMODYNAMIC_MODEL:  ON, FLAMELET_TABLE
+      BROWNIAN_MOTION:      OFF
+      FORCES:               DRAG: SCHILLER_NEUMANN, GRAVITY
+      PROPERTIES
+        LIQ_NAME= NHEPT
+        D=        60.0e-06
+        TABLE
+            INCLUDE ./cam_diff_database.dat
+        END_TABLE
+        YC_SCALING
+            INCLUDE ./cam_diff_Z_dependent_data.dat 
+        END_YC_SCALING
+      END_PROPERTIES
+  END_TYPE
+
+  SINK_TERMS: MOMENTUM, HEAT , MASS
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS AVMIE
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  INJECTOR: 1
+    GEOMETRY:    POINT,    PARAM = 0.0, 0.0, 0.0, 1
+    TEMPERATURE: CONSTANT, VALUE = 288.0
+  END_INJECTOR
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e6
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

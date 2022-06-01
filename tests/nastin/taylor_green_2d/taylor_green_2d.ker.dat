@@ -1,0 +1,32 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+   PROPERTIES
+     MATERIAL: 1
+       DENSITY:    CONSTANT, VALUE=1.0
+       VISCOSITY:  CONSTANT, VALUE=0.1
+     END_MATERIAL
+   END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  MESH
+$   DIVISION=1
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   100,33
+    DATAF:    LINKED_LIST
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=EXACT_SOLUTION, DIMENSION=2
+        2*x+y
+       -x-3*y
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1e6
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "filament_sstate-node.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-13
+        }
+    ],
+    "description": "This test validates the steady-state check for transient problems in solidz. The model consists of a silicone filament fixed at one end and free at the other under a gravity load. A steady state of the solution is reached after six seconds due to the numerical damping provided by the Newmark-Beta integration scheme.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 2
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "filament_sstate",
+    "postprocess": "alya2pos",
+	"timeout": "00:02:00"
+}

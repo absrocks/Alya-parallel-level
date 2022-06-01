@@ -1,0 +1,99 @@
+$-------------------------------------------------------------------
+$ Brief:      Membrane patch test
+$
+$ Author:     Gerard Guillamet and Eva Casoni
+$ Dimensions: L=0.24m; B=0.12m; h=0.001m
+$ Mesh:       5x1 distortioned elements
+$ BCs:        Prescribed kinematic BC at exterior nodes
+$
+$ Details:
+$             Prescribed kinematic boundary conditions
+$             at exterior corner nodes:
+$
+$                    u = 10e-3*(X + Y/2)
+$                    v = 10e-3*(Y + X/2)
+$                    w = 0
+$
+$             The theoretical solution for the stresses
+$             at the top and bottom surfaces of the plate
+$             is a constat in-plane membrane stress field
+$             in all five elements as:
+$
+$             SigmaX = SigmaY = 1333
+$             SigmaXY         = 400
+$
+$             Displacement internal nodes
+$             Node number         u         v
+$              1           5.000e-5  4.000e-4
+$              2           1.950e-4  1.200e-4
+$              3           2.000e-4  1.600e-4
+$              4           1.200e-4  1.200e-4
+$
+$ WARNING:    Activation of EAS adds error in the numerical
+$             solution!! Revision is required!
+$
+$ Reference:  Quoc and Tan (2003) and Reinoso et al. 2016
+$
+$ Units:      SI(mm)
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL =          1
+    CONSTITUTIVE_MODEL: CSHEL, ISOLI 1.0E+06 0.25
+    CSHELL_PARAMETERS:  ANS_SHEAR, ANS_TRAPEZOIDAL
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+$    SOLVER:            DIRECT
+    SOLVER:            CG
+    CONVERGENCE:       ITERA=300, TOLER=1.0E-7
+    PRECONDITIONER:    DIAGONAL, RIGHT
+    RESIDUAL:          RHS
+    OPTION:            ZERO_FIXITY
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL:            DISPL
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-5
+  MAXIMUM_ITERATION:   10
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT STEP = 0
+  POSTPROCESS DISPL,   STEPS = 1
+  NODE_SET
+    DISPX
+    DISPY
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+     1 001 0.0 0.0 0.0
+     2 001 0.0 0.0 0.0
+     3 001 0.0 0.0 0.0
+     4 001 0.0 0.0 0.0
+     5 111 0.0 0.0 0.0
+     6 111 1.0 1.0 1.0, SPACE_&_TIME_FUNCTIONS=BCKINE
+     7 111 1.0 1.0 1.0, SPACE_&_TIME_FUNCTIONS=BCKINE
+     8 111 1.0 1.0 1.0, SPACE_&_TIME_FUNCTIONS=BCKINE
+     9 001 0.0 0.0 0.0
+    10 001 0.0 0.0 0.0
+    11 001 0.0 0.0 0.0
+    12 001 0.0 0.0 0.0
+    13 111 0.0 0.0 0.0
+    14 111 1.0 1.0 1.0, SPACE_&_TIME_FUNCTIONS=BCKINE
+    15 111 1.0 1.0 1.0, SPACE_&_TIME_FUNCTIONS=BCKINE
+    16 111 1.0 1.0 1.0, SPACE_&_TIME_FUNCTIONS=BCKINE
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+

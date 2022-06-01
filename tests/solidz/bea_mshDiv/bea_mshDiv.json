@@ -1,0 +1,69 @@
+{
+    "authors":[
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "bea_mshDiv-PMATE-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "bea_mshDiv-ORIEN-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "bea_mshDiv-BOCOD-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "bea_mshDiv-ELNOR-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 5.0e-8
+        },
+        {
+            "file": "bea_mshDiv-AXIS1-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 5.0e-8
+        },
+        {
+            "file": "bea_mshDiv-AXIS2-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 5.0e-8
+        },
+        {
+            "file": "bea_mshDiv-AXIS3-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 5.0e-8
+        },
+        {
+            "file": "bea_mshDiv-BOSET-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "bea_mshDiv-ELSET-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Test to check the use of mesh multiplication using element normal method for division refinement of a U-shape profile beam",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules":[
+        "solidz"
+    ],
+    "name": "bea_mshDiv",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

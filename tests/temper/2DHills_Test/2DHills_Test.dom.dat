@@ -1,0 +1,92 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      4692
+  ELEMENTS          2250
+  SPACE_DIMENSIONS   3
+  TYPES_OF_ELEMENTS HEX08
+  BOUNDARIES         190
+  PERIODIC_NODES=    2346
+  FIELDS =            9
+    FIELD: 1, DIMENSIONS=3, NODES
+    FIELD: 2, DIMENSIONS=1, NODES
+    FIELD: 3, DIMENSIONS=1, NODES
+    FIELD: 4, DIMENSIONS=1, NODES
+    FIELD: 5, DIMENSIONS=1, NODES            $ z0
+    FIELD: 6, DIMENSIONS=3, NODES, STEPS=72  $ nastin
+      TIMES
+        INCLUDE ./times.dat
+      END_TIMES
+    END_FIELD
+    FIELD: 7, DIMENSIONS=1, NODES, STEPS=72  $ tur1
+      TIMES
+        INCLUDE ./times.dat
+      END_TIMES
+    END_FIELD
+    FIELD: 8, DIMENSIONS=1, NODES, STEPS=72  $ tur2
+      TIMES
+        INCLUDE ./times.dat
+      END_TIMES
+    END_FIELD
+    FIELD: 9, DIMENSIONS=1, NODES, STEPS=72  $ tem
+      TIMES
+        INCLUDE ./times.dat
+      END_TIMES
+    END_FIELD
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  0
+  BOUNDARY_ELEMENT:                OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          500, SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  TYPES, ALL =HEX08
+  END_TYPES
+  INCLUDE ./2DHills_Test.geo
+  INCLUDE ./2DHills_Test.mat
+  LMAST
+    INCLUDE ./2DHills_Test.per
+  END_LMAST
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./2DHills_Test.fix
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD: 1
+     INCLUDE ./AlyaFix/2DHills_Test.nsi.ini
+  END_FIELD
+  FIELD: 2
+     INCLUDE ./AlyaFix/2DHills_Test.tur1.ini
+  END_FIELD
+  FIELD: 3
+     INCLUDE ./AlyaFix/2DHills_Test.tur2.ini
+  END_FIELD
+  FIELD: 4
+     INCLUDE ./AlyaFix/2DHills_Test.tem.ini
+  END_FIELD
+  FIELD: 5
+    INCLUDE ./2DHills_Test.zo.dat
+  END_FIELD
+  FIELD: 6
+    INCLUDE ./2DHills_Test.nsi.bcs.dat
+  END_FIELD
+  FIELD: 7
+    INCLUDE ./2DHills_Test.tur1.bcs.dat
+  END_FIELD
+  FIELD: 8
+    INCLUDE ./2DHills_Test.tur2.bcs.dat
+  END_FIELD
+  FIELD: 9
+    INCLUDE ./2DHills_Test.tem.bcs.dat
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

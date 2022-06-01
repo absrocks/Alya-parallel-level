@@ -1,0 +1,74 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            FLAMELET, NON_PREMIX, LES, NON_ADIABATIC 
+    Z_VARIANCE:       OFF   
+    Yc_VARIANCE:      OFF   
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        ON
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    TURBULENT_SCHMIDT  = 0.7
+ 
+	TAB_FRAMEWORK: 1
+  END_PROPERTIES
+
+  FIELDS: TEMPE= 1, SPECIES = 2
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS 
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE, ORDER: 3
+  SAFETY_FACTOR=           0.95
+
+  STEADY_STATE_TOLERANCE=  1e-8
+  NORM_OF_CONVERGENCE:     L2
+  MAXIMUM_NUMBER_OF_ITER=  1
+  CONVERGENCE_TOLERANCE=   1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+$  NEGATIVE_CLIP =         ON
+$  POSITIVE_CLIP =         ON 
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+$  START_POSTPROCES_AT       STEP = 0
+  POSTPROCESS CONCE
+  POSTPROCESS SCONC
+  POSTPROCESS MASSK
+  POSTPROCESS AVMSK
+  WITNESS 
+    CONCE
+  END_WITNESS
+  ELEMENT_SETS
+    MASS
+    CONCE
+  END_ELEMENT_SETS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ CODES, NODES, CLASS = 1
+        1  1  0.0
+    1 & 3  1  0.0
+ END_CODES
+ CODES, NODES, CLASS = 2
+        1  1  0.0
+    1 & 3  1  0.0
+ END_CODES
+ CODES, NODES, CLASS = 3
+        1  1  0.0
+    1 & 3  1  0.0
+ END_CODES
+ CODES, NODES, CLASS = 4
+        1  1  0.0
+    1 & 3  1  0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

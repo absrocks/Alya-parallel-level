@@ -1,0 +1,58 @@
+{
+    "authors":[
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coh_mshDiv_3d-PMATE-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_3d-ORIEN-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_3d-ELNOR-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_3d-AXIS1-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_3d-AXIS2-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_3d-AXIS3-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "coh_mshDiv_3d-ELSET-00000000.post.mpio.txt",
+            "method":"absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Test to check the use of mesh multiplication for interface elements in 3-d",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules":[
+        "solidz"
+    ],
+    "name": "coh_mshDiv_3d",
+    "postprocess": "mpio2txt"
+}

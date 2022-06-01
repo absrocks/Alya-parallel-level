@@ -1,0 +1,36 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  CODE=                  1
+  ALYA:                  multiple-local-axes_impl
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, PRESCRIBED
+  TIME_INTERVAL:         0.0, 0.005
+  TIME_STEP_SIZE=        1.0E-3
+  NUMBER_OF_STEPS=       10
+  MAXIMUM_NUMBER_GLOBAL= 1
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    COMMUNICATIONS:      SYNCHRONOUS
+    OUTPUT_FILE:         NO
+    POSTPROCESS:         MASTER
+    PARTITION:           FACES
+    PARTITIONING:
+      METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:                  ON
+  GEOMETRY:              OFF
+  RESTART:               OFF
+  POSTPROCESS:           ON
+  RESTART:               OFF
+  MERGE:                 OFF
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------

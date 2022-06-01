@@ -1,0 +1,20 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  CODE=                   1
+  ALYA:                   periodic
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL=          0.0, 1.0e6
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        2000
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    OPENMP
+      COLORING: MINCO
+   END_OPENMP
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

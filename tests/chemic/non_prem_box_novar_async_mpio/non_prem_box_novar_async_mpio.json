@@ -1,0 +1,81 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "non_prem_box_novar_async_mpio-element.chm.set-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-element.chm.set-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-element.chm.set-col7.out",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-CON01-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-CON03-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-ENTHA-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-TEMPE-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "non_prem_box_novar_async_mpio-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Non premixed flame in square shaped duct with slip walls, no variance models.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-element.chm.set 3 4 7;  echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-element.chm.set 3 4 7;  echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-element.chm.set 3 4 7;  echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper",
+        "chemic"
+    ],
+    "name": "non_prem_box_novar_async_mpio",
+    "postprocess": "mpio2txt"
+}

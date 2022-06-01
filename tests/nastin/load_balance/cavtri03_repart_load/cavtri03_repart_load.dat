@@ -1,0 +1,47 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavtri03
+  MEMORY:                 ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL=          0.0, 700
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        200
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+    OPENMP
+      ELEMENT_CHUNK=10
+      COLORING: MIN_COLOR
+    END_OPENMP
+    PARTITIONING
+      METHOD:         RANDOM
+      EXECUTION_MODE: PARALLEL
+    END_PARTITIONING
+    REPARTITIONING: On
+       MODULE:                 NASTIN
+       CRITERION:              ASSEMBLY
+       THRESHOLD_LOAD_BALANCE= 1.0
+       FREQUENCY=              10
+       METHOD=                 LOAD
+       MINIMUM_WEIGHT=         0.02 
+       MAXIMUM_WEIGHT=         50.0
+       TOLER=                  0.01 
+       POSTPROCESS:            NONE
+    END_REPARTITIONING
+    ORDER_COMMUNICATIONS: ON
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:         On
+  GEOMETRY:     OFF 
+  RESTART:      OFF 
+  POSTPPROCESS: On
+  MERGE:        On
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------
+

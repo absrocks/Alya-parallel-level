@@ -1,0 +1,30 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 999
+  ELEMENTS          = 1882
+  SPACE_DIMENSIONS  = 2
+  TYPES_OF_ELEMENTS = TRI03
+  BOUNDARIES        = 114
+  MATERIALS         = 1
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       0
+  SCALE:                           XSCAL=1.0 YSCAL=1.0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=-0.01
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./identer.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./identer.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

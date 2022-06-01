@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "nastin-periodic_fs_consistent.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        }
+    ],
+    "description": "This case is used to test the explicit low dissipative formulation of nastin combined with periodic boundary conditions and consistent mass matrix",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "nastin-periodic_fs_consistent",
+    "postprocess": "alya2pos"
+}

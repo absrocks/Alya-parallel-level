@@ -1,0 +1,36 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL = 1
+      DENSITY:        CONSTANT,  PARAMETERS = 1.0
+      CONDUCTIVITY:   CONSTANT,  PARAMETERS = 0.0
+      SPECIFIC_HEAT:  CONSTANT,  PARAMETERS = 1.0
+    END_MATERIAL
+  END_PROPERTIES
+
+  VELOCITY: FIELD = 2
+ 
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  ELSEST: ON
+    STRATEGY: BIN
+    NUMBER: 50,50,50
+  END_ELSEST
+
+  MESH
+    DIVISION=0
+	 MASS: APPROXIMATE_INVERSE
+  END_MESH
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=1
+
+  POSTPROCESS VELOCITY
+  POSTPROCESS TEMPERATURE
+
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

@@ -1,0 +1,86 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+  PROBLEM_DEFINITION
+   TEMPORAL_DERIVATIVES      On
+   CONVECTIVE_TERM           On
+   VISCOUS_TERM              divergence
+   GRAVITY        NORM=  0.0000000E+00 GX=  0.0000000E+00 GY=  0.0000000E+00 GZ=  0.0000000E+00
+   AXES_ROTATION  NORM=  0.0000000E+00 OX=  0.0000000E+00 OY=  0.0000000E+00 OZ=  0.1000000E+01
+
+FORCE_TERM: MATERIAL
+MATERIAL=         2, MODEL=WAKE, PARAMETERS=  0.77000000E+01   0.00000000E+00  -0.10000000E+01   0.00000000E+00   0.00000000E+00
+TABLE
+include ./GE1500sl.ct.aero
+END_TABLE
+END_FORCE_TERM
+ END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELEMENT_LENGTH           minimum
+  STABILIZATION            ASGS nogrv
+  TIME_INTEGRATION         Trapezoidal, ORDER: 1, EULER=10
+  STEADY_STATE_TOLER       1d-10
+  $ STOP_BY_WITNESS
+  NORM_OF_CONVERGENCE      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT     1
+  CONVERGENCE_TOLERANCE    1d-8    ! ortomin
+  ALGORITHM                SCHUR
+    SOLVER                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER         TAU
+    ELEMENT_LENGTH         minimum
+    TAU_STRATEGY           Codina
+    CORRECTION             open
+  END_ALGORITHM
+  SAFETY_FACTOR            5.0 expon 1.1  maxim 20.0 mingl 20.0 
+  MOMENTUM
+    ALGEBRAIC_SOLVER
+      SOLVER:               GMRES, KRYLOV=50
+      CONVERGENCE:          ITERA=100, , TOLER=1.0e-10, ADAPTIVE, RATIO=1e-4
+   $  OUTPUT:                CONVERGENCE
+    PRECONDITIONER         DIAGONAL
+   END_ALGEBRAIC_SOLVER 
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER
+      SOLVER:               DEFLATED_CG 
+      CONVERGENCE:          ITERA=500, , TOLER=1.0e-8, ADAPTIVE, RATIO=1e-4
+   $  OUTPUT:               CONVERGENCE
+      OPTION:               UNSYMMET
+    PRECONDITIONER         LINELET
+   END_ALGEBRAIC_SOLVER 
+  END_CONTINUITY
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS VELOCITY      STEPS = 100
+$  POSTPROCESS PRESSURE      STEPS = 100
+$  POSTPROCESS FIXNO         STEPS = 100
+$  POSTPROCESS FIXPR         STEPS = 100
+$  POSTPROCESS SCHUR         STEPS = 100
+  WITNESS_POINTS
+    VELOX
+    VELOY
+    VELOZ
+    PRESS
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES,  NODES, GEOMETRICAL
+    -11 1  ! use field 1 for inflow profile
+  END_CODES
+   CODES, BOUNDARIES   
+   1                20      0.0                00      1         1
+   2                20      0.0                00      1         2
+   3                20      0.0                00      1         3
+   4                20      0.0                00      1         4
+ $  5   3 $ Wall law
+   END_CODES
+  PARAMETER
+     INITIAL VALUE_FUNCTION = 1 ! use field 1 for initial condition
+
+  END_PARAMETER
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

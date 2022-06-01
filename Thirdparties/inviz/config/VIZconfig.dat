@@ -1,0 +1,2 @@
+Alya.x -app::project_file project.prj -app::project_file::0 scene.prj -app::project_file::1 bsc-heart-ts.prj
+RENDER_COUNT: 20

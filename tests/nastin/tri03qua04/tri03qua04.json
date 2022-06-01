@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "tri03qua04.post.res",
+            "method": "relative",
+            "tolerance": 1e-07
+        }
+    ],
+    "description": "Test of GPU2 assembly, compared with normal assembly",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "tri03qua04",
+    "postprocess": "alya2pos"
+}

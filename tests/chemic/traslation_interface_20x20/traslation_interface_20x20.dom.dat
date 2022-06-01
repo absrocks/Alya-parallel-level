@@ -1,0 +1,57 @@
+$--------------------------------------------------
+DIMENSIONS
+  INCLUDE  ./m1.dims.dat
+  SPACE_DIMENSIONS=         2
+  NODES=                    4
+
+  FIELDS = 5
+	FIELD: 1, DIMEN= 1, NODES
+	FIELD: 2, DIMEN= 1, NODES
+	FIELD: 3, DIMEN= 1, NODES
+	FIELD: 4, DIMEN= 1, NODES
+	FIELD: 5, DIMEN= 2, NODES
+  END_FIELDS
+
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS: 4
+  DOMAIN_INTEGRATION_POINTS: 0
+  GROUPS:                    50
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+  INCLUDE ./m1.geo.dat 
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE  ./m1.fix.bou 
+  END_BOUNDARIES
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE  ./m1.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$--------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE CON01.alya
+  END_FIELD
+  FIELD= 2
+    INCLUDE CON02.alya
+  END_FIELD
+  FIELD= 3
+    INCLUDE CON03.alya
+  END_FIELD
+  FIELD= 4
+    INCLUDE CON04.alya
+  END_FIELD
+  FIELD= 5
+    INCLUDE VELOC.alya
+  END_FIELD
+END_FIELDS

@@ -1,0 +1,25 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+  NUMERICAL_TREATMENT
+      DEFORMATION:           BOUNDARY, STEPS=1
+     $SMOOTHING:             STEPS=1, RELAXATION=1.0
+      ALGEBRAIC_SOLVER:      CG, ITERA=1000, TOLER=1.0e-10, CONVERGENCE, CSR, FIXITY
+      PRECONDITIONER:        DIAGONAL
+  END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+   POSTPROCESS INITIAL
+   POSTPROCESS DISPM, STEPS
+   POSTPROCESS VELOM, STEPS
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  $
+  CODES, NODES
+    INCLUDE fluid.ale.codes
+  END_CODES
+  $
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

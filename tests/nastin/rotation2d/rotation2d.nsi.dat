@@ -1,0 +1,63 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          On 
+  VISCOUS_TERM:             FULL
+  ROTATION_FUNCTION:        CONSTANT
+  AXES_ROTATION:            NORM=3.0, OX=0.0, OY=0.0, OZ=1.0
+  CENTER_ROTATION=          0.0, 0.0
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            ASGS
+$  TRACKING:                 TIME
+  ELEMENT_LENGTH:           Minimum
+  TIME_INTEGRATION:         Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR:            200.0
+  STEADY_STATE_TOLER:       1e-12
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  CONVERGENCE_TOLERANCE:    1e-03
+
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING
+    PRECONDITIONER:         DT
+    ELEMENT_LENGTH:         MINIMUM
+    TAU_STRATEGY:           CODINA
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER:       GMRES,  ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001, KRYLOV=50, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL
+  END_MOMENTUM 
+  CONTINUITY
+    ALGEBRAIC_SOLVER:       CG,     ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001, UNSYMME, CONVERGENCE
+    PRECONDITIONER:         DIAGONAL 
+  END_CONTINUITY
+
+END_NUMERICAL_TREATMENT 
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  POSTPROCESS PRESSURE 
+  POSTPROCESS VELOCITY 
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+     VARIABLE:      NON_CONSTANT
+     INITIAL:       INERTIAL, Value= 0.0 0.0
+     FIX_PRESSURE:  On, ON_NODE=1, VALUE = 1.0
+  END_PARAMETERS
+  CODES, NODES 
+$ Blades and hub
+       1    11  0.0  0.0
+$ Contorno
+       2    99  0.0  0.0  
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+ 

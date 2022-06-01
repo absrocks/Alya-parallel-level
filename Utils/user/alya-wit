@@ -1,0 +1,72 @@
+#!/usr/bin/perl
+#
+#
+print "\n";
+print "--| alya-wit |-- \n";
+print "--| \n";
+print "--| Extract witness point values for a given time step\n";
+print "--| The output file is \"alya-wit.out\" \n";
+print "--| \n";
+
+$fils = $ARGV[0];
+
+if ((@ARGV < 1) || ($ARGV[0] =~ /-h/)) { 
+  print "    Usage:   alya-wit \"file-name.sld.wit\" \n\n";
+  exit 1;
+}
+
+shift(@ARGV);
+@sets   =  @ARGV;
+$ksets  =  @sets; 
+$outfils = ">alya-wit.out";
+
+open (IN,$fils);
+open (OUT,$outfils);
+
+print "--| \n";
+print "--| Show times loaded in the input file \n";
+print "--| and the line number: \n";
+print "--| \n";
+system("grep -n Time $fils");
+print "--| \n";
+print "--| Chose one (enter the line number): ";
+$tiline= <>;
+
+$i=0;
+$icout=0;
+$kread=0;
+while (<IN>) {
+    $i++;
+    if ($kread == 0) {
+	@myline = split;
+	if ($myline[1] =~ /NUMSETS/)     {
+	    print "--| \n";
+	    print "--| Total number of points = $myline[3] \n";
+	    print "--| \n";	    
+	    $totwit= $myline[3];
+	    $kread = 1;
+	} 
+    }elsif ($kread == 1) {
+	if ($i==$tiline) {
+	    print "--| \n";
+	    print "--| Extracting witness for $_";
+	    print "--| \n";	    	    
+	    $kread = 2;
+	}
+    }elsif ($kread == 2) {	
+	last if ($icout == $totwit);
+	@myline = split;
+	print OUT "$_";	    	
+#	if (!($myline[1] == 0)) {	    
+#	    print OUT "    $myline[1]   $myline[2]   $myline[3] \n"; 
+#	}
+	$icout++;
+    }
+}
+
+close(IN);
+close(OUT);
+
+print "--| bye! \n";
+print "--| \n";
+

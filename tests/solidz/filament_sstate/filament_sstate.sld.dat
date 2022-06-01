@@ -1,0 +1,72 @@
+$-------------------------------------------------------------------
+$
+$ filament_sstate
+$ Details:   Steady-state of a silicone filament due to
+$            gravity forces.
+$            The silicone filament is fixed at one end and
+$            free at the other end. This test is a
+$            simplification of a FSI benchmark test, which
+$            consists on a silicone filament inside a closed
+$            unibody structure with two inlets and one
+$            outlet.
+$            A steady state of the solution is reached after
+$            six seconds due to the numerical damping provided
+$            by the Newmark-Beta integration scheme.
+$            Dimensions: 0.011x0.002x0.065m
+$
+$ Reference: J.C. Cajas FSI Benchmark challenge
+$
+$ Units SI(m)
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: DYNAMIC
+    GRAVITY:              NORM=0.973304, GX=0.0, GY=1.0, GZ=0.0
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL=           1
+    DENSITY=            1.0583E+3
+    CONSTITUTIVE_MODEL: NEOHOOK BELYT \
+      32.0E+4 8.0E+4
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:       IMPLICIT
+  TIME_INTEGRATION:     NEWMARK, DAMPED
+  ALGEBRAIC_SOLVER:
+$     SOLVER:            DIRECT
+     SOLVER:            CG
+     CONVERGENCE:       ITERA=1000, TOLER=1.0E-11
+     OUTPUT:            CONVERGENCE
+     PRECONDITIONER:    DIAGONAL, LEFT
+  END_ALGEBRAIC_SOLVER
+  SAFETY_FACTOR=        350
+  RESIDUAL:             TOTAL
+  MAXIMUM_ITERATIONS=   200
+  CONVERGENCE_TOLER=    1.0E-4
+  STEADY_STATE_TOlER=   1.0E-5
+$  NO_STEADY_STATE
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT  STEP = 0
+  POSTPROCESS DISPL
+$  POSTPROCESS ACCEL
+$  POSTPROCESS VELOC
+  WITNESS_POINTS
+    DISPY
+  END_WITNESS_POINTS
+  NODE_SET
+    DISPY
+    VELOY
+    ACCEY
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1 111 0.0 0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

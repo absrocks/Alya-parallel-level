@@ -1,0 +1,45 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+  include ./AlyaFix/Test_Suite.ker.inc
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+COUPLING
+  TEMPER,  NASTIN = 1 1
+  NASTIN,  TEMPER = 1 1
+  TURBUL,  NASTIN = 1 1
+  NASTIN,  TURBUL = 1 1
+  TEMPER,  TURBUL = 1 1
+  TURBUL,  TEMPER = 1 1
+END_COUPLING
+$------------------------------------------------------------
+NUMERICAL_TREATMENT                           
+MESH                                          
+  MULTIPLICATION=  0                          
+  CURVATURE =      0                           
+END_MESH                                      
+ELSEST, ON                                    
+  STRATEGY: BIN                               
+  NUMBER:   50,50,50                          
+  TOLER:    1.0E-10                           
+END_ELSEST                                    
+WALL_DISTANCE                                 
+  ALGEBRAIC_SOLVER    CG, ITERA= 200,TOLER= 1e-6
+  PRECONDITIONING     DIAGONAL                
+  CODES, BOUNDARIES                           
+    5   1                                     
+  END_CODES                                   
+END_WALL_DISTANCE                             
+HESSIAN OFF                                   
+LAPLACIAN OFF                                 
+END_NUMERICAL_TREATMENT                       
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS                         
+  MESH                                        
+  STEP_OVER      100                          
+  ON_ORIGINAL_MESH                            
+  $ POSTPROCESS WALL_DISTANCE                 
+  $ POSTPROCESS ROUGHNESS                 
+  $ POSTPROCESS GEONO                           
+  INCLUDE Test_Suite.wit.dat
+END_OUTPUT_&_POST_PROCESS                     
+$------------------------------------------------------------

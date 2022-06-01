@@ -1,0 +1,56 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  INCLUDE ./MESHES/H400L325M05T/h400l325m05t_SIZES.alya
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  SCALE:                     XSCALE=7.0e-3, YSCALE=7.0e-3, ZSCALE=1.0
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    100
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+  INCLUDE ./MESHES/H400L325M05T/h400l325m05t_TYPES.alya
+  INCLUDE ./MESHES/H400L325M05T/h400l325m05t_ELEMENTS.alya
+  INCLUDE ./MESHES/H400L325M05T/h400l325m05t_COORDINATES.alya
+  INCLUDE ./MESHES/H400L325M05T/h400l325m05t_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+ $
+ BOUNDARIES 
+   INCLUDE ./MESHES/H400L325M05T/h400l325m05t_ON_BOUNDARIES.dat
+ END_BOUNDARIES
+ $
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./MESHES/H400L325M05T/h400l325m05t_ON_BOUNDARIES.alya
+  $
+$  VALUES, FUNCTION = 1, DIMENSION = 2
+$    INCLUDE VELOC.alya
+$  END_VALUES
+$  VALUES, FUNCTION = 2, DIMENSION = 1
+$    INCLUDE TEMPE.alya
+$  END_VALUES
+  $
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------

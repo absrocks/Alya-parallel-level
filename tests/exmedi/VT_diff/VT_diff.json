@@ -1,0 +1,33 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "jazmin.aguado@bsc.es",
+        "mariano.vazquez@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "VT_diff-node.exm.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Exmedi test case of the diffusion part of the equation.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_diff",
+    "postprocess": "alya2pos"
+}

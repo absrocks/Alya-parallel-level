@@ -1,0 +1,22 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   fluidda
+  RUN_TYPE:               noconti
+END_RUN_DATA 
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, fromCritical
+  TIME_INTERVAL=          0.0, 0.3
+  TIME_STEP_SIZE=         0.01
+  NUMBER_OF_STEPS=        1000000
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    PARTITIONING
+      METHOD:     SFC
+      EXECUTION_MODE: PARALLEL               $Parallel or sequential partitioning (parallel only for SFC and OBIN)
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

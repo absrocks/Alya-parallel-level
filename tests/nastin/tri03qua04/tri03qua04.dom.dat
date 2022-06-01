@@ -1,0 +1,31 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          897
+  ELEMENTS=             1276
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10,  12
+  BOUNDARIES=            120
+  ZONES=                   1
+  SUBDOMAINS=              1
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL $ PARALLEL_FRONTAL, SFC, PARTITION, FIELD
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  tri03qua04.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  tri03qua04.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  tri03qua04.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

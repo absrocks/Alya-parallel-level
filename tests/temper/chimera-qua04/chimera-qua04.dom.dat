@@ -1,0 +1,33 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          106
+  ELEMENTS=               80
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      12
+  BOUNDARIES=             48
+  ZONES=                   1
+  SUBDOMAINS=              2
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                           20, SEQUENTIAL_FRONTAL
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  chimera-qua04.geo.dat
+  SUBDOMAINS
+    INCLUDE chimera-qua04.dod.fix
+  END_SUBDOMAINS
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  chimera-qua04.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

@@ -1,0 +1,108 @@
+
+
+
+        --------------------------
+     |- NASTIN OUTPUT FOR PROBLEM: linear_nastin
+        --------------------------
+
+
+        ---------------------
+     |- DIFFERENTIAL EQUATION
+        ---------------------
+
+
+          rho*du/dt + rho*(u.grad)u - div[2*mu*eps(u)] + grad(p) =0
+          rho*div(u)=0
+
+
+          Physical properties: 
+          ------------------------------------------------------------ 
+          rho [ M / L^3 ]     =  0.122900E+01
+          mu  [ M / L T ]     =  0.173000E-04
+ 
+
+
+
+          FINITE ELEMENT ERRORS
+          =====================
+
+          TIME STEP NO.    1,  ITERATION NO.     1
+          ----------------------------------------
+          NORM       VELOCITY             PRESSURE 
+          ----------------------------------------
+          W(0,1)  0.64961E-16          0.51431E-16
+          W(0,2)  0.11431E-15          0.10007E-15
+          W(0,i)  0.20546E-15          0.28469E-15
+          W(1,1)  0.00000E+00          0.00000E+00
+          W(1,2)  0.00000E+00          0.00000E+00
+          W(1,i)  0.00000E+00          0.00000E+00
+          ----------------------------------------
+
+
+        --------------------------
+     |- SUMMARY OF COMPUTING TIMES
+        --------------------------
+
+
+        TOTAL CPU TIME:                  0.04
+        ELE+BOUN MATRIX AND RHS ASS      0.03 ( 63.64 % )
+        SOLVER   MOMENTUM=               0.00 (  9.09 % )
+        SOLVER   CONTINUITY=             0.00 (  0.00 % )
+        VELOCITY CORRECTION=             0.00 (  0.00 % )
+        OTHERS                           0.01 ( 27.27 % )
+
+
+        -----------------
+     |- SUMMARY OF SOLVER
+        -----------------
+
+
+        MOMENTUM:
+        ---------
+
+        SOLVER:               BI-CGSTAB
+        # SOLVES=                    2
+        PRECONDITIONER:       LEFT: DIAGONAL diag(A)
+        MIN. # ITERATIONS=           0
+        MAX. # ITERATIONS=           0
+        AVE. # ITERATIONS=           0
+        TOT. # ITERATIONS=           0
+        TOT. CPU TIME=         0.40000000E-002
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME:        0.400000E-02
+          Initial operations:         0.000000E+00 (  0.00 % )
+          Preconditioning:            0.000000E+00 (  0.00 % )
+          Coarse system solver (DCG): 0.000000E+00 (  0.00 % )
+          Orthogonalization (GMRES):  0.000000E+00 (  0.00 % )
+          Others:                     0.400000E-02 (100.00 % )
+ 
+        CONTINUITY:
+        -----------
+
+        SOLVER:               DEFLATED CONJUGATE GRADIENT
+        # SOLVES=                    1
+        NUMBER OF GROUPS=           11
+        PRECONDITIONER:       LEFT: DIAGONAL diag(A)
+        MIN. # ITERATIONS=           0
+        MAX. # ITERATIONS=           0
+        AVE. # ITERATIONS=           0
+        TOT. # ITERATIONS=           0
+        TOT. CPU TIME=         0.00000000E+000
+
+
+        SUMMARY OF SOLVER TIMES:
+
+        TOTAL SOLVER CPU TIME:        0.000000E+00
+          Initial operations:         0.000000E+00 (  0.00 % )
+          Preconditioning:            0.000000E+00 (  0.00 % )
+          Coarse system solver (DCG): 0.000000E+00 (  0.00 % )
+          Orthogonalization (GMRES):  0.000000E+00 (  0.00 % )
+          Others:                     0.000000E+00 (  0.00 % )
+ 
+
+
+     |- END OF NASTIN RUN
+

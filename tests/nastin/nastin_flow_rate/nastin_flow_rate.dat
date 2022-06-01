@@ -1,0 +1,24 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   siminhale
+  RUN_TYPE:               nonCONTI , PRELIMINARY, FREQUENCY=1000
+  LATEX_INFO_FILE:        Yes
+  LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          GLOBAL, fromCritical
+  TIME_INTERVAL=          0.0,2000.0
+  TIME_STEP_SIZE=         1.0e-5
+  NUMBER_OF_STEPS=        0
+  MAXIMUM_NUMBER_GLOBAL=  1 
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    OUTPUT_FILE:          YES
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+$   COMMUNICATION:        ASYNCRONOUS
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

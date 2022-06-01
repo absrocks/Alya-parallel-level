@@ -1,0 +1,15 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "set xlabel 'Iteration number'" > ./gnuplot.tmp
+echo "set ylabel 'Residual'"        >> ./gnuplot.tmp
+echo "set log y"                    >> ./gnuplot.tmp
+echo "set xrange[1:]"               >> ./gnuplot.tmp
+echo "plot '$1.nsi.cvg' u (column(0)+1):16 t 'MOMENTUM' w l, '$1.nsi.cvg' u (column(0)+1):17 t 'CONTINUITY' w l" >> ./gnuplot.tmp
+echo "! rm -rf gnuplot.tmp"         >> ./gnuplot.tmp
+echo "load './gnuplot2.tmp'"        >> ./gnuplot.tmp
+echo "replot"                        > ./gnuplot2.tmp
+echo "pause 2"                      >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"        >> ./gnuplot2.tmp
+gnuplot ./gnuplot.tmp 

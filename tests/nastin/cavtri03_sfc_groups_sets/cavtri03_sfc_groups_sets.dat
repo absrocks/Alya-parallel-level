@@ -1,0 +1,27 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavtri03
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL=          0.0, 700
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        1
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+    OPENMP
+      ELEMENT_CHUNK=10
+      BOUNDARY_CHUNK=3
+      COLORING: MIN_COLOR
+    END_OPENMP
+    PARTITIONING
+      METHOD:         SFC
+      EXECUTION_MODE: PARALLEL
+    END_PARTITIONING
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

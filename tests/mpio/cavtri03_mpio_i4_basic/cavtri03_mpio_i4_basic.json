@@ -1,0 +1,67 @@
+{
+    "authors": [
+        "damien.dosimont@bsc.es",
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_mpio_i4_basic-COORD.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-LELCH.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-LNODS.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-LTYPE.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-PRESS-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-PRESS-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-VELOC-00000000.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_mpio_i4_basic-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "MPI-IO test based on cavtri03: geometry reading, synchronous post and restart writing",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_mpio_i4_basic",
+    "postprocess": "mpio2txt"
+}

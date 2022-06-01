@@ -1,0 +1,150 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    DENSITY: 1.100000
+    LAW_DENSITY: CONSTANT
+    RAYLEIGH_DUMPING, RAYALPHA: 1000.0
+    CONSTITUTIVE_MODEL  ISOLIN  30.e3  0.45
+  END_PROPERTIES 
+  CARDIAC_CYCLE
+    CAVITY: 1
+      BOUNDARY: 3 
+      PLANE NODSET 103 108 113
+    END_CAVITY
+    CAVITY: 2
+      BOUNDARY: 7 
+      PLANE NODSET 3 37 40
+    END_CAVITY
+
+    VARIABLE_PRESSURE
+     CYCLE=1
+      FOR_CAVITY=1
+      TZERO = 0.05          $ Duration of the preload phase
+      TPSTR = 0.05          $ Duration of the pre-stressing
+      PZERO = 100.1         $ Pressure of the preload
+      PSTR0 = 0.0           $ Pressure of the pre-stress
+      GAINC = 1000.0 10.0   $ Gain at errror and error derivative for PID at isovol contraction
+      CPRES = 0.00055908    $ Windkessel capacitance
+      RPRES = 800.0         $ windkessel resistance
+      PART0 = 150.0         $ Windkessel initialisation value
+      GAINR = 2500.0 25.0   $ Gain at errror and error derivative for PID at isovol relaxation
+      PPOST = 400.0         $ Pressure at which to stop isovol relaxation and initiate filling
+     END_CYCLE
+     CYCLE=2
+      FOR_CAVITY=2
+      TZERO = 0.05         $ Duration of the preload phase
+      TPSTR = 0.05         $ Duration of the pre-stressing
+      PZERO = 60.1         $ Pressure of the preload
+      PSTR0 = 0.0          $ Pressure of the pre-stress
+      GAINC = 1000.0 10.0  $ Gain at errror and error derivative for PID at isovol contraction
+      CPRES = 0.00055908   $ Windkessel capacitance
+      RPRES = 800.0       $ windkessel resistance
+      PART0 = 80.0        $ Windkessel initialisation value
+      GAINR = 2500.0 25.0  $ Gain at errror and error derivative for PID at isovol relaxation
+      PPOST = 60.0        $ Pressure at which to stop isovol relaxation and initiate filling
+     END_CYCLE
+    END_VARIABLE_PRESSURE
+
+  END_CARDIAC_CYCLE
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STEADY_STATE_TOLERANCE: -1.0
+  SAFETY_FACTOR: 1.0
+  TIME_TREATMENT: IMPLICIT
+  TIME_INTEGRATION: NEWMARK, DAMPED
+  RESIDUAL: DISP 
+  CONVERGENCE_TOLER: 1.0E-4
+  MAXIMUM_ITERATION: 100
+  ALGEBRAIC_SOLVER
+    SOLVER: CG
+    CONVERGENCE: ITERA = 10000, TOLER = 1.0e-8, ADAPTIVE, RATIO = 0.01
+    OUTPUT: CONVERGENCE
+    PRECONDITIONER: DIAGONAL
+    OPTIONS: ZERO_FIXITY
+  END_ALGEBRAIC_SOLVER
+  ROTATION: ON
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST-PROCESS 
+  START_POSTPROCESS_AT STEP: 0
+  POSTPROCESS DISPLACEMENT STEPS = 1 $PERIOD=0.001
+  POSTPROCESS BOCOD STEPS=1
+  $POSTPROCESS EPSILON STEPS = 1000
+  $POSTPROCESS LINEL STEPS = 1
+  $POSTPROCESS ACCEL STEPS = 1
+  $POSTPROCESS TACTF PERIOD=0.001
+  WITNESS_POINTS
+    DISPX
+    DISPY
+    DISPZ
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+  CODES NODES
+
+     3            000 0.0 0.0 0.0   $ENDOG
+
+     4            111 0.0 0.0 0.0   $BASEG
+     4  &    5    111 0.0 0.0 0.0 
+     3  &    4    111 0.0 0.0 0.0 
+
+$     5            000 0.0 0.0 0.0   $EPIG
+$     5  &    6    000 0.0 0.0 0.0 
+
+$     6            000 0.0 0.0 0.0   $APEXG
+
+     7            000 0.0 0.0 0.0   $ENDOP
+
+     8            111 0.0 0.0 0.0   $BASEP
+     8  &    9    111 0.0 0.0 0.0 
+     7  &    8    111 0.0 0.0 0.0 
+
+$     9            000 0.0 0.0 0.0   $EPIP
+$     9  &   10    000 0.0 0.0 0.0 
+
+$    10            000 0.0 0.0 0.0   $APEXP
+
+  END_CODES
+
+  CODES, BOUNDARIES
+    3   9   1                                   $ WDK grande
+    5   3   3 0.0 0.0 0.0, MODULE_FUNCTION= 1   $ EPI grande
+    6   3   3 0.0 0.0 0.0, MODULE_FUNCTION= 1   $ APEX grande
+
+    7   9   2                                   $ WDK peque
+    9   3   3 0.0 0.0 0.0, MODULE_FUNCTION= 2   $ EPI peque
+    10  3   3 0.0 0.0 0.0, MODULE_FUNCTION= 2   $ APEX peque
+  END_CODES
+
+FUNCTIONS
+  TOTAL_NUMBER = 2
+  CONDITION
+    FUNCTION_NUMBER: 1
+    TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+        4
+        0.0   0.0
+        0.05  0.0
+        0.1  -500.0
+        0.15  0.0
+      END_SHAPEDEFINITION
+    FUNCTION_NUMBER: 2
+    TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+        4
+        0.0   0.0
+        0.05  0.0
+        0.1  -1500.0
+        0.15  0.0
+      END_SHAPEDEFINITION
+  END_CONDITION
+END_FUNCTIONS
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

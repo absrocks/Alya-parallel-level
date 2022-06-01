@@ -1,0 +1,103 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "hollow_cone_i4.pts.res-col11.out",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        },
+        {
+            "file": "hollow_cone_i4.pts.res-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        },
+        {
+            "file": "hollow_cone_i4.pts.res-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "hollow_cone_i4.pts.res-col15.out",
+            "method": "absolute",
+            "tolerance": "1.0e-11"
+        },
+        {
+            "file": "hollow_cone_i4.pts.res-col16.out",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        },
+        {
+            "file": "hollow_cone_i4.pts.res-col17.out",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        },
+        {
+            "file": "hollow_cone_i4.pts.res-col18.out",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col6.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col7.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col8.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col15.out",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col16.out",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "hollow_cone_i4-geometry.pts.wit-col17.out",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "hollow_cone_i4-AVMIE-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        }
+    ],
+    "description": "An example for hollow cone postprocessing",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 11 13 14 15 16 17 18; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-geometry.pts.wit 4 6 7 8 15 16 17; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i4"
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "hollow_cone_i4",
+    "postprocess": "mpio2txt"
+}

@@ -1,0 +1,68 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "differ_heated_cav_RK3-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "differ_heated_cav_RK3-TEMPE-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "differ_heated_cav_RK3-DENSI-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "differ_heated_cav_RK3-VISCO-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "differ_heated_cav_RK3-low-mach.nsi.cvg-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "differ_heated_cav_RK3-boundary.tem.set-col3.out",
+            "method": "absolute",
+            "tolerance": "1.0e-4"
+        },
+        {
+            "file": "differ_heated_cav_RK3-boundary.tem.set-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Differentially heated cavity with explicit Runge-Kutta 3 time integration and entropy viscosity stabilization.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-low-mach.nsi.cvg 3; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.tem.set 3 4; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-low-mach.nsi.cvg 3; [ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME]-boundary.tem.set 3 4; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "temper"
+    ],
+    "name": "differ_heated_cav_RK3",
+    "postprocess": "mpio2txt"
+}

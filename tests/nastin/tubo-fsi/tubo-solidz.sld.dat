@@ -1,0 +1,59 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+PROBLEM_DEFINITION
+  $GRAVITY: NORM=2.0, GX=0.0, GY=1.0, GZ=0.0
+END_PROBLEM_DEFINITION
+PROPERTIES
+  RAYLEIGH_DUMPING, RAYALPHA= 50.0
+  DENSITY=             1.2e0
+  CONSTITUTIVE_MODEL   ISOLIN  3.0e7  0.3
+END_PROPERTIES
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+$
+$ IMPLICIT
+$
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:    IMPLICIT
+  TIME_INTEGRATION:  NEWMARK, DAMPED
+  ALGEBRAIC_SOLVER:
+     SOLVER:               DEFLATEDCG, COARSE: SPARSE
+     CONVERGENCE:          ITERA=1000, TOLER=1.0e-10, ADAPTIVE, RATIO=0.01
+     OUTPUT:               CONVERGENCE
+     PRECONDITIONER:       BLOCK_DIAGONAL
+     OPTIONS:              ZERO_FIXITY
+  END_ALGEBRAIC_SOLVER
+  MAXIMUM_ITERATION:       500
+  RESIDUAL:                TOTAL
+  CONVERGENCE_TOLER:       1.00E-5
+  SAFETY_FACTOR:           40.0
+  STEADY_STATE_TOLERANCE: -1E-10
+  ROTATION:                ON
+END_NUMERICAL_TREATMENT
+
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+$   START_POSTPROCESS_AT        STEP  = 0
+$   POSTPROCESS SIGMA,          STEPS =20
+$   POSTPROCESS SEQVM
+ POSTPROCESS DISPLACEMENT,   STEPS = 5
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+$------------------------------------------------------------
+CODES, NODES
+      1       100   0.0  0.0  0.0
+      3       100   0.0  0.0  0.0
+      4       000   0.0  0.0  0.0
+      1 & 4   100   0.0  0.0  0.0
+      3 & 4   100   0.0  0.0  0.0
+      24      000   0.0  0.0  0.0
+      1 & 24  100   0.0  0.0  0.0
+      3 & 24  100   0.0  0.0  0.0
+END_CODES
+$------------------------------------------------------------
+$------------------------------------------------------------
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

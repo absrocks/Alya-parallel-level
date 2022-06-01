@@ -1,0 +1,58 @@
+cd $------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS     117312
+  ELEMENTS         110262
+  SPACE_DIMENSIONS      3
+  TYPES_OF_ELEMENTS HEX08
+  BOUNDARIES        13810
+  GROUPS=             500
+  FIELDS: 4
+     FIELD:1, DIMENSION=3, NODE
+     FIELD:2, DIMENSION=1, NODE
+     FIELD:3, DIMENSION=1, NODE
+     FIELD:4, DIMENSION=1, NODE
+   END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  0
+  BOUNDARY_ELEMENT:          ON
+  GROUPS=                    500, SEQUENTIAL_FRONTAL
+
+  GEOMETRICAL_CONDITIONS
+     FREESTREAM   1,2,3,4
+     WALL_LAW     5 
+     SYMMETRIC    6
+     ANGLE, GEO_ANGLE = 170.0
+     CRITERION_FREESTREAM :  VALUE_FUNCTION =  1 toler 5.0
+  END_GEOMETRICAL_CONDITIONS
+
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./case-067.geo
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./case-067.fix
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD= 1
+     INCLUDE ./AlyaFix/case-067.nsi.ini
+  END_FIELD
+  FIELD= 2
+     INCLUDE ./AlyaFix/case-067.tur1.ini
+  END_FIELD
+  FIELD= 3
+     INCLUDE ./AlyaFix/case-067.tur2.ini
+  END_FIELD
+  FIELD= 4
+     INCLUDE ./case-067.zo.dat
+  END_FIELD
+END_FIELDS
+$-------------------------------------------------------------

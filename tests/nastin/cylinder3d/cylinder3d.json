@@ -1,0 +1,38 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cylinder3d.ensi.PRESS-000001",
+            "method": "power",
+            "tolerance": 8
+        },
+        {
+            "file": "cylinder3d.ensi.VELOC-000001",
+            "method": "power",
+            "tolerance": 7
+        },
+        {
+            "file": "cylinder3d.ensi.SENSM-000001",
+            "method": "power",
+            "tolerance": 6
+        }
+    ],
+    "description": "Este ejemplo tiene 3d cylinder que corre con nastin para probar el adjunto en el que se calculan las sensibilidades del drag respecto a las coordenadas de la boundary",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cylinder3d",
+    "postprocess": "alya2pos",
+    "timeout": "00:05:00"
+}

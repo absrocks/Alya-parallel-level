@@ -1,0 +1,35 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "differ_heated_cav_RK3_no_tem-VELOC-00000010.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+		  } 
+    ],
+    "description": "Low Mach cavity flow with prescribed temperature field",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "differ_heated_cav_RK3_no_tem",
+    "postprocess": "mpio2txt"
+}

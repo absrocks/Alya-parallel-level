@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "cbutakoff@elem.bio"
+    ],
+    "comparisons": [
+        {
+            "file": "oneOHR.exm.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Check FEM part of the O'Hara-Rudy model",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "oneOHR",
+    "postprocess": "alya2pos",
+    "timeout": "00:02:00"
+}

@@ -1,0 +1,30 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "time-fields-veloc-dispm.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Test tiem fields for assigning velocity and displacement fields.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "time-fields-veloc-dispm",
+    "postprocess": "alya2pos"
+}

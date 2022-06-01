@@ -1,0 +1,120 @@
+$-------------------------------------------------------------------
+$
+$ sm152_cube_d2T
+$ Author:  Adria Quintanas and Gerard Guillamet
+$ Details: This test validates the damage due to matrix
+$          cracking (d2+) using ALYA Implicit Analysis.
+$          Cube 1x1x1mm
+$          Fibers are perpendicular to the loading direction
+$          (90 degrees ply respect to the reference)
+$          The cube is divided in two regions or materials:
+$          center (with damage) and each side (elastic).
+$
+$
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,,  IM7/8552 (elastic)  ,,,,,,
+    MATERIAL =           1
+    CONSTITUTIVE_MODEL: ORTLIN, INFINITESIMAL \
+      171.42e+3 9.08e+3 9.08e+3 0.32 0.32 0.45 5.29e+3 5.29e+3 3.131e+3
+    $ ,,,,,,  IM7/8552 (with damage)  ,,,,,,
+    MATERIAL =           2
+    $ E11  E22  G12 v12 v23
+    $  xT fxT  xc fxC  muT muLT
+    $  yT  yC  sL  nT  nS  nqT  nqS
+    $ gLT fgT gLC fgC g1T  g2T  g2L
+    $ a11 a22 b11 b22  dM
+    CONSTITUTIVE_MODEL: MAIMI, INFINITESIMAL, SECANT \
+      171.42E+3   9.08E+3    5.29E+3  0.32 0.45 \
+     2323.5       0.20    1017.50     0.20 0.904   1.00 \
+       62.3     253.70      92.30    12.0  9.5   350.0 0.0 \
+       97.8       0.50     106.30     0.25 0.0     1.1 0.7879 \
+        0.0       0.0        0.0      0.0  0.0     0.0
+    $ ,,,,,, CSYS_MATERIAL ,,,,,,
+    CSYS_MATERIAL: FIELD = 1, 2, 3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+$, ADAPTATIVE, RATIO=0.01
+  NO_STEADY_STATE
+  ALGEBRAIC_SOLVER:
+    SOLVER:            CG
+    CONVERGENCE:       ITERA=100, TOLER=1.0E-8
+    PRECONDITIONER:    DIAGONAL
+    RESIDUAL:          RHS
+$    OPTION:            ZERO_FIXITY
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL:            TOTAL
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-5
+  MAXIMUM_ITERATION:   65
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP  = 0
+  POSTPROCESS AXIS1,   STEPS = 10
+$  POSTPROCESS AXIS2,   STEPS = 10
+$  POSTPROCESS AXIS3,   STEPS = 10
+  POSTPROCESS CELEN,   STESP = 10
+  POSTPROCESS DISPL,   STEPS = 10
+  POSTPROCESS SIGMA,   STEPS = 10
+  POSTPROCESS SDV1E,   STEPS = 10
+  NODE_SET
+    DISPX
+    FRXIX
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  $ CODE 1 BACK
+  $ CODE 2 BOTTOM
+  $ CODE 3 FRONT
+  $ CODE 4 LEFT
+  $ CODE 5 RIGHT
+  $ CODE 6 TOP
+  CODES, NODES
+             $ LEFT FACE
+           4 100 0.0 0.0 0.0 0                    $ face left
+       1 & 4 101 0.0 0.0 0.0 0                    $ edge back-left
+       3 & 4 100 0.0 0.0 0.0 0                    $ edge front-left
+       2 & 4 110 0.0 0.0 0.0 0                    $ edge bot-left
+       6 & 4 100 0.0 0.0 0.0 0                    $ edge top-left
+   1 & 2 & 4 111 0.0 0.0 0.0 0                    $ node bot-back-left
+   2 & 3 & 4 110 0.0 0.0 0.0 0                    $ node bot-front-left
+   1 & 6 & 4 101 0.0 0.0 0.0 0                    $ node top-back-left
+   3 & 6 & 4 100 0.0 0.0 0.0 0                    $ node top-front-left
+             $ RIGHT FACE
+           5 100 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ face right
+       1 & 5 101 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ edge back-right
+       3 & 5 100 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ edge front-right
+       2 & 5 110 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ edge bot-right
+       6 & 5 100 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ edge top-right
+   1 & 2 & 5 111 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ node bot-back-right
+   2 & 3 & 5 110 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ node bot-front-right
+   1 & 6 & 5 101 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ node top-back-right
+   3 & 6 & 5 100 0.0 0.0 0.0, MODULE_FUNCTION=  1 $ node top-front-right
+  END_CODES
+  $-----------------
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER:   1
+      TIME_SHAPE: DISCRETE, LINEAR
+      SHAPE_DEFINITION
+        2
+        0  0.0   0.00 0.0
+        1  0.007 0.00 0.0
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

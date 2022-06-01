@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "VT_reac_rst_merge_repart-node.exm.set",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        }
+    ],
+    "description": "MPI-IO test based on VT_reac: write and read restart with merge, and also repartitioning with random subdomains!",
+    "exclude": [                                                           
+        "special"                                                         
+    ],       
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 10 [NAME] ; [RUN] [NP] 4 [ALYA] --read-rst --time-steps 20 [NAME]"
+            },
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_reac_rst_merge_repart",
+    "postprocess": "mpio2txt"
+}
+ 

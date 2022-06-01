@@ -1,0 +1,56 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+PROBLEM_DEFINITION
+  MODEL:                     SST_k_omega
+  LEVEL:                     On 
+  TEMPORAL_DERIVATIVES:      On
+END_PROBLEM_DEFINITION
+$------------------------------------------------------------
+PROPERTIES:
+  DENSITY=                  1.025e+03
+  VISCOSITY=                1.218e-03
+  AIR_DENSITY=              1.2047
+  AIR_VISCOSITY=            1.8205e-05
+  TURBULENT_PRANDTL=         0.9
+  REAL_PARAMETERS=           AUTOMATIC
+  INTEGER_PARAMETERS=        AUTOMATIC
+END_PROPERTIES
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:             OSS  , LIMITER: SOTO
+  ELEMENT_LENGTH:            Minimum
+  SHOCK_CAPTURING=           Anisotropic, VALUE: 1.0  
+  TEMPORAL_TERM_WEIGHT=      All
+  TIME_INTEGRATION:          Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR=             10.0  
+  STEADY_STATE_TOLER=         -1e-10 
+  NORM_OF_CONVERGENCE:       L2   
+  MAXIMUM_NUMBER_OF_ITER=    1  
+  RELAXATION_FACTOR=         0.5
+  CONVERGENCE_TOLERANCE=     1e-15 
+  ALGEBRAIC_SOLVER:          GMRES, ITERA= 300,TOLER= 1e-8, KRYLOV= 30, ADAPTI, RATIO=0.015
+  PRECONDITIONER:            DIAGONAL
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT        STEP  = 0
+  POSTPROCESS KEY,           STEPS=1000
+  POSTPROCESS OMEGA,         STEPS=1000
+  POSTPROCESS TUR_VISCOSITY, STEPS = 100 
+  POSTPROCESS WALL_DISTANCE, STEPS = 100 
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    INFLOW:               INTENSITY, RATIO_VISCOSITIES
+    INTENSITY_TURBULENCE= 0.0005
+    RATIO_VISCOSITIES=    10.0
+  END_PARAMETERS
+  CODES, NODES, GEOMETRICAL
+    10 
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

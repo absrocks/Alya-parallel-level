@@ -1,0 +1,60 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  NODAL_POINTS=       5441
+  ELEMENTS=           10370
+  SPACE_DIMENSIONS=   2
+  BOUNDARIES=         512
+  TYPES_OF_ELEMS=     TRI03
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  SCALE:                     XSCALE=1e-3 YSCALE=1e-3, ZSCALE=1.0
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+  GROUPS=                    100
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+
+  INCLUDE ./Solid02_TYPES.alya
+  INCLUDE ./Solid02_ELEMENTS.alya
+  INCLUDE ./Solid02_COORDINATES.alya
+  INCLUDE ./Solid02_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$      INCLUDE  ../Solid02_CHARACTERISTICS.alya
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$
+ BOUNDARIES
+  $INCLUDE ../Solid02_ON_BOUNDARIES.alya
+ END_BOUNDARIES
+$
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./Solid02_ON_BOUNDARIES.alya
+$
+$  VALUES, FUNCTION = -1, DIMENSION = -3 
+$    INCLUDE FIELD_3D.alya
+$  END_VALUES
+$
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------
+

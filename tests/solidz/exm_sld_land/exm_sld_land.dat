@@ -1,0 +1,36 @@
+$------------------------------------------------------------------
+RUN_DATA
+  ALYA:                    EPbmk25
+  LIVE_INFO:               screen
+  POSTPROCESS:             domain
+  $RUNTYPE:                PRELIMINARY, FREQUENCY=1000000000
+  $RUNTYPE:                CONTINUE
+  $RUNTYPE:                INITI
+  $RUN_TYPE:               APPEND, PRELIMINARY, FREQUENCY=2
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TIME_COUPLING:          GLOBAL
+  TIME_INTERVAL:          0.000, 0.15
+  TIME_STEP_SIZE:         5E-4
+  NUMBER_OF_STEPS_(MAX):  1000000000
+$-------------------------------------------------------------------
+  EXMEDI:                 ON
+  END_EXMEDI
+
+  SOLIDZ_PROBLEM=         ON
+  END_SOLIDZ
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION:            FACES
+    PARTITIONING:
+        METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL
+
+$-------------------------------------------------------------------
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

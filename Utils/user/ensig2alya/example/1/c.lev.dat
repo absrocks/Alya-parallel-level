@@ -1,0 +1,37 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  CONVECTIVE_TERM: ON
+  THICKNESS=       0.1
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:          Implicit
+  TIME_INTEGRATION:        Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR=           5.0 
+  STEADY_STATE_TOLERANCE=   -1e-10 
+  MAXIMUM_NUMBER_OF_IT:    1
+  ALGEBRAIC_SOLVER:        GMRES, KRYLOV=30, TOLER=1.0E-8, ITERAT=260 , ADAPTI, RATIO=0.015
+  PRECOND:                 DIAGONAL
+  SUSSMAN_REDISTANCE
+    ALGEBRAIC_SOLVER:      GMRES, KRYLOV=40, TOLER=1.0E-6, ITERAT=40 
+    PRECONDITIONING:       DIAGONAL
+  END_SUSSMAN_REDISTANCE
+  REDISTANCIATION :        INITI=0,FREQU=3,TYPE_REDIST=1,ZONAL=5,NBITE=20
+  VOLUME_CORRECTION :      OFF
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT      STEP  = 0
+  POSTPROCESS LEVELSET,    STEPS = 100
+  OUTPUT SOLVER
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    INITIAL: HEIGHT=0.131, ONZ
+  END_PARAMETERS
+  CODES, NODES, GEOMETRICAL
+    10  0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

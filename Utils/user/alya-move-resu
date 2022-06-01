@@ -1,0 +1,60 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+    echo 'Usage alya-move-resu resultsFolderName'
+    exit 1
+fi
+
+mkdir -p $1
+
+mv *.cvg  $1    2>/dev/null 
+mv *.plt  $1     2>/dev/null 
+mv *.tex  $1     2>/dev/null 
+mv *.log*  $1     2>/dev/null 
+mv *.rst*  $1     2>/dev/null 
+mv *.sol  $1     2>/dev/null 
+mv *ensi*  $1    2>/dev/null  
+mv *.post.msh*  $1     2>/dev/null 
+mv *.post.res*  $1     2>/dev/null 
+mv *.gid.msh*  $1     2>/dev/null 
+mv *.gid.res*  $1     2>/dev/null 
+mv *.par  $1     2>/dev/null 
+mv *.tra*  $1     2>/dev/null 
+mv *.mem*  $1     2>/dev/null 
+mv *.res  $1     2>/dev/null 
+mv *.set  $1     2>/dev/null 
+mv *.liv  $1     2>/dev/null 
+mv *.mpit  $1     2>/dev/null 
+mv *.mpits  $1     2>/dev/null 
+mv *.tmp  $1     2>/dev/null 
+mv *.mxm  $1     2>/dev/null 
+mv *.frc  $1     2>/dev/null 
+mv *.p2d  $1     2>/dev/null 
+mv *.out  $1     2>/dev/null 
+mv *.err  $1     2>/dev/null 
+mv *.wit  $1     2>/dev/null 
+mv *.cso  $1     2>/dev/null 
+mv *.plt  $1     2>/dev/null 
+mv fort.*  $1     2>/dev/null 
+mv *post.alyabin   $1     2>/dev/null 
+#mv *post.alyabin 2>/dev/null 
+mv *post.alyafil   $1 2>/dev/null     
+mv *post.alyalog   $1     2>/dev/null 
+mv *post.alyapar   $1     2>/dev/null 
+mv *.bvox   $1     2>/dev/null 
+mv *.h5   $1     2>/dev/null 
+mv *.xmf   $1     2>/dev/null 
+mv *.pvd   $1     2>/dev/null 
+mv *.pvtu   $1     2>/dev/null 
+mv *.vtu   $1     2>/dev/null 
+mv *_vtk   $1     2>/dev/null 
+mv *.csv   $1     2>/dev/null 
+mv *.stp   $1     2>/dev/null 
+mv *.tim   $1     2>/dev/null 
+mv *-maphys.*.org   $1     2>/dev/null 
+#MPI-IO files
+mv *.reordered.mpio.bin   $1     2>/dev/null 
+mv *.post.mpio.bin   $1     2>/dev/null 
+mv *.rst.mpio.bin   $1     2>/dev/null 
+mv *.mpio.txt   $1     2>/dev/null 
+

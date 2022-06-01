@@ -1,0 +1,41 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es",
+        "matias.avila@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "2DHills_Test.ensi.VELOC-000002",
+            "method": "absolute",
+            "tolerance": 0.0003
+        },
+        {
+            "file": "2DHills_Test.ensi.KEY-000002",
+            "method": "absolute",
+            "tolerance": 0.0004
+        },
+        {
+            "file": "2DHills_Test.ensi.TEMPE-000002",
+            "method": "power",
+            "tolerance": 7
+        }
+    ],
+    "description": "This is a really small test thought to validate the coupling between turbul-nastin-temper and the use of time-varying boundary conditions. The test runs a mesh with around 5000 nodal points where the inflow flow goes across two small hills. The vertical boundaries can be classified into inflow-Dirichlet, outflow-Newmann, and two periodic boundaries. ",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper",
+        "nastin",
+        "turbul"
+    ],
+    "name": "2DHills_Test",
+    "postprocess": "alya2pos"
+}

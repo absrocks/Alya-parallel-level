@@ -1,0 +1,41 @@
+$------------------------------------------------------------------
+RUN_DATA
+  ALYA:                    EPbmk25
+  LIVE_INFO:               screen
+  POSTPROCESS:             domain
+  $RUNTYPE:                 PRELIMINARY, FREQUENCY=1000000000
+  $RUNTYPE:                CONTINUE
+  $RUNTYPE:                INITI
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  MAXIMUM_NUMBER_GLOBAL=  1
+  TIME_COUPLING:          GLOBAL
+  TIME_INTERVAL:          0.000, 0.01
+  TIME_STEP_SIZE:         1E-5 $$$$$ 1E-5 5E-6 $ ESTOS SON LOS PASOS DE NIEDERER
+  NUMBER_OF_STEPS_(MAX):  1000000000
+$-------------------------------------------------------------------
+  EXMEDI:                 ON
+  END_EXMEDI
+
+  SOLIDZ_PROBLEM=         OFF
+  END_SOLIDZ
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION:            FACES
+    $PARTITIONING
+    $        METHOD: SFC
+    $        EXECUTION_MODE: PARALLEL 
+    $END_PARTITIONING
+  END_PARALL
+
+$-------------------------------------------------------------------
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: Off
+  GEOMETRY: On
+  RESTART: On
+  POSTPROCESS: On
+END_MPI_IO

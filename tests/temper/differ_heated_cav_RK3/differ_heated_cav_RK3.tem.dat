@@ -1,0 +1,60 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+   PROBLEM_DEFINITION
+     TEMPORAL_DERIVATIVES:   ON
+     CONVECTIVE_TERM:        ON
+     CONDUCTION_TERM:        ON
+     SOURCE_TERMS:           OFF
+     REGIME:                 LOWMACH
+   END_PROBLEM_DEFINITION
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS 
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE , ORDER: 3
+  SAFETY_FACTOR=           0.2
+
+  STEADY_STATE_TOLERANCE=  -1e-8
+  NORM_OF_CONVERGENCE:     L2
+  MAXIMUM_NUMBER_OF_ITER=  1
+  RELAXATION_FACTOR=       1.0
+  CONVERGENCE_TOLERANCE=   1e-4
+
+  ALGEBRAIC_SOLVER
+    SOLVER:                EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT       STEP =0
+  POSTPROCESS TEMPE
+  POSTPROCESS ENTHA
+  BOUNDARY_SET
+    MEANH    $ mean heat flux across set
+    DENSI    $ mean density on set
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS $, NONCONSTANT
+
+  PARAMETER
+    INITIAL, CONSTANT = 600.0
+  END_PARAM
+
+
+ CODES, NODES
+       1    0  -1.00      $$ Bottom
+       2    1  960.00     $$ Right
+       3    0  -1.00      $$ Top
+       4    1  240.00     $$ Left
+     1 & 2  1  960.00  
+     1 & 4  1  240.00  
+     2 & 3  1  960.00  
+     3 & 4  1  240.00  
+ END_CODES
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

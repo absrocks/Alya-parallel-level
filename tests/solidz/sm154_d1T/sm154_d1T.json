@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "sm154_d1T-boundary.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-30
+        }
+    ],
+    "description": "This test validates the damage law for fibre breakage (d1+) by using the constitutive model 154. The model consist of an element 1x1x1mm with fibres parallel to the loading direction (0 degrees ply respect to the reference).",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "sm154_d1T",
+    "postprocess": "alya2pos"
+}

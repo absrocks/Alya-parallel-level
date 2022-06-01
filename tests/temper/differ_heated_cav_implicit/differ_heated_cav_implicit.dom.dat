@@ -1,0 +1,33 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  mesh2d.dims.dat
+  SPACE_DIMENSIONS=        2
+  NODES=                   4
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN  
+  DOMAIN_INTEGRATION_POINTS: 0
+  GROUPS:                    5
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE mesh2d.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+ BOUNDARIES
+  INCLUDE mesh2d.fix.bou
+ END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+ ON_BOUNDARIES
+  INCLUDE mesh2d.fix.bou
+ END_ON_BOUNDARIES
+
+END_BOUNDARY_CONDITIONS          
+$-------------------------------------------------------------

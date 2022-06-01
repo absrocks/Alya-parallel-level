@@ -1,0 +1,68 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  mesh3d.dims.dat
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=       HEX08
+
+  FIELDS = 7
+	FIELD: 1, DIMEN= 1, NODES
+	FIELD: 2, DIMEN= 1, NODES
+	FIELD: 3, DIMEN= 1, NODES
+	FIELD: 4, DIMEN= 1, NODES
+	FIELD: 5, DIMEN= 1, NODES
+	FIELD: 6, DIMEN= 1, NODES
+	FIELD: 7, DIMEN= 3, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN  
+  DOMAIN_INTEGRATION_POINTS: 0 
+  GROUPS:                    10, SEQUENTIAL
+  EXTRAPOLATE:               ON
+  BOUNDARY_ELEMENT:          OFF
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE mesh3d.geo.dat
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  ELEMENTS
+    INCLUDE mesh3d.set.elm
+  END_ELEMENTS
+  BOUNDARIES
+    INCLUDE  mesh3d.fix.bou 
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE mesh3d.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+  FIELD= 1
+    INCLUDE TEMPE.alya
+  END_FIELD
+  FIELD= 2
+    INCLUDE CON01.alya
+  END_FIELD
+  FIELD= 3
+    INCLUDE CON02.alya
+  END_FIELD
+  FIELD= 4
+    INCLUDE CON03.alya
+  END_FIELD
+  FIELD= 5
+    INCLUDE CON04.alya
+  END_FIELD
+  FIELD= 6
+    INCLUDE ENTHA.alya
+  END_FIELD
+  FIELD= 7
+    INCLUDE VELOC.alya
+  END_FIELD
+END_FIELDS
+$--------------------------------------------------

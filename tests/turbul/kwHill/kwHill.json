@@ -1,0 +1,42 @@
+{
+    "authors": [
+        "matias.avila@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "kwHill-VELOC-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "0.005"
+        },
+        {
+            "file": "kwHill-KEY-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "0.005"
+        },
+        {
+            "file": "kwHill-OMEGA-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "0.01"
+        }
+    ],
+    "description": "Turbul kw model periodic for SBL  over 2 hills.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {   
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin",
+        "turbul"
+    ],
+    "name": "kwHill",
+    "postprocess": "mpio2txt"
+}

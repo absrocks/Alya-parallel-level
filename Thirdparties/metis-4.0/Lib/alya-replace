@@ -1,0 +1,74 @@
+#!/usr/bin/perl
+#
+# Execute this PERL script from Alya main directory (one directory before Sources)
+#
+$srcdir="Sources";
+@zepdirs=($srcdir."/kernel" , $srcdir."/modules", $srcdir."/services");
+@alldirs=();
+@patdirs=();
+@patfils=();
+@prefils=();
+@lisfils=();
+#
+# load all the directory names in modules and kernel folders 
+#
+$i=0;
+foreach $dirs (@zepdirs) {
+    opendir(ALL_DIRS,$dirs);
+    @auxdirs=readdir(ALL_DIRS);
+    foreach (@auxdirs) {
+    	if (! (($_=~/CVS/) || ($_=~/\./)) ) {
+	   		@patdirs=(@patdirs, $dirs ."/".$_ );
+	    	$i++; 
+	    	}
+    	}
+    @alldirs=(@alldirs,@auxdirs);
+    closedir(ALL_DIRS);
+}
+
+foreach $dirs (@patdirs){
+    opendir(ALL_DIRS,$dirs);
+    		@auxi   = readdir(ALL_DIRS);
+		    @lisfils=(@lisfils,@auxi);
+			foreach $a (@auxi) { 
+		    	@patfils=(@patfils,$dirs . "/".$a );
+		    	@prefils=(@prefils,$dirs);
+		    }
+}
+#
+#  Estas son las cadenas que vas a cambiar:
+#
+$strini= "\QNSTINC\E";	
+$strout= "NASTIN";
+
+$iflag=0;
+$i = 0;
+foreach $fils (@patfils) {
+    if ($fils=~/\.f90$/) {
+	open (IN,$fils);  
+	$iflag=0;
+	while (<IN>) {if ($_=~/$strini/) {$iflag=1}} 
+	close (IN);
+	
+	if ($iflag == 1) {
+	    print "$fils\n";
+	    open (IN,$fils);  
+	    open (OUT, ">mocos");
+	    while (<IN>) {
+		if ($_=~/$strini/) {s/$strini/$strout/}
+		print OUT $_ ;
+	    } 
+	    close (IN);
+	    close (OUT);
+	    
+	    open (IN,"mocos");  
+	    open (OUT,">$fils");
+	    while (<IN>) {print OUT $_} 
+	    close (IN);
+	    close (OUT);						
+	}
+    }
+    $i++;
+}
+system ("rm -r mocos");
+

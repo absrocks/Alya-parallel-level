@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cantilever_shell_expl_tw-boundary.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-07
+        }
+    ],
+    "description": "This test is the same as cantilever_shell_expl but using the Dissipative Tchamwa-Wielgosz Explicit scheme.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "cantilever_shell_expl_tw",
+    "postprocess": "alya2pos"
+}

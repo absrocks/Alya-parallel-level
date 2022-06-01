@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "c.nsi.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "soc una c",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "c",
+    "postprocess": "alya2pos"
+}

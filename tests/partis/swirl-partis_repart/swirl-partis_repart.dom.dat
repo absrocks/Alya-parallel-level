@@ -1,0 +1,32 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          121
+  ELEMENTS=              200
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      10
+  BOUNDARIES=             40
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0 
+  GROUPS = 40
+  EXTRAPOLATE= ON
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  ./swirl-partis_repart.geo.dat
+$  MATERIALS, DEFAULT=2, NUMBER=2
+$    1 1
+$    2 1
+$  END_MATERIALS
+END_GEOMETRY   
+$-------------------------------------------------------------
+SETS
+  INCLUDE  ./swirl-partis_repart.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  ./swirl-partis_repart.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

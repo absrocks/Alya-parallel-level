@@ -1,0 +1,43 @@
+$--------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS       277
+  ELEMENTS          477
+  BOUNDARIES        75
+  SPACE_DIMENSIONS   2
+  TYPES_OF_ELEMS   TRI03
+
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+$  SCALE:                            XSCAL=0.05833 YSCAL=0.05833 ZSCAL=0.05833
+$  TRANSLATION:                      XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  DOMAIN_INTEGRATION_POINTS:   0
+  BOUNDARY_ELEMENT: OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  GROUPS=50
+
+  MATERIALS, BOUNDARIES
+      CODE=     4
+      MATERIAL= 2
+      LAYERS=   3
+  END_MATERIALS
+
+
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+
+   INCLUDE Y_timevar_porosity.geo.dat
+
+    MATERIALS, NUMBER=2, DEFAULT=1
+    END_MATERIALS
+
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS
+      INCLUDE Y_timevar_porosity.fix.bou
+END_BOUNDARY_CONDITIONS
+$--------------------------------------------------

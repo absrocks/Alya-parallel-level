@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "plydrop_csh_12x6x01-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This test validates the performance of continuum shells elements. The model consist of multilayer composite plate with ply dropoffs (Quoc and Tan 2003). The problem is solved with 5 time steps by using an element aspect ratio of 100.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        },
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "plydrop_csh_12x6x01",
+    "postprocess": "alya2pos",
+    "timeout": "00:04:00"
+}

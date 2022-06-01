@@ -1,0 +1,25 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   TYPE= 1
+       MODEL= VELOCITY
+  END_TYPE
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  NEWMARK: GAMMA=0.5, BETA=0.25
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  LEVEL     = 1
+  FREQUENCY = 1
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+    INJECTOR= 1
+       GEOMETRY: POINT,PARAM=0.4,0.33,0.0,1
+       TYPE= 1
+    END_INJECTOR
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+

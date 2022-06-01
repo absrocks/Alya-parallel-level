@@ -1,0 +1,18 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    MULTIPLICATION
+      LEVEL = 2
+      ELEMENT_NORMAL_MULTIPLICATION: ON
+      PARALLELIZATION:               COORDINATES
+    END_MULTIPLICATION
+  END_MESH
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

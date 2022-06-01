@@ -1,0 +1,252 @@
+
+
+
+        --------
+     |- A L Y A: 2DHills_Test
+        --------
+
+
+
+        --------------------
+*    |- SUMMARY OF PARTITION
+        --------------------
+
+        METHOD=               METIS
+        EXECUTION MODE=       SEQUENTIAL
+
+        # SUBDOMAINS=                   3
+        TOTAL # NODES=               4900 (INTERIOR+REPEATED BOUNDARY)
+
+        MIN. # NPOIN=                1630 (SUBDOMAIN     2)
+        MAX. # NPOIN=                1636 (SUBDOMAIN     3)
+        AVE. # NPOIN=                1633
+        MIN. # NELEM=                 750 (SUBDOMAIN     1)
+        MAX. # NELEM=                 750 (SUBDOMAIN     1)
+        AVE. # NELEM=                 750
+        MIN. # NELEM(WEIGHT)=        6000 (SUBDOMAIN     1)
+        MAX. # NELEM(WEIGHT)=        6000 (SUBDOMAIN     1)
+        AVE. # NELEM(WEIGHT)=        6000
+        MIN. # NBOUN=                  49 (SUBDOMAIN     3)
+        MAX. # NBOUN=                  75 (SUBDOMAIN     2)
+        AVE. # NBOUN=                  63
+
+        MIN. # NNEIG=                   2 (SUBDOMAIN     1)
+        MAX. # NNEIG=                   2 (SUBDOMAIN     1)
+        AVE. # NNEIG=                   2
+        MIN. # NBBOU=                 108 (SUBDOMAIN     2)
+        MAX. # NBBOU=                 172 (SUBDOMAIN     3)
+        AVE. # NBBOU=                 138
+
+
+        ------------------------
+*    |- INTER COLOR COMMUNICATOR
+        ------------------------
+
+
+        TOTAL NUMBER OF CODES=         1
+        TOTAL NUMBER OF ZONES=         1
+        TOTAL NUMBER OF SUBDS=         1
+
+        NUMBER OF ZONES IN MY CODE=    1
+        NUMBER OF SUBDS IN MY CODE=    1
+                                    
+        LIST OF COMMUNICATORS:      
+
+        CODE=(  0,  0), ZONE=(  0,  0), SUBD=(  0,  0)
+        CODE=(  1,  1), ZONE=(  0,  0), SUBD=(  0,  0)
+        CODE=(  1,  1), ZONE=(  0,  0), SUBD=(  1,  1)
+        CODE=(  1,  1), ZONE=(  1,  1), SUBD=(  0,  0)
+
+
+        ------------------------
+*    |- PARTITIONS BIN STRUCTURE
+        ------------------------
+
+        BIN DIMENSIONS=                 1    1    8
+
+
+        ----------------------
+*    |- HYBRID PARALLELIZATION
+        ----------------------
+
+        OFF
+
+
+        -----
+*    |- HALOS
+        -----
+
+
+        |- COMPUTATIONAL HALOS (MAX VALUES):
+
+           Halo nodes/total nodes=         11.48387 %
+           |neigh send - neigh recv|=       0.00000 % 
+           |size  send - size  recv|=       3.47826 % 
+           Ratio 2nd neighbors/neighbors=   0.00000 % 
+
+        |- GEOMETRICAL HALOS (MAX VALUES): 
+
+           Halo elements/own elements=     11.46667 %
+           Halo nodes/own nodes=           10.75795 % 
+
+
+        ------------------------
+*    |- BOUNDARY CONDITION CODES
+        ------------------------
+
+
+        CODE=             3
+        CODE=             3  &  5
+        CODE=             3  &  6
+        CODE=             4
+        CODE=             4  &  5
+        CODE=             4  &  6
+        CODE=             5
+        CODE=             6
+
+
+        -----------------
+*    |- INTEGRATION RULES
+        -----------------
+
+
+        ELEMENT TYPE:                 QUA04
+           Rule:                       OPEN
+           Number Gauss points=           4
+           Max. polynomial order=         3
+        ELEMENT TYPE:                 HEX08
+           Rule:                       OPEN
+           Number Gauss points=           8
+           Max. polynomial order=         3
+
+
+        --------------------
+*    |- OPTIMIZATION OPTIONS
+        --------------------
+
+
+        MPI3:                       OFF
+        BLAS:                       OFF
+        VECTOR SIZE=                  1 (PARAMETER)
+        LOC. TO GLOB. COEF IN CSR:  OFF
+        ELEMENT DATA BASE:          OFF
+        NODE RENUMBERING:           METIS
+        ELEMENT RENUMBERING:        MESH GRAPH FIRST TOUCH
+
+
+        -----------------------------
+*    |- TIMES OF ALGEBRAIC OPERATIONS: AVERAGE OVER     2 RUNS
+        -----------------------------
+
+
+        |- SpMV IN CSR FORMAT (without OpenMP):   
+
+           Computation:             
+              Average CPU time:      434.31918 mus
+              Maximum CPU time:      435.82916 mus
+              Load balance:            0.99654
+           Point-to-point comm.:    
+              Average CPU time:       15.33826 mus
+              Maximum CPU time:       15.97404 mus
+              Load balance:            0.96020
+           Overall:                 
+              Average CPU time:      449.65744 mus
+              Maximum CPU time:      450.84953 mus
+              Load balance:            0.99736
+
+        |- DOT PRODUCT (without OpenMP):
+
+           Computation:             
+              Average CPU time:        1.27157 mus
+              Maximum CPU time:        1.43051 mus
+              Load balance:            0.88889
+           Global comm.:            
+              Average CPU time:        4.05312 mus
+              Maximum CPU time:        5.12600 mus
+              Load balance:            0.79070
+           Overall:                 
+              Average CPU time:        5.32468 mus
+              Maximum CPU time:        6.55651 mus
+              Load balance:            0.81212
+
+
+        -----------------------
+*    |- SUMMARY OF PROBLEM DATA
+        -----------------------
+
+
+        |- GENERAL DATA:
+
+           Modules solved:       NASTIN,TEMPER,TURBUL,KERMOD
+           Blok definition:      1:NASTIN,TEMPER,TURBUL
+           Time step strategy:   PRESCRIBED
+           Time step=             1.0000E+01
+           Time range=           [ 0.0000E+00, 1.0000E+08]
+
+        |- DOMAIN DATA:
+
+           Domain dimension=               3
+           --------------------- 
+           Bandwith (average)=         1593
+           Profile (average)=     3.9638E+05
+           --------------------- 
+           Total volume=          4.1519E+08
+           Ave. element volume=   1.8453E+05
+           Min. element volume=   4.3200E+03 (element 1551)
+           Max. element volume=   7.9917E+05 (element 2247)
+           --------------------- 
+           Total elements=              2250
+           Extension elements=             0
+           Hole elements=                  0
+           Elements used:        2250 HEX08
+           Gauss points (rule)=  8(open)
+           --------------------- 
+           Total boundaries=             190
+           Extension boundaries=           0
+           Hole boundaries=                0
+           Boundaries used:      190 QUA04
+           Gauss points (rule)=  4(open)
+           --------------------- 
+           Total nodes=                 4692
+           Hole nodes=                     0
+
+
+
+        ----------------------
+*    |- SUMMARY OF CONVERGENCE
+        ----------------------
+
+
+        |- TIME STEP NUMBER:            1
+           Current time step dt =  1.000E+01
+           Current time t       =  1.000E+01
+           NASTIN:
+           - Critical time step dtc:  1.062E+00
+           - Ratio dt/dtc:            9.413E+00
+           TEMPER:
+           - Critical time step dtc:  6.128E-02
+           - Ratio dt/dtc:            1.632E+02
+           TURBUL:
+           - Critical time step dtc:  6.254E-02
+           - Ratio dt/dtc:            1.599E+02
+
+           Global iteration number:     1, block number:  1
+           Current CPU time:         3.841E+00
+           Elapsed CPU time:         3.841E+00
+           Residual of VELOCITY          :  1.779E-01
+           Residual of PRESSURE          :  1.000E+00
+           Residual of TEMPERATURE       :  1.150E-03
+           Residual of TURBULENCE        :  4.818E-01
+
+        |- TIME STEP NUMBER:            2
+           Current time step dt =  1.000E+01
+           Current time t       =  2.000E+01
+           NASTIN:
+           - Critical time step dtc:  5.124E-01
+           - Ratio dt/dtc:            1.952E+01
+           TEMPER:
+           - Critical time step dtc:  3.407E-02
+           - Ratio dt/dtc:            2.935E+02
+           TURBUL:
+           - Critical time step dtc:  3.427E-02
+           - Ratio dt/dtc:            2.918E+02

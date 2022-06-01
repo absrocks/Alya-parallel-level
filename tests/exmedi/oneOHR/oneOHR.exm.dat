@@ -1,0 +1,99 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+PROBLEM_DEFINITION
+  STARTING_POTENTIAL
+    NSTIM=    4
+    CURDENSITY=   -80 -80 -80 -80
+    LAPSE=    0.0005 0.00005 0.00005 0.00005   
+    CENTER=  0.0  0.0  0.0, 0.009  0.0  0.0, 0.0  0.009  0.0, 0.0  0.0  0.009    
+    REACH=    0.0005 0.0005 0.0005 0.0005
+    T_START=  0.0 0.0 0.0 0.0   
+  END_STARTING_POTENTIAL
+$------------------------------------------------------------
+ $ GEO_COUPLING: LAGRANGIAN
+$------------------------------------------------------------
+END_PROBLEM_DEFINITION
+$------------------------------------------------------------
+PROPERTIES
+  MATERIAL= 1
+    CONTINUUM_MODEL
+      IN_DIFFUSION = 0.0 0.0 0.0 $0.0231858 0.007728534  0.007728534
+    ENDCONTINNUM_MODEL
+    CELL_MODEL:  OHARA $INA_PASSINI  $Sodium current gates hss, h and j are modified to compare with Chaste
+      CM_CONST=   1.0   $[microF/cm2]
+    END_CELL_MODEL
+    INI_CELL, HETEROGENEOUS
+      INCLUDE parametersOHR_new.txt $TThet_frameworkPIG_LV.txt
+    END_INI_CELL
+  END_MAT1
+END_PROPERTIES
+$------------------------------------------------------------
+  FIBER_MODEL:              FIELD=1
+  CELL_TYPE:                FIELD=2
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+ CONSTANT_MATRIX
+ SAFETY_FACTOR=           1.0
+ 
+ TIMETREATMENT: IMPLICIT, CRANK
+ ALGEBRAIC_SOLVER     
+    SOLVER:                CG
+    CONVERGENCE:           ITERA=1000, TOLER=1.0e-5, ADAPTIVE, RATIO=0.01
+    OUTPUT:                CONVERGENCE
+    PRECONDITIONER:        DIAGONAL
+ END_ALGEBRAIC_SOLVER 
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  $POSTPROCESS INTRA
+  $POSTPROCESS ICO01
+  SAVE_CONVERGENCE CELL_MODEL
+  WITNESS_POINTS, STEPS = 100
+    INTRA
+    CAI
+    NASS
+    KI
+    KISS
+    NAI
+    CASS
+    CANSR
+    CAJSR
+    JRLNP
+    JRLP
+    CAMKT
+    INA
+    INAL
+    ITO
+    ICAL
+    IKR
+    IKS
+    IK1
+    INCI
+    INCSS
+    INAK
+    IKB
+    INAB
+    ICAB
+    IPCA
+    JDI
+    JDINA
+    JDIK
+    JUP
+    JLEAK
+    JTR
+    JREL
+    CAMKA
+    STIM
+    ICANA
+    ICAK
+    CAMKB
+  END_WITNESS_POINTS	
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST-PROCESS    
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, CONSTANT  
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

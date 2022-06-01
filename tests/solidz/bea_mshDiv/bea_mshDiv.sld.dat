@@ -1,0 +1,64 @@
+$------------------------------------------------------------
+$
+$ bea_mshDiv
+$ Author:    Gerard Guillamet
+$ Details:   Floor-beam
+$            Dimensions:
+$              L = 2820.68 mm
+$              W = 40 mm
+$              H = 72.52 mm
+$              tply = 0.20375 mm
+$            Material: M2
+$            Lay-up:   [45/90/-45/0/45/0/0/-45]_s
+$            Mesh:
+$              In-plane size: X mm
+$              Min. el. size: 0.20375 mm
+$
+$            Alya Explicit analysis
+$
+$ Units:     SI(mm)
+$
+$ Reference: SHERLOC project
+$
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, T800S/M21 ,,,,,,
+    MATERIAL          = 1
+    DENSITY           = 1.59e-9
+    CONSTITUTIVE_MODEL: ORTHO \
+      111.8E+3 7.62E+3 7.62E+3 0.290 0.290 0.45 4.130E+3 4.130E+3 4.130E+3
+    $ ,,,,,,, MAT CSYS ,,,,,,
+    CSYS_MATERIAL:    FIELD=1, ORIENTATION, TYPE=ELEMENT_NORMAL, REFAXIS=3, ROTAXIS=3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP  = 0
+  POSTPROCESS PARTI
+  POSTPROCESS ELNOR
+  POSTPROCESS PMATE
+  POSTPROCESS ORIEN
+  POSTPROCESS AXIS1
+  POSTPROCESS AXIS2
+  POSTPROCESS AXIS3
+  POSTPROCESS CHARA
+  POSTPROCESS BOCOD
+  POSTPROCESS BOSET
+  POSTPROCESS ELSET
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+        1 111 0.0 0.0 0.0
+    2 & 3 010 0.0 0.0 0.0
+    3 & 4 010 0.0 0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

@@ -1,0 +1,54 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION  
+ TEMPORAL_DERIVATIVES:      On
+ CONVECTIVE_TERM:           On
+ VISCOUS_TERM:              Divergence
+END_PROBLEM_DEFINITION
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            ASGS
+$  STABILIZATION:           SPLIT_OSS
+  ELEMENT_LENGTH:           Minimum
+$  TRACKING:                 Time, CONVECTION, ITERAT=100, TOLER=1.0e-5, RELAX=1.0, ORDER=2
+$  TRACKING:                 Time, ORDER=2
+  TIME_INTEGRATION:         Trapezoidal, ORDER: 1, EULER=10 
+  SAFETY_FACTOR:            1.0
+  STEADY_STATE_TOLER:       1e-12
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  CONVERGENCE_TOLERANCE:    1e-12
+
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER:         TAU
+    ELEMENT_LENGTH:         Minimum
+    TAU_STRATEGY:           Codina
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER:       BICGSTAB, ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01
+    PRECONDITIONER:         DIAGONAL
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER:       DEFLATED_CG, ITERA=1000, TOLER=1.0e-6, ADAPTIVE, RATIO=0.01,  ALL_GATHER, UNSYMM
+    PRECONDITIONER:         DIAGONAL
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  OUTPUT ERROR, SOLUTION= 15
+  POSTPROCESS VELOCITY
+  POSTPROCESS PRESSURE
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE:On, ON_NODE=30 , VALUE=13.0
+  END_PARAMETERS
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------
+    

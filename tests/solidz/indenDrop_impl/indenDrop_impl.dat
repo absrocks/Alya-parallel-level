@@ -1,0 +1,20 @@
+$-------------------------------------------------------------------
+RUN_DATA
+ ALYA:                   indenDrop_impl
+ POSTPROCESS:            domain
+ LIVE_INFORMATION:       Screen
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+ $------------------------------------------
+ TIME_COUPLING:          Global, Prescribed
+ TIME_INTERVAL:          0.0, 1.0e-3
+ TIME_STEP_SIZE:         5.0e-4
+ NUMBER_OF_STEPS:        2
+ $------------------------------------------
+ SOLIDZ_PROBLEM:         On
+ END_SOLIDZ
+ PARALL_SERVICE:         On
+ END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

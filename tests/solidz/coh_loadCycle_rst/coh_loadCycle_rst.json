@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coh_loadCycle_rst-node.sld.set",
+            "method": "absolute",
+            "tolerance": 1e-7
+        }
+    ],
+    "description": "This test validates the use of a restart for damage state variables of cohesive elements formulated by Turon et al. 2006. The model is equal to coh_loadCycle but starts from a pre-damage state (point state 3) of the cohesive element by using ALYA Continue option.",
+    "enabled": true,
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] [MPI] [ALYA] --write-rst --time-steps 4 [NAME] ; [RUN] [NP] 4 [ALYA] --read-rst --time-steps 6 [NAME]"
+            },
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "coh_loadCycle_rst",
+    "postprocess": "alya2pos"
+}

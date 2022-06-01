@@ -1,0 +1,52 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       FORCE
+      THERMODYNAMIC_MODEL:  ON, FLAMELET_TABLE
+      BROWNIAN_MOTION:      OFF
+      FORCES:               DRAG: SCHILLER_NEUMANN, GRAVITY
+      WSEEN=                0.3333333333333333
+      HT_CORRECTION:        AB_SIRIGNANO
+      MASS_POTENTIAL:       QUASI_STEADY
+      PROPERTIES
+        LIQ_NAME= H2O
+        D=        40.0e-06
+        TABLE
+            INCLUDE ./water_turbulent_table.dat
+        END_TABLE
+        YC_SCALING
+            INCLUDE ./water_turbulent_scaling_gen0.dat 
+        END_YC_SCALING
+        HEAT_LOSS
+            INCLUDE ./water_turbulent_scaling_gen1.dat 
+        END_HEAT_LOSS
+      END_PROPERTIES
+  END_TYPE
+
+  SINK_TERMS: MOMENTUM, HEAT , MASS
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  FREQUENCY = 2
+  VARIABLES, ADD
+    DIAMK
+  END_VARIABLES
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  INJECTOR: 1
+    GEOMETRY:    POINT,    PARAM = 0.0, 0.0, 0.0, 1
+    TEMPERATURE: CONSTANT, VALUE = 273.15
+  END_INJECTOR
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e6
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

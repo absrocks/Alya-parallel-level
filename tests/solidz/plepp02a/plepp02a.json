@@ -1,0 +1,40 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "block.ensi.DISPL-000002",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This block-identer test validates in 2D the unilateral contact algorithm implemented in Alya code. This algorithm has a domain decomposition approach and requires the PLEPP library for localization and communication. The validation of the results is done against Code_Aster, which solves the contact problem in a monolithic way using lagrange multipliers.",
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] block --name SOLID [SEP] [NP] 3 [ALYA] identer --name FLUID",
+                "postprocess": "[POST] block; [POST] identer"
+            },
+            "mpi": 6,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 5 [ALYA] block --name SOLID [SEP] [NP] 5 [ALYA] identer --name FLUID",
+                "postprocess": "[POST] block; [POST] identer"
+            },
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "ple_cnt2"
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "plepp02a",
+    "postprocess": "alya2pos",
+    "timeout": "00:02:00"
+}

@@ -1,0 +1,34 @@
+#!/bin/bash 
+
+echo 
+echo '--| alya-rename |-- '
+echo '--| '
+if  [ "$1" = "-h" ] || [ "$1" = "-help" ] || [ "$1" = "" ]; then
+echo '--| Substitute extensions of files'
+echo '--| '
+echo '--| Usage:   alya-rename ext1 ext2'
+echo '--|'
+echo '--| ext1 ... Initital extension'
+echo '--| ext2 ... Final extension'
+echo '--| '
+echo '--| Bye.'
+echo '--| '
+echo '--| '
+exit
+else
+echo '--| Substituing extensions of files'
+echo '--| '*.$1' <- '*.$2' '
+fi
+
+FILES=(`ls *.$1 | cut -d '.' -f 1`)
+
+for filename in ${FILES[*]}; do
+
+   mv $filename.$1 $filename.$2
+
+done
+
+echo '--| '
+echo '--| Bye.'
+echo '--| '
+echo '--| '

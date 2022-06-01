@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "trailing_edge.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "test the computation of the normal when we have a trailing edge, where if nothing is done, the normal gets zero",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "trailing_edge",
+    "postprocess": "alya2pos"
+}

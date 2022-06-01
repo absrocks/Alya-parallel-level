@@ -1,0 +1,12 @@
+README
+
+Tools to highlight Alya Input Words in text editors.
+
+Kate:
+
+alya-kate.xml
+
+cp alya-kate.xml ~/.kde/share/apps/katepart/syntax/.
+
+In kate make Tools->Highlighting->Scientific->alya
+

@@ -1,0 +1,83 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On  
+  CONVECTIVE_TERM:          EMAC
+  VISCOUS_TERM:             DIVERGENCE
+  $ GRAVITY:                  Off 
+  $TURBULENCE_COUPLING:      LESMO, VRMAN , PARAM=0.1
+  $ REGIM:                    LOWMACH, TEMPERATURE = 300.0
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+PROPERTIES
+$   THERMODYN_PRESSURE = 759.9375
+$   GAS_CONSTANT = 287.0
+END_PROPERTIES  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  TIME_STEP:                EIGENVALUE
+  ELEMENT_LENGTH:           Minimum
+  STABILIZATION:            OFF
+  TIME_INTEGRATION:         RUNGE, ORDER:3
+  SAFETY_FACTOR:            1.5
+  STEADY_STATE_TOLER:       1e-15
+  ASSEMBLY:                 GPU2
+  VECTOR:                   ON
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  GRAD_DIV = ON
+
+  ALGORITHM:FRACTIONAL_STEP
+      GAMMA = 0.0
+      ROTAT = 0.0
+  END_ALGORITHM
+
+  MOMENTUM
+     ALGEBRAIC_SOLVER     
+        SOLVER:                EXPLICIT, APPROXIMATE, ORDER=0
+     END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+
+  CONTINUITY 
+     ALGEBRAIC_SOLVER
+         SOLVER:               DEFLATED_CG, COARSE: SPARSE
+         CONVERGENCE:          ITERA=1000, TOLER=1.0e-10
+         OUTPUT:               CONVERGENCE
+         PRECONDITIONER:       DIAGONAL
+     END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+
+  CONSISTENT_MASS
+    ALGEBRAIC_SOLVER
+      SOLVER:          CG, KRYLOV=30
+      CONVERGENCE:     ITERA=1000, TOLER=1.0E-10
+      PRECONDITIONER:  DIAGONAL
+    END_ALGEBRAIC_SOLVER
+  END_CONSISTENT_MASS
+  
+  DIRICHLET: ALGORITHM
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  POSTPROCESS VELOCITY
+  POSTPROCESS PRESSURE
+  BOUNDARY_SET
+        FORCE     
+  END_BOUNDARY_SET
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS 
+  PARAMETERS
+    INITIAL_CONDITION: CONSTANT, VALUES = 0.0, 0.0, 0.0
+    FIX_PRESSURE: ON, ON_NODE=1, VALUE=0.0
+  END_PARAMETERS 
+  CODES, NODES
+    1     111 1.0, 0.0, 0.0
+    2     111 0.0, 0.0, 0.0
+    1 & 2 111 0.0, 0.0, 0.0
+  END_CODES  
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

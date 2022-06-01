@@ -1,0 +1,38 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "multiple-local-axes_impl-DISPL-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 1e-8
+        },
+        {
+            "file": "multiple-local-axes_impl-node.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "multiple-local-axes_impl-boundary.sld.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Use of multiple local boundary conditions in an Implicit time integration scheme.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "multiple-local-axes_impl",
+    "postprocess": "mpio2txt",
+	"timeout": "00:02:00"
+}

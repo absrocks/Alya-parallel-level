@@ -1,0 +1,33 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          804
+  ELEMENTS=             2276
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=      30
+  BOUNDARIES=           1600
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                Open  
+  DOMAIN_INTEGRATION_POINTS:       0  
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: On
+  BOUNDARY_ELEMENT:                On
+  GROUPS=                             100, Sequential_frontal  
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+$  GROUPS=                             100, Sequential_frontal  
+  INCLUDE  cylinder_expan.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  cylinder_expan.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  cylinder_expan.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------

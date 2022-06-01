@@ -1,0 +1,145 @@
+#!/usr/bin/perl
+# configuration
+$min = 15;
+$svnlook = '/usr/bin/svnlook';
+
+#------------------------------------------------
+#---------------main-----------------------------
+#------------------------------------------------
+$repos = $ARGV[0];
+$txn = $ARGV[1];
+
+#--------1.Minimum message length
+$msg = `$svnlook log -t "$txn" "$repos"`;
+chomp($msg);
+my @msgLines = split(/\n/, $msg);
+
+#----new validation
+my $errorMessage = 0;
+my $messError = "-------------------------------SVN MESSAGE ERROR----------------------------\n";
+my $messageFormat = "\nThe svn message must follow this rules:\n\n";
+$messageFormat = $messageFormat . "\"TYPE=[MINI | NORMAL | CRITICAL | INPUT]\n";
+$messageFormat = $messageFormat . "description_text\"\n\n";
+$messageFormat = $messageFormat . "Where:\n";
+$messageFormat = $messageFormat . "      MINI:Insignificant change, in this case is not necessary to insert description_text\n";
+$messageFormat = $messageFormat . "      NORMAL:The change doesn't affect past alya results and input data files\n";
+$messageFormat = $messageFormat . "      CRITICAL:The change could affect past alya results\n";
+$messageFormat = $messageFormat . "      INPUT:The change affects the alya input data files(always with retro-compatibility)\n";
+$messageFormat = $messageFormat . "      description_text:Changes description with at least 15 letters\n\n";
+$messageFormat = $messageFormat . "Example: \"TYPE=Critical\n";
+$messageFormat = $messageFormat . "         Changes in the solvers\"\n";
+
+#get the message type
+my $typeMessage = 0;
+if ($msgLines[0] =~ m/^TYPE\s*=\s*(\w+)/) {
+	$typeMessage = $1;
+}
+#if typeMessage is MINI dont check anythink from the message
+if ($typeMessage ne "MINI") {
+	$msgNumLines = scalar(@msgLines);
+	if ($msgNumLines<2) {
+		$errorMessage = "The message should have at least two lines.\n";
+	}
+	elsif ($msgLines[0] =~ m/^TYPE\s*=\s*(\w+)/) {
+		my $type = $1;
+		if ($type ne "NORMAL" && $type ne "CRITICAL" && $type ne "INPUT") {
+			$errorMessage = "The message type should be: NORMAL, CRITICAL or INPUT\n";
+		}
+		elsif ( length($msgLines[1]) < $min ) {
+			$errorMessage = "Message description should be at least $min characters in length\n";
+		}	
+	}
+	else {
+		$errorMessage = "The message first line doesn't start with TYPE=change_type\n";
+	}
+
+	if ($errorMessage) {
+		print STDERR $messError . $errorMessage . $messageFormat; 
+		exit(1); 
+	}
+}
+
+
+#--------2. Individual files checking
+my $changes = `$svnlook changed -t "$txn" "$repos"`;
+my @files = split(/\n/, $changes);
+my @report;
+#process files and make validations
+foreach $file (@files) {
+	my $file = substr $file, 4;
+	#File content
+	my $content = `$svnlook cat -t "$txn" "$repos" "$file"`;
+	if ($content && ($file =~ m/.f90/)) {
+		my $fileErr = {};
+		my @errList;
+		$fileErr->{file} = $file;
+		if (!($content =~ m/implicit/i) && !($file =~ m/def_/i)) {
+			my $errors = "File not contains the \"implicit none\" sentence";
+			push @errList, $errors;			
+		}
+		if ($content =~ m/real\(ip\)/i) {
+			my $errors = "File contains real(ip) declarations, it shoud be real(rp)";
+			push @errList, $errors;			
+		}
+		if ($content =~ m/integer\(rp\)/i) {
+			my $errors = "File contains integer(rp) declarations, it shoud be integer(ip)";
+			push @errList, $errors;			
+		}
+		while($content =~ m/(rexcha\s*\(kfl)/gi) {
+			my $errors = "It contains a call to rexcha with a kfl parameter:$1";
+			push @errList, $errors;
+		}
+		while($content =~ m/(gpcar\s*\(ndime,pnode,)/gi) {
+			my $errors = "It contains a call to gpcar with ndime,pnode parameters:$1";
+			push @errList, $errors;
+		}
+		while($content =~ m/(gphes\s*\(ntens,pnode,)/gi) {
+			my $errors = "It contains a call to gphes with ntens,pnode parameters:$1";
+			push @errList, $errors;
+		}
+		while($content =~ m/(gpsha\s*\(igaus)/gi) {
+			my $errors = "It contains a call to gpsha with igaus parameter:$1";
+			push @errList, $errors;
+		}
+		while($content =~ m/(gpsha\s*\(pgaus)/gi) {
+			my $errors = "It contains a call to gpsha with pgaus parameter:$1";
+			push @errList, $errors;
+		}
+		while($content =~ m/(gpsha\s*\(mnode.*intent)/gi) {
+			my $errors = "It contains a call to gpsha with mnode parameter:$1";
+			push @errList, $errors;
+		}
+		while($content =~ m/(,,)/gi) {
+			my $errors = "It contains a \",,\"";
+			push @errList, $errors;
+		}		
+		if (scalar(@errList) > 0) {
+			$fileErr->{errors} = [ @errList ];
+			push @report, $fileErr;
+		}
+	}
+}
+
+#create validations report
+$errors;
+if (scalar(@report) > 0) {
+	$errors = "---------------------------------------------------------------------\n";
+	$errors = "-------------------------------ERRORS!!!!----------------------------\n";
+	$errors = "---------------------------------------------------------------------\n";
+}
+for $i ( 0 .. $#report ) {
+     my $file = $report[$i]->{file};
+     $errors = $errors . "------------------------File:$file\n";
+     foreach $j ( 0 .. $#{ $report[$i]->{errors} } ) {
+	$message = $report[$i]->{errors}[$j];
+        $errors = $errors . "----ERROR!! $j: $message\n";
+     }
+     $errors = $errors . "-----------------------------------------------------------------------\n";
+}
+
+if ($errors) {
+	print STDERR $errors;
+	exit(1);
+}
+
+exit(0);

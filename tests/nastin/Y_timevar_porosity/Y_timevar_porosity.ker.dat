@@ -1,0 +1,47 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+ PROPERTIES
+      MATERIAL=1
+         DENSITY   = CONSTANT, PARAMETER=  1.1     $ in g/cm3 (40% glycerol @ 20C)
+         VISCOSITY = CONSTANT, PARAMETER=  0.0372  $ in poise
+      END_MATERIAL
+      MATERIAL=2
+         DENSITY   = CONSTANT, PARAMETER=  1.1     $ in g/cm3 (40% glycerol @ 20C)
+         VISCOSITY = CONSTANT, PARAMETER=  0.0372  $ in poise
+         POROSITY  = FUNCTION, TIME_FUNCTION= poroa
+      END_MATERIAL
+ END_PROPERTIES
+
+  COUPLING
+$    NASTIN ALEFOR
+  END_COUPLING
+
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+$    DIVISION = 1
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+
+  TIME_FUNCTIONS
+     FUNCTION=poroa, DISCRETE, NUMBER_OF_SAMPLES=6
+       INCLUDE porosi.func
+     END_FUNCTION
+  END_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

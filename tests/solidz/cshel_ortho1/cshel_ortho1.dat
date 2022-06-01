@@ -1,0 +1,26 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  cshell_ortho1
+  CODE:                  1
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, PRESCRIBED
+  TIME_INTERVAL:         0.0, 1.0
+  TIME_STEP_SIZE=        1.0
+  NUMBER_OF_STEPS=       1
+  MAXIMUM_NUMBER_GLOBAL= 1
+  $------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING:
+      METHOD:            METIS
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

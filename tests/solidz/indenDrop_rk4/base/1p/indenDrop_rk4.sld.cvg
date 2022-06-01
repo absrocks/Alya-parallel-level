@@ -1,0 +1,13 @@
+# --| ALYA RBO Convergence
+# --| Columns displayed:
+# --|                                                                    
+# --|  1. Time step           2. Global Iteration    3. Inner Iteration  
+# --|  4. Current time        5. Time increment                          
+# --|  6. Linear displ. UX    7. Linear displ. UY    8. Linear displ. UZ 
+# --|  9. Linear veloc. VX   10. Linear veloc. VY   11. Linear veloc. VZ 
+# --| 12. Linear accel. AX   13. Linear accel. AY   14. Linear accel. AZ 
+# --| 15. Linear force. FX   16. Linear force. FY   17. Linear force. FZ 
+# --| 18. Elapsed CPU time                                               
+# --|                                                                    
+            1          1          1   0.50000000E-003   0.00000000E+000   0.00000000E+000   0.00000000E+000  -0.22617013E+001   0.00000000E+000   0.00000000E+000  -0.45258550E+004   0.00000000E+000   0.00000000E+000  -0.98100000E+004   0.00000000E+000   0.00000000E+000   0.00000000E+000   0.71427107E-001
+            2          1          1   0.10000000E-002   0.00000000E+000   0.00000000E+000   0.00000000E+000  -0.45258550E+001   0.00000000E+000   0.00000000E+000  -0.45307600E+004   0.00000000E+000   0.00000000E+000  -0.98100000E+004   0.00000000E+000   0.00000000E+000   0.00000000E+000   0.37739277E-002

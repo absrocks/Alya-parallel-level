@@ -1,0 +1,14 @@
+Hi,
+
+Attached are the object files, both in integer 64 bit and standard version.
+
+As the sequential version, they need to be linked with damg_mumps.f90.
+
+As you mentioned, mkl is also needed, in fact for BLAS/LAPACK
+
+In parallel environment, it is strongly recommended to use the sequential (non-threaded) version of mkl (link option -lmkl_sequential or so).
+Otherwise, mkl will launch multiple threads that will compete with other MPI instances, leading to a significant slow down except if you use only one MPI instance per computing node (in that case, the benefit of multithreaded mkl is tiny, anyway).
+
+Regards,
+
+Yvan

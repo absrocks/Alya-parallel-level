@@ -1,0 +1,50 @@
+
+
+
+        --------
+     |- A L Y A: fluidda
+        --------
+
+
+
+        -------------------
+     |- SUMMARY OF MAKEFILE
+        -------------------
+
+
+
+        |- USER AND SYSTEM:
+
+           COMPILED BY:      beatriz
+           DATE:             Wed Mar 13 17:39:54 CET 2019
+           HOSTNAME:         beatrizs-MacBook-Pro
+           ARCHITECTURE:     i386
+           OPERATING SYSTEM: Darwin 18.2.0
+
+        |- F90 AND C COMPILERS:
+
+           F90:             mpif90
+           FPPFLAGS:        -x f95-cpp-input
+           FCFLAGS:         -c -J$O -I$O -ffree-line-length-none -fimplicit-none
+           FOPT:            -O1
+           CSALYA:          -DMETIS
+
+
+        -----------------------
+     |- SUMMARY OF SVN REVISION
+        -----------------------
+
+
+
+        Path: .
+        Working Copy Root Path: /Users/beatriz/Alya/respir
+        URL: svn+ssh://bsc21240@mn3.bsc.es/gpfs/projects/bsc21/svnroot/Alya/branches/respir
+        Relative URL: ^/branches/respir
+        Repository Root: svn+ssh://bsc21240@mn3.bsc.es/gpfs/projects/bsc21/svnroot/Alya
+        Repository UUID: 2cd113d9-5f18-0410-b867-96f721f0e0d9
+        Revision: 12292
+        Node Kind: directory
+        Schedule: normal
+        Last Changed Author: bsc21240
+        Last Changed Rev: 12281
+        Last Changed Date: 2019-03-12 16:24:11 +0100 (Tue, 12 Mar 2019)

@@ -1,0 +1,58 @@
+$-------------------------------------------------------------------
+$
+$ coh_mshDiv_3d
+$ Details:   Mesh in 3-d
+$            Dimensions:         8 x 8 x 1 mm
+$            Element size:       0.5x2 mm
+$            Cohesive thickness: 0.01 mm
+$
+$ Units:     SI (mm)
+$
+$ Reference: -
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL=           1
+    DENSITY=            1.6E-9
+    CONSTITUTIVE_MODEL: ORTHO \
+      138.4E+3 8.54E+3 8.54e+3 0.311 0.311 0.45 4.429E+3 4.429E+3 2.9448E+3
+    $ ,,,,,,, MAT CSYS ,,,,,,
+    CSYS_MATERIAL: FIELD=1, ORIENTATION, TYPE=GLOBAL, ROTAXIS=3
+    $ ,,,,,, COHESIVE,,,,,,
+    MATERIAL           = 2
+    DENSITY            = 1.6E-10 5.0e+4
+    COHESIVE_MODEL:     TURON, ORIGINAL \
+      0.308 0.828 56.6 5.0e+4 1.75 0.0
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT  STEP = 0
+  POSTPROCESS PARTI
+  POSTPROCESS ELNOR
+  POSTPROCESS PMATE
+  POSTPROCESS ORIEN
+  POSTPROCESS AXIS1
+  POSTPROCESS AXIS2
+  POSTPROCESS AXIS3
+  POSTPROCESS CHARA
+  POSTPROCESS BOCOD
+  POSTPROCESS BOSET
+  POSTPROCESS ELSET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+     1 111 0.0 0.0 0.0
+     2 100 0.0 0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+

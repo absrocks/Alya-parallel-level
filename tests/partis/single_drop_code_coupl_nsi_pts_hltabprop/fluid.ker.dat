@@ -1,0 +1,54 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL: 1
+      DENSITY:       CONSTANT, VALUE= 1.127 
+      VISCOSITY:     CONSTANT, VALUE= 1.918e-5
+      SPECIFIC_HEAT: CONSTANT, VALUE= 1.023e3
+      CONDUCTIVITY:  CONSTANT, VALUE= 0.02662 
+    END_MATERIAL
+  END_PROPERTIES
+
+  GRAVITY:       NORM=9.81, GX=0.0,GY=-1.0,GZ=0.0
+  TEMPERATURE:   SPACE_TIME_FUNCTION=T_CONSTANT
+  CONCENTRATION: SPACE_TIME_FUNCTION=C_CONSTANT
+
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+  END_ELSEST
+
+  MESH
+    DIVISION=0
+  END_MESH
+  SPACE_&_TIME_FUNCTIONS
+    $
+    $  Dry air enthalpies:
+    $  298.0  K: -112.326666559
+    $  373.15 K: 76094.4256129
+    $  673.15 K: 389117.295797 
+    $ 
+
+    FUNCTION=T_CONSTANT
+      76094.4256129
+    END_FUNCTON
+
+    FUNCTION=C_CONSTANT, DIMENSION=4
+       0.0 
+       0.0 
+       0.0
+       0.0  
+    END_FUNCTON
+
+  END_SPACE_&_TIME_FUNCTIONS
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+  STEPS=10
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

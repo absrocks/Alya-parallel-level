@@ -1,0 +1,31 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "rotation2d.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "This tests checks if the Coriolis and Centrifigual forces together with no inertial boundary conditions\nare well implemented. It solves the flow in a 2D circle in a rotating frane of reference (angular velocity w)\nand with a Dirichlet boundary condition u = -w x r on the wall. The exact linear solution is therefore\nu = - w x r together with p = cst (here the constant is set to unity).",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 4,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "rotation2d",
+    "postprocess": "alya2pos"
+}

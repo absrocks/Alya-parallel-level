@@ -1,0 +1,53 @@
+{
+    "authors": [
+        "daniel.mira@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "Interior01.ensi.GRATE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "Interior01.ensi.TEMPE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "vortex2D.ensi.GRATE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "vortex2D.ensi.TEMPE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "vortex2D.ensi.VELOC-000002",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "test coupling libple",
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 4 [ALYA] Interior01 --name DIRIC [SEP] [NP] 4 [ALYA] vortex2D --name NEUMA",
+                "postprocess": "[POST] Interior01; [POST] vortex2D"
+            },
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "ple_cht"
+    ],
+    "modules": [
+        "temper",
+        "nastin",
+        "alefor"
+    ],
+    "name": "plepp03",
+    "postprocess": "alya2pos"
+}

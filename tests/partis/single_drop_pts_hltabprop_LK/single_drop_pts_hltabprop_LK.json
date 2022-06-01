@@ -1,0 +1,64 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "single_drop_pts_hltabprop_LK.pts.res-col6.out",
+            "method": "absolute",
+            "tolerance": "1.0e-9"
+        },
+        {
+            "file": "single_drop_pts_hltabprop_LK.pts.res-col9.out",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "single_drop_pts_hltabprop_LK.pts.res-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-5"
+        },
+        {
+            "file": "single_drop_pts_hltabprop_LK.pts.res-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "single_drop_pts_hltabprop_LK.pts.res-col15.out",
+            "method": "absolute",
+            "tolerance": "1.0e-11"
+        }
+    ],
+    "description": "Heat and mass transfer of a single droplet with built in water liquid properties and a flamelet table with heat loss with Langimur-Knudsen evaporation model.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 6 9 13 14 15; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 6 9 13 14 15; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].pts.res 6 9 13 14 15; echo | [POST] [NAME]"
+            },
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "partis"
+    ],
+    "name": "single_drop_pts_hltabprop_LK",
+    "postprocess": "mpio2txt"
+}

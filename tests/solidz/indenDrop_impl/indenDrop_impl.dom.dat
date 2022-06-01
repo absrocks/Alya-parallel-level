@@ -1,0 +1,39 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 901
+  ELEMENTS          = 696
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 360
+  MATERIALS         = 1
+  FIELDS            = 1
+    FIELD = 1, DIMENSIONS=3, NODES
+  END_FIELDS
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       0
+  SCALE:                           XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./indenDrop_impl.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./indenDrop_impl.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./indenDrop_impl.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+  INCLUDE ./indenDrop_impl.fie.dat
+END_FIELDS
+$-------------------------------------------------------------------
+

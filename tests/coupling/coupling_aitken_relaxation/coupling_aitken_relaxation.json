@@ -1,0 +1,43 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "coupling_aitken_relaxation_fld-PRESS-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1e-04"
+        },
+        {
+            "file": "coupling_aitken_relaxation_sld-DISPL-00000001.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1e-04"
+        }
+    ],
+    "description": "Test Aitken relaxation for FSI ",
+    "enabled": true,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] coupling_aitken_relaxation_sld [SEP] [NP] 3 [ALYA] coupling_aitken_relaxation_fld",
+                "postprocess": "[POST] -m coupling_aitken_relaxation_sld; [POST] -m coupling_aitken_relaxation_fld"
+            },
+            "mpi": 6,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "i4"
+    ],
+    "modules": [
+        "nastin",
+        "solidz",
+        "alefor"
+    ],
+    "name": "coupling_aitken_relaxation",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

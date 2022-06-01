@@ -1,0 +1,42 @@
+$------------------------------------------------------------
+NUMERICAL_PROBLEM
+  SUBDOMAINS=    2
+END_NUMERICAL_PROBLEM
+$------------------------------------------------------------ 
+ELEMENT_SEARCH_STRATEGY
+  MAX_TOLERANCE= 1.0
+  INC_TOLERANCE= 10.0
+END_ELEMENT_SEARCH_STRATEGY
+$------------------------------------------------------------ 
+SUBDOMAINS
+  ELEMENTS
+    INCLUDE dodeme.dod.fix     
+  END_ELEMENTS 
+END_SUBDOMAINS 
+$------------------------------------------------------------ 
+INTERFACES
+$  SMOOTHING: SMART
+  BOUNDARY_TYPE  
+     0 1 
+     2 0
+  END_BOUNDARY_TYPE
+  DEFINITION: 1
+    INTERPOLATED_VARIABLE:EXTENSION
+$ROBIN
+$ESSENTIAL
+$EXTENSION
+    TYPE_TOPOLOGY:         CHIMERA
+  END_DEFINITION
+  DEFINITION: 2
+    INTERPOLATED_VARIABLE:EXTENSION
+$ROBIN
+$ESSENTIAL
+$EXTENSION
+$NATURAL
+    TYPE_TOPOLOGY:         PATCH
+  END_DEFINITION
+  OVERLAPPING :no
+END_INTERFACES
+$------------------------------------------------------------ 
+
+ 

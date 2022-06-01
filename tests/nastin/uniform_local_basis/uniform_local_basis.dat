@@ -1,0 +1,22 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavtri03
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0,10.0
+  TIME_STEP_SIZE=         0.003
+  NUMBER_OF_STEPS=        200
+  NASTIN_MODULE:          On
+  END_NASTIN_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+$    HYBRID_PARALLELIZATION: OPENMP, COLORING
+$    OPENMP
+$      ELEMENT_CHUNK=10
+$    END_OPENMP
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

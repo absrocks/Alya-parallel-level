@@ -1,0 +1,33 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=           24
+  ELEMENTS=               12
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=      12
+  BOUNDARIES=             20
+  ZONES=                   1
+  SUBDOMAINS=              2
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 0  
+  BOUNDARY_ELEMENT:                 ON
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  solver-dd.geo.dat
+  SUBDOMAINS
+    INCLUDE  solver-dd.dod.fix
+  END_SUBDOMAINS
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+  INCLUDE  solver-dd.set.dat  
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  solver-dd.fix.dat  
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

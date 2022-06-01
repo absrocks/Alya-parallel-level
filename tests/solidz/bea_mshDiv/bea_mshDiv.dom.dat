@@ -1,0 +1,38 @@
+$------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 1332
+  ELEMENTS          = 864
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 288
+  MATERIALS         = 1
+  FIELDS            = 1
+    FIELD = 1, DIMENSIONS=1, ELEMENTS
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       8
+  SCALE:                           XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./bea_mshDiv.geo.dat
+END_GEOMETRY
+$------------------------------------------------------------
+SETS
+  INCLUDE ./bea_mshDiv.set.dat
+END_SETS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./bea_mshDiv.fix.dat
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------
+FIELDS
+  INCLUDE ./bea_mshDiv.fie.dat
+END_FIELDS
+$------------------------------------------------------------

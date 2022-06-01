@@ -1,0 +1,24 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+ ON_LAST_MESH
+ START_POSTPROCES_AT,      STEPS = 0
+ $POSTPROCESS ELNUM,        STEPS = 1
+ $POSTPROCESS PONUM,        STEPS = 1
+ $POSTPROCESS CODNO,        STEPS = 1
+ $POSTPROCESS CODBO,        STEPS = 1
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------

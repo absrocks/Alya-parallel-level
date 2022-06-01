@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "solver-dd.post.res",
+            "method": "absolute",
+            "tolerance": "1e-10"
+        }
+    ],
+    "description": "Dirichlet-Dirichlet coupling inside the solver for linear temperatue solution. To test kernel coupling",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "solver-dd",
+    "postprocess": "alya2pos"
+}

@@ -1,0 +1,93 @@
+$-------------------------------------------------------------------
+$
+$ patch2d_rf
+$ Author:  Gerard Guillamet
+$ Details: Patch test for validation of reaction forces.
+$          Plane stress is assumed
+$          O.C. Zienkiewicz & R.L. Tailor. The finite
+$          element method Volume 1, The Basis. p268.
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+    PLANE: STRESS
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL          = 1
+    CONSTITUTIVE_MODEL: ISOLIN \
+      1000. 0.3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+    SOLVER:            CG
+    CONVERGENCE:       ITERA=30, TOLER=1.0E-10
+    PRECONDITIONER:    DIAGONAL, LEFT
+    RESIDUAL:          RHS
+    OPTIONS:           ZERO_FIXITY
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  CONVERGENCE_TOLER=   1.0e-6
+  MAXIMUM_ITERATION=   20
+  RESIDUAL:            DISPL
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP = 0
+  POSTPROCESS DISPL
+  POSTPROCESS FRXID
+  POSTPROCESS SIGMA
+  NODE_SET
+    FRXIX
+    FRXIY
+  END_NODE_SET
+  WITNESS_POINTS
+    FRXIX
+    FRXIY
+    SIGXX
+    SIGYY
+    SIGXY
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1 & 4  11  0.0 0.0
+    1 & 2  10  0.0 0.0, MODULE_FUNCTION= 1
+    2 & 3  10  0.0 0.0, MODULE_FUNCTION= 2
+    3 & 4  10  0.0 0.0, MODULE_FUNCTION= 3
+  END_CODES
+$-----------------
+  FUNCTIONS
+    TOTAL_NUMBER = 3
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE
+      SHAPE_DEFINITION
+        2
+        0.0 0.0    0.0
+        1.0 0.004  0.0
+      END_SHAPE_DEFINITION
+      FUNCTION_NUMBER: 2
+      TIME_SHAPE: DISCRETE
+      SHAPE_DEFINITION
+        2
+        0.0 0.0    0.0
+        1.0 0.004 -0.00186
+      END_SHAPE_DEFINITION
+      FUNCTION_NUMBER: 3
+      TIME_SHAPE: DISCRETE
+      SHAPE_DEFINITION
+        2
+        0.0 0.0    0.0
+        1.0 0.0   -0.0012
+      END_SHAPE_DEFINITION
+   END_CONDITION
+ END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+

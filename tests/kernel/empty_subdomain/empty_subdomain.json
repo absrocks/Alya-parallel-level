@@ -1,0 +1,32 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "empty_subdomain.post.msh",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "empty_subdomain.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        }
+    ],
+    "description": "Run temper with an empty subdomain... waouuuu",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "empty_subdomain",
+    "postprocess": "alya2pos"
+}

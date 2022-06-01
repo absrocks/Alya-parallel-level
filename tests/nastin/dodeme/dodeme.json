@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "dodeme.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Triangular 2 dimensional extensions with dodeme services and nastin module imposing manufacture linear solution.\nThe error has to be zero",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "dodeme",
+    "postprocess": "alya2pos"
+}

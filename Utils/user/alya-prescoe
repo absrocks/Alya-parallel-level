@@ -1,0 +1,163 @@
+#!/usr/bin/perl
+#
+#
+print "\n";
+print "--| alya-prescoe |-- \n";
+print "\n";
+print "--| Write the (gnu) plot table-like file for 2D profile Cp distribution.\n";
+print "\n";
+
+$fils= $ARGV[0];
+
+if ((@ARGV < 1) || ($ARGV[0] =~ /-h/)) { 
+  print "    Usage:   alya-prescoe \"file-name.nsa.p2d\" \n\n";
+  exit 1;
+}
+
+$outfils = $fils . "-table";
+
+print "--| First reading...\n";
+open (IN,$fils);
+$i=0;
+$kread=0;
+while (<IN>) {
+    @myline = split;
+    if ($kread == 0) {
+	if ($myline[1] =~ /oints/){
+	    $npoin= $myline[3];
+	    $kread = 1;	    
+	}
+    }
+    if ($kread == 1) {
+	if ($myline[1] =~ /terations/){$i++}	
+    }    
+}
+$niter= $i;
+close(IN);
+
+print "--| Done! \n";
+print "\n";
+print "--| Total number of iterations to be read :   $niter \n";
+print "\n";
+
+@pressures[$npoin*$niter] = 0;
+@coordinates = ();
+@times[$niter]= 0;
+@iterations[$niter*3]= 0;
+
+print "--| Loading pressures...\n";
+print "\n";
+
+open (IN,$fils);
+$kread=0;
+$iiter=0;
+while (<IN>) {
+    @myline = split;
+    if ($kread == 0) {
+	if ($myline[1] =~ /oints/){
+	    $kread = 1;
+	}
+
+# coordinates reading
+
+    } elsif ($kread == 1) {
+	$ipoin= $myline[0];
+	
+	push @coordinates, {
+	    XCOOR  => $myline[2],
+	    YCOOR  => $myline[3],
+	    NUMBER => $ipoin,   
+	};	
+	if ($ipoin == $npoin) {
+	    $kread = 2;
+	}
+
+    }elsif ($kread == 2) {    
+    
+# pressures reading
+    
+    	if ($myline[1] =~ /terations/){
+	    $iiter++;
+	    $itoti= ($iiter-1)*3 + 1;
+	    $iterations[$itoti  ]= $myline[3];
+	    $iterations[$itoti+1]= $myline[4];
+	    $iterations[$itoti+3]= $myline[5];
+	    $kread = 3;
+	}
+	
+    }elsif ($kread == 3) {
+	if ($myline[1] =~ /time/){
+	    $times[$iiter]= $myline[3];
+	    $kread = 4;
+	    }
+    
+    }elsif ($kread == 4) {
+	if ($myline[1] =~ /oints/){$kread = 5}
+	
+    }elsif ($kread == 5) {
+	$ipoin= $myline[0];
+	$itotp= ($iiter - 1) * $npoin + $ipoin;
+	$pressures[$itotp]=$myline[2];
+#	print " $pressures[$itotp] \n";
+	if ($ipoin == $npoin) {	    
+	    $kread = 2;            # back to pressures reading
+	}
+    }    
+}
+close(IN);
+
+print "--| Total number of iterations read :   $niter \n";
+print "--| Done! \n";
+print "\n";
+
+print "--| Writing file :   $outfils ...\n";
+print "\n";
+
+$wout = ">".$outfils;	    
+
+open (OUT,$wout);
+
+print OUT "\# \n";    	
+print OUT "\# \n";    	
+print OUT "\# Pressure coefficients table \n";    	
+print OUT "\# Columns: \n";    	
+print OUT "\# 1. xcoor  2. ycoor \n";    	
+print OUT "\# ";    	
+  
+$iiter=1;  
+while ($iiter <= $niter){
+    $jiter = $iiter +2;
+    print OUT "$jiter\. $times[$iiter]  ";    	
+    $iiter++;
+}
+print OUT " \n";
+print OUT "\# \n";    	
+print OUT "\# \n";    	
+
+sub byxcoor {
+    $a->{XCOOR} <=> $b->{XCOOR};
+}
+sub byycoor {
+    $a->{YCOOR} <=> $b->{YCOOR};
+}
+
+@cox = sort byxcoor  @coordinates;
+@coy = sort byycoor  @coordinates;
+
+$ipoin=1;
+while ($ipoin <= $npoin) {
+    $iiter=1;
+    print OUT " $coordinates[$ipoin-1]->{XCOOR}  $coordinates[$ipoin-1]->{YCOOR}";    
+    while ($iiter <= $niter){
+	$itotp= ($iiter - 1) * $npoin + $ipoin;
+	print OUT "  $pressures[$itotp]";    	
+	$iiter++;
+    }
+    print OUT " \n";
+    $ipoin++;
+}
+
+close (OUT);
+print "--| Done! \n";
+print "\n";
+

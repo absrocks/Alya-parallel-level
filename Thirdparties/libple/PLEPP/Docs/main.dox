@@ -1,0 +1,172 @@
+/**
+  @mainpage  Title of Main Page
+             C/C++, Fortran, Python interface for 
+             "Parallel Location and Exchange" library (PLE) 
+
+  @author     J. M. Zavala-Aké, mzavala@bsc.es 
+  @date       Jun, 2014 
+  @version    0.1 (alpha)
+
+  This file contains the 
+  @ref pagename01, 
+  @ref pagename10, 
+  @ref pagename04, 
+  @ref pagename05,
+  @ref pagename06,   
+  @ref pagename08
+  
+*/
+
+
+/**
+  @page pagename01 Examples
+  @brief  General syntaxis 
+  @author J. M. Zavala Aké
+
+  @b C++ example  
+  @code
+    ...
+    ptr_class = new CommDom(); 
+    ptr_class->init();
+    ...
+    ptr_class->set_app_name(cname);
+    ptr_class->set_app_type(ctype);
+    ptr_class->__genesis__();
+    ...
+    ptr_class->set_world_comm(world_comm);
+    ptr_class->name_to_id(&app_id, &n_apps, &local_comm);
+    ptr_class->__create_interaction__();
+    ptr_class->create_commij(local_comm);
+    ...
+  @endcode
+
+
+  @b Python example  
+  @code
+    ...
+    CD = Commdomm.CommDom()
+    CD.init()
+    CD.set_app_type(app_type);
+    CD.set_app_name(app_name);
+    CD.set_world_comm(world_comm)
+
+    local_comm = MPI.COMM_NULL
+    local_comm = CD.set_mpi_comms()
+    local_rank = local_comm.Get_rank()
+    local_size = local_comm.Get_size()
+    ...
+  @endcode
+
+
+  @b Fortran example  
+  @code
+    ...
+    call commdom_create()
+    call commdom_set_names(trim(my_surname), len_trim(my_surname), trim(my_name), len_trim(my_name))
+    call commdom_create_commij(world_comm, local_comm)
+    call MPI_Comm_rank(local_comm, local_rank, error)
+    call MPI_Comm_size(local_comm, local_size, error)
+    ...
+  @endcode
+
+
+  @see  commdom_wrapper.cpp
+
+  @example par_commdom.f90
+  @example coupling_syrthes01.py
+  @example coupling_saturne01.py
+
+  @example main_loader.f90
+  @example alya_runcase_coupling.py
+  @example alya_runcase_coupling_example.sh 
+
+*/
+
+
+/**
+  @page pagename10 Compilation  
+  @brief  General syntaxis
+  @author J. M. Zavala Aké
+
+  1) Into \$(COMMDOM_PATH)/Makefile.in set
+  @code
+    HOME     = $(COMMDOM_PATH)
+    ROOT_PLE = $(PLE_PATH) 
+  @endcode 
+    
+
+  @b Python 
+
+  Into \$(COMMDOM_PATH)/Wrappers/Python
+  
+  In this case swig is necessary  
+  @code
+    make Commdomm
+  @endcode 
+
+  Add the library path \$(COMMDOM_PATH)/Wrappers/Python 
+  to every python script using
+  @code 
+    ...
+    sys.path.append($(COMMDOM_PATH)/Wrappers/Python)
+    ...
+  @endcode 
+
+
+  @b Fortran 
+  
+  Into \$(COMMDOM_PATH)/Wrappers/Fortran
+  @code
+    make test01
+  @endcode 
+
+  Add the library path \$(COMMDOM_PATH)/Wrappers/Fortran to .bashrc 
+  @code
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(COMMDOM_PATH)/Wrappers/Fortran
+  @endcode
+
+
+
+*/
+
+
+/**
+  @page pagename08 Syrthes  
+  @brief  General syntaxis
+  @author J. M. Zavala Aké
+
+
+  $(SATURNE_PATH)/Execs/lib/python2.7/site-packages/code_saturne/cs_case_coupling.py
+  @code 
+    ...
+    elif (d.get('solver') == 'SYRTHES' or d.get('solver') == 'ALYA_CFD'):
+    ...
+  @endcode 
+
+
+
+@code
++
+|_syrthes-kernel/src/syrthes.c
+  |_syrthes
+    |_...
+    |_syrthes_initmpi
+      |_...
+      |_MPI_Comm_split(MPI_COMM_WORLD, app_num, w_rank, &(sdparall->syrthes_comm_world));
+      |_syr_cfd_coupling_mpi_init(cfd.name, sdparall->syrthes_comm_world);
+      |_...
+      |_"End of MPI initialization"
+      |_...
+    |_...
+    |_syrthes-kernel/src/cfd_init_couplage.c 
+      |_syrthes-kernel/src/syr_cfd_coupling.c
+        |_syr_cfd_coupling_init_comm._init_all_mpi_cfd 
+          |_ ... 
+          |_strncmp(ai.app_type, "NEPTUNE_CFD",  11) == 0 ||
+          |_strncmp(ai.app_type, "ALYA_CFD",      8) == 0
+          |_ ... 
+          |_ple_coupling_mpi_set_get_info
+@endcode
+
+*/
+

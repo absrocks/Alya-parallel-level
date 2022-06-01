@@ -1,0 +1,34 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROPERTIES
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELSEST
+    STRATEGY:    Bin
+    NUMBER_BINS= 20,20,20
+  END_ELSEST
+  MESH
+    MULTIPLICATION= 0
+    EXTENDED_GRAPH = ON
+    LOCAL_BASIS, NUMBER=1
+      LOCAL_BASIS: 1, BASIS: CYLINDRIC, PARAMETERS: 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0
+    END_LOCAL_BASIS
+  END_MESH
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTIONS=CRIMPING, DIMENSION=1
+      1.2-0.4*t
+    END_FUNCTIONS
+   $ FUNCTIONS=CHARGE, DIMENSIONS=1
+   $   1.2+0.4*t
+   $ END_FUNCTIONS
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  On_last_mesh
+ $ POSTPROCESS CODBB
+ $ POSTPROCESS CODNO
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------

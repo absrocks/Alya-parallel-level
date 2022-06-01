@@ -1,0 +1,46 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 2
+  COUPLING=1
+     TARGET, MODULE:    TEMPER
+     SOURCE, MODULE:    TEMPER
+     TARGET, CODE:      2                          $ CODE:2, ALYA:NEUMANN
+     SOURCE, CODE:      1                          $ CODE:1, ALYA:DIRICHL
+     WHERE_TYPE:        CODE, NUMBER=2             $ Where I send (The boundary of the other code)...
+    $WHAT=              RESIDUAL                   $ What  I send (What the other code recieve)... 
+    $VARIABLE=          RESIDUAL                   $ 
+     WHAT=              UNKNOWN
+     VARIABLE=          HFLUX
+     TYPE:              BOUNDARY_INTERPOLATION
+     RELAXATION=        1.0  
+     SEND_AND_COMPUTE:  BEGZON BEFORE, FREQUENCY= 1
+     RECEIVE_ASSEMBLE:  ENDZON BEFORE, FREQUENCY= 1
+  END_COUPLING
+  COUPLING=2
+     TARGET, MODULE:    TEMPER
+     SOURCE, MODULE:    TEMPER
+     TARGET, CODE:      1
+     SOURCE, CODE:      2
+     WHERE_TYPE:        CODE, NUMBER=4  
+     WHAT=              UNKNOWN
+     VARIABLE=          TEMPERATURE
+     TYPE:              BOUNDARY_INTERPOLATION
+     RELAXATION=        1.0  
+     SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY= 1
+     RECEIVE_ASSEMBLE:  ENDZON BEFORE, FREQUENCY= 1
+  END_COUPLING
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+
+  BLOCK, NUMBER=1
+    COUPLINGS=  1,2
+    ITERATIONS= 1     
+    TOLERANCE=  1.0e-5
+  END_BLOCK
+
+  TIMES
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+

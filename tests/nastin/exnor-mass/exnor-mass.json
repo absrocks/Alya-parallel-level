@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exnor-mass.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-15"
+        }
+    ],
+    "description": "Test the exterior normal and mass matrix with internal boundaries and periodicity",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 2
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "exnor-mass",
+    "postprocess": "alya2pos"
+}

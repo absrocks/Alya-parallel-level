@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "lineper.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Channel flow. Fractional step where pressure is solved with linelet preconditioner and periodicity. Used to test RK in stationary state and linelet with periodicity",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 2
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "lineper",
+    "postprocess": "alya2pos"
+}

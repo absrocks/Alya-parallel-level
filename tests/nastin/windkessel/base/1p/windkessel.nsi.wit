@@ -1,0 +1,23 @@
+# ALYA Witness set results
+#
+# HEADER
+# ISET , Column :   1
+# VELOX , Column :   2
+# VELOY , Column :   3
+# VELOZ , Column :   4
+# PRESS , Column :   5
+# NUMVARIABLES :       5
+# NUMSETS      :       1
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+         1  0.30000000E+002  0.00000000E+000  0.00000000E+000  0.00000000E+000
+# Iterations  =       1      1     13
+# Time        =  0.40000000E-003
+         1  0.29778660E+002 -0.21357769E-001  0.57528575E-004  0.67463777E+003
+# Iterations  =       2      1     14
+# Time        =  0.80000000E-003
+         1  0.29746721E+002 -0.31048659E-001  0.10807678E-002  0.73431103E+003
+# Iterations  =       3      1     14
+# Time        =  0.12000000E-002
+         1  0.29755968E+002 -0.27561178E-001  0.26130038E-002  0.79581464E+003

@@ -1,0 +1,9 @@
+$-------------------------------------------------------------------
+DATA
+  FORMAT:                   ensight
+  MARK_ELEMENTS:            TYPE
+  MULTIPLE_FILE:            OFF
+  BOUNDARY:                 ON
+  ELIMINATE:                NO
+END_DATA
+$-------------------------------------------------------------------

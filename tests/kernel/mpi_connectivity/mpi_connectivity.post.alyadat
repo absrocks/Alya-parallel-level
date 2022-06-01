@@ -1,0 +1,16 @@
+$-------------------------------------------------------------------
+DATA
+  FORMAT:                   gid
+  MARK_ELEMENTS:            subdomain
+  ELIMINATE_BOUNDARY_NODES: YES
+  MULTIPLE_FILE:            OFF
+  BOUNDARY:                 ON
+  ORDER:                    ON
+  SUBDOMAINS, ALL
+  END_SUBDOMAINS
+$  SUBDOMAINS
+$    2
+$  END_SUBDOMAINS
+END_DATA
+$-------------------------------------------------------------------
+ 

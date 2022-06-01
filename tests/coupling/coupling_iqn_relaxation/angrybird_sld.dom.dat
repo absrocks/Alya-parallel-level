@@ -1,0 +1,41 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+  NODAL_POINTS    144
+  ELEMENTS        188
+  BOUNDARIES      96
+
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       TRI03
+
+  FIELDS = 0
+  END_FIELDS
+
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  GROUPS =    10
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE:                            XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                      XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  BOUNDARY_ELEMENT:                 OFF
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE  angrybird_sld.geo.dat
+
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+$$  INCLUDE  angrybird_sld.defsets
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE  angrybird_sld.fix.bou
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------
+FIELDS
+END_FIELDS
+$-------------------------------------------------------------

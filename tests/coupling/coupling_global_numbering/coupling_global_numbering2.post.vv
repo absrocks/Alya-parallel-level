@@ -1,0 +1,64 @@
+BeginZE /Users/houzeaux/Desktop/AlyaTS_new/coupling_global_numbering/coupling_global_numbering2.post.vv
+   x -0.721423089504241943 1.82142305374145508
+   y 1.2655789852142334 -0.265578925609588623
+   z -2.29673671722412109 2.29673671722412109
+   e 0.765578925609588623
+   v 0 0 0
+   r 1
+   m 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+   c 0.550000011920928955 0.5 0
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 2
+   DrawingType 3
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderFast
+   OGLShadow(ShadowBias) 0
+   OGLShadow(AmbientShadows) 0
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 0
+   OGLShadow(DimmedLightFactor) 0
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE /Users/houzeaux/Desktop/AlyaTS_new/coupling_global_numbering/coupling_global_numbering2.post.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+
+BeginPostState
+BeginSingleMesh
+  Num meshes: 0
+  Num sets: 1
+  Num cuts: 0
+  Set: 0
+  State: On
+    Name: "coupling_global_numbering2_QUA04 12"
+    IdSet: 12
+    Color Type: 0
+    Color Ambient: 0.3 0.1 0.1 0.5
+    Color Diffuse: 1 0.3 0.3 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 1
+    Property Transparent: 0
+    Property Style: 3932220
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndSet: 0
+EndSingleMesh
+  Post_Prefs_Vector_Size: 0 32 32 32
+  ResultView: {Id 14} {Contour Fill} ALYA 0.0 TEMPE TEMPE 0.0 4 5
+EndPostState
+

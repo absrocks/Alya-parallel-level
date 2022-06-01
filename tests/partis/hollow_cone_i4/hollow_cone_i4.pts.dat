@@ -1,0 +1,79 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+   MAXIMUM = 1
+   MOMENTUM_TRANSPORT:      ON   
+   THERMODYNAMIC_TRANSPORT: ON
+   TYPE= 1
+      MOMENTUM_MODEL:       FORCE
+      THERMODYNAMIC_MODEL:  ON, FLAMELET_TABLE
+      FORCES:               DRAG: SCHILLER_NEUMANN
+      PROPERTIES
+        LIQ_NAME=               H2O
+        D=                      80.0e-06
+        N_DROPLETS_PER_PARCEL=  3
+        TABLE
+            INCLUDE ./water_turbulent_table.dat
+        END_TABLE
+        YC_SCALING
+            INCLUDE ./water_turbulent_scaling_gen0.dat 
+        END_YC_SCALING
+        HEAT_LOSS
+            INCLUDE ./water_turbulent_scaling_gen1.dat 
+        END_HEAT_LOSS
+      END_PROPERTIES
+  END_TYPE
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+   NEWMARK: GAMMA=0.5, BETA=0.25       $ Diffusive
+   TIME_STEP=  0.006
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  FREQUENCY = 10
+  VARIA, ADD
+    T_INJECTION
+    DIAM_K
+    TEMP_FLUID
+    YVAP_FLUID
+  END_VARIA
+  WITNESS, GEOMETRY
+    NUMBE, ACCUMUL, FREQUENCY=0.5
+    DIA10, AVERAGE, FREQUENCY=0.5
+    DIA32, AVERAGE, FREQUENCY=0.5
+    TEMPE, AVERAGE, FREQUENCY=0.5
+    VELOC, AVERAGE, FREQUENCY=0.5
+    DIA20, AVERAGE, FREQUENCY=0.5
+    TEMP2, AVERAGE, FREQUENCY=0.5
+    VELO2, AVERAGE, FREQUENCY=0.5
+    MASS
+    MFLUX, AVERAGE, FREQUENCY=0.5
+  END_WITNESS
+  POSTPROCESS PARTI $ number of particles
+  POSTPROCESS AVMIE
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS   
+  $
+  $ Number determined by mass flow and uniform size discribution
+  $
+  INJECTOR: 1
+    TYPE=          1
+    $
+    $ Goal: 		theta=45 dTheta=5: thetaMin=40 thetaMax=50
+    $       		thetaMin/thetaMax = rmin/rmax = 0.8
+    $
+    GEOMETRY:      ANNULUS, PARAM= 0.0,0.0,0.0, 3e-3, 2.4e-3, -1.0,0.0,0.0
+    DISTRIBUTION:  UNI_CARTESIAN
+    N_PARTICLES:   MASS_FLO, CONSTANT= 2e-2 
+    STOCHASTIC
+    TEMPERATURE:   CONSTANT, VALUE = 288.0
+    VELOCITY:      SPRAY,    PARAM = 1.5, 50
+    SIZE_DISTRIB:  UNIFORM   PARAM = 2000.0e-06 8000.0e-06
+  END_INJECTOR
+
+
+  INITIAL_TIME=    0.0
+  PERIOD_TIME=     1.0e-20
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

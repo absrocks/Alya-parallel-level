@@ -1,0 +1,62 @@
+$------------------------------------------------------------
+DIMENSIONS
+
+NODAL_POINTS    1331
+ELEMENTS        6000
+BOUNDARIES      1200
+
+  SPACE_DIMENSIONS=             3
+  NODES=                        4
+  SKEW_SYSTEMS=                 0 
+  SLAVES=                       0 
+  NO_SETS 
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 1
+  SCALE: XSCALE = 0.5 , YSCALE = 0.5 , ZSCALE = 0.5 
+END_STRATEGY
+$------------------------------------------------------------
+GEOMETRY
+
+   INCLUDE  FDA_FSI_sld.geo.dat
+
+      MATERIALS, NUMBER=2, DEFAULT=1
+         $INCLUDE material.in
+      END_MATERIALS
+
+   FIELDS, NUMBER = 3
+        FIELD=1, DIMENSION=3, NODES 
+             INCLUDE  FDA_FSI_sld.fiber.dat
+        END_FIELD
+
+        FIELD=2, DIMENSION=1, NODES
+            INCLUDE  FDA_FSI_sld.cell.dat
+        END_FIELD
+        FIELD=3, DIMENSION=4, NODES, DEFAULT= -1.0
+            148 -80 0 0.020
+            156 -80 0 0.020
+            157 -80 0 0.020
+            158 -80 0 0.020
+            166 -80 0 0.020
+        END_FIELD
+    END_FIELDS
+
+END_GEOMETRY
+
+SETS
+    include FDA_FSI_sld.defsets
+END_SETS
+
+BOUNDARY_CONDITIONS, EXTRAPOLATE
+    include FDA_FSI_sld.fix.bou
+
+    MATERIALS, BOUNDARIES
+        CODE=3
+        MATERIAL=2
+        LAYERS=2
+    END_MATERIALS
+
+END_BOUNDARY_CONDITIONS
+ 

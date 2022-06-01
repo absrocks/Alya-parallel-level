@@ -1,0 +1,43 @@
+{
+    "authors": [
+        "daniel.mira@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "fluid.ensi.TEMPE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "fluid.ensi.VELOC-000002",
+            "method": "power",
+            "tolerance": 7
+        },
+        {
+            "file": "solid.ensi.TEMPE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "test coupling libple",
+    "enabled": false,
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 3 [ALYA] fluid --name DIRIC [SEP] [NP] 3 [ALYA] solid --name NEUMA",
+                "postprocess": "[POST] fluid; [POST] solid"
+            },
+            "mpi": 6,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper",
+        "nastin"
+    ],
+    "name": "T150Ma",
+    "postprocess": "alya2pos"
+}

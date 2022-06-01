@@ -1,0 +1,28 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "command": "mpirun -np [MPI] [ALYA] --write write-read; mpirun -np [MPI] [ALYA] --read write-read",
+    "comparisons": [
+        {
+            "file": "write-read-XFIEL.00000001.00000101.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "testing of the parallel restart using parallel SFC",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        ""
+    ],
+    "name": "write-read",
+    "postprocess": "mpio2txt"
+}

@@ -1,0 +1,34 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:               coh_loadCycle_rst
+  CODE=               1
+  LIVE_INFO:          SCREEN
+  LOG_FILE:           ON
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:      GLOBAL, PRESCRIBED
+  TIME_INTERVAL:      0.0, 1.75
+  TIME_STEP_SIZE:     0.25
+  NUMBER_OF_STEPS:    6           
+  $------------------------------------------
+  SOLIDZ_MODULE:      On
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:     ON
+    POSTPROCESS:      MASTER
+    PARTITION_TYPE:   FACES
+    PARTITIONING:
+      METHOD:         FIELD=4
+      EXECUTION_MODE: PARALLEL
+    END_PARTITIONING
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO:               On
+  GEOMETRY:           Off
+  RESTART:            On 
+  POSTPPROCESS:       On 
+  MERGE:              Off
+  END_MERGE
+END_MPI_IO
+$-------------------------------------------------------------------

@@ -1,0 +1,113 @@
+$------------------------------------------------------------
+$
+$ lam_mshDiv
+$ Author:      Gerard Guillamet
+$
+$ Details:     Validation test using the mesh divisor with two
+$              material coordinate systems. The model consist of
+$              an anisotropic layered plate (45/-45) under
+$              pressure loading similar to Spilker et al. 1976.
+$
+$ Dimensions:  a = b = 10in; h = 0.2in (modified respect to Spilker)
+$ BCs:         Simply supported; q = 1.0psi
+$ Mesh(div=0): 10 x 10 x 2 element (one element per layer)
+$ Mesh(div=1): 20 x 20 x 4 element (two element per layer)
+$
+$ Notes:       Displacement is measured at node 5 which is
+$              located at the center bottom of the plate.
+$              N-R iterations are set to 1 in order to force
+$              a linear iteration for a single step.
+$
+$ Units:       USCS (US Units)
+$
+$ Results:     Transverse displacement at plate center:
+$                Alya (div=0)     23.544
+$                Alya (div=1)     42.969
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,,  Bulk Ply 45 ,,,,,,
+    MATERIAL           = 1
+    DENSITY            = 1.6E-9
+    CONSTITUTIVE_MODEL: ORTLIN \
+     40.e+6 1.e+6 1.0e+6 0.25 0.25 0.25 0.5e+6 0.5e+6 0.5e+6
+    $ ,,,,,,  Bulk Ply -45 ,,,,,,
+    MATERIAL           = 2
+    DENSITY            = 1.6E-9
+    CONSTITUTIVE_MODEL: ORTLIN \
+     40.e+6 1.e+6 1.0e+6 0.25 0.25 0.25 0.5e+6 0.5e+6 0.5e+6
+    $ ,,,,,,   MAT CSYS  ,,,,,,
+    CSYS_MATERIAL: FIELD = 1, 2, 3
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+    SOLVER:            CG
+    CONVERGENCE:       ITERA=6500, TOLER=1.0E-6
+    PRECONDITIONER:    DIAGONAL, RIGHT
+    RESIDUAL:          RHS
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL:            DISPL
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-6
+  MAXIMUM_ITERATION:   1
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT, STEP  = 0
+  POSTPROCESS FIXNO
+  POSTPROCESS AXIS1
+  POSTPROCESS AXIS2
+  POSTPROCESS AXIS3
+  POSTPROCESS DISPL
+  NODE_SET
+    DISPZ
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+            1 101 0.0 0.0 0.0 0  $ Back face
+            5 011 0.0 0.0 0.0 0  $ Right face
+        1 & 2 101 0.0 0.0 0.0 0  $ Back-bot edge
+        5 & 2 011 0.0 0.0 0.0 0  $ Right-bot edge
+        4 & 2 001 0.0 0.0 0.0 0  $ Left-bot edge
+        3 & 2 001 0.0 0.0 0.0 0  $ Front-bot-edge
+        1 & 6 101 0.0 0.0 0.0 0  $ Back-top edge
+        5 & 6 011 0.0 0.0 0.0 0  $ Right-top edge
+        1 & 5 111 0.0 0.0 0.0 0  $ Back-right edge
+        1 & 4 101 0.0 0.0 0.0 0  $ Back-left edge
+        5 & 3 011 0.0 0.0 0.0 0  $ Right-front edge
+    4 & 2 & 3 001 0.0 0.0 0.0 0  $ Left-front-bot point
+    5 & 2 & 3 011 0.0 0.0 0.0 0  $ Right-front-bot point
+    4 & 2 & 1 101 0.0 0.0 0.0 0  $ Back-left-bot point
+    1 & 2 & 5 111 0.0 0.0 0.0 0  $ Back-right-bot point
+    1 & 6 & 5 111 0.0 0.0 0.0 0  $ Back-right-top point
+    1 & 6 & 4 101 0.0 0.0 0.0 0  $ Back-left-top point
+    3 & 6 & 5 011 0.0 0.0 0.0 0  $ Front-right-top point
+  END_CODES
+  CODES, BOUNDARIES
+            6   3 0.0 0.0 0.0, MODULE_FUNCTION=  1  $ Pressure (FACE CODE 6)
+  END_CODES
+  $-----------------
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE:      DISCRETE
+      SHAPE_DEFINITION
+        2
+        0.0  0.0
+        1.0 -1.0
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

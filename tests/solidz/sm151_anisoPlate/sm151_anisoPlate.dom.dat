@@ -1,0 +1,39 @@
+$-------------------------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS      = 363
+  ELEMENTS          = 200
+  SPACE_DIMENSIONS  = 3
+  TYPES_OF_ELEMENTS = HEX08
+  BOUNDARIES        = 280
+  MATERIALS         = 1
+  FIELDS            = 1
+    FIELD = 1, DIMENSIONS=1, ELEMENTS
+  END_FIELDS
+END_DIMENSIONS
+$-------------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:                OPEN
+  DOMAIN_INTEGRATION_POINTS:       8
+  SCALE:                           XSCAL=1.0 YSCAL=1.0 ZSCAL=1.0
+  TRANSLATION:                     XTRAN=0.0 YTRAN=0.0 ZTRAN=0.0
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  BOUNDARY_ELEMENT:                OFF
+END_STRATEGY
+$-------------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./sm151_anisoPlate.geo.dat
+END_GEOMETRY
+$-------------------------------------------------------------------
+SETS
+  INCLUDE ./sm151_anisoPlate.set.dat
+END_SETS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  INCLUDE ./sm151_anisoPlate.fix.dat
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+FIELDS
+  INCLUDE ./sm151_anisoPlate.fie.dat
+END_FIELDS
+$-------------------------------------------------------------------
+

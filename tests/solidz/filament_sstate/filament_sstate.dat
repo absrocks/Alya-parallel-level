@@ -1,0 +1,31 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                  filament_sstate
+  CODE:                  1
+  LIVE_INFO:             SCREEN
+  LOG_FILE:              ON
+  OUTPUT:                GID
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:         GLOBAL, FROM_CRITICAL
+  TIME_INTERVAL:         0.0, 8.0
+  NUMBER_OF_STEPS:       1e+6
+  MAXIMUM_NUMBER_GLOBAL: 1
+  $------------------------------------
+  SOLIDZ_MODULE:         ON
+  END_SOLIDZ_MODULE
+  PARALL_SERVICE:        ON
+    POSTPROCESS:         MASTER
+    PARTITION_TYPE:      FACES
+    PARTITIONING:
+      METHOD:            METIS
+    END_PARTITIONING
+    OPENMP
+      ELEMENT_CHUNK=     1
+      COLORING:          MIN_COLOR
+    END_OPENMP
+  END_PARALL_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

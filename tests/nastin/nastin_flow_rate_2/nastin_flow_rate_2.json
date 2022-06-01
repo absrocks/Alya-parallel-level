@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "nastin_flow_rate_2-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Other example to test the mass flow rate with mesh multiplication, rotation of the geometry, and check it does not change in time-",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 10,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "nastin_flow_rate_2",
+    "postprocess": "alya2pos"
+}

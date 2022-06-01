@@ -1,0 +1,28 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  COUPLING
+  END_COUPLING
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_ORIGINAL_MESH
+  STEPS = 5
+$   POSTPROCESS GDEPO
+$   POSTPROCESS SUBDO
+$   POSTPROCESS CODBO 
+$   POSTPROCESS CODNO 
+$   POSTPROCESS VELOCITY
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

@@ -1,0 +1,60 @@
+#! index_app_project 0
+# -*- mode: Conf; -*-
+
+
+
+ 
+
+index::camera::from = -21.7232627868652 13.6901540756226 0.349088847637177
+index::camera::dir = 0.82940000295639 -0.558648467063904 -0.00276670278981328
+index::camera::up = 0.532679557800293 0.792320609092712 -0.297456949949265
+index::camera::aspect = 1
+index::camera::aperture = 0.0329999998211861
+index::camera::focal = 0.0299999993294477
+index::camera::clip_min = 0.00100000004749745
+index::camera::clip_max = 10000
+index::camera::orthographic = no
+app::examiner::predefined_view::startup_update = no
+
+
+index::region_of_interest = -100 -100 -100 100 100 100
+
+#index::debug_configuration::retain_subregion_resources = 1
+#index::debug_configuration::detailed_memory_dump = 1
+
+index::translation = 0 0 0
+index::scaling = 1 1 1
+
+index::subcube_size = 200 200 200
+index::subcube_border_size = 0
+
+#section Scene graph
+app::scene::root::children = irregular_volume_data
+
+## *************************************************************************************************
+app::scene::irregular_volume_data::type = static_scene_group
+app::scene::irregular_volume_data::children = ivol_cmap ivol_data_01 
+
+app::scene::ivol_cmap::type = colormap
+# map_type : procedural, lookup_table
+app::scene::ivol_cmap::map_type = lookup_table
+app::scene::ivol_cmap::map_index = 39
+app::scene::ivol_cmap::domain = -80 27
+app::scene::ivol_cmap::domain_boundary_mode = clamp_to_edge
+
+app::scene::ivol_data_01::type = irregular_volume
+app::scene::ivol_data_01::name = Heart
+app::scene::ivol_data_01::input_file = /home/users/vmehta/coarse_heart_out/coarse_heart_ts-000015.ts
+app::scene::ivol_data_01::box = -10.000 -4.000 -9.000 2.000 12.000 2.000
+app::scene::ivol_data_01::importer = raw
+
+## User-defined data affinity.
+## Set the number of user-defined affinity informations in the project file.
+index::domain_subdivision::use_affinity_only = 0
+index::domain_subdivision::nb_spatial_regions = 1
+## The bounding box for which the first affinity information is defined.
+index::domain_subdivision::spatial_region_0::bbox = -100 -100 -100 100 100 100
+## The first host affinity.
+index::domain_subdivision::affinity_information_0::host = 1
+## The first GPU affinity.
+index::domain_subdivision::affinity_information_0::gpu = 0

@@ -1,0 +1,19 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   swirl-partis
+  CODE=                   1
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed
+  TIME_INTERVAL=          0.0, 1e6
+  TIME_STEP_SIZE=         1.0e-2
+  NUMBER_OF_STEPS=        10 $ after 630 steps the trajectoria should show a closed circle.
+  PARTIS_MODULE:          On
+  END_PARTIS_MODULE
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+

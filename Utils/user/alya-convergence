@@ -1,0 +1,14 @@
+#
+# This script plots convergence
+#
+echo "Press Ctrl-C to quit"
+echo "set xlabel 'Iteration number'" > ./gnuplot.tmp
+echo "set ylabel 'Residual'"        >> ./gnuplot.tmp
+echo "set log y"                    >> ./gnuplot.tmp
+echo "plot '$1.cvg' u 4 t 'NASTIN' w l, '$1.cvg' u 5 t 'TEMPER' w l, '$1.cvg' u 6 t 'CODIRE' w l, '$1.cvg' u 7 t 'TURBUL' w l, '$1.cvg' u 8 t 'EXMEDI' w l, '$1.cvg' u 9 t 'NASTAL' w l, '$1.cvg' u 13 t 'SOLIDZ' w l, '$1.cvg' u 15 t 'LEVELS' w l, '$1.cvg' u 22 t 'CHEMIC' w l" >> ./gnuplot.tmp
+echo "! rm -rf gnuplot.tmp"         >> ./gnuplot.tmp
+echo "load './gnuplot2.tmp'"        >> ./gnuplot.tmp
+echo "replot"                        > ./gnuplot2.tmp
+echo "pause 2"                      >> ./gnuplot2.tmp
+echo "load './gnuplot2.tmp'"        >> ./gnuplot2.tmp
+gnuplot ./gnuplot.tmp 

@@ -1,0 +1,63 @@
+$------------------------------------------------------------------------  
+PHYSICAL_PROBLEM                                                           
+  include ./AlyaFix/2DHills_Test.tem.inc
+END_PHYSICAL_PROBLEM                                                       
+$-----------------------------------------------------------------------   
+NUMERICAL_TREATMENT                                                        
+  STABILIZATION:           ASGS                                            
+  TAU_STRATEGY:            Codina                                          
+  ELEMENT_LENGTH:         minimum                                          
+$  TRACKING:                TIME NONLINEAR ITERA 6 TOLER 0.00001  NEWTON   
+  TIME_INTEGRATION:        Trapezoidal, ORDER: 1, EULER=0                  
+  SAFETY_FACTOR=           300                                             
+  STEADY_STATE_TOLERANCE=  -1e-7                                            
+  NORM_OF_CONVERGENCE:     L2                                              
+  MAXIMUM_NUMBER_OF_ITER=  1                                               
+  RELAXATION_FACTOR=       1.0                                             
+  CONVERGENCE_TOLERANCE=   1e-7                                            
+ ALGEBRAIC_SOLVER                                                          
+       SOLVER:             GMRES, KRYLOV=20                                
+       CONVERGENCE:        ITERA=100, TOLER=1.0e-10, ADAPTIVE, RATIO=0.001 
+       OPTIONS:            FIXITY                                          
+       PRECONDITIONER:     DIAGONAL                                        
+    END_ALGEBRAIC_SOLVER                                                   
+ DIRICHLET MATRIX                                                          
+END_NUMERICAL_TREATMENT                                                    
+$------------------------------------------------------------------------  
+OUTPUT_&_POST_PROCESS                                                       
+  POSTPROCESS INITIAL                                                     
+  START_POSTPROCES_AT      STEP =1                                         
+  POSTPROCESS TEMPER,      STEPS=10                                        
+  POSTPROCESS HEAT_FLUX,   STEPS=10                                        
+  WITNESS_POINTS
+    TEMPE
+    HEATF
+    FLUXX
+    FLUXY
+    FLUXZ
+  END_WITNESS_POINTS
+  BOUNDARY_SET                                                             
+  END_BOUNDARY_SET                                                         
+  ELEMENT_SET                                                              
+  END_ELEMENT_SET                                                          
+END_OUTPUT_&_POST_PROCESS                                                  
+$------------------------------------------------------------------------  
+BOUNDARY_CONDITIONS , NON_CONSTANT
+  CODES, NODES
+     3      7  0.0 FIELD=9 $! Entry
+     3 & 5  7  0.0 FIELD=9 $! Entry and Wall
+     3 & 6  7  0.0 FIELD=9 $! Entry and top
+     4      0  4           $! exit
+     4 & 5  7  0.0 FIELD=9 $! output and Wall
+     4 & 6  0  4           $! out and top
+     6      0  4           $! top
+  END_CODES
+  CODES BOUNDAR
+    5     3 0.0 9
+  END_CODES
+$PARAMETERS
+$INITIAL, CONSTANT = 298
+$END_PARAMETERS
+INITIAL VALUE_FUNCTION=4  ! use field 4 for initial condition for T
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------    

@@ -1,0 +1,26 @@
+##include /home/bsc21/bsc21704/z2018_1/REPOSITORY/CANTERA/Cantera230/ExecsINTEL/include/cantera/Cantera.mak
+include /gpfs/projects/bsc21/bsc21808/Cantera-Alya/cantera/INTEL/include/cantera/Cantera.mak
+
+F90=ifort
+RM=rm -f
+F90FLAGS=-g
+F90MODDIR=$(CANTERA_FORTRAN_MODS)
+LDFLAGS=
+LDLIBS=$(CANTERA_FORTRAN_LIBS)
+
+SRCS=demo.f90
+OBJS=$(subst .f90,.o,$(SRCS))
+
+all: demo
+
+demo: $(OBJS)
+	$(F90) $(LDFLAGS) -o demo $(OBJS) $(LDLIBS)
+
+%.o : %.f90
+	$(F90) -c $< -module $(F90MODDIR) $(F90FLAGS)
+
+clean:
+	$(RM) $(OBJS)
+
+dist-clean: clean
+	$(RM) *~

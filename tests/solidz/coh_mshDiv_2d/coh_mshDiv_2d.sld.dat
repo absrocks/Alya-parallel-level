@@ -1,0 +1,56 @@
+$-------------------------------------------------------------------
+$
+$ coh_mshDiv_2d
+$ Details:   Mesh in 2-d
+$            Dimensions:         3 x 2.001 mm
+$            Element size:       1x1 mm
+$            Cohesive thickness: 0.001 mm
+$
+$ Units:     SI (mm)
+$
+$ Reference: -
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+    PLANE:                STRAIN
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, PEEK/AS4 ,,,,,,
+    MATERIAL           = 1
+    CONSTITUTIVE_MODEL: ISOLIN \
+     138.4e+3 0.311
+    $ ,,,,,, COHESIVE,,,,,,
+    MATERIAL           = 2
+    COHESIVE_MODEL: TURON, ORIGINAL \
+      0.308 0.828 56.6 5.0E+4 1.75 0.0
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT  STEP = 0
+  POSTPROCESS PARTI
+  POSTPROCESS ELNOR
+  POSTPROCESS PMATE
+  POSTPROCESS ORIEN
+  POSTPROCESS AXIS1
+  POSTPROCESS AXIS2
+  POSTPROCESS CHARA
+  POSTPROCESS BOCOD
+  POSTPROCESS BOSET
+  POSTPROCESS ELSET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+        1 11 0.0 0.0
+    1 & 2 11 0.0 0.0
+        3 11 0.0 0.0
+    3 & 2 11 0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

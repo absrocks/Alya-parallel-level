@@ -1,0 +1,60 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   ON
+    CONVECTIVE_TERM:        ON
+    CONDUCTION_TERM:        ON
+    REGIME :                LOWMACH, ENTHALPY      $$$, ADIABATIC: HMAX = 642313.976105 HMIN = -2031363.72727 
+	 $--| H_f:                      -2031363.72727
+	 $--| H_ox:                     642313.976105
+    SOURCE_TERMS:           OFF
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    THERMODYN_PRESSURE = 59.63e5
+  END_PROPERTIES
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS 
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE , ORDER: 3
+  SAFETY_FACTOR=           100.0
+
+  STEADY_STATE_TOLERANCE=  -1e-5
+  NORM_OF_CONVERGENCE:     L2
+  MAXIMUM_NUMBER_OF_ITER=  1
+  RELAXATION_FACTOR=       1.0
+  CONVERGENCE_TOLERANCE=   1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+  NEGATIVE_CLIP = ON
+  POSITIVE_CLIP = ON
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+ POSTPROCESS TEMPE
+ POSTPROCESS ENTHA
+ POSTPROCESS AVTEM
+ POSTPROCESS AVTE2
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS, NONCONSTANT
+  INITIAL:  VALUE = 6
+$ PARAMETERS
+$   INITIAL: CONSTANT = 300.0
+$ END_PARAMETERS
+ CODES, NODES
+    1     1     462.12
+    2     1     900.0
+    3     0     0.0
+  1 & 3   1     462.12
+  2 & 3   1     900.0
+  4 & 3   0     0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

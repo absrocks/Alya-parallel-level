@@ -1,0 +1,82 @@
+PHYSICAL_PROBLEM
+  PROPERTIES
+    MATERIAL = 1
+      DENSITY       = LOWMA, GP_LOOKUP, UPDP1=ENDSTE, UPDP2=NEVER
+      VISCOSITY     = CONST, PARAMETER = 2.0e-3, UPDP1=ENDSTE, UPDP2=NEVER
+      SPECIFIC_HEAT = CP_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      CONDUCTIVITY  = CONST, PARAMETER = 2.0e-1, UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+
+    MATERIAL = 2
+      DENSITY       = LOWMA, GP_LOOKUP, UPDP1=ENDSTE, UPDP2=NEVER
+      VISCOSITY     = MU_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      SPECIFIC_HEAT = CP_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+      CONDUCTIVITY  = K_GP_TAB, UPDP1=ENDSTE, UPDP2=NEVER
+    END_MATERIAL
+  END_PROPERTIES
+
+  GAS_CONSTANT    = 8.3144621
+
+  COUPLING
+    TEMPER, CHEMIC = 1 1
+    CHEMIC, TEMPER = 1 1
+  END_COUPLING
+
+  VELOCITY: FIELD= 7
+
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+
+  LOOKUP_TABLES
+    $
+    $ Please note that the indexes are intentionally scrambled to test the roboustness of the method.
+    $ In practice it is clearer to use continous indexes.
+    $
+    TABLE: 1,   ORDER=1
+      INCLUDE cam_diff_turbulent_table.dat
+    END_TABLE
+    TABLE: 7,   ORDER=1
+      INCLUDE cam_diff_turbulent_scaling_gen0.dat
+    END_TABLE
+    TABLE: 6,   ORDER=1
+      INCLUDE cam_diff_turbulentPost_table.dat
+    END_TABLE
+
+    FRAMEWORK: 1 
+      MAIN_TABLE    = 1
+      SCALING
+        ZMEAN UNSCALED
+        CMEAN TABLE 7
+        ZVAR  OFF
+        CVAR  OFF
+      END_SCALING
+    END_FRAMEWORK
+
+    FRAMEWORK: 3
+      MAIN_TABLE    = 6
+      SCALING
+        ZMEAN UNSCALED
+        CMEAN TABLE 7
+        ZVAR  OFF
+        CVAR  OFF
+      END_SCALING
+    END_FRAMEWORK
+  END_LOOKUP_TABLES
+
+  ELSEST: ON
+    STRATEGY: BIN
+    NUMBER: 50,50,50
+  END_ELSEST
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LASTMESH
+  STEPS = 10
+
+  WITNESS_POINTS, NUMBER= 1
+     0.0   0.0
+  END_WITNESS_POINTS
+
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------

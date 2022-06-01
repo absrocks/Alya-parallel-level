@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "gerard.guillamet@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "exacsoLineal.post.res",
+            "method": "absolute",
+            "tolerance": "1.0e-12"
+        }
+    ],
+    "description": "This test is a verification of Alya-solidz software. It uses the method of Manufactured Solutions, that consists on obtaining analytical solutions for nonlinear problems.     In particular, this test uses a target solution U(e) with a given degree of regularity (in this case a first order polynomial is used) and determines analytically the forcing functions that would lead to this solution U(e).      The test verifies that the numerical scheme provides an exact nodalwise solution by using the analytically determined forcing function.      The L2 error between the code's prediction and the selected manufactured solution is compared.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 5,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "solidz"
+    ],
+    "name": "exacsoLineal",
+    "postprocess": "alya2pos"
+}

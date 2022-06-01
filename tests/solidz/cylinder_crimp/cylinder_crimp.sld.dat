@@ -1,0 +1,98 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL =          1
+    DENSITY  =          9.2174E-9
+    RAYLEIGH_DAMPING: RAYALPHA=1000
+    CONSTITUTIVE_MODEL: ISOLIN \
+      30.0E+3  0.33
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+$  TIME_TREATMENT:    EXPLICIT
+$  TIME_INTEGRATION:  NEWMARK, DAMPED
+$  SAFETY_FACTOR:     0.8
+
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK, DAMPED
+  NO_STEADY_STATE
+  ALGEBRAIC_SOLVER:
+     SOLVER:           GMRES, KRYLOV=800
+     CONVERGENCE:      ITERA=5000, TOLER=1.0E-5, ADAPTATIVE=0.01
+    PRECONDITIONER:    BLOCK,DIAGONAL
+     RESIDUAL:         RHS
+     OPTION:           ZERO_FIXITY
+     OUTPUT:           CONVERGENCE
+     COARSE:           OFF
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL:            DISPLACEMENT
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-5
+  MAXIMUM_ITERATION:   20
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP = 0
+  POSTPROCESS FIXNO,   STEPS = 10
+  POSTPROCESS FIXRS,   STEPS = 10
+  POSTPROCESS NOCOD,   STEPS = 10
+  POSTPROCESS FCONT,   STEPS = 10
+  POSTPROCESS ROTM1,   STEPS = 10
+  POSTPROCESS ROTM2,   STEPS = 10
+  POSTPROCESS ROTM3,   STEPS = 10
+  POSTPROCESS DISPL,   STEPS = 10
+  POSTPROCESS RESID,   STEPS = 10
+  POSTPROCESS SEQVM,   STEPS = 10
+  NODE_SET
+    DISPX
+    DISPY
+    DISPZ
+    SEQVM
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+$ CODE 1: Inner surface
+$ CODE 2: Outer surface
+$ CODE 3: End surface (bottom cylinder)
+$ CODE 4: Ini surface (top cylinder)
+$ CODE 5: End nodes for radial displacement
+
+PARAMETERS
+  CONTACT_BOUNDARIES: 2, 1
+
+  CONTACT
+    CODES: 2, 1
+$$    $STENT, CHARGE
+    STENT, CRIMPING, RMIN=0.6
+    FRICTION_COEFF: 0.8
+  END_CONTACT
+
+    COORDINATE_SYSTEM: BASIS=CYLINDRICAL \
+      0.0 0.0 0.0  1.0 0.0 0.0  0.0 1.0 0.0
+
+END_PARAMETERS
+
+  CODES, NODES
+ $   3  010  0.0 0.0 0.0 ,$  AXES: LOCAL_BASIS=1
+ $   5  111  0.0 0.0 0.0 , MODULE_FUNCTION=1,  AXES: LOCAL_BASIS=1
+  END_CODES
+$----------------------
+$  FUNCTIONS
+$    TOTAL_NUMBER = 1
+$    CONDITION
+$      FUNCTION_NUMBER: 1
+$      TIME_SHAPE:      DISCRETE
+$      SHAPE_DEFINITION   
+$        2
+$        0.0  0.0   0.0  0.0 
+$        1.0  -0.3   0.0  0.0
+$      END_SHAPE_DEFINITION
+$    END_CONDITION  
+$  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

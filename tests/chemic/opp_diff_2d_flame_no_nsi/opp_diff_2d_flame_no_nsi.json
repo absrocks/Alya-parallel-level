@@ -1,0 +1,98 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "opp_diff_2d_flame_no_nsi-AVTE2-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e1"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-AVTEM-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-AVZ-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-AVZ2-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-16"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-CON01-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-CON03-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-ENTHA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-TEMPE-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-XZR-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-YKOH-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-HEATR-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e3"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-AVOH-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-10"
+        },
+        {
+            "file": "opp_diff_2d_flame_no_nsi-AVHEA-00000020.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e3"
+        }
+
+
+    ],
+    "description": "Laminar opposing diffusion flame in 2D domain without flow solver.",
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "temper",
+        "chemic"
+    ],
+    "name": "opp_diff_2d_flame_no_nsi",
+    "postprocess": "mpio2txt"
+}

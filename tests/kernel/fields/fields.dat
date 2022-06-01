@@ -1,0 +1,32 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   cavtri03
+$  OUTPU: MPIAL
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, From_critical
+  TIME_INTERVAL=          0.0, 700
+  TIME_STEP_SIZE=         1.0
+  NUMBER_OF_STEPS=        0
+  PARALL_SERVICE:         On
+    PARTITION_TYPE:       FACES
+    OPENMP
+      COLORING: MIN_COLOR
+    END_OPENMP
+    PARTITIONING
+      METHOD:         SFC
+      BOXES:          64 64 64 FINE
+      BOXES:          2  2  2 COARSE
+      EXECUTION_MODE: PARALLEL 
+    END_PARTITIONING
+  END_PARALL_SERVICE 
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+MPI_IO: 
+      GEOMETRY: On
+      RESTART:  Off
+      POSTP:    Off
+END_MPI_IO
+$-------------------------------------------------------------------
+

@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "temper_dirichlet_field.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "tests dirichlet boundary conditions imposed as a field",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "temper"
+    ],
+    "name": "temper_dirichlet_field",
+    "postprocess": "alya2pos"
+}

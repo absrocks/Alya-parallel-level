@@ -1,0 +1,45 @@
+$--------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS=          861
+  ELEMENTS=              800
+  SPACE_DIMENSIONS=        2
+  TYPES_OF_ELEMENTS=       0,      0,     12,      0,      0
+  BOUNDARIES=              120 
+  FIELDS = 1
+      FIELD: 1, DIMENSIONS=2, NODES, STEPS=101, PERIODIC
+         TIMES
+            INCLUDE times.in
+         END_TIMES
+      END_FIELD
+  END_FIELDS
+  
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS:   1, 8, 6
+  PERIODICITY: MATRIX
+  BOUNDARY_ELEMENT: OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS: ON
+  GROUPS = 100
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+  INCLUDE  write-read.geo.dat
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+  BOUNDARIES
+    $INCLUDE write-read.fix.dat 
+  END_BOUNDARIES
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS
+    INCLUDE write-read.fix.dat
+END_BOUNDARY_CONDITIONS
+$--------------------------------------------------
+FIELDS
+   FIELD: 1
+      INCLUDE steps.veloc.in
+   END_FIELD
+END_FIELDS
+$--------------------------------------------------

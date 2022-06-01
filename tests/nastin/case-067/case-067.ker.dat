@@ -1,0 +1,28 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+  include ./case-067.ker.inc
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT                           
+MESH                                          
+  MULTIPLICATION=  0                          
+  CURVATURE =      0                           
+END_MESH                                      
+ELSEST, ON                                    
+  STRATEGY: BIN                               
+  NUMBER:   50,50,50                          
+  TOLER:    1.0E-10                           
+END_ELSEST                                    
+HESSIAN OFF                                   
+LAPLACIAN OFF                                 
+END_NUMERICAL_TREATMENT                       
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS                         
+  MESH                                        
+  STEP_OVER      100                          
+  ON_ORIGINAL_MESH                            
+  POSTPROCESS ROUGHNESS                 
+$  POSTPROCESS TURBUL
+  INCLUDE case-067.wit.dat
+END_OUTPUT_&_POST_PROCESS                     
+$------------------------------------------------------------

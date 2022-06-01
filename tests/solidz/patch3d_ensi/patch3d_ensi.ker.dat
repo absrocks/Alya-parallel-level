@@ -1,0 +1,36 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT    
+  MESH
+    DIVISION = 0
+  END_MESH
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   10,10
+    DATAF: LINKED_LIST
+  END_ELSEST
+  SPACE_&_TIME_FUNCTIONS
+    FUNCTION=INFLOW
+       10e-3*(2.0*x+y+x)/2.0
+    END_FUNCTION
+  END_SPACE_&_TIME_FUNCTIONS
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  ON_LAST_MESH
+ START_POSTPROCES_AT,      STEP  = 0
+$ POSTPROCESS MATER,        STEPS = 1
+ WITNESS_POINTS, NUMBER = 8
+        0.249  0.342  0.192
+        0.826  0.288  0.288
+        0.850  0.649  0.263
+        0.273  0.750  0.230
+        0.320  0.186  0.643
+        0.677  0.305  0.683
+        0.788  0.693  0.644
+        0.165  0.745  0.702
+ END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

@@ -1,0 +1,44 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE                  ./mesh/cube.dims.dat
+  SPACE_DIMENSIONS=            3
+  TYPES_OF_ELEMENTS=       HEX08
+  PERIODIC_NODES=          577
+  FIELDS = 1
+    FIELD: 1, DIMEN=3, NODES
+  END_FIELDS
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE           Open
+  DOMAIN_INTEGRATION_POINTS  8
+  PERIODICITY:               MATRIX
+  GROUPS =                   720, SEQUENTIAL_FRONTAL
+  BOUNDARY_ELEMENT:          OFF
+  EXTRAPOLATE:               ON
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+  INCLUDE ./mesh/cube.geo.dat
+  $PERIODIC
+  INCLUDE ./mesh/cube.per
+  $END_PERIODIC
+END_GEOMETRY
+$-------------------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE ./mesh/cube.fix.bou
+  END_BOUNDARIES
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE ./mesh/cube.fix.bou
+  END_ON_BOUNDARIES
+END_BOUNDARY_CONDITIONS          
+$-------------------------------------------------------------
+FIELDS
+  FIELD=1
+    INCLUDE ./mesh/VELOC.alya
+  END_FIELD
+END_FIELDS

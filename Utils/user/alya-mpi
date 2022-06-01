@@ -1,0 +1,26 @@
+#!/bin/csh -f
+
+echo " ";
+echo "--| alya-mpi |-- ";
+echo " ";
+echo "--| Execute Alya with mpirun";
+echo " ";
+ 
+if ( ($1 == "-help") || ($1 == "--help") || ($1 == "") || ($2 == "") ) then
+   echo "    Usage:   alya-mpi problemname numberofhosts"
+   echo " "
+   echo "    Execute Alya with mpirun for problem problemname on numberofhosts hosts"
+   echo " "
+   echo "--| Bye."
+   echo " "
+else if ( ! -e $1.dat ) then
+   echo "    Error:   You are trying to execute Alya for problem "$1"."
+   echo "             But the main Alya data file "$1.dat" does not exist!"
+   echo " "
+   echo "--| Bye."
+   echo " "
+else
+#   mpirun -machinefile hosts_list -np $2 Alya.x $1
+   mpirun -np $2 Alya.x $1
+endif
+ 

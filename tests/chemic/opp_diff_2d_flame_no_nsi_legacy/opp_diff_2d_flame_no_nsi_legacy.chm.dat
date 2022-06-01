@@ -1,0 +1,94 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    MODEL:            FLAMELET, NON_PREMIX, LAMINAR    $$$$ , NON_ADIABATIC 
+    Z_VARIANCE:       OFF   $$ ZV,  ZZ,   OFF
+    Yc_VARIANCE:      OFF   $$ YCV, YCYC, OFF
+    TEMPORAL:         ON
+    CONVECTION:       ON, VELOC
+    DIFFUSION:        ON
+  END_PROBLEM_DEFINITION
+
+  PROPERTIES:
+    THERMODYN_PRESSURE = 101325.0
+
+    REACTIONS, TABLE
+      INCLUDE cam_diff_turbulent_table.dat
+    END_REACTIONS
+
+    MASS_FRACTIONS_EQUILIBRIUM:
+      INCLUDE cam_diff_turbulent_scaling_gen0.dat
+    END_MASS_FRACTIONS
+
+    POST_TABLE
+      INCLUDE cam_diff_turbulentPost_table.dat
+    END_POST_TABLE
+  END_PROPERTIES
+
+  FIELDS: TEMPE= 1, SPECIES = 2
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS
+  ELEMENT_LENGTH:          MINIMUM
+  TIME_INTEGRATION:        RUNGE, ORDER: 3
+  SAFETY_FACTOR=           1.0
+
+  STEADY_STATE_TOLERANCE=  1e-8
+  NORM_OF_CONVERGENCE:     L2
+  CONVERGENCE_TOLERANCE=   1e-6
+
+  ALGEBRAIC_SOLVER
+    SOLVER:               EXPLICIT, LUMPED
+  END_ALGEBRAIC_SOLVER
+
+  NEGATIVE_CLIP =         ON
+  POSITIVE_CLIP =         ON 
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  POSTPROCESS CONCE
+  POSTPROCESS SCONC
+  POSTPROCESS SOURC
+  POSTPROCESS CONDU
+  POSTPROCESS VISCO
+  POSTPROCESS XZR
+  POSTPROCESS AVZ
+  POSTPROCESS AVZ2
+  POSTPROCESS POST_TAB
+  POSTPROCESS AV_PO_TAB
+  WITNESS 
+    CONCE
+	 SCONC
+  END_WITNESS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+ $ FIELDS: START
+ CODES, NODES, CLASS = 1
+    1    1   0.0
+    2    1   0.0
+  1 & 3  1   0.0
+  2 & 3  1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 2
+    1    1   0.0
+    2    1   0.0 
+  1 & 3  1   0.0
+  2 & 3  1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 3
+    1    1   1.0
+    2    1   0.0
+  1 & 3  1   1.0
+  2 & 3  1   0.0
+ END_CODES
+ CODES, NODES, CLASS = 4
+    1    1   0.0
+    2    1   0.0
+  1 & 3  1   0.0
+  2 & 3  1   0.0
+ END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

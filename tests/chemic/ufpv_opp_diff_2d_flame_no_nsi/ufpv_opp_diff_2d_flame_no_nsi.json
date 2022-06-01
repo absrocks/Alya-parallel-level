@@ -1,0 +1,97 @@
+{
+    "authors": [
+        "ambrus.both@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi.chm.wit-col2.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi.chm.wit-col4.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi.chm.wit-col10.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi.chm.wit-col12.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi.chm.wit-col13.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi.chm.wit-col14.out",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi-CON01-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi-CON03-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-7"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi-ENTHA-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-1"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi-TEMPE-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-2"
+        },
+        {
+            "file": "ufpv_opp_diff_2d_flame_no_nsi-XZR-00000005.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-6"
+        }
+    ],
+    "description": "Laminar opposing diffusion flame in 2D domain with unsteady flamelet progress variable model.",
+	 "enabled": false,
+    "exclude": [
+        "ple_cnt2"
+    ],
+    "executions": [
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 4 10 12 13 14; echo | [POST] [NAME]"
+            },
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 4 10 12 13 14; echo | [POST] [NAME]"
+            },
+            "mpi": 6,
+            "openmp": 0
+        },
+        {
+            "commands": {
+                "postprocess": "[ALYA-PATH]/Utils/user/extractColumnFromFile.sh [NAME].chm.wit 2 4 10 12 13 14; echo | [POST] [NAME]"
+            },
+            "mpi": 6,
+            "openmp": 3
+        }
+    ],
+    "modules": [
+        "temper",
+        "chemic"
+    ],
+    "name": "ufpv_opp_diff_2d_flame_no_nsi",
+    "postprocess": "mpio2txt",
+    "timeout": "00:02:00"
+}

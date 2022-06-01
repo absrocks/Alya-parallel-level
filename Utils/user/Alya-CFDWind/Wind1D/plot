@@ -1,0 +1,87 @@
+set term png giant linewidth 2.0 enhanced
+
+
+#Z [m]
+#U [m/s]
+#V [m/s]
+#K [m2/s]	Eddy viscosity
+#l [m]		Mixing length
+
+
+top =180
+#VELOCITY
+set ylabel 'Attitude [m]'
+set xlabel 'Velocity [m/s]'
+set key top center
+
+#set output "VEL.png"; plot  [][]   'plotresults' u (sqrt($2*$2+$3*$3)):1 w lp t 'Vel CFDW2' linetype 2, (exp(x*0.41/0.77901)-1)*0.3 t 'Vel CFDW1' linetype 1
+
+set output "VEL.png"; plot  [][]   'plotresults' u 4:1 w lp t 'ModVel' linetype 2
+set output "VEL2.png";plot  [:][:100]   'plotresults' u 4:1  w lp t 'Vel', 'plotresults' u 13:1 w lp t 'MO-Vel'
+
+
+set output "VELX.png";plot  [][]   'plotresults' u 2:1  w lp t 'Velx' linetype 1, 'plotresults' u 3:1 w lp t 'Vely' linetype 2
+
+
+set key right
+
+#ANGLE
+set xlabel 'angle '
+set output "ANGLE.png"; plot [-2:][0:top] 'plotresults'  u (atan($3/$2)*180.0/3.141592) :1 w lp  t 'lmax=inf'
+
+
+
+#KAPPA
+set xlabel 'key [m/s]'
+
+set output "KEY.png";         plot [][0:top] 'plotresults'  u 5:1 w lp  
+set output "KEYZOOM.png";     plot [][0:20]   'plotresults'  u 5:1 w lp  
+#set output "KEYZOOMAZO.png"; plot [][0:4]    'plotresults'  u 5:1 w lp  
+
+
+#NUT
+set logscale x
+set xlabel 'Eddy viscosity'
+set output "VISCOT.png"; plot [][] 'plotresults'  u 7:1 w lp  
+set output "VISCO2.png"; plot [][:60] 'plotresults'  u 7:1 w lp t 'viscot', 'plotresults'  u 17:1 w lp t 'MO-Viscot'
+unset logscale x
+set output "VISCO3.png"; plot [][:20] 'plotresults'  u 7:1 w lp t 'viscot', 'plotresults'  u 17:1 w lp t 'MO-Viscot'
+set output "VISCO_ZOOM.png"; plot [][0:10]  'plotresults'  u 7:1 w lp 
+#set output "KEY_TOP.png";     plot [:][top:]  'plotresults'  u 5:1 w lp
+
+#EPSILON
+set logscale x
+set xlabel 'epsil [m/s]'
+#set output "epsil1lmax.png"; plot [][top:3000] 'plotresults'  u 6:1 w lp
+set output "epsil.png"; plot [][:top]    'plotresults'  u 6:1 w lp
+set output "epsil2.png"; plot [][:60]    'plotresults'  u 6:1 w lp  t 'epsil' , 'plotresults'  u 16:1 w lp t 'MO-Epsil'
+unset logscale x
+set output "epsil3.png"; plot [][:20]    'plotresults'  u 6:1 w lp  t 'epsil' , 'plotresults'  u 16:1 w lp t 'MO-Epsil'
+#set output "epsilszoomlmax.png"; plot [][0:20]  'plotresults'  u 6:1 w lp 
+#set output "epsilsbzoomlmax.png"; plot [][0:4]  'plotresults'  u 6:1 w lp
+
+
+#MIXING LENGTH
+
+unset logscale x
+set xlabel 'mixing length [m]'
+set output "MIXING.png"; plot [][:top] 'plotresults'  u 8:1 w lp  
+
+#TEMPERATURE
+
+set xlabel 'Theta -Theta0 (K)'
+set output "Temper.png"; plot [][:top] 'plotresults'  u 9:1 w lp  
+set output "Temper2.png"; plot [:2][:60] 'plotresults'  u 9:1 w lp t 'Vir.Temp', 'plotresults'  u 15:1 w lp t 'MO-V.Themp'
+
+#Richardson number
+
+set xlabel 'Richarflux'
+set output "Richard.png"; plot [][:180] 'plotresults'  u 10:1 w lp t 'Rif'  
+set output "Produc.png"; plot [:0.01][2:180]  'plotresults'  u 11:1 w lp t 'Pk' ,'plotresults'  u 12:1 w lp t 'Gk'
+set output "Produc_zoom.png"; plot [][0:2]  'plotresults'  u 11:1 w lp t 'Pk' ,'plotresults'  u 12:1 w lp t 'Gk'
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM                                             
+  include ./case-067.tur.inc
+END_PHYSICAL_PROBLEM                                         
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STRATEGY                   ASGS
+  ELEMENT_LENGTH             Minimum
+  TIME_INTEGRATION           Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR              2.0 expon 1.05  maxim 20.0 mingl 10.0 
+  STEADY_STATE_TOLER         -1d-8  
+  NORM_OF_CONVERGENCE        ALGEBRAIC
+  RELAXATION_FACTOR          0.5    
+  MAXIMUM_NUMBER_OF_IT       2
+  INNER_ITERATIONS           2
+  CONVERGENCE_TOLERANCE      1d-8  
+  ALGEBRAIC_SOLVER           GMRES, KRYLOV=50, ITERA= 70, TOLER= 1d-8, ADAPTIVE, RATIO = 5d-4
+  PRECONDITIONING            DIAGONAL
+  CLIPPING                   ALMOST
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT       STEP  = 0
+  POSTPROCESS KEY            STEPS=100
+  POSTPROCESS EPSILON        STEPS=100
+$  POSTPROCESS TUR_VISCOSITY  STEPS=100
+  WITNESS_POINTS
+    KEY
+    EPSILON
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES, GEOMETRICAL, VARIABLE=1
+    -11 2         ! use field 2 for inflow profile
+  END_CODES
+  CODES, NODES, GEOMETRICAL, VARIABLE=2
+    -11 3         ! use field 3 for inflow profile
+  END_CODES
+  CODES, BOUNDARIES $, VARIABLE=1
+    1                20      1000
+    2                20      1000
+    3                20      1000
+    4                20      1000
+  END_CODES
+$  CODES, BOUNDARIES, VARIABLE=2
+$    1                20      1
+$    2                20      1
+$    3                20      1
+$    4                20      1
+$  END_CODES
+   INITIAL VALUE_FUNCTION=2, VARIABLE = 1  ! use field 2 for initial condition for k
+   INITIAL VALUE_FUNCTION=3, VARIABLE = 2  ! use field 3 for initial condition for e
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------

@@ -1,0 +1,47 @@
+{
+    "authors": [
+        "ricard.borrell@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtri03_repart_load-VELOC-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "cavtri03_repart_load-PRESS-00000200.post.mpio.txt",
+            "method": "absolute",
+            "tolerance": "1.0e-8"
+        },
+        {
+            "file": "cavtri03_repart_load-boundary.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_repart_load-node.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "cavtri03_repart_load-element.nsi.set",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Repartitioning of Alya at each time step, should give same solution as cavtri03 test. Here we are testing the METHOD LOAD",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtri03_repart_load",
+    "postprocess": "mpio2txt"
+}

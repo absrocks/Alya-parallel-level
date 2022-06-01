@@ -1,0 +1,64 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On  
+  CONVECTIVE_TERM:          On  
+  VISCOUS_TERM:             laplacian
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  STABILIZATION:            ASGS
+  SAFETY_FACTOR:            500.0
+  STEADY_STATE_TOLER:       1e-12
+  NORM_OF_CONVERGENCE:      Algebraic  
+  LINEARIZATION_METHOD:     Picard   
+  MAXIMUM_NUMBER_OF_IT:     1 
+  CONVERGENCE_TOLERANCE:    1e-12
+
+  VECTORIZATION: ON
+  ALGORITHM:                SCHUR
+    SOLVER:                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER:         TAU
+    ELEMENT_LENGTH:         Minimum
+    TAU_STRATEGY:           Codina
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER     
+      SOLVER:               GMRES, KRYLOV=10
+      CONVERGENCE:          ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01
+      OUTPUT:               CONVERGENCE
+      PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+  END_MOMENTUM
+
+  CONTINUITY 
+    ALGEBRAIC_SOLVER     
+      SOLVER:               DEFLATED_CG
+      CONVERGENCE:          ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01
+      OUTPUT:               CONVERGENCE
+      PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER         
+  END_CONTINUITY
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS  
+  OUTPUT,     ERROR,        SOLUTION = 13
+  POSTPROCESS VEERR, STEPS=1 
+  POSTPROCESS PRERR, STEPS=1 
+  POSTPROCESS VELOC
+  POSTPROCESS PRESS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE: On, ON_NODE=1331, Value=3.0
+  END_PARAMETERS
+  CODES, NODES
+  END_CODES
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

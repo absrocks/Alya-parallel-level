@@ -1,0 +1,31 @@
+#!/bin/csh -f
+#
+# This script compiles Alya latex result files and generates the 
+# convergence postscript files using gnuplot. Set in the following
+# uncommented line the full path of gnuplot.
+#-----------------------------------------------------------------
+set gnu = wgnuplot.exe
+set gnu = gnuplot
+#-----------------------------------------------------------------
+echo " ";
+echo "--| alya-latex |-- ";
+echo " ";
+echo "--| Compile Alya latex result files";
+echo " ";
+
+set nam = $1"-latex"
+set plt = $nam".plt"
+set tex = $nam".tex"
+set pos = $nam".ps"
+$gnu     $plt
+latex    $tex
+latex    $tex
+
+dvips -o $pos $nam
+ps2pdf   $pos
+
+#pdflatex $nam
+
+echo " "
+echo "--| Bye."
+echo " "

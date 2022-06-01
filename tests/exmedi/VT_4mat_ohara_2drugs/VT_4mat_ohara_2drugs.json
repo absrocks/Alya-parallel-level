@@ -1,0 +1,34 @@
+{
+    "authors": [
+        "alfonso.santiago@bsc.es",
+        "jazmin.aguado@bsc.es",
+        "mariano.vazquez@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "VT_4mat_ohara_2drugs.exm.wit",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Testcase for drug interaction, cube with 4 materials, using ohara and nomodel.",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 1,
+            "openmp": 0
+        },
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "exmedi"
+    ],
+    "name": "VT_4mat_ohara_2drugs",
+    "postprocess": "alya2pos",
+    "timeout": "00:03:00"
+}

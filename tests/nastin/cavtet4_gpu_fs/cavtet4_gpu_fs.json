@@ -1,0 +1,27 @@
+{
+    "authors": [
+        "guillaume.houzeaux@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "cavtet4_gpu_fs.post.res",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "Test of GPU2 assembly, compared with normal assembly in 3D",
+    "exclude": [
+        "special"
+    ],
+    "executions": [
+        {
+            "mpi": 3,
+            "openmp": 0
+        }
+    ],
+    "modules": [
+        "nastin"
+    ],
+    "name": "cavtet4_gpu_fs",
+    "postprocess": "alya2pos"
+}

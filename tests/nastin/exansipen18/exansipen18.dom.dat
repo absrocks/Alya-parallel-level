@@ -1,0 +1,25 @@
+$------------------------------------------------------------
+DIMENSIONS
+  INCLUDE exansipen18.dims.dat
+  SPACE_DIMENSIONS=        3
+  TYPES_OF_ELEMENTS=     PEN18
+END_DIMENSIONS
+$------------------------------------------------------------
+STRATEGY
+  INTEGRATION_RULE:          Open  
+  DOMAIN_INTEGRATION_POINTS: 21
+  BOUNDARY_ELEMENT:                 OFF
+  EXTRAPOLATE_BOUNDARY_CONDITIONS:  ON
+  GROUPS=                          100, SEQUENTIAL_FRONTAL $ PARALLEL_FRONTAL, SFC, PARTITION, FIELD
+END_STRATEGY
+$-------------------------------------------------------------
+GEOMETRY
+    INCLUDE  exansipen18.geo.dat
+END_GEOMETRY  
+$-------------------------------------------------------------
+SETS
+END_SETS
+$-------------------------------------------------------------
+BOUNDARY_CONDITIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------

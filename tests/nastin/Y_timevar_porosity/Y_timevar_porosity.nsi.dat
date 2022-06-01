@@ -1,0 +1,91 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          ON $SKEW_SYMMETRIC
+  VISCOUS_TERM:             LAPLACIAN
+END_PROBLEM_DEFINITION  
+
+END_PHYSICAL_PROBLEM  
+
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  ELEMENT_LENGTH:           Minimum
+
+  STABILIZATION:            ASGS
+
+  TIME_INTEGRATION:         Trapezoidal, ORDER: 1, EULER=10
+
+  SAFETY_FACTOR:            100.0
+
+  STEADY_STATE_TOLER:       1e-12
+
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+
+  MAXIMUM_NUMBER_OF_IT:     20
+
+  CONVERGENCE_TOLERANCE:    1e-3
+
+   TRACKING:                 TIME
+
+  ALGORITHM:                SCHUR
+$    SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING
+    SOLVER:                 ORTHOMIN, MOMENTUM_PRESERVING
+    PRECONDITIONER:         DT
+    ELEMENT_LENGTH:         Minimum
+    TAU_STRATEGY:           Codina
+  END_ALGORITHM
+
+  MOMENTUM
+     ALGEBRAIC_SOLVER:       GMRES,       ITERA=200, TOLER=1.0e-3, ADAPTIVE, RATIO=1e-3, KRYLOV=10, CONVERGENCE $ TRANSITORY
+    PRECONDITIONER:         DIAGONAL
+  END_MOMENTUM
+
+  CONTINUITY
+     ALGEBRAIC_SOLVER:       DEFLATED_CG, ITERA=200, TOLER=1.0e-4, ADAPTIVE, RATIO=1e-3, UNSYMME, CONVERGENCE, CSR $ TRANSITORY
+    PRECONDITIONER:         DIAGONAL
+  END_CONTINUITY
+
+
+  DIRICHLET: MATRIX
+
+  INTERNAL_FORCE: RESIDUAL
+
+
+END_NUMERICAL_TREATMENT   
+$------------------------------------------------------------
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT STEP=15
+  POSTPROCESS PRESS
+  POSTPROCESS VELOC
+
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+
+  PARAMETERS
+     INITIAL: CONSTANT, VALUE= 0.5, 0.0, 0.0  COARSE
+     VARIATION: NON_CONSTANT
+  END_PARAMETERS 
+ 
+  CODES, BOUNDARIES
+  END_CODES
+
+
+  CODES, NODES
+      2          111 0.0 0.0 0.0  
+      2  &    3  111 0.0 0.0 0.0  
+      2  &    4  111 0.0 0.0 0.0 
+      2  &    5  111 0.0 0.0 0.0 
+      3          111 1.0 0.0 0.0 
+      4          000 0.0 0.0 0.0 
+      5          000 0.0 0.0 0.0 
+   END_CODES
+
+
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

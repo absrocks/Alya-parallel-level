@@ -1,0 +1,35 @@
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+  NUMERICAL_TREATMENT 
+      DEFORMATION:           BOUNDARY, STEPS=1
+$      SMOOTHING:             STEPS=1, RELAXATION=1.0
+      ALGEBRAIC_SOLVER
+        SOLVER:                DEFLATED_CG, COARSE: SPARSE
+        CONVERGENCE:           ITERA=1000, TOLER=1.0e-10
+        OUTPUT:                CONVERGENCE
+        PRECONDITIONER:        DIAGONAL
+        OPTION:                FIXITY
+      END_ALGEBRAIC_SOLVER
+  END_NUMERICAL_TREATMENT 
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS 
+$   START_POSTPROCESS_AT  STEP=  0
+$   POSTPROCESS INITIAL
+  POSTPROCESS DISPM, STEPS=1
+  POSTPROCESS VELOM, STEPS=1
+END_OUTPUT_&_POST_PROCESS  
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES
+         1   100  0.0  0.0  0.0   $ input
+         2   100  0.0  0.0  0.0   $ output
+         20  000  0.0  0.0  0.0   $ contact
+    1 &  20  000  0.0  0.0  0.0
+    2 &  20  000  0.0  0.0  0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+ 
+ 

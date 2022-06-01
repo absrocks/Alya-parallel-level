@@ -1,0 +1,85 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION       
+  TEMPORAL_DERIVATIVES:     On 
+  CONVECTIVE_TERM:          SKEWS
+  VISCOUS_TERM:             DIVERGENCE
+  GRAVITY:                  NORM= 1.0, GX=1.0,GY=0.0
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+  ELEMENT_LENGTH:           Minimum
+  STABILIZATION:            OFF
+
+  TIME_INTEGRATION:         RUNGE_KUTTA, ORDER:3
+  TIME_STEP:                EIGENVALUE
+  ASSEMBLY:                 GPU2
+  GRAD_DIV:                 ON
+
+  SAFETY_FACTOR:            0.4
+
+  STEADY_STATE_TOLER:       -1e-12
+
+  NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT:     1
+  CONVERGENCE_TOLERANCE:    1e-3
+
+  ALGORITHM:                FRACTIONAL_STEP
+    GAMMA=                  0.0
+  END_ALGORITHM
+
+  MOMENTUM
+   ALGEBRAIC_SOLVER
+       SOLVER:               EXPLICIT, CONSISTENT
+    END_ALGEBRAIC_SOLVER
+  END_MOMENTUM
+  CONTINUITY 
+    ALGEBRAIC_SOLVER
+       SOLVER:               DEFLATED_CG
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER        
+  END_CONTINUITY
+
+  CONSISTENT_MASS
+    ALGEBRAIC_SOLVER
+       SOLVER:               CG
+       CONVERGENCE:          ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=1.0e-10
+       OUTPUT:               CONVERGENCE
+       PRECONDITIONER:       DIAGONAL
+       OPTION:               FIXITY
+    END_ALGEBRAIC_SOLVER
+  END_CONSISTENT_MASS
+ 
+  DIRICHLET: ALGORITHM
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  $ POSTPROCESS INITIAL
+  postprocess VELOC, steps=1e6
+  postprocess PRESS, steps=1e6
+END_OUTPUT_&_POST_PROCESS   
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  PARAMETERS
+    FIX_PRESSURE: On, ON_NODE=5, VALUE=0.0
+    VARIATION:    NON_CONSTANT
+    INITIAL:      constant, value=1.0,0.0
+  END_PARAMETERS 
+  CODES, NODES
+      1  00  0.0 0.0
+  1 & 2  11  0.0 0.0
+      2  11  0.0 0.0 
+  2 & 3  11  0.0 0.0
+      3  00  0.0 0.0
+  3 & 4  11  0.0 0.0
+      4  11  0.0 0.0
+  4 & 1  11  0.0 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

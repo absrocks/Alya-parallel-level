@@ -1,0 +1,69 @@
+$-------------------------------------------------------------------
+$
+$ cantilever_solid8ip
+$ Author:    Gerard Guillamet
+$ Details:   This test validates the use of linear solid
+$            element (8 integration points) in Implicit
+$            A discrete time function is used with different time
+$            steps.
+$            Dimensions: L=150mm, W=2.5mm, h=5mm
+$            Load: Force at end tip P=5N
+$            Mesh: 8x24x1 elements
+$ Reference: Abaqus 6.14 Abaqus Documentation. Getting
+$            started with Abaqus, Chapter 4 Using Continuum
+$            elements
+$
+$ Units: SI (mm)
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    $ ,,,,,, Aluminum ,,,,,,
+    MATERIAL           = 1
+    CONSTITUTIVE_MODEL: ISOLIN \
+      70.0E+3 0.0
+    $ Nodal forces
+    FORCE: FIELD=1
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+$    SOLVER:            DIRECT
+$    SOLVER:            CG
+    SOLVER:            DEFLATED_CG, COARSE:SPARSE
+$    SOLVER:            GMRES, KRYLOV=1000
+    CONVERGENCE:       ITERA=2000, TOLER=1.0E-7
+    PRECONDITIONER:    DIAGONAL
+$    COARSE:            ON
+    RESIDUAL:          RHS
+    OPTION:            ZERO_FIXITY
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  CONVERGENCE_TOLER:   1.0e-5
+  SAFETY_FACTOR:       1.0
+  MAXIMUM_ITERATION:   100
+  RESIDUAL:            DISPL
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP  = 0
+  POSTPROCESS DISPL,   STEPS = 1
+  POSTPROCESS FRXID,   STEPS = 1
+  POSTPROCESS SEQVM,   STEPS = 1
+  NODE_SET
+    DISPY
+    SEQVM
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1  111  0.0 0.0 0.0 0  $ Clamped
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------

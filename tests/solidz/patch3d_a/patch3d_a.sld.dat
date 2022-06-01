@@ -1,0 +1,82 @@
+$============================================================
+PHYSICAL_PROBLEM
+$------------------------------------------------------------
+PROBLEM
+  TEMPORAL         STATIC
+END_PROBLEM
+$-----------------
+PROPERTIES
+    $ ,,,,,,STEEL ,,,,,,
+    MATERIAL           = 1
+    DENSITY            = 1.6E-9
+    CONSTITUTIVE_MODEL ISOLIN \
+      10.0e+06   0.25
+END_PROPERTIES
+$-----------------
+END_PHYSICAL_PROBLEM
+$============================================================
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:       IMPLICIT
+  TIME_INTEGRATION:     NEWMARK
+  ALGEBRAIC_SOLVER:
+     SOLVER:            GMRES, KRYLOV=100
+     CONVERGENCE:       ITERA=2000, TOLER=1.0E-8
+     OUTPUT:            CONVERGENCE
+     PRECONDITIONER:    DIAGONAL
+  END_ALGEBRAIC_SOLVER
+  CONVERGENCE_TOLER    1.0e-6
+  MAXIMUM_ITERATION    20
+END_NUMERICAL_TREATMENT
+$============================================================
+OUTPUT_&_POST-PROCESS
+  START_POSTPROCES_AT,      STEP  = 0
+  POSTPROCESS DISPLACEMENT, STEPS = 1
+  POSTPROCESS SIGMA,        STEPS = 1
+  NODE_SET
+    DISPX
+    DISPY
+    DISPZ
+    SIGXX
+  END_NODE_SET
+  WITNESS_POINTS
+    DISPX
+    DISPY
+    DISPZ
+    SIGXX
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS
+$============================================================
+BOUNDARY_CONDITIONS, TRANSIENT
+$------------------------------------------------------------
+$ 1 -> y = 1
+$ 2 -> x = 1
+$ 3 -> z = 1
+$ 4 -> x = 0
+$ 5 -> z = 0
+$ 6 -> y = 0
+CODES, NODES
+  1 & 2 & 3  100  0.0  0.0  0.0, MODULE_FUNCTION=  1
+  1 & 2 & 5  101  0.0  0.0  0.0, MODULE_FUNCTION=  1
+  1 & 4 & 3  100  0.0  0.0  0.0  0
+  1 & 4 & 5  101  0.0  0.0  0.0  0
+  6 & 2 & 3  110  0.0  0.0  0.0, MODULE_FUNCTION=  1
+  6 & 2 & 5  111  0.0  0.0  0.0, MODULE_FUNCTION=  1
+  6 & 4 & 3  110  0.0  0.0  0.0  0
+  6 & 4 & 5  111  0.0  0.0  0.0  0
+END_CODES
+FUNCTIONS
+   TOTAL_NUMBER = 1
+      CONDITION
+      FUNCTION_NUMBER: 1
+      TIMESHAPE: DISCRETE
+      SHAPEDEFINITION
+      4
+      0.00   0.0    0.0  0.0
+      0.25   0.005  0.0  0.0
+      0.5   -0.005  0.0  0.0
+      0.51  -0.005  0.0  0.0
+      END_SHAPEDEFINITION
+      END_CONDITION
+END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$============================================================

@@ -1,0 +1,42 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES:   Off
+    CONVECTIVE_TERM:        Off
+    CONDUCTION_TERM:        On
+    SOURCE_TERM:            MATERIAL
+      MATERIAL=1, MODEL=CONSTANT, PARAMETERS=1.0
+      MATERIAL=2, MODEL=CONSTANT, PARAMETERS=2.0
+    END_SOURCE_TERM
+  END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           OFF
+  ELEMENT_LENGTH:          Minimum 
+  SAFETY_FACTOR=           50.0
+  BEMOL=                   0.0
+  TIME_INTEGRATION:        BDF, ORDER=1
+  STEADY_STATE_TOLERANCE=  -1e-10  
+  MAXIMUM_NUMBER_OF_ITER=  1
+  RELAXATION_FACTOR=       1.0
+  CONVERGENCE_TOLERANCE=   -1e-8
+  ALGEBRAIC_SOLVER     
+    SOLVER:                DEFLATED_CG
+    CONVERGENCE:           ITERA=1000, TOLER=1.0e-12
+    OUTPUT:                CONVERGENCE
+    PRECONDITIONER:        DIAGONAL
+  END_ALGEBRAIC_SOLVER  
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT      STEP     =  0
+  POSTPROCESS TEMPE,      STEPS    = 10
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+  CODES, NODES
+    1 1 0.0
+  END_CODES
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

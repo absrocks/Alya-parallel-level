@@ -1,0 +1,22 @@
+# ALYA Boundary set results
+#
+# HEADER
+# ISET , Column :   1
+# SIZES , Column :   2
+# DIBOX , Column :   3
+# DIBOY , Column :   4
+# DIBOZ , Column :   5
+# DIBOU , Column :   6
+# FRBOX , Column :   7
+# FRBOY , Column :   8
+# FRBOZ , Column :   9
+# FRBOU , Column :  10
+# NUMVARIABLES :      10
+# NUMSETS      :       1
+# START
+# Iterations  =       0      0      0
+# Time        =  0.00000000E+000
+         1  0.12903200E+004  0.00000000E+000  0.00000000E+000  0.00000000E+000  0.00000000E+000  0.00000000E+000  0.00000000E+000  0.00000000E+000  0.00000000E+000
+# Iterations  =       1      1     11
+# Time        =  0.10000000E+001
+         1  0.12903200E+004  0.99986864E+000  0.78428183E-005  0.19175740E-004  0.99986864E+000  0.10951530E+006  0.64427171E+005  0.18493720E+001  0.12706086E+006

@@ -1,0 +1,98 @@
+$-------------------------------------------------------------------
+$
+$ plydrop_csh_12x6x01
+$ Author:     Gerard Guillamet
+$
+$ Details:    Validation test continuum shells using elastic
+$             orthotropic material model.
+$             The model consist of multilayer composite cantilever
+$             plate with ply dropoffs.
+$             Layup: [45/-45/45/-45/45/-45 (6 layers at thick end)
+$
+$ Dimensions: L = 12; W = 6; h = 0.1
+$
+$ BCs:        Fully clamped at one end
+$             Force F = 6E+9*h^3 is applied in 5 time steps
+$
+$ Mesh:       12 x 6 x 1 element (one element per layer)
+$             Total of 288 elements
+$             Aspect ratio: 100
+$
+$ Notes:      Displacement is measured at end tip
+$
+$ Units:      -
+$
+$ Results:    Transverse displacement at end tip:
+$               Quoc and Tan (2003)  6.72325
+$               Alya (EAS=On)        6.79089
+$               Alya (EAS=Off)       6.66257
+$
+$-------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  PROBLEM_DEFINITION
+    TEMPORAL_DERIVATIVES: STATIC
+  END_PROBLEM_DEFINITION
+  PROPERTIES
+    MATERIAL =          1
+    DENSITY  =          1.6E-9
+    CONSTITUTIVE_MODEL: CSHEL, ORTHO \
+      25.0e+9 1.0e+9 1.0e+9 0.2 0.2 0.25 0.5e+9 0.5e+9 0.5e+9
+    CSHEL_PARAMETERS:   EAS, ANS_SHEAR, ANS_TRAPEZOIDAL
+    CSYS_MATERIAL:      FIELD=1, ORIENTATION, TYPE=GLOBAL, ROTAXIS=3
+    FORCE: FIELD=2
+  END_PROPERTIES
+END_PHYSICAL_PROBLEM
+$-------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:      IMPLICIT
+  TIME_INTEGRATION:    NEWMARK
+  ALGEBRAIC_SOLVER:
+$    SOLVER:            DIRECT
+    SOLVER:            GMRES, KRYLOV=300
+$    SOLVER:            DEFLATED_CG
+$    SOLVER:            CG
+    CONVERGENCE:       ITERA=5000, TOLER=1.0E-7
+$    PRECONDITIONER:    DIAGONAL, LEFT
+    PRECONDITIONER:    RAS, LEFT, BLOCK
+$    PRECONDITIONER:    LINELET
+$    PRECONDITIONER:    AII
+    COARSE:            ON
+    RESIDUAL:          RHS
+    OPTION:            ZERO_FIXITY
+    OUTPUT:            CONVERGENCE
+  END_ALGEBRAIC_SOLVER
+  RESIDUAL:            DISPL
+  SAFETY_FACTOR:       1.0
+  CONVERGENCE_TOLER:   1.0e-5
+  MAXIMUM_ITERATION:   50
+END_NUMERICAL_TREATMENT
+$-------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT, STEP = 0
+$  POSTPROCESS FEXTE,   STEPS = 5
+  POSTPROCESS DISPL,   STEPS = 5
+  NODE_SET
+    DISPZ
+  END_NODE_SET
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+  CODES, NODES
+    1 111 0.0 0.0 0.0 0
+$    2 111 0.0 0.0 0.0 1
+  END_CODES
+  FUNCTIONS
+    TOTAL_NUMBER = 1
+    CONDITION
+      FUNCTION_NUMBER: 1
+      TIME_SHAPE: DISCRETE
+      SHAPE_DEFINITION
+        2
+        0.00 0.0 0.0  0.00
+        1.00 0.0 0.0 -6.79087
+      END_SHAPE_DEFINITION
+    END_CONDITION
+  END_FUNCTIONS
+END_BOUNDARY_CONDITIONS
+$-------------------------------------------------------------------
+

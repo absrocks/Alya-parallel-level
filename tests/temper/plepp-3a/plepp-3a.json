@@ -1,0 +1,52 @@
+{
+    "authors": [
+        "daniel.mira@bsc.es"
+    ],
+    "comparisons": [
+        {
+            "file": "fluid.ensi.GRATE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "fluid.ensi.TEMPE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "fluid.ensi.VELOC-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "solid.ensi.GRATE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        },
+        {
+            "file": "solid.ensi.TEMPE-000002",
+            "method": "absolute",
+            "tolerance": 0
+        }
+    ],
+    "description": "test coupling libple",
+    "executions": [
+        {
+            "commands": {
+                "alya": "[RUN] [NP] 4 [ALYA] fluid --name DIRIC [SEP] [NP] 4 [ALYA] solid --name NEUMA",
+                "postprocess": "[POST] fluid; [POST] solid"
+            },
+            "mpi": 8,
+            "openmp": 0
+        }
+    ],
+    "include": [
+        "ple_cht2"
+    ],
+    "modules": [
+        "temper",
+        "nastin"
+    ],
+    "name": "plepp-3a",
+    "postprocess": "alya2pos"
+}

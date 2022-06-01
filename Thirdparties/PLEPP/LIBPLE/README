@@ -1,0 +1,18 @@
+General Information
+===================
+
+PLE stands for Parallel Location and Exchange.
+
+Copying
+=======
+
+The PLE library is distrubuted under the GNU Lesser General Public Licence.
+See the COPYING file for details.
+
+Installation
+============
+
+mkdir build
+cd build
+cmake ..
+make

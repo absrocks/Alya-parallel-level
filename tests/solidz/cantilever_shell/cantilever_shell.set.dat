@@ -1,0 +1,10 @@
+NODES
+ $-- clamped boundary
+ 33 1
+ 34 2
+ 67 5
+ 68 6
+ $-- applied force (also displaced nodes)
+ 35 3
+ 36 4
+END_NODE
