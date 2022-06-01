@@ -1,1 +1,1 @@
-# Alya-parall-level is parallel level version Alya CFD developed in Barcelona Super Computing Center
+# Alya-parall-level is parallel level set version of Alya CFD code developed in Barcelona Super Computing Center
