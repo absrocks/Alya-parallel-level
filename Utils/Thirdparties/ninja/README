@@ -1,0 +1,70 @@
+Documentation
+-------------
+
+NINJA Library for GPU based solvers in ALYA.
+Contact: vishal.mehta@bsc.es for more information.
+
+
+COMPILATION
+-----------
+Enable ninja options in config.in under Executables/unix/
+Make Sure you have set CUDA_HOME env variable to right path.
+
+make NINJA=1 -j <nproc>
+
+
+USAGE
+-----
+
+The library has four solvers GMRES, Deflated Conjugate Gradient, Conjugate
+Gradient, and Pipelined Conjugate Gradient. The only pre-conditioner supported
+at the moment is 'diagonal'.
+
+
+Keywords to use the solver:
+
+NINJA GMRES               : GGMR
+NINJA Deflated CG         : GDECG
+NINJA CG                  : GCG
+NINJA CG w/o precond      : GCGNP
+NINJA Pipelined CG        : GPCG
+NINJA GPU AMGX            : GAMGX
+
+PRECONDITIONER            : DIAGONAL
+
+Other options are same a CPU based solver.
+Each problem needs a GPUconfig.dat. A sample is available in the ninja folder.
+
+AMGX
+----
+NINJA now support Algebraic Multigrid from NVIDIA. If the solver is of type GAMGX, please specify config file as a JSON object.
+
+ex:     ALGEBRAIC_SOLVER
+		SOLVER:		     GAMGX
+                CONFIGURATION_FILE:  amgx_pressure.json
+    	END_ALGEBRAIC_SOLVER        
+
+AMGX is a licensed softwares. Please export the license.lic file as 
+export LM_LICENSE_FILE=${PATH}/license.lic
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:{$AMGX_HOME}/lib/
+
+Some predefined configurations are available in Alya/Thirdparties/ninja/AMGXconfigs/
+Please refer to the AMGX user manual available in the above folder to adjust the multigrid settings.
+
+
+------Parameters in config file------
+1. ***Factor of GPU memory to be used. Ideal would be 0.8/0.9. If AMGX is used along side other GPU solvers, please adjust GPU memory accordingly.
+2. GPU Direct RDMA, use 1 to enable. Make sure the MPI and network cards support the feature
+3. Sparse solver type. (0 for NVIDIA cusparse, 1 for Vectorized version and 2 for WARP based version).
+   Best performance in most cases by version 2
+
+*** If using sfc with multiples MPIs linked to one GPU, the factor of GPU memory is distributed proportionally using the rank-element file. Note that if you are using openacc in the assembly, you won't be able to fully use the memory.   
+
+RECOMMENDATIONS
+---------------
+
+Distribute one GPU/MPI. On minotauro BSC cluster, use 4 MPIs per node, with
+1 K80/MPI and 4 CPU cores. 
+
+Use one million elememts per MPI process to achive proper GPU occupancy.
+

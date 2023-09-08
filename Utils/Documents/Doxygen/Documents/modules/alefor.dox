@@ -1,0 +1,42 @@
+/*! \page alefor Alefor
+
+\section Alefor Alefor documentation
+
+We describe in this section the incompressible flow module, including:
+- \ref Alefor_physical_problem : Governing equations
+- \ref Alefor_numerical_treatment : Stabilization, solvers, etc.
+- \ref Alefor_output_and_postprocess : Secondary variables derived from solution
+- \ref Alefor_boundary_conditions : Dirichlet, Neumann and mixed conditions
+
+For the corresponding input data file
+
+- \ref Alefor_inputdata_physical_problem 
+- \ref Alefor_inputdata_numerical_treatment 
+- \ref Alefor_inputdata_output_and_postprocess 
+- \ref Alefor_inputdata_boundary_conditions  
+
+\subsection Alefor_physical_problem Physical problem
+
+
+\subsection Alefor_numerical_treatment Numerical Treatment
+
+\subsubsection Alefor_stabilization Stabilization
+
+
+\subsubsection Alefor_SGS Subgrid scale modeling
+
+
+\subsubsection Alefor_SGS_tracking Subgrid scale convection and time tracking
+
+
+\subsubsection Alefor_solution_procedure Solution procedure
+
+
+\subsubsection Algebraic_solvers Algebraic solvers
+
+
+\subsection Alefor_output_and_postprocess Output and postprocess
+
+\subsection Alefor_boundary_conditions Boundary conditions
+
+*/

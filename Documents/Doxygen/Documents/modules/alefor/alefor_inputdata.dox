@@ -1,0 +1,36 @@
+/*! \page Alefor_input_data Alefor Input data
+
+The different mandatory fields in the sample.nsi.dat files are:
+
+- \ref Alefor_inputdata_physical_problem 
+- \ref Alefor_inputdata_numerical_treatment 
+- \ref Alefor_inputdata_output_and_postprocess 
+- \ref Alefor_inputdata_boundary_conditions  
+
+\section Alefor_inputdata Alefor Input data
+
+\subsection Alefor_inputdata_physical_problem Alefor Input data: physical problem
+
+\verbinclude  in_ale_reaphy.f90
+<br>
+\htmlinclude  doc_ale_reaphy.f90
+
+\subsection Alefor_inputdata_numerical_treatment Alefor Input data: Numerical treatment
+
+\verbinclude  in_ale_reanut.f90
+<br>
+\htmlinclude  doc_ale_reanut.f90
+
+\subsection Alefor_inputdata_output_and_postprocess Alefor Input data: Output and postprocess
+
+\verbinclude  in_ale_reaous.f90
+<br>
+\htmlinclude  doc_ale_reaous.f90
+
+\subsection Alefor_inputdata_boundary_conditions Alefor Input data: Boundary conditions
+
+\verbinclude  in_ale_reabcs.f90
+<br>
+\htmlinclude  doc_ale_reabcs.f90
+
+*/

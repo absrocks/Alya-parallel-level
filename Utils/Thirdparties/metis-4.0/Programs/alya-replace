@@ -1,0 +1,102 @@
+#!/usr/bin/perl
+#
+#  Estas son las cadenas que vas a cambiar:
+#
+$strini= "int ";	
+$strout= "my_int ";
+#
+# Execute this PERL script from Alya main directory (one directory before Sources)
+#
+print "\n";
+print "--| alya-replace |-- \n";
+print "\n";
+print "--| Substitute a string by another string in the Sources directory: \n";
+print "--| ".$strini." <- ".$strout." \n";
+print "--| \n";
+print "--| This script must be executed from Alya main directory \n";
+print "--| that is one directory before Sources. \n";
+print "--| \n";
+
+$ifrecursive= "Sources";
+@patdirs= qw(.);
+
+
+if (@ARGV = 1) {$ifrecursive= $ARGV[0]}
+
+if ($ifrecursive=~/^Sources$/) {
+    $srcdir="Sources";
+    @zepdirs=($srcdir."/kernel" , $srcdir."/modules", $srcdir."/services");
+    @alldirs=();
+    @patdirs=();
+    @patfils=();
+    @prefils=();
+    @lisfils=();
+#
+# load all the directory names in modules and kernel folders 
+#
+    $i=0;
+    foreach $dirs (@zepdirs) {
+	opendir(ALL_DIRS,$dirs);
+	@auxdirs=readdir(ALL_DIRS);
+	foreach (@auxdirs) {
+	    if (! (($_=~/CVS/) || ($_=~/\./)) ) {
+		@patdirs=(@patdirs, $dirs ."/".$_ );
+	    	$i++; 
+	    }
+    	} 
+	@alldirs=(@alldirs,@auxdirs);
+	closedir(ALL_DIRS);
+    }
+    
+}
+
+#
+# load all the file names
+#
+foreach $dirs (@patdirs){
+    opendir(ALL_DIRS,$dirs);
+    @auxi   = readdir(ALL_DIRS);
+    @lisfils=(@lisfils,@auxi);
+    foreach $a (@auxi) { 
+	@patfils=(@patfils,$dirs . "/".$a );
+	@prefils=(@prefils,$dirs);
+    }
+}
+
+
+$iflag=0;
+$i = 0;
+foreach $fils (@patfils) {
+    if ( ($fils=~/\.f90$/) || ($fils=~/\.c$/) || ($fils=~/\.f$/) ) {
+	open (IN,$fils);  
+	$iflag=0;
+	while (<IN>) {if ($_=~/$strini/) {$iflag=1}} 
+	close (IN);
+	
+	if ($iflag == 1) {
+	    print "$fils\n";
+	    open (IN,$fils);  
+	    open (OUT, ">mocos");
+	    while (<IN>) {
+		if ($_=~/$strini/) {s/$strini/$strout/}
+		print OUT $_ ;
+	    } 
+	    close (IN);
+	    close (OUT);
+	    
+	    open (IN,"mocos");  
+	    open (OUT,">$fils");
+	    while (<IN>) {print OUT $_} 
+	    close (IN);
+	    close (OUT);						
+	}
+    }
+    $i++;
+}
+system ("rm -r mocos");
+
+print "--| \n";
+print "--| Bye.\n";
+print "--| \n";
+
+

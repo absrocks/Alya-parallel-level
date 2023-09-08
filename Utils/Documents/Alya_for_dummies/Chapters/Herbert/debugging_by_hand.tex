@@ -1,0 +1,9 @@
+\subsection{Debugging by hand}
+
+It is not the most recomended option but sometimes you need it. When
+you do it in parallel one option is to use write(kfl\_paral+500) ...
+. Raul suggested a nicer option: write({*},{*}) and then you submit
+with mpirun -np 5 -outfile-pattern=output.\%r Alya.x 
+case-000. The interesting thing is: -outfile-pattern=output.\%r .
+With this you get output.0 for proc 0, output1 for proc 1, etc.
+There exist also: -errfile-pattern=error.\%r 

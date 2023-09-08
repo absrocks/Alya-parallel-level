@@ -1,0 +1,70 @@
+\subsection{Prerequisites}
+Luckily for the users, Alya is almost a selfcontained software. It does not depend on any external library or application. But, of course, you will need a compiler to compile it, particularly, a Fortran and C ones. It has been tested in tons of architectures and operative systems, but, of course, the recommended ones are linux under x86-64 PC. Talking about the compilers, it can be build with the intel and the gcc ones.
+
+We said before that Alya does not have \textit{almost} any dependency. That ``almost'' it because it has one dependency to run in parallel, a mesh partitioning library called metis \footnote{http://glaros.dtc.umn.edu/gkhome/metis/metis/overview}. It solves the very complex geometrical problem of partitioning the mesh in a way to reduce the contact area between sections, in an efficient way. To avoid version problems, this library is included in the Alya repository.
+
+So, let's say you downloaded Alya in the directory ``Alya'' inside the folder of your user. So your absolute path would be: ``/home/USER/Alya''. To compile metis, just go to the directory where the source code is, and type "make":
+
+\begin{lstlisting}[label=,caption=compiling metis]
+cd /home/USER/Alya/Thirdparties/metis-4.0
+make
+\end{lstlisting}
+
+This software is written in C, and that's why you need a C compiler. The rest of Alya is written in modern Fortran.
+
+
+\subsection{Configuring the compilation (making the Makefile) and compiling Alya}
+
+So now, we are ready to configure and compile Alya. To do this, you are going to work in the directory ``Executables/unix'' inside your Alya instalation folder.
+
+In a first step, you've to create the makefile, in which you specify the modules and services you're going to compile, the kind of optimization you want to use, if you want debugs flags or not; basically exacutable-related things.
+
+The first thing that you've to do is copying the configuration file form the directory ``configure.in'', you'll see three configuration files there: ``config\_ifort.in'' ; ``config\_gfortran.in'' and ``config\_IBM\_xfl.in'', so choose the one that fits your architecture and copy it to the Executables/unix directory with the name config.in:
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=copy,caption=Copying the configuration file]
+cp configure.in/configure_ifort.in config.in
+\end{lstlisting}
+
+Now, if you take a look inside that file, you'll see a first set of line with the wrappers and libraries needed. The next section that you'll see are the optimization flags, which are nicely described there. Remember that if, for example, you uncomment the ``O2'' flag optimization, you'll have to comment the `O1'' optimization.
+
+If you run only 3D problems, activating the ``NDIME PARAMETER'' flag is recommended. It will allow automatic loop unrolling of several loops inside the code improving the performance.
+
+So, in some hypothetical case in which you are running only 3D problems and you'd like to run really fast, your performance flags sections would look something like this:
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=opti_flags,caption=fast optimization flags configuration]
+#MINUM
+#FOPT      = -O1
+#MAXIMUM
+FOPT      = -O2 -xHost
+
+CSALYA   := $(CSALYA) -DNDIMEPAR
+
+#CSALYA   := $(CSALYA) -ftrapuv -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias
+\end{lstlisting}
+ 
+So now that you've the characteristics you want for your executable, it's time to build the makefile. Here you also have to specify which modules you want to compile and if you want the debug (-g option) or the release (-x option) version.
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=making_makefile,caption=Command to build the makefile]
+./configure [-x -g] parall  module1 module2 ...
+\end{lstlisting}
+
+Note there that the ``-x'' and ``-g'' are optional if you type none of them, you'll have both versions. Another thing to notice is that, in the way Alya was built, now the ``parall'' module is mandatory and you always have to include it, even though you're not going to use it. So, let's say that we want the release version for the module that solves fluid mechanics, and the module that solves solid mechanics. In that case, you'll have to type:
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=making_nastin,caption=Command to build the makefile for fluid and solid mechancis ]
+./configure -x nastin solidz parall
+\end{lstlisting}
+
+After this point you'll see some stuff in your screen. Take a look at this because it gives you a clue if the Makefile was built in the way you wanted. Here it will specify such things as the compiler used, and the modules that are going to be built.
+
+Once it finishes and you got your shell cursor again, you just type ``make'':
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=making,caption=Making Alya]
+make [-j n]
+\end{lstlisting}
+
+The ``-j'' option allows to compile the code in parallel, and ``n'' specifies the number of cores that are going to be used. It has been tested and you'll see an almost linear scalability up to 4 cores.

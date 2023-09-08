@@ -7,7 +7,6 @@ subroutine ensres_bin(&
   use def_kintyp, only          :  ip,rp,varna_pos,varnu_pos,nunam_pos
   use def_kintyp, only          :  tipoe_ens,nppti_ens,ncoun_pos,nunam_pos
   use def_elmtyp
-  use def_kintyp, only          :  nmax_ensi
 
   implicit none
   integer(ip),    intent(in)    :: ittim,npoin,nelem,pdime
@@ -35,14 +34,14 @@ subroutine ensres_bin(&
   if( ittim >= 0 ) then
 
      istpp=1
-     do while(istpp<=nmax_ensi)        
+     do while(istpp<=100)        
         if(wopos(1)==varna_pos(1,istpp)) then
-           istpp=nmax_ensi
+           istpp=100
         else if(varna_pos(1,istpp)=='NULL') then
            varna_pos(1,istpp) = wopos(1)
            varna_pos(2,istpp) = wopos(2)
            varnu_pos          = varnu_pos+1
-           istpp=nmax_ensi
+           istpp=100
         end if
         istpp=istpp+1
      end do

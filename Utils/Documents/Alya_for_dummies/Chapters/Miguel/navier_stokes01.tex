@@ -1,0 +1,174 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Compressible and incompressible Navier-Stokes (nastin and nastal)}
+
+%----------------------------------------------------------------------------------% 
+\subsubsection{Fluid Dynamics equations}
+
+
+\textsf{Navier-Stokes Equations} \cite{muller1999low}
+%
+\label{eq10.XX} 
+\begin{eqnarray}
+%
+\frac{\partial \rho}{\partial t} + \nabla  \cdot (\rho \textbf{u}) &=& 0    
+%
+\nonumber \\
+%
+\frac{\partial \rho \textbf{u}}{\partial t} + \mathbf \nabla  \cdot (\rho \textbf{u}\textbf{u}) + \frac{1}{\tilde M^2} \nabla p &=& \textbf{G}    
+%
+\nonumber \\
+%
+\frac{\partial \rho E}{\partial t} + \nabla  \cdot (\rho H \textbf{u}) &=& Q 
+%
+\nonumber \\
+%
+\textbf{G} &=& \frac{1}{Re_{\infty}} \nabla \cdot \boldsymbol{\tau} + \frac{1}{Fr^2_{\infty}}\rho( -\textbf{e}_r)
+%
+\nonumber \\
+%
+\boldsymbol \tau &=& \mu( \nabla u + (\nabla u)^T ) - \frac{2}{3} \mu \nabla \cdot \textbf{u} \textbf{I} 
+%
+\nonumber \\
+%
+Q &=& \rho q +
+\frac{\gamma}{(\gamma-1) Re_{\infty} Pr_{\infty}} \nabla \cdot ( \kappa \nabla T )  + 
+\frac{\tilde M^2}{Re_{\infty}} \nabla \cdot \boldsymbol \tau \cdot \textbf{u}   
+% + \frac{\tilde M^2}{Fr^2_{\infty} } \rho(-\textbf{e}_r) \cdot \textbf{u} + 
+%
+\nonumber \\
+E &=& e + \frac{1}{2} \tilde M^2  \textbf{u}^2 = \frac{1}{\gamma-1} T +  \frac{1}{2} \tilde M^2  \textbf{u}^2 
+%
+%
+\nonumber \\
+H &=& E + \frac{p}{\rho} = \rho c_p T +  \frac{1}{2} \tilde M^2  \textbf{u}^2 
+%
+\nonumber \\
+\end{eqnarray} 
+%
+\footnote{
+$$
+\rho H = 
+\rho E + p = 
+\rho( e+ 1/2 \textbf{v}^2) + p =
+\rho c_p T + 1/2 \rho \textbf{v}^2; 
+$$
+%
+$$
+\partial (\rho H) \partial t + \nabla  \cdot (\rho H \textbf{u}) = 
+\partial p/ \partial t    -
+\partial q/\partial r_i  + 
+\partial (  \tau_{ij} v_j  )/\partial r_i  \tilde M^2/Re_{\infty}
+$$
+%
+$$
+D( c_p \rho T)/Dt = 
+D p/D t 
+-\partial q/\partial r_i  - 
+\underbrace{  D(  \rho v_j v_j )/Dt }_{   \propto v_j \partial \sigma_{ij} /\partial r_i }  + 
+\partial (  (-p\delta_{ij} + \tau_{ij} ) v_j  )/\partial r_i  \tilde M^2/Re_{\infty}
+$$
+%
+}
+%
+%$$
+%\textbf{G} = \frac{1}{Re_{\infty}} \nabla \cdot \boldsymbol{\tau} + \frac{1}{Fr^2_{\infty}}\rho( -\textbf{e}_r)
+%$$
+%
+%$$
+%Q = \rho q +
+%\frac{\gamma}{(\gamma-1) Re_{\infty} Pr_{\infty}} \nabla \cdot ( \kappa \nabla T )  + 
+%\frac{\tilde M^2}{Re_{\infty}} \nabla \cdot \boldsymbol \tau \cdot \textbf{u}  + 
+%\frac{\tilde M^2}{Fr^2_{\infty} } \rho(-\textbf{e}_r) \cdot \textbf{u} + 
+%$$
+%
+with 
+$\tilde M = \frac{u^{*}_{\infty}}{\sqrt{p^{*}_{\infty}/\rho^{*}_{\infty}}}  = \sqrt{\gamma} M_{\infty}$ low reference Mach number, 
+$Re_{\infty} = \frac{\rho_{\infty}^{*} u_{\infty}^{*} L^{*}}{\mu_{\infty}^{*}} $ the Reynolds number, 
+$Fr_{\infty}  = \frac{u_{\infty}^{*}}{\sqrt{g^* L^*}}$ the Froude number, 
+$Pr_{\infty}  =  \frac{c_p^* \mu^{*}_{\infty}}{\kappa^{*}_{\infty}}$ then Prandtl number, 
+$q = q^{*} \frac{ L^{*} \rho^{*}_{\infty}  }{ u^{*}_{\infty} p^{*}_{\infty}   }$ the nondimensional heat release rate, 
+$\boldsymbol \tau$ the nondimensional shear stress tensor 
+and 
+$\boldsymbol \sigma \equiv -p \textbf{I} + \boldsymbol \tau$.  
+
+The nondimensional expression of the total energy per unit mass and 
+the total enthalpy are 
+$$
+E = e + \tilde M^2 \frac{1}{2} \textbf{u}^2 
+$$
+%
+$$
+H = E + \frac{p}{\rho}
+$$
+The nondimensional equations of state for a perfect gas read
+$$
+p = \rho T 
+$$
+%
+$$
+e = \frac{1}{\gamma-1} T
+$$
+The pressure expressed in terms of the conservative variables is given by 
+$$
+p = (\gamma-1) [ \rho E - \tilde M^2 \frac{1}{2} \frac{|\rho \textbf{u}|^2}{\rho} ]
+$$
+
+\textsf{Conservative form.} 
+The Navier-Stokes equations may be recast in the so-called 
+\textit{conservation form of NS} system of equations
+\footnote{the repeated indices imply summing and 
+the comma denotes partial derivatives with respect to the independent variables $x_i$.}
+%
+\label{eq04.XX}
+\begin{equation}
+\frac{\partial \mathbf U}{\partial t} + 
+\frac{\partial \mathbf F_i}{\partial r_i} + 
+\frac{\partial \mathbf G_i}{\partial r_i} = 
+\mathbf B
+\end{equation}
+%
+where  
+%
+$\textbf{U}$, 
+$\mathbf F_i \equiv \mathbf F_i(\mathbf U)$, 
+$\mathbf G_i \equiv \mathbf G_i( \mathbf U, \partial \mathbf U/\partial r_j)$, 
+and 
+$\textbf{B}$ are 
+the conservation flow varibles, 
+convection flux variables, 
+diffusion flux variables, and 
+source terms, respectively. 
+%
+\label{eq04.XX}
+\begin{eqnarray}
+%\nonumber \\
+\mathbf U =
+ \begin{pmatrix}
+  \rho \\
+  \rho v_{\alpha} \\
+  \rho E \\
+ \end{pmatrix},
+%
+\mathbf F_i = 
+ \begin{pmatrix}
+ \rho v_i \\
+ \rho v_{\alpha} v_i + p \delta_{\alpha i} \\
+ \rho E v_i + p v_i \\ 
+ \end{pmatrix}, 
+%
+\mathbf G_i = 
+ \begin{pmatrix}
+  0 \\
+  -\tau_{i \alpha} \\
+  -\tau_{i \alpha} v_{\alpha} + q_i\\
+ \end{pmatrix}, 
+%
+\mathbf B = 
+ \begin{pmatrix}
+  0 \\
+  \rho f_{\alpha} \\
+  \rho f_{\alpha} v_{\alpha}\\
+ \end{pmatrix}
+%
+\end{eqnarray}
+%

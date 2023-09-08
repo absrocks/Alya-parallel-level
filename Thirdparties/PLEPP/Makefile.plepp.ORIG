@@ -1,0 +1,34 @@
+ROOT          :=$(shell pwd)
+ROOT_LIBPLE   :=$(ROOT)/LIBPLE
+ROOT_LIBPLEPP :=$(ROOT)/LIBPLEPP
+
+
+all: libple libplepp 
+
+
+.PHYTON: clean ple plepp  
+
+
+clean:
+	@$(MAKE) -C $(ROOT_LIBPLE)                    clean 
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Fortran clean 
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp     clean 
+
+
+ple:
+	@cd $(ROOT_LIBPLE); ./configure --enable-static CC=mpicc  --prefix=$(ROOT_LIBPLE)/Execs
+	@$(MAKE) -C $(ROOT_LIBPLE)/src CFLAGS_OPT=''
+	@$(MAKE) -C $(ROOT_LIBPLE) install
+
+
+plepp:
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test01 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90 
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test02 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90   
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp test03 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90   
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp scf01 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90   
+
+
+#
+# 2016JAN29. Barcelona, Spain 
+#   J. Miguel Zavala-Ake
+# 

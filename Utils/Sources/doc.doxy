@@ -1,0 +1,175 @@
+/*! 
+@mainpage Main documentation page for Alya
+ 
+- \ref Overview
+- \ref Main_features
+- \ref Input_data_files 
+- \ref Alya_architecture
+- \ref Solution_procedure
+- \ref Install_and_run
+- \ref Useful_scripts
+
+\section Overview Overview
+The Alya System is a Parallel Computational Mechanics (CM) code with two main features. Firstly, it is special ly designed for running with the highest effiency standards in large scale supercomputing facilities. Secondly, it is capable of solving different physics, each one with its own modelization characteristics, in a coupled way. Both main features are intimately related, meaning that all complex coupled problems solved by Alya must retain the efficiency. The different physics are represented by modules in Alya (that is a directory containing a set of subrutines to solve the particular problem). Among others, the modules are:
+
+- \ref Nastin : Incompressible Flows
+- Turbul : Turbulence models
+- Nastal: Compressible Flows
+- \ref Solidz : Non-linear Solid Mechanics
+- Chemic: Species transport and chemical reactions
+- \ref Exmedi : Excitable Media
+- Temper: Thermal Flows
+- Immbou: N-body collisions and transport
+
+\section Main_features Main features 
+
+Alya architecture is modular. It is composed by modules, services and a kernel.
+- <i>Modules</i>. A module solves an individual physical problems.
+- <i>Services</i>. A service is a toolbox that provide a variety of independent procedures to be called by modules and kernel. The paralleization in Alya is a service.
+- <i>Kernel</i>. It contains the core of Alya, where the whole of the common procedures lies. It has all the basic stuff to be linked with at least one module and solve a problem sequentially. 
+
+\section Input_data_files Input data files
+
+In order to run a simulation titled <i>sample</i>, a series of files is required to define the kernel, the modules and the services. See next Figure. They are:
+
+- Kernel. It consists of 3 obligatory files:
+  - sample.dat: general data for the run (modules and services to use, etc.). E.g., to run an incompressible flow simulation in parallel, one would specify in this file that Nastin module and Parall service are required.
+  - sample.dom.dat: \ref Domain_inputdata. Mesh description. All mesh dependent variables are here: mesh dimensions, element connectivity, node coordiantes, etc.
+  - sample.ker.dat: \ref Kermod_inputdata. When coupling different physics some variables may be shared by modules (like density, etc). These variables are located here. Kermod can be viewed as a mandatory module, which can in some cases solves some PDE's (e.g. generalized distance to the wall). 
+
+- Modules. One file is required for each module to be run:
+  - sample.nsi.dat: \ref Nastin_inputdata 
+  - sample.nsi.dat: \ref Solidz_inputdata 
+  - sample.tem.dat: Temper input data
+  - sample.tur.dat: Turbul input data
+  -   ...
+
+- Services. Some services require data files, some not.
+  - sample.dod.dat: data for Dodeme (Chimera) 
+  - Parall: this service is an exception and does not require any file! Ths information of Parall is given directly in the *.dat file.
+
+<br>
+\f$
+\fbox{
+\setlength{\unitlength}{0.50mm} 
+\begin{picture}(300,300)(-25,-35)
+\newsavebox{\folder}
+\savebox{\folder}(40,32)[bl]
+{
+  \multiput(0,0)(0,28){2}{\line(1,0){40}}
+  \multiput(0,0)(40,0){2}{\line(0,1){28}}
+  \put(1,28) {\oval(2,2)[tl]}
+  \put(1,29) {\line(1,0){5}}
+  \put(9,29) {\oval(6,6)[tl]}
+  \put(9,32) {\line(1,0){8}}
+  \put(17,29){\oval(6,6)[tr]}
+  \put(20,29){\line(1,0){19}}
+  \put(39,28){\oval(2,2)[tr]}
+}
+\put(120,115) {\oval(100,30)[h]}
+\put(100,112) {SIMULATION}
+
+\put( 30,150) {\usebox{\folder}}
+\put(100,150) {\usebox{\folder}}
+\put(170,150) {\usebox{\folder}}
+\put( 40,160) {*.dat}
+\put(105,160) {*.dom.dat}
+\put(175,160) {*.ker.dat}
+
+\put( 30,140) {\bf GENERAL}
+\put(105,140) {\bf MESH}
+\put(170,140) {\bf COMMON}
+
+\put(30,200)  {Run data}
+\put(30,190)  {Problem data}
+
+\put(100,230) {Dimensions}
+\put(100,220) {Strategy}
+\put(100,210) {Geometry}
+\put(100,200) {Sets}
+\put(100,190) {Bound. cond.}
+
+\put(170,210) {Physical problem}
+\put(170,200) {Numerical treatment}
+\put(170,190) {Output and postprocess}
+
+\put( 40, 50) {\usebox{\folder}}
+\put( 45, 60) {*.nsi.dat}
+\put(150, 50) {\usebox{\folder}}
+\put(155, 60) {*.tem.dat}
+
+\put(118,40)  {\vector(-1,1){15}}
+\put(118,40)  {\vector( 1,1){15}}
+\put(95,30)   {Physical problem}
+\put(95,20)   {Numerical treatment}
+\put(95,10)   {Output \& postprocess}
+\put(95,0)    {Boundary conditions}
+
+\end{picture}
+}
+\f$
+<br>
+
+\section Alya_architecture Alya's architecture 
+
+Alya is organized as a set of code parts that can be connected with each other and compiled independently. These parts are grouped in Kernel, Modules and Services.
+
+Kernel: the Core 
+The kernel contains everything that is needed to solve an individual problem sequentially. It is in charge of reading data and geometry, compute mesh and geometric stuff call the modules and services, control the workflow, set the format of result dumping, etc. The kernel is aware of which modules and services are running. It also provides some basic and low level mathematical tools.
+
+Modules: the Physics 
+A module is where each Physical problem is numerically solved. In a module, the discretized form of the governing equations is programmed, including all kinds of numerical subtleties of the method, the initial and boundary conditions, and so on. 
+
+Services: the Toolbox 
+The services are a group of tools that can be called at any moment by kernel, modules or
+even among them which are related to specific tasks, such as Parallelization, Overset Meshes or Optimization.
+
+\section Solution_procedure Solution procedure 
+
+The solution procedure fro single physics is quite natural: a time dependent problem requires time integration and a non-linear problem requires non-linear iterations at each time step. For physics coupling, an additional loop is required to couple the physics. In addition, one could like to couple some modules and uncouple others. One example is a RANS simulation with temperature transport (forced convection). In Alya's terminology, we would have two blocks: Block1 includes Nastin and Turbul that much converge and Block2 including Temper that can be trnaposrted
+once the first block is converged. The general workflow is shown in the following diagram: 
+
+\verbatim
+
+  - Read files, define mesh dependent arrays
+  - Initial solution or read restart
+  - Output and postprocess
+
+  +--- do time steps
+  !
+  |       - Compute time step
+  |       - Begin a time step: update bc, etc.
+  |   
+  |       do blocks     ---------------------------------+
+  |                                                      |
+  |          do coupling     --------+                   | Modules are grouped into blocks
+  |            - Solve module1       |                   | 
+  !            - Solve module2       |                   |
+  !              ...                 |                   | Useful if some equations are coupled
+  |            - Check coupling cvg  |                   | and others decoupled. Example
+  |          end do coupling --------+                   | Block 1: Nastin - Turbul 
+  |                                                      | Block 2: Chemic: species are transported
+  |          Goto new block                              |
+  |       end do blocks ---------------------------------+
+  |   
+  |       - End time step
+  |       - Output and postprocess
+  |   
+  +--- end do time steps
+
+  - Output and postprocess
+  - End the run
+
+\endverbatim
+
+\section Install_and_run Install and run
+
+
+\section Useful_scripts Useful scripts
+
+- <TT>make</TT>: compile Alya
+- <TT>make clean</TT>: clean objects files
+- <TT>make cleandocs</TT>: clean doxygen directory 
+- <TT>make docs</TT>: generate documentation using doxygen
+
+*/

@@ -1,0 +1,79 @@
+<item>
+    <layout class="QVBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+            <number>2</number>
+        </property>
+        <property name="sizeConstraint">
+            <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+            <widget class="QPushButton" name="#listNamePlus">
+                <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                    </sizepolicy>
+                </property>
+                <property name="text">
+                    <string/>
+                </property>
+                <property name="icon">
+                    <iconset resource="../alya.qrc">
+                        <normaloff>:/Alya_Icons/plus.png</normaloff>:/Alya_Icons/plus.png</iconset>
+                </property>
+                <property name="iconSize">
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+                </property>
+            </widget>
+        </item>
+        <item>
+            <widget class="QPushButton" name="#listNameMinus">
+                <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                    </sizepolicy>
+                </property>
+                <property name="text">
+                    <string/>
+                </property>
+                <property name="icon">
+                    <iconset resource="../alya.qrc">
+                        <normaloff>:/Alya_Icons/minus.png</normaloff>:/Alya_Icons/minus.png</iconset>
+                </property>
+                <property name="iconSize">
+                    <size>
+                        <width>20</width>
+                        <height>20</height>
+                    </size>
+                </property>
+            </widget>
+        </item>
+    </layout>
+</item>
+<item>
+    <widget class="QTableWidget" name="#listName">
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>1</horstretch>
+                <verstretch>1</verstretch>
+            </sizepolicy>
+        </property>
+        <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="lineWidth">
+            <number>0</number>
+        </property>
+        <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+            <bool>false</bool>
+        </attribute>        
+		<<columns>>
+    </widget>
+</item>

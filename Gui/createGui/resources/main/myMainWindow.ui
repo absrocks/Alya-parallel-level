@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>pqClientMainWindow</class>
+ <widget class="QMainWindow" name="pqClientMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>970</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="pqViewManager" name="MultiViewManager">
+       <attribute name="title">
+        <string>Viewer</string>
+       </attribute>
+      </widget>
+      <widget class="alyaWidget" name="alyaProblem">
+       <attribute name="title">
+        <string>Alya Problem</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>970</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSources">
+    <property name="title">
+     <string>&amp;Sources</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuFilters">
+    <property name="title">
+     <string>&amp;Filters</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_Macros">
+    <property name="title">
+     <string>&amp;Macros</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuAlya">
+    <property name="title">
+     <string>Alya</string>
+    </property>
+    <addaction name="actionAlyaNew_problem"/>
+    <addaction name="actionAlyaOpen_problem"/>
+    <addaction name="actionAlyaSave_problem"/>
+    <addaction name="actionAlyaSave_problem_as"/>
+    <addaction name="actionAlyaExport_problem"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menu_View"/>
+   <addaction name="menuSources"/>
+   <addaction name="menuFilters"/>
+   <addaction name="menuTools"/>
+   <addaction name="menu_Macros"/>
+   <addaction name="menu_Help"/>
+   <addaction name="menuAlya"/>
+  </widget>
+  <widget class="pqStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="pipelineBrowserDock">
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Pipeline Browser</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="pqPipelineBrowserWidget" name="pipelineBrowser">
+    <property name="contextMenuPolicy">
+     <enum>Qt::ActionsContextMenu</enum>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="proxyTabDock">
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Object Inspector</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="pqObjectInspectorWidget" name="proxyTabWidget"/>
+  </widget>
+  <widget class="QDockWidget" name="statisticsDock">
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea|Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Statistics Inspector</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="pqDataInformationWidget" name="statisticsView"/>
+  </widget>
+  <widget class="QDockWidget" name="animationViewDock">
+   <property name="windowTitle">
+    <string>Animation View</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="pqPVAnimationWidget" name="animationView"/>
+  </widget>
+  <widget class="QDockWidget" name="selectionInspectorDock">
+   <property name="windowTitle">
+    <string>Selection Inspector</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="pqSelectionInspectorWidget" name="selectionInspector"/>
+  </widget>
+  <widget class="QDockWidget" name="comparativePanelDock">
+   <property name="windowTitle">
+    <string>Comparative View Inspector</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="pqComparativeVisPanel" name="comparativeVisPanel"/>
+  </widget>
+  <action name="actionAlyaOpen_problem">
+   <property name="text">
+    <string>Open problem</string>
+   </property>
+  </action>
+  <action name="actionAlyaSave_problem">
+   <property name="text">
+    <string>Save problem</string>
+   </property>
+  </action>
+  <action name="actionAlyaNew_problem">
+   <property name="text">
+    <string>New problem</string>
+   </property>
+  </action>
+  <action name="actionAlyaExport_problem">
+   <property name="text">
+    <string>Export problem</string>
+   </property>
+  </action>
+  <action name="actionAlyaSave_problem_as">
+   <property name="text">
+    <string>Save problem as</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>pqPipelineBrowserWidget</class>
+   <extends>QWidget</extends>
+   <header>pqPipelineBrowserWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pqViewManager</class>
+   <extends>QWidget</extends>
+   <header>pqViewManager.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pqSelectionInspectorWidget</class>
+   <extends>QWidget</extends>
+   <header>pqSelectionInspectorWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pqPVAnimationWidget</class>
+   <extends>QWidget</extends>
+   <header>pqPVAnimationWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pqDataInformationWidget</class>
+   <extends>QWidget</extends>
+   <header>pqDataInformationWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pqStatusBar</class>
+   <extends>QStatusBar</extends>
+   <header>pqStatusBar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>pqComparativeVisPanel</class>
+   <extends>QWidget</extends>
+   <header>pqComparativeVisPanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>pqObjectInspectorWidget</class>
+   <extends>QWidget</extends>
+   <header>pqObjectInspectorWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>alyaWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">alyawidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,42 @@
+/*! \page exmedi Exmedi
+
+\section Exmedi Exmedi documentation
+
+We describe in this section the incompressible flow module, including:
+- \ref Exmedi_physical_problem : Governing equations
+- \ref Exmedi_numerical_treatment : Stabilization, solvers, etc.
+- \ref Exmedi_output_and_postprocess : Secondary variables derived from solution
+- \ref Exmedi_boundary_conditions : Dirichlet, Neumann and mixed conditions
+
+For the corresponding input data file
+
+- \ref Exmedi_inputdata_physical_problem 
+- \ref Exmedi_inputdata_numerical_treatment 
+- \ref Exmedi_inputdata_output_and_postprocess 
+- \ref Exmedi_inputdata_boundary_conditions  
+
+\subsection Exmedi_physical_problem Physical problem
+
+
+\subsection Exmedi_numerical_treatment Numerical Treatment
+
+\subsubsection Exmedi_stabilization Stabilization
+
+
+\subsubsection Exmedi_SGS Subgrid scale modeling
+
+
+\subsubsection Exmedi_SGS_tracking Subgrid scale convection and time tracking
+
+
+\subsubsection Exmedi_solution_procedure Solution procedure
+
+
+\subsubsection Algebraic_solvers Algebraic solvers
+
+
+\subsection Exmedi_output_and_postprocess Output and postprocess
+
+\subsection Exmedi_boundary_conditions Boundary conditions
+
+*/

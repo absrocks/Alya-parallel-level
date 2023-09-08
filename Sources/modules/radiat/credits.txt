@@ -1,0 +1,14 @@
+
+-----------------
+
+ALYA
+
+COMPUTATIONAL MECHANICS AND DESIGN PROJECT
+
+Barcelona Supercomputing Center
+
+--------------------------------------------------------
+
+Radiation module:
+
+Fernando Cucchietti (based on Temperature module)

@@ -1,0 +1,114 @@
+/*! \page hdf5_output How to post process the HDF5 output in Alya at Marenostrum III 
+
+\section intro Introduction
+This tutorial explains how to genereate output data with HDF5 librairies at Marenostrum III.
+
+The hdf5 output generated can be opened directly in Paraview, you don't need to aply alya2pos.
+
+Just open the problem_name.xmf file generated with Paraview to analyze the simulation results.
+
+
+\section Compile Compile Alya
+
+HDF5 library uses intel mpi and ifort compiler, first you need to load this modules into the system:
+
+@code
+module purge
+module load intel
+module load impi
+module load HDF5/1.8.14
+module load SZIP
+@endcode
+
+You have to compile Alya with the configure "configure-marenostrum-mpi-hdf5.txt" and you need to add the hdfpos service to the configure line, example:
+
+@code
+./configure nastin parall hdfpos -x -f=configure.in/configure-marenostrum-mpi-hdf5.txt
+@endcode
+
+Configure example:
+
+@code
+# Forced compilation options
+# Sample file
+# start comment lines with a #
+
+f90==     mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/apps/HDF5/1.8.14/INTEL/IMPI/include
+f77==     mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/apps/HDF5/1.8.14/INTEL/IMPI/include
+fpp90==   mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/apps/HDF5/1.8.14/INTEL/IMPI/include -fpp  
+fomp90==  mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/apps/HDF5/1.8.14/INTEL/IMPI/include -fpp  
+fpp77==   mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/apps/HDF5/1.8.14/INTEL/IMPI/include -fpp 
+
+cpp==     mpicc -no-multibyte-chars -c 
+
+link==    mpif90 -O1 -ip -xAVX -traceback 
+
+libs==    -L../../Thirdparties/metis-4.0 -lmetis /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5_fortran.a /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5.a /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5hl_fortran.a /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5_hl.a   -L/apps/SZIP/2.1/lib -lsz -L/usr/lib64 -lz -lgpfs
+
+fa2p== mpif90 -module ../../Utils/user/alya2pos -c  -fpp  
+@endcode
+
+\section Configure Configure the alya problem
+
+You have to modify the .dat file:
+Fist you have to set the OUTPUT_FORMAT
+@code
+$-------------------------------------------------------------------
+RUN_DATA
+   ......
+   OUTPUT_FORMAT: HDF5
+   ......
+END_RUN_DATA
+$-------------------------------------------------------------------
+@endcode
+
+Then you have to activate the hdfpos service:
+
+@code
+$-------------------------------------------------------------------
+PROBLEM_DATA
+   ...
+   HDFPOS_SERVICE: On
+   END_HDFPOS_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
+@endcode
+
+
+\section RunAlya Run Alya with HDF5 at Marenostrum III.
+
+In the job script you have to load the required hdf5 modules:
+
+@code
+module purge
+module load intel
+module load impi
+module load HDF5/1.8.14
+module load SZIP
+@endcode
+
+fo example
+ 
+@code 
+#!/bin/bash
+#BSUB -n 32
+#BSUB -o output.out
+#BSUB -e output.err
+# In order to launch 128 processes with 16 processes per node:
+#BSUB -R"span[ptile=16]"
+#BSUB -J fensap_8m_hdf5
+#BSUB -W 00:30
+# You can choose the parallel environment through modules
+module purge
+module load intel
+module load impi
+module load HDF5/1.8.14
+module load SZIP
+mpirun Alya.x fensap
+@endcode
+____
+
+\n
+
+
+*/

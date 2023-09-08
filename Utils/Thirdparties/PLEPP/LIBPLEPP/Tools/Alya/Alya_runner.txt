@@ -1,0 +1,3 @@
+
+ALYA_PATH = /home/jmake/z2014/Alya/Repository/Alya2013May29/Executables/unix
+ALYA_BIN  = /Executables/unix/Alya.x

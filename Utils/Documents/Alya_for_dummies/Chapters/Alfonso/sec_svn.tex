@@ -1,0 +1,38 @@
+We're about 60 engineers, programmers and physicist working every day in Alya.. This makes a requisite to have a control system to maintain versions of the code, in this case we  use Apache subversion (SVN). To use this, you need svn installed on your computer, and an account in Marenostrum (MN). Let's say that your MN user is "\textless USER\textgreater", so, in this case, some useful svn commands are:
+
+\begin{lstlisting}[label=,caption=Downloading Alya in your local PC (svn checkout)]
+svn co svn+ssh://<USER>@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk <path/to/destination>
+\end{lstlisting}
+
+\begin{lstlisting}[label=,caption=Checkout in your marenostrum account]
+svn co svn+ssh://<USER>@localhost/gpfs/projects/bsc21/svnroot/Alya/Trunk <path/to/destination>
+\end{lstlisting}
+
+
+\begin{lstlisting}[label=,caption=Updating Alya to the latest version (or an older version)]
+svn update [-r <revision_number>]
+\end{lstlisting}
+
+\begin{lstlisting}[label=,caption=Information your version]
+svn info
+\end{lstlisting}
+
+\begin{lstlisting}[label=,caption=Information about who changed the file/directory]
+svn blame
+\end{lstlisting}
+
+\begin{lstlisting}[label=,caption=Logs of the different modifications in the svn]
+svn log
+\end{lstlisting}
+
+\begin{lstlisting}[label=,caption=Send a new modification to the repository (commit)]
+svn ci
+\end{lstlisting}
+
+Almost all the cited commands can be modified adding a path to a file or a directory. So, for example, if you only want to update the svn version of the file called ``solver.f90'', you'll have to type:
+%
+\begin{lstlisting}[label=,caption=cCommiting just one file]
+svn ci solver.f90
+\end{lstlisting}
+
+So, now you've Alya in your computer, it's time to compile it.

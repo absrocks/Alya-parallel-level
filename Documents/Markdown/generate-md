@@ -1,0 +1,173 @@
+#!/usr/bin/python2.7
+import fnmatch
+import re
+import os
+import errno
+
+sources="../../Sources"
+output="md"
+
+"""----------------------------------------------------
+	Read a file and return a list of lines.
+----------------------------------------------------"""
+
+
+def readfile(fileName):
+    with open(fileName, 'r') as content_file:
+        content = content_file.read()
+    return content.split("\n")
+
+"""----------------------------------------------------
+	Write a file with a given list of lines.
+----------------------------------------------------"""
+
+
+def writefile(fileName, l):
+    with open(fileName, 'w') as f:
+        for line in l:
+            f.write(line)
+
+def findmodule(modules, module):
+    if module not in modules:
+        modules[module]={}
+        modules[module]["files"]={}
+
+def findfile(modules, module, file, type):
+    if file not in modules[module]["files"]:
+        modules[module]["files"][file]={}
+        modules[module]["files"][file]["type"]=type
+        modules[module]["files"][file]["pos"]=[]
+        modules[module]["files"][file]["pos"].append("")
+
+def findpos(modules, module, file, pos):
+    while len(modules[module]["files"][file]["pos"])<=pos:
+        modules[module]["files"][file]["pos"].append("")
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
+"""----------------------------------------------------
+	Parser the input format lines.
+----------------------------------------------------"""
+
+
+def process(documentation, modules):
+    pos=0
+    indent=0
+    sec=0
+    module=""
+    file=""
+    code=""
+    doc=""
+    for line in documentation:
+        s = re.search("!.md<(\S+?)>(.*)", line)
+        if s:
+            flag = s.group(1)
+            value = s.group(2)
+        else:
+            flag="0"
+            s = re.search("!.md(.*)", line)
+            value = s.group(1)
+        if flag=="module":
+            module=value
+            findmodule(modules, module)
+        elif flag=="input":
+            if module=="":
+                print("Module not defined, skipping")
+                return
+            file=value
+            findfile(modules, module, file, "input")
+        elif flag=="file":
+            if module=="":
+                print("Module not defined, skipping")
+                return
+            file=value
+            findfile(modules, module, file, "source")
+        elif flag=="pos":
+            if module=="":
+                print("Module not defined, skipping")
+            if file=="":
+                print("File not defined, skipping")
+                return
+            pos=int(value)
+            findpos(modules, module, file, pos)
+            modules[module]["files"][file]["pos"][pos]+=code
+            modules[module]["files"][file]["pos"][pos]+=doc
+            code=""
+            doc=""
+        elif flag=="sec":
+            if module=="":
+                print("Module not defined, skipping")
+            if file=="":
+                print("File not defined, skipping")
+                return
+            modules[module]["files"][file]["pos"][pos]+=code
+            modules[module]["files"][file]["pos"][pos]+=doc
+            code=""
+            doc=""
+        elif flag=="code":
+            code+=("<pre>"+value+"\n")
+        elif flag=="/code":
+            code+=("</pre>"+value+"\n")
+        elif value=="<>":
+            code+=("\n")
+        elif flag.isdigit():
+            indent=int(flag)
+            code+=("    "*indent+value+"\n")
+        elif flag=="com":
+            doc+=value+"\n"
+        elif flag=="field":
+            doc+="-  **"+value+"**:\n"
+        else:
+            print("Unrecognized flag :"+flag)
+            return
+    #print(modules[module]["files"][file]["pos"][pos]
+    modules[module]["files"][file]["pos"][pos]+=code
+    modules[module]["files"][file]["pos"][pos]+=doc
+
+def export(modules):
+    for m in modules:
+        path=output+"/"+m
+        mkdir_p(path)
+        for f in modules[m]["files"]:
+            text=[]
+            text.append("_This file has been generated automatically and should not be modified manually._\n")
+            text.append("\n")
+            for p in range(len(modules[m]["files"][f]["pos"])):
+                text.append(modules[m]["files"][f]["pos"][p])
+            writefile(path+"/"+f+".md",text)
+
+"""----------------------------------------------------
+	Split the lines from a files between documentation
+	and input lines, write the output.
+----------------------------------------------------"""
+
+
+def parsemd(path, fileName, modules):
+    fileData = readfile(path + "/" + fileName)
+    documentation = []
+
+    for line in fileData:
+        if re.search("!.md", line):
+            print(line)
+            documentation.append(line)
+
+    if len(documentation) > 0:
+        process(documentation, modules)
+
+
+"""----------------------------------------------------
+	MAIN
+----------------------------------------------------"""
+modules = {}
+for root, dirnames, filenames in os.walk(sources):
+    for filename in fnmatch.filter(filenames, '*.f90'):
+        parsemd(root, filename, modules)
+
+export(modules)

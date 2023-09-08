@@ -1,0 +1,12 @@
+# implicit none para toni
+
+f90==     mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/gpfs/projects/bsc21/hdf5-1.8.8/include 
+f77==     mpif90 -O1 -ip -xAVX -traceback -module $O -c -I/gpfs/projects/bsc21/hdf5-1.8.8/include
+fpp90==   mpif90 -O1 -ip -xAVX -traceback -module $O -c  -fpp  -I/gpfs/projects/bsc21/hdf5-1.8.8/include
+fomp90==  mpif90 -O1 -ip -xAVX -traceback -module $O -c  -fpp  -I/gpfs/projects/bsc21/hdf5-1.8.8/include
+fpp77==   mpif90 -O1 -ip -xAVX -traceback -module $O -c  -fpp -I/gpfs/projects/bsc21/hdf5-1.8.8/include
+cpp==     mpicc -no-multibyte-chars -c 
+link==    mpif90 -O1 -ip -xAVX -traceback 
+
+libs==    -L../../Thirdparties/metis-4.0 -lmetis -L/gpfs/projects/bsc21/hdf5-1.8.8/lib -lhdf5_fortran -lhdf5 -lhdf5hl_fortran -lhdf5_hl  /apps/SZIP/2.1/lib/libsz.a /usr/lib64/libz.a
+fa2p== mpif90 -module ../../Utils/user/alya2pos -c  -fpp 

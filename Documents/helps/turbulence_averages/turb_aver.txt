@@ -1,0 +1,12 @@
+Some requiremenets so that turbulent averages work fine.
+
+1) use constant time step
+2) in .dat RUN_TYPE    Frequency has to be idem to the postprocesing frequency of average values.
+3) The postprocesisng frequency of all average values has to be the same (my recomendation is that you use STEPO  in ker.dat)
+4) If you postprocess averages, for each of the modules where you postprocess averages you must postprocess at leat the correspondig value
+      nastin : AVVEL
+      nastal : AVVEL
+      turbul : AVTVI
+      temper : AVTEM
+see  if( mod(ittim, postp(1) % npp_stepi(21) ) == 0 ) then  in nsi_output and similar lines in the rest of modules.
+ 

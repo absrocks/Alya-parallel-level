@@ -1,0 +1,21 @@
+<item>
+    <widget class="QLabel" name="#labelName">
+        <property name="text">
+            <string>#labelText</string>
+        </property>
+    </widget>
+</item>
+<item>
+    <widget class="QLineEdit" name="#editName">
+        <property name="maximumSize">
+            <size>
+                <width>200</width>
+                <height>16777215</height>
+            </size>
+        </property>
+        <property name="toolTip">
+            <string>#tooltip</string>
+        </property>
+    </widget>
+</item>
+

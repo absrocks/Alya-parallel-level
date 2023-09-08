@@ -1,0 +1,24 @@
+#####################################################
+### How to use Burgogne in ALYA
+#####################################################
+
+1.Compile openssl
+   cd Thirdparties/openssl-1.1.0e
+   ./config
+   make
+   make test
+
+2. Compile Burgogne
+   cd ../Burgogne/
+   make lib
+   make test
+
+3. Compile Alya
+   Add / uncomment the following lines in the Alya configure FILE:
+
+   CSALYA     := $(CSALYA) -DBOURGOGNE
+   EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/Burgogne -lburgogne
+   EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/openssl-1.1.0e -lcrypto -lssl -Wl,-rpath=$(PWD)/../../Thirdparties/openssl-1.1.0e
+
+   Compile Alya as usual.
+

@@ -1,0 +1,36 @@
+/*! \page Temper_input_data Temper Input data
+
+The different mandatory fields in the sample.nsi.dat files are:
+
+- \ref Temper_inputdata_physical_problem 
+- \ref Temper_inputdata_numerical_treatment 
+- \ref Temper_inputdata_output_and_postprocess 
+- \ref Temper_inputdata_boundary_conditions  
+
+\section Temper_inputdata Temper Input data
+
+\subsection Temper_inputdata_physical_problem Temper Input data: physical problem
+
+\verbinclude  in_tem_reaphy.f90
+<br>
+\htmlinclude  doc_tem_reaphy.f90
+
+\subsection Temper_inputdata_numerical_treatment Temper Input data: Numerical treatment
+
+\verbinclude  in_tem_reanut.f90
+<br>
+\htmlinclude  doc_tem_reanut.f90
+
+\subsection Temper_inputdata_output_and_postprocess Temper Input data: Output and postprocess
+
+\verbinclude  in_tem_reaous.f90
+<br>
+\htmlinclude  doc_tem_reaous.f90
+
+\subsection Temper_inputdata_boundary_conditions Temper Input data: Boundary conditions
+
+\verbinclude  in_tem_reabcs.f90
+<br>
+\htmlinclude  doc_tem_reabcs.f90
+
+*/

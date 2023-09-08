@@ -1,0 +1,7 @@
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/programs/CMakeFiles/cmpfillin.dir
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/programs/CMakeFiles/gpmetis.dir
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/programs/CMakeFiles/graphchk.dir
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/programs/CMakeFiles/m2gmetis.dir
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/libmetis/CMakeFiles/metis.dir
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/programs/CMakeFiles/mpmetis.dir
+/home/a/am2455/software/Alya/Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/programs/CMakeFiles/ndmetis.dir

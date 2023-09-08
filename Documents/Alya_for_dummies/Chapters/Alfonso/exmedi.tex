@@ -1,0 +1,44 @@
+\section{Electrophysiology (exmedi)}
+
+\subsection{Governing equations}
+
+The governing equations for the electrophisology potential model are described in \cite{Vazquez2011}. The form of the electrical activation potential $\phi$ propagation,  is:
+%
+\begin{equation}
+C_m\frac{\partial \phi}{\partial t} = \frac{\partial}{\partial x_i}\left(\frac{D_{ij}}{S_v}\frac{\partial\phi}{\partial x_j}\right) + I_{ion}
+%\nonumber
+\end{equation}
+%
+The latin subscripts count the space dimension of the problem. The difusion term is governed by the diffusion tensor $D_{ij}$ which represents the cells spatial properties. The constants $C_m$ and $S_v$ are the membrane capacitance, and the surface-to-volume ratio, terms introduced by the model. The term $I_{ion}$ differ with the activation propagation model used.
+
+\subsection{The different ionic models}
+
+\subsubsection{The Fitzhugh Nagumo model}
+
+In this case the simpler and fast \textsl{Fitrzhug-Nagumo} \cite{FitzHugh1961} (FHN) is used, defining the ionic current as:
+%
+\begin{eqnarray}
+I_{ion}&=& c_1\phi(\phi-c_3)(\phi-1)+c_2W \\
+\frac{\partial W}{\partial t}&=&\epsilon(\phi-\gamma W) \nonumber
+\end{eqnarray}
+%
+
+\subsubsection{The Ten Tusher model}
+
+\subsection{Excitation Contraction Coupling}
+
+The excitation-contraction (EC) coupling is the way in which the fibres contract after the activation potential propagates trough them. In this heart model it is assumed that the active stress is produced only in the direction of the fibre, so the total cauchy stress can be expresed as:
+%
+\begin{equation}
+\boldsymbol{\sigma}=\boldsymbol{\sigma}_{pas}+\sigma_{act}\left(\lambda,\left[Ca^{+2}\right] \right)\boldsymbol{f}\otimes \boldsymbol{f}
+\nonumber
+\end{equation}
+%
+where $\sigma_{pas}$ is the passive stress defined in \cite{Lafortune2012} as a function of the four invariants and the strain energy function defined by Holzapfel and Ogden in \cite{holzapfel2009}, $f$ is a unit vector aligned to the fibre, and $\lambda$ is the fiber stretch. The active stress used in this work is the defined by Hunter in  \cite{Nash2000}, where the active tension is a function depending on the value of calcium concentration:
+
+\begin{equation}
+\sigma_{act}=\frac{\left[Ca^{+2}\right]^n}{\left[Ca^{+2}\right]^n+C_{50}^n}+\sigma_{max}( 1+\eta(\lambda-1))
+\nonumber
+\end{equation}
+
+where $C_{50}$ is the value of the intracellular calcium concentration for $50\%$ of $\sigma_{max}$, $n$ is a coefficient that controls the shape of the curve, and $\sigma_{max}$ is the maximum tensile stress generated at $\lambda=1$  \cite{Lafortune2012}. The $\left[Ca^{+2}\right]$ concentration used in this work is the function defined by Hunter in \cite{Hunter1998}.

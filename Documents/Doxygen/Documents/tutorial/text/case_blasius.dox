@@ -1,0 +1,95 @@
+/*! \page case_blasius Blasius case tutorial 
+
+This tutorial analyses the boundary layer development of a flow over a plate with an edge facing the stream. Flow velocity and fluid density and viscosity are specified to yield a laminar Reynolds number. The figure below shows the flow in the boundary layer over the plate. The model is solved using a 2D quadrilateral structured mesh.
+
+- \ref Steady_state_flow :       description of the problem
+
+- \ref Domain_boundaries :       boundaries of the computational domain
+
+- \ref Convergence :             numerical and physical convergence of the model 
+
+- \ref shear_pressure_on_plate : post-processing of shear and pressure forces on the plate
+
+- \ref Bibliography :		 bibliographic references
+
+- \ref Input_files :             detailed description of case input files
+
+ + \ref blasius_dat
+
+ + \ref blasius_dom_dat
+
+ + \ref blasius_geo_dat
+
+ + \ref blasius_set_dat
+
+ + \ref blasius_fix_dat
+
+ + \ref blasius_ker_dat
+
+ + \ref blasius_nsi_dat
+
+ + \ref blasius_post_alya_dat
+
+____
+____
+\section Steady_state_flow Steady state flow\image html blasius_velocities.png <CENTER>blasius case - solution of the steady state flow</CENTER>  
+Plate is on plane Y=0, begins at X=0 and ends at X=1. Simulation settings are specified to analyse a steady state flow. Integration TIME_INTERVAL is set from 0 to 1e5 (infinity) and so is NUMBER_OF_STEPS, in order to let iterate. \n____
+____
+
+\n
+\section Domain_boundaries domain Boundaries    Boundary numbers are as follows, inlet on the left end. \image html blasius_boundaries.png 
+<CENTER>blasius case - domain boundaries</CENTER>  
+
+Boundary conditions are: inflow (1), outflow (2), wall (3) and symmetry (4).\n____
+____
+
+\n
+\section Convergence Convergence of the case    Next figure shows the convergence plot (alya-all-nsi app) of the simulation.\image html blasius_numerical_convergence.png <CENTER>blasius case - numerical convergence</CENTER>  
+
+\n
+----
+----
+
+\n\section shear_pressure_on_plate Shear stress and pressure on the plate    As with the rest of the tutorials in this manual, the results have been postprocessed using the open-source software ParaView. In order to obtain X shear stress distribution and the accumulated Cf value on the wall, ParaView spreadsheet filter has been used to export velocity numerical values to an excel sheet, where velocity grandients and Cf integral\n<CENTER>                     \f$ \displaystyle{{C_f} = \int_0^x \rho \frac{dU}{dy} {dx}}  \f$</CENTER>                       \n
+\nhave been calculated numerically, giving this results: \image html blasius_shear_vs_X.png <CENTER>blasius case - shear stress and Cf along the plate</CENTER>  
+\image html blasius_pressure_vs_X.png <CENTER>blasius case - pressure along the plate</CENTER>  \n
+\n
+From the technical literature (3) we obtain the following expression to calculate the Skin Friction Coefficient as a function of the Reynolds number:in a laminar boundary layer,	\f$ \displaystyle{C_f} = \frac{0.664}{\sqrt{Re}} = \frac{0.664}{\sqrt{1000}}  \f$ = 0.0209975which correlates pretty well with the value obtained from the simulation with Alya:  0.022809309\n
+\n____
+____
+
+\n
+\section Bibliography Bibliography(3) Measurement of Boundary Layer on a Flat PlateKay Gemba (California State University, Long Beach)March 25, 2007\n____
+____
+
+\n
+\section Input_files Input files \n
+____
+\n
+\subsection blasius_dat blasius.dat         			(case global parameters)
+$-------------------------------------------------------------RUN_DATA	ALYA:             blasius				$ case nameEND_RUN_DATA
+$-------------------------------------------------------------PROBLEM_DATA
+	TIME_COUPLING:	Global, From_critical	$ global time step is calculated by Alya	TIME_INTERVAL=	0.0, 1.0e6		$ integration time domain from t=0 to t=1.0e6s	TIME_STEP_SIZE=   0.001			$ prescribed time step (no effect, since TIME_COUPLING = From_critical)	NUMBER_OF_STEPS=  2000			$ maximum number of time steps	NASTIN_MODULE:	On			$ nastin module (Incompressible Navier-Stokes) is used	END_NASTIN_MODULE	PARALL_SERVICE:   On			$ parallelization module can be used	End_PARALL_SERVICEEND_PROBLEM_DATA$-------------------------------------------------------------\n____
+\subsection blasius_dom_dat blasius.dom.dat	(domain input data)\n
+$-------------------------------------------------------------DIMENSIONS	NODAL_POINTS=		3721		$ number of nodes	ELEMENTS=		3600		$ number of elements	SPACE_DIMENSIONS=	2		$ 2D mesh	TYPES_OF_ELEMENTS=     12		$ 4 node quadrilateral elements		BOUNDARIES=		240		$ number of boundary edgesEND_DIMENSIONS$-------------------------------------------------------------STRATEGY					$ integration strategy	INTEGRATION_RULE:	    Open  	$ open rule is the default	DOMAIN_INTEGRATION_POINTS: 0  		$ 0 = automatic, depending on each element type END_STRATEGY$-------------------------------------------------------------GEOMETRY					$ mesh definition	GROUPS=		0			$ number of groups (for deflation based solvers)	INCLUDE  	blasius.geo.dat		$ include geometry file (nodes, elements & boundaries)END_GEOMETRY  $-------------------------------------------------------------SETS						$ sets definition	INCLUDE		blasius.set.dat  	$ include set file (groups for post-processing)END_SETS$-------------------------------------------------------------BOUNDARY_CONDITIONS, EXTRAPOLATE		$ edge BC’s extrapolate to nodes	INCLUDE		blasius.fix.dat  	$ include boundary conditions fileEND_BOUNDARY_CONDITIONS$-------------------------------------------------------------\n____
+\subsection blasius_geo_dat blasius.geo.dat	(mesh data)\n
+$-------------------------------------------------------------  NODES_PER_ELEMENT				$ nodes per element list 	1 4					$ element number, number of nodes	2 4	3 4	  :	  :	3599 4	3600 4END_NODES_PER_ELEMENT$-------------------------------------------------------------ELEMENTS					$ element connectivity list        1 3720 3718 3719 3721			$ element number, node number 1, node number 2, ...          2 3717 3715 3718 3720        3 3712 3710 3715 3717                :  	        :
+                :        3599 122 29 28 123          3600 30 118 29 122  END_ELEMENTS  $-------------------------------------------------------------COORDINATES          1   4.248591e-03  3.000000e+00		$ node number, coord X, coord Y   	2   9.318577e-03  3.000000e+00   	3   1.533496e-02  3.000000e+00   	          :  	          :
+		  :        3720  -9.350762e-01  0.000000e+00           3721  -1.000000e+00  0.000000e+00  
+END_COORDINATES$-------------------------------------------------------------BOUNDARIES, ELEMENT        1  3721 3720   1			$ boundary element #, node #s, element # boundary belongs to         2  3720 3717   2         3  3717 3712   3 	      : 	      :
+              :        239  2 1   3572         240  1 121   3571  END_BOUNDARIESMATERIALS, FLUID_MATERIAL=1, NUMBER=0, DEFAULT=1			all elements have material 1END_MATERIALSCHARACTERISTICSEND_CHARACTERISTICS$-------------------------------------------------------------\n____
+\subsection blasius_set_dat blasius.set.dat	(set data: groups for post-processing, optional)\n
+$-------------------------------------------------------------ELEMENTS					$ element sets definition       1 1					$ element number, set number       2 1       3 1          :          :          :       3599 1       3600 1  END_ELEMENTS$-------------------------------------------------------------BOUNDARIES					$ boundary sets definition      1 1					$ boundary element number, boundary set number      2 1      3 1         :         :         :      239 4      240 4					END_BOUNDARIES$-------------------------------------------------------------NODES						$ node sets definition	0END_NODES$-------------------------------------------------------------____
+\n
+\subsection blasius_fix_dat blasius.fix.dat	(boundary conditions data)$-------------------------------------------------------------ON_BOUNDARIES	1  4	  				$ boundary element number, boundary number	2  4	3  4	  :	  :   	  :	239  4	240  4  END_ON_BOUNDARIES$-------------------------------------------------------------\n____
+\n
+\subsection blasius_ker_dat blasius.ker.dat			(kernel input data)$------------------------------------------------------------PHYSICAL_PROBLEM	MATERIAL=1    	PROPERTIES						$ fluid physical properties	     DENSITY:     CONSTANT, PARAMETERS = 1.0		$ mass density	     VISCOSITY:   CONSTANT, PARAMETERS = 0.001		$ dynamic viscosity (μ)	END_PROPERTIESEND_PHYSICAL_PROBLEM  $------------------------------------------------------------NUMERICAL_TREATMENT 	MESH								      DIVISION=2				$ mesh subdivisions	END_MESH							ELSEST						$ element search strategy 	      STRATEGY: BIN				$ BIN divide mesh into boxes to find elements that host 							  witness points (suited for structured meshes)	      NUMBER:   100,33				$ 2D domain divided in 100 x 10 boxes	END_ELSESTEND_NUMERICAL_TREATMENT  $------------------------------------------------------------OUTPUT_&_POST_PROCESS  	ON_LAST_MESH	STEPS=100						$ write post-process file every ‘STEPS’ time stepsEND_OUTPUT_&_POST_PROCESS  $------------------------------------------------------------\n____
+\n
+\subsection blasius_nsi_dat blasius.nsi.dat	 	(incompressible Navier-Stokes solver parameters)$------------------------------------------------------------PHYSICAL_PROBLEM					 	PROBLEM_DEFINITION       	     TEMPORAL_DERIVATIVES:	On 			$ transient problem	     CONVECTIVE_TERM:		On			$ off for Stokes flow (negligible for high viscosity fluids)	     VISCOUS_TERM:		LAPLACIAN		$ suitable for constant viscosity fluid assumption	END_PROBLEM_DEFINITION  END_PHYSICAL_PROBLEM  $------------------------------------------------------------NUMERICAL_TREATMENT 	ELEMENT_LENGTH:		Minimum				$ element length for Alya to calculate critical time step	STABILIZATION: 		ASGS				$ numerical stabilization method	TIME_INTEGRATION:	Trapezoidal, ORDER: 1, EULER=20		$ time integration scheme	SAFETY_FACTOR:		1.6e5				$ multiply global time step: Alya calculates critical time step							  	  as required by explicit solvers, which is suited for transient							  	  analysis but makes stationary solutions converge very slowly	STEADY_STATE_TOLER:	1.0e-10				$ convergence tolerance for steady state	MAXIMUM_NUMBER_OF_IT:	1				$ max number of inner NS iterations 	CONVERGENCE_TOLERANCE:	1.0e-3				$ convergence tolerance for inner NS loop (useless in this case)	ALGORITHM:		SCHUR				$ NS solution algorithm (uncouples p & V)            SOLVER:                 ORTHOMIN, CONTINUITY_PRESERVING		if not specifyed, default is MOMENTUM_PRESERVING            PRECONDITION:           DT      	END_ALGORITHM	MOMENTUM						$ velocity solver	     ALGEBRAIC_SOLVER     	          SOLVER:	GMRES, KRYLOV=10		$ solver suited for asymmetric matrix	          CONVERGENCE:	ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01    $ max iter #, convergence criteria										     ADAPTIVE, RATIO=0.001 means that the 										               loop will end also if the difference 										                 of the norm of convergence value 											           changes less than 0.1% in two 											             consecutive iterations			          OUTPUT:		CONVERGENCE		$ solver convergence file (.cso) is generated	          PRECONDITIONER:	DIAGONAL		$ matrix preconditioner type	     END_ALGEBRAIC_SOLVER        	END_MOMENTUM	CONTINUITY 						$ pressure solver	     ALGEBRAIC_SOLVER	          SOLVER:	DEFLATED_CG, COARSE: SPARSE	$ CG solvers are suited for symmetric matrix	          CONVERGENCE:	ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01    $ max iter #, convergence criteria										     ADAPTIVE, RATIO=0.001 means that the 										               loop will end also if the difference 										                 of the norm of convergence value 											           changes less than 0.1% in two 											             consecutive iterations	          OUTPUT:		CONVERGENCE		$ solver convergence file (.cso) is generated	          PRECONDITIONER:	LINELET		$ matrix preconditioner type	     END_ALGEBRAIC_SOLVER        	END_CONTINUITYEND_NUMERICAL_TREATMENT  $------------------------------------------------------------OUTPUT_&_POST_PROCESS  	START_POSTPROCES_AT	STEP = 0		$ initial step to post process	POSTPROCESS VELOCITY	STEPS = 1 		$ post process velocity every 10 steps (priority ker.dat)	POSTPROCESS PRESSURE	STEPS = 1		$ post process pressure every 10 steps (priority ker.dat)	BOUNDARY_SET	      FORCE					$ obtain pressure & velocity forces acting on boundaries	      TORQUE, CENTER=0,0,0			$ obtain torque of forces acting on boundaries, related to CENTER              MASS					$ obtain mass flow through boundaries	END_BOUNDARY_SETEND_OUTPUT_&_POST_PROCESS   $------------------------------------------------------------BOUNDARY_CONDITIONS     PARAMETERS               INITIAL: CONSTANT, VALUE=1.0, 0.0	$ domain velocity initialization (constant and equal to inlet velocity)     END_PARAMETERS     CODES, NODES					$ Boundary Conditions          1  11  1.000000  0.000000       		$ inflow          2  00  0.000000  0.000000       		$ outflow          3  11  0.000000  0.000000       		$ wall          4  01  0.000000  0.000000       		$ symmetry          1 & 4  11  1.000000  0.000000       		$ vertex...          2 & 3  11  0.000000  0.000000          2 & 4  01  0.000000  0.000000          3 & 4  11  0.000000  0.000000     END_CODES					$ (note that BC’s apply to boundaries, not to boundary sets)END_BOUNDARY_CONDITIONS  $------------------------------------------------------------\n____
+\n
+\subsection blasius_post_alya_dat blasius.post.alya.dat         (alya2pos parameters)$-------------------------------------------------------------------DATA
+	FORMAT:                   	visit		$ also valid for ParaView	MARK_ELEMENTS:            	type		$ to create automatic layers in post process according to some criterion	ELIMINATE_BOUNDARY_NODES: 	yes		$ for parallel runs, to avoid node duplicity between subdomain	BOUNDARY:                 	ON		$ to post process boundary mesh	SUBDOMAINS, ALL					$ subdomains (parallel partitions) to post process	END_SUBDOMAINS	$  SUBDOMAINS	$    2						$ post process only subdomain 2	$  END_SUBDOMAINSEND_DATA$-------------------------------------------------------------------\n
+____
+\n
+
+*/

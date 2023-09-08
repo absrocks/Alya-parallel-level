@@ -1,0 +1,44 @@
+#!gnuplot
+################# GLOBALS #####################
+set encoding utf8
+set terminal postscript eps color enhanced 12
+set output "Kernel_results.eps"
+#set output "Usage_COMP.eps"
+
+set style line 1 lw 2 lt 1 lc rgb "#323232"
+set style line 2 lw 2 lt 1 lc rgb "#b3b1b1"
+
+set style increment user
+
+set title "Split kernel - Compiler: intel - Language: FORTRAN"
+
+################# AXES INFO ###################
+set xlabel ""
+#set xlabel ""
+set ylabel "Time"
+set xtics font ",9"
+set xtics rotate by 30 right
+set xrange [0:*]
+
+################# HISTOGRAM MODE ##############
+set bar
+set grid
+set style fill solid 1.00 border -1
+#set style histogram rowstacked
+#set style fill pattern border -1
+set style rectangle back fc lt -3 fillstyle pattern 1.00 border -1
+set key right
+
+set style histogram clustered gap 1 title  offset character 0, -1.5
+set style data histograms
+set boxwidth 0.7
+set bmargin 6
+
+# Ref VS BOAST
+plot "res.dat" using ($2):xtic(1) title "kernel, vector size, nests call, loops unrolling, optim flag" linecolor "#000000"
+#        "res.dat" using ($2):xtic(1) title "BOAST" linecolor "#e9e9e9"
+
+# USAGE COMP
+#plot "res.dat" using ($2):xtic(1) title "Included" linecolor "#000000",\
+#        "res.dat" using ($3):xtic(1) title "Inlined" linecolor "#e9e9e9",\
+#        "res.dat" using ($4):xtic(1) title "call" linecolor "#e9e9e9"

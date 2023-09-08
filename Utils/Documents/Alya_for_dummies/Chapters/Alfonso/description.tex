@@ -1,0 +1,28 @@
+\section{Intention of this document}
+This document is intended to be written and readed by all the new and not-that-new Alya users. It contains sections aimed to be used as an \textit{aide-memoire} for the equations, the places where the code is written and why is written in that way.
+
+It also contains some useful metadata about alya, like how to get it, compile it, and information about the pre/run/post-process tools.
+
+This should be a self contained guide, explained as much as possible... for dummies. Or at least for Alya newbies. So if you're an active Alya user, and you have something written that can be helpful, don't doubt in help to complete this file!
+
+\section{What is Alya and what you can do with it}
+Alya is a computational tool used to solve multiple physics problems in a coupled way with the Finite Element Method.
+
+The basic explanation of the computational Finite Element Method is founded in the fact that the computer cannot handle continuous spaces. So, having in mind this constriction we go for a more modest approach and suggest to solve the equations that model the phenomena not in a continuum geometry, but in a discretized geometry. In this way, the first thing to do is to split the geometry in several (sometimes hundreds of millions) ``\textit{elements}'' (you'll hear this word A LOT). Each element is formed by the ``\textit{nodes}'' the ``\textit{sides}'' that join the nodes and the ``\textit{faces}'' that join the sides (in the case we've a 3D geometry). So in this moment we've a more humble approach: we're going to solve our equations in the nodes that build our elements; going from a continuous geometrcal space to a discrete one. Something similar happens with time: as far as we know, sadly, it is continuous. A similar approach is used:  we split the time interval  in (generally, but not necessarily) regular portions and we suggest  to solve our problem in those instants of time, even though we know we're ``missing'' information on the middle. In this way, once we've our space and time discretized, we proceed to adapt our continuous equations to a discretized space-time equations, and we proceed to compute the solution in our specified nodes in the space, for our specified time steps.
+
+Alya can solve several phyisical problems modeled as sets of partial different equations. Among others: the compressible and incompressible navier stokes, solid mechanics, turbulence models, chemical reactions, radiation and temperature diffusion among others. This different physical problem are organized inside the code as modules, each user can selectively turn on and off each module to solve that set of PDE's. But, be aware, because if you turn-on a module, you've to specify all the physical properties of it as parameters and boundary conditions.
+
+But Alya not only solve PDEs that represents the physical phenomena of the world, it do it big time, with all the meaning of the phrase. It is coded in parallel, so the problem is distributed between differents processors, using severals of computers as it is one. The way in which Alya does this, is giving a bunch of elements to each processor so, finally, between all the processors they solve the whole geometry.
+
+So if you want, with Alya, you can simulate the world. All of it. Going from the contraction of the muscles in the wing of a butterfly to the airflows that generate tornados. But don't forget that as big as the problem you want to solve is your number of elements, and the parameters and boundary conditions you have to define.
+
+
+\section{What you will be able to do if you read this document}
+As we said before, this document is an introduction to Alya. So, the idea is that when you finish with it, you should be able to:
+\begin{itemize}
+	\item Compile the software.
+	\item Run some simple, pre-built cases.
+	\item Know how the code is structurally (des)organized.
+	\item Know where the equations are written in the code.
+\end{itemize}
+So, if you finished with it, you couldn't deal with some of this points, we failed at something. Write us a line or, better, correct it by yourself.

@@ -1,0 +1,15 @@
+ para hacer al vers de integer 4 solo hay que poner 
+#define IDXTYPEWIDTH 32 en  metis/include/metis.h
+
+1.Compilar metis5 con enteros por 8
+2.Compilar parmetis con
+ make distclean
+ make config
+ make
+3.Copiar la librería de metis5 libmetis.a de 
+   /Thirdparties/metis-5.0.2_i8/build/Darwin-i386/libmetis --- para mac
+   ../../Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/libmetis ---paar linux
+   en la carpeta Thirdparties/parmetis-4.0.3/libraries
+4.Modificar el valor kfl_paral_parmes de mod_par_partit_paral, poner el número de slaves que se desea usar para partir
+la malla
+5.compilar con configure-macos-mpi-full-ai8-m5i8-pm.txt

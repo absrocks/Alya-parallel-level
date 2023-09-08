@@ -1,0 +1,15 @@
+# Forced compilation options
+# Sample file
+
+# start comment lines with a #
+
+
+f90==     mpif90  -m64 -c -C -ftrapuv       -module $O -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -I/apps/HDF5/1.8.10-mpi/INTEL/include
+fpp90==   mpif90  -m64 -c -C -ftrapuv -fpe0 -module $O -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -fpp -I/apps/HDF5/1.8.10-mpi/INTEL/include
+fomp90==  mpif90  -m64 -c -C -ftrapuv -fpe0 -module $O -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -fpp -I/apps/HDF5/1.8.10-mpi/INTEL/include
+cpp==     mpicc   -m64 -c -I/apps/HDF5/1.8.10-mpi/INTEL/include
+link==    mpif90  -m64  
+libs==    -L../../Thirdparties/metis-4.0 -lmetis /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5_fortran.a /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5.a /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5hl_fortran.a /apps/HDF5/1.8.10-mpi/INTEL/lib/libhdf5_hl.a   -L/apps/SZIP/2.1/lib -lsz -L/user/lib64 -lz -lgpfs
+
+fa2p== mpif90 -m64 -c -C -ftrapuv -fpe0 -module ../../Utils/user/alya2pos -check all -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -check all -ansi-alias -I/usr/include -fpp 
+

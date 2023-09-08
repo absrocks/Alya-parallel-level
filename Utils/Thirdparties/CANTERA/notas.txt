@@ -1,0 +1,35 @@
+
+
++ 2018NOV09 
+|_ boost1.68   
+   https://www.boost.org/users/history/version_1_68_0.html  
+
+|_ cantera2.3.0 
+   https://cantera.org/documentation/docs-2.3/sphinx/html/compiling/source-code.html
+
+|_ marenostrum 
+  |_ compilation  
+   module load scons 
+   module load ANACONDA/5.0.1_python2  
+ 
+   scons build \
+   prefix=/home/bsc21/bsc21704/z2018_1/REPOSITORY/CANTERA/Cantera230/ExecsINTEL \
+   boost_inc_dir=/apps/BOOST/1.64.0/INTEL/IMPI/include/ \
+   CC=icc CXX=icpc FORTRAN=ifort    
+
+  |_  
+   export PYTHONPATH=${PYTHONPATH}:/home/bsc21/bsc21704/z2018_1/REPOSITORY/CANTERA/Cantera230/ExecsINTEL/lib/python2.7/site-packages
+
+   ## c++ 
+   #icpc combustor.cpp 
+         -I/home/bsc21/bsc21704/z2018_1/REPOSITORY/CANTERA/Cantera230/ExecsINTEL/include  
+         -I/apps/BOOST/1.64.0/INTEL/IMPI/include/ 
+         -pthread -O3 -std=c++0x 
+          /home/bsc21/bsc21704/z2018_1/REPOSITORY/CANTERA/Cantera230/ExecsINTEL/lib/libcantera.a
+
+|_ See  
+  /home/bsc21/bsc21704/z2018_1/REPOSITORY/CANTERA/Cantera230/src/fortran
+
+
+
+

@@ -1,0 +1,19 @@
+svn export -r 435 svn+ssh://bsc21257@mn1.bsc.es/gpfs/projects/bsc21/Alya/Trunk Alya435
+
+-------------------------------------------
+svn log
+from ~/svn/Alya/   it gives you all the information up to the last version you have updated.
+It also works for a specific directory  or a specific file.
+ej:  svn log ~/svn/Alya/Sources/modules/levels/lev_iniunk.f90    tells you the versions of alya where that file was changed.
+
+-------------------------------------------
+
+svn diff   -r  1245:1310    !  diference between version 1245 and 1310
+svn diff                    !  diference between the last version you updated and what you have now. Useful to check what you have touched before comminting.
+svn diff   -r 1245          !  diference between version 1245 and what you have now. This I do not use much.
+
+Again this works for the whole alya, for one directory or one file.
+
+
+
+

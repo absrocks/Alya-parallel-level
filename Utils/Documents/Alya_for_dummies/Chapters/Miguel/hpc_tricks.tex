@@ -1,0 +1,57 @@
+%\usepackage{listings}
+
+
+%\begin{lstlisting}
+%\end{lstlisting}
+
+Swing @ YOSEMITE 
+SWIG is a software development tool that connects programs written in C and C++ with a variety of high-level programming languages. 
+
+\begin{lstlisting}
+sudo port install swig
+\end{lstlisting}
+
+
+Openmpi185 @ YOSEMITE
+\begin{lstlisting}
+port select --list gcc
+sudo port select --set gcc mp-gcc45??
+
+http://www.open-mpi.org/software/ompi/v1.8/
+
+./configure CC=gcc-mp-4.9 CXX=g++-mp-4.9 F77=gfortran-mp-4.9 FC=gfortran-mp-4.9 --prefix=/Volumes/MacintoshHD02/z2015/Repository/Openmpi185
+
+\end{lstlisting}
+
+
+PRECICE @ MARENOSTRUM  
+\begin{lstlisting}
+#
+# https://github.com/precice/precice/tree/master
+# 
+export PRECICE_MPI_LIB=
+export PRECICE_MPI_INC_PATH=
+export PRECICE_MPI_LIB_PATH=
+#export PRECICE_MPI_INC_PATH=
+#export PRECICE_MPI_LIB_PATH=
+
+#export PRECICE_BOOST_LIB_PATH=/apps/BOOST/1.52.0/lib/
+export PRECICE_BOOST_ROOT=/home/bsc21/bsc21704/z2015/REPOSITORY/boost_1_53_0/
+
+scons -j 8 -f SConstruct  boost_inst=False  python=False  build=release  sockets=True  petsc=off compiler=mpicxx
+\end{lstlisting}
+
+PRECICE @ YOSEMITE
+\begin{lstlisting}
+sudo port install mpich 
+export PRECICE_BOOST_ROOT=/home/bsc21/bsc21704/z2015/REPOSITORY/boost_1_53_0/
+
+scons -j 8 -f SConstruct  boost_inst=False  python=False  build=release  sockets=True  petsc=off compiler=mpicxx-openmpi-mp
+\end{lstlisting}
+
+
+ALYA @ YOSEMITE  
+\begin{lstlisting}
+sudo port install mpich 
+\end{lstlisting}
+

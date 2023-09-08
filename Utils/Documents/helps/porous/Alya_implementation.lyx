@@ -1,0 +1,3996 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Part
+Notes on Alya Implementation
+\end_layout
+
+\begin_layout Section
+Cosas faltan
+\end_layout
+
+\begin_layout Standard
+2539 | bsc21257 | 2013-08-28 16:25:57 +0200 (Wed, 28 Aug 2013) | 4 lines
+\end_layout
+
+\begin_layout Standard
+TYPE=NORMAL Corrected density misisng in porwellte for saturation Added
+ 3 additional options at the wells, Pbh for all nodes, total flow rate and
+ water flow rate .
+\end_layout
+
+\begin_layout Standard
+PERO ahora anda peor que antes tengo que revisar bien si las unidads estan
+ bien en todos lados.
+ tal ves ahoar este mal algo de well index
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+24-8 cuando le doy el caudal ver si lo que me da Ruben es el caudal masico
+ o el caudal volumetrico.
+ Supongo que es el masico en cuyo caso lo meto tal cual.
+ Si fuera el volumetrico hay que ver si es a condic estandard o el que correspon
+de en el para esa posición.
+ Por ahora supongo es caudal masico con lo cual entra directamente en por_wellte
+\end_layout
+
+\begin_layout Standard
+22-8 Obtain q as a result when Pbh is given o viceversa obtain PBH when
+ q is given
+\end_layout
+
+\begin_layout Standard
+23-8 revisar porque lo de las boundaries en lugar de ayudar jode!!!
+\end_layout
+
+\begin_layout Standard
+23-8 hay algunas cosas que no funcionan en //.
+ lo de Agregar la presión hidrostatica cuando solo nos dan PBH_MIDDLE esto
+ creo que lo puedo dejar asi solo agregar un error y listo.
+ Ordenar los nodos verticalmente.
+ Esto creo que no va en //.
+ Supongo la solucion puede ser leer eso en los .dat y listo.
+ 
+\end_layout
+
+\begin_layout Standard
+23-8 para el // veo que faltan iexcha de varios valores ej nmate_por, mroww_por
+ etc.
+ Revisar todos los valores de def_porous!!!!!!!!!!!!!!!!!!!!!!!! CORREJÍ
+\end_layout
+
+\begin_layout Standard
+23-8 wvalu_por revisar todo y ver de corregir par las nuevas opciones de
+ kfl_wellc_por -- me falta mirar por_gtabl2 y varias subrutinas más.
+ Hacer un grep de wvalu y controlar bien!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+\end_layout
+
+\begin_layout Standard
+23-8 ver de unir nrehw_por y nheiw_por en una única variable --- OJO esto
+ no es tan facil en el // hay que pensarlo más.
+ nheiw_por se calcula dentro de cada subdominio.
+ Así que si el well 9 tiene por ejemplo 6 nodos, 2 de ellos pertenecen al
+ sub 3 y 4 al 7.
+ Entonces nheiw_por(9)=2 en el sub 3 y nheiw_por(9)=4 en el sub 7.
+ En cambio nrehw_por(9)=6 en todos los subdominio es algo que nosotros le
+ damos antes de partir la malla.
+ habrá que pensar un pco más todo esto en el //.
+\end_layout
+
+\begin_layout Standard
+27-8
+\begin_inset Formula $\delta p_{bh}^{\left(j\right)}$
+\end_inset
+
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ ver si lo debería tener en cuenta si imomgo flow rate en lugar de pbh.
+ ver seccion 1.5.1 Expanding(24) ! esto es algo que tengo que pensar!!!!!!!!!!!
+ y decidir como hacerlo.
+ Por otro lado si uno esta prescribiendo q tanto los términos de pbh como
+ de p que van multiplicando a WI deberían desaparecer.
+ Supongo que el tema viene de que chen supone que uno tiene 
+\begin_inset Formula $q_{l}$
+\end_inset
+
+ pero en realidad si me lo da Ruben lo que tengo es diectamente 
+\begin_inset Formula $q_{l+1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+for the moment I do not have (nor need ) a bvess_por or kfl_fixno_por.
+ because only natural 0 bcs are used.
+ If I use them I would nedd separate for press and sat .
+ or perhaps make them of size 2.
+ Perhaps 2 +ndime if I want bcs for veloc i Coutinho pp for veloc.
+ See ej por_inivar.
+\end_layout
+
+\begin_layout Itemize
+Por_endste hay que revisaral un poco más
+\end_layout
+
+\begin_layout Subsection
+Time integration
+\end_layout
+
+\begin_layout Standard
+kfl_timei_por
+\end_layout
+
+\begin_layout Standard
+kfl_tisch_por
+\end_layout
+
+\begin_layout Standard
+ncomp_por
+\end_layout
+
+\begin_layout Standard
+kfl_tiacc_por
+\end_layout
+
+\begin_layout Standard
+Quiero tener esto como opciones? Notar que debería tener uno para Press
+ y otro para wasat.
+ Como manejar esto ponerlod e tamaño 2.
+ Notar ademas que en realidad Podrái ser al saurac explicita y la press
+ implicita.
+\end_layout
+
+\begin_layout Standard
+Si discutí con Mariano voy a tenerlos y de tamaño 2 (1 pr, 2 SW)
+\end_layout
+
+\begin_layout Section
+Implementation pressure
+\end_layout
+
+\begin_layout Subsubsection
+Volume mass matrix
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+{\displaystyle \int}-\left[\frac{c_{wSw}}{c_{oSw}}c_{op}-c_{wp}\right]N_{I}N_{J}d\Omega\:\delta P_{J}
+\]
+
+\end_inset
+
+taking into account that 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\frac{c_{wSw}}{c_{oSw}}=-\left(\frac{B_{o}}{B_{w}}\right)^{l}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\[
+{\displaystyle \int}\left[\frac{B_{o}}{B_{w}}c_{op}+c_{wp}\right]N_{I}N_{J}d\Omega\:\delta P_{J}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where I have eliminated the suparaindex l because it si obvious.
+ gprea(igaus) for por_elmsup is then 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\frac{B_{o}}{B_{w}}c_{op}+c_{wp}$
+\end_inset
+
+ for each gauss point.
+ Notice that actually if we divide all by 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula $\triangle t$
+\end_inset
+
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ as we as we have mentioned in the Laplacian term we have 
+\begin_inset Formula $\frac{1}{\triangle t}\left(\frac{B_{o}}{B_{w}}c_{op}+c_{wp}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Volume Laplacian matrix
+\end_layout
+
+\begin_layout Standard
+For the moment I will not include the 'convective' terms.
+ therefore the only term that goes into the matrix is 
+\begin_inset Formula 
+\[
+-\triangle t\int\left\{ \left(\frac{c_{wSw}}{c_{oSw}}T_{o}^{l}-T_{w}^{l}\right)\nabla N_{I}\right\} \cdot\nabla N_{J}d\Omega\:\delta P_{J}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that actually I will solve everything divided by
+\begin_inset Formula $\triangle t$
+\end_inset
+
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ as we usually do.
+ Moreover taking into account that 
+\begin_inset Formula $T_{\alpha}=\frac{k_{r\alpha}}{\mu_{\alpha}B_{\alpha}}K$
+\end_inset
+
+ where K is a diagonal matrix with components 
+\begin_inset Formula $K_{i}$
+\end_inset
+
+ and that 
+\begin_inset Formula $\frac{c_{wSw}}{c_{oSw}}=-\left(\frac{B_{o}}{B_{w}}\right)^{l}$
+\end_inset
+
+we get
+\begin_inset Formula 
+\[
+\int\left\{ \left(\left(\frac{B_{o}}{B_{w}}\right)T_{o}^{l}+T_{w}^{l}\right)\nabla N_{I}\right\} \cdot\nabla N_{J}d\Omega\:\delta P_{J}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\int\frac{1}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}+\frac{k_{rw}}{\mu_{w}}\right)K_{i}\left(d_{i}N_{I}\right)\left(d_{i}N_{J}\right)d\Omega\:\delta P_{J}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This I have introduced it in por_elmope.
+ It will recieve gpdif(idime,igaus) with 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\frac{1}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}+\frac{k_{rw}}{\mu_{w}}\right)K_{i}$
+\end_inset
+
+ at each gauss point.
+ This must be calculated by some previous subroutine.
+ I guess por_elmpre.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+rhs
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=\int}\left(-\frac{c_{wSw}}{c_{oSw}}F_{o}^{rhs}+F_{w}^{rhs}\right)N_{J}d\Omega
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F_{w}^{rhs}=-\left(\frac{\phi S_{w}}{B_{w}}\right)^{l}+\left(\frac{\phi S_{w}}{B_{w}}\right)^{n}+\triangle t\nabla\cdot\left(T_{w}^{l}\nabla\Phi_{w}^{l}\right)
+\]
+
+\end_inset
+
+and the oil term is nearly identical.
+ Actually since we are using a IMPES scheme we will take 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\left(\frac{\phi S_{w}}{B_{w}}\right)^{l}=\left(\frac{\phi S_{w}}{B_{w}}\right)^{n}$
+\end_inset
+
+.
+ So we end up with 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\[
+F_{w}^{rhs}=\triangle t\nabla\cdot\left(T_{w}^{l}\nabla\Phi_{w}^{l}\right)
+\]
+
+\end_inset
+
+and similarly for oil leading to 
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=\int}\left(-\frac{c_{wSw}}{c_{oSw}}F_{o}^{rhs}+F_{w}^{rhs}\right)N_{J}d\Omega
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=\int}\triangle t\left(-\frac{c_{wSw}}{c_{oSw}}\nabla\cdot\left(T_{o}^{l}\nabla\Phi_{o}^{l}\right)+\nabla\cdot\left(T_{w}^{l}\nabla\Phi_{w}^{l}\right)\right)N_{J}d\Omega
+\]
+
+\end_inset
+
+This term need to be integrated by parts and conserving only the volume
+ terms we have - and neglecting the 'convective terms that arrise' 
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=\int}\triangle t\left(\frac{c_{wSw}}{c_{oSw}}T_{o}^{l}\nabla\Phi_{o}^{l}-T_{w}^{l}\nabla\Phi_{w}^{l}\right)\cdot\nabla N_{J}d\Omega
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=-\int}\triangle t\left(\frac{B_{o}}{B_{w}}T_{o}^{l}\nabla\Phi_{o}^{l}+T_{w}^{l}\nabla\Phi_{w}^{l}\right)\cdot\nabla N_{J}d\Omega
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=-\int}\triangle t\left(\frac{1}{B_{w}}\frac{k_{ro}}{\mu_{o}}\nabla\Phi_{o}^{l}+\frac{1}{B_{w}}\frac{k_{rw}}{\mu_{w}}\nabla\Phi_{w}^{l}\right)\cdot\nabla N_{J}d\Omega
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Eliminating 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\triangle t$
+\end_inset
+
+ ase we have alredy mentioned because the eq is divided by it.
+ And using 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\[
+\Phi_{\alpha}=p_{\alpha}-\rho_{\alpha}\ gz
+\]
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+{\displaystyle F_{J}=-\int}\left(\frac{1}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}+\frac{k_{rw}}{\mu_{w}}\right)K\nabla p\right)\cdot\nabla N_{J}d\Omega+\int\left(\frac{1}{B_{w}}\frac{k_{ro}}{\mu_{o}}K\nabla\left(\rho_{o}\ gz\right)+\frac{1}{B_{w}}\frac{k_{rw}}{\mu_{w}}K\nabla\left(\rho_{w}\ gz\right)\right)\cdot\nabla N_{J}d\Omega
+\]
+
+\end_inset
+
+ As in the previous terms taking into account that we work diving by 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\triangle t$
+\end_inset
+
+ and working as in the Laplacian term that end up in the LHS .
+\end_layout
+
+\begin_layout Standard
+Before ending this I will recheck signs because it seem A bit strange how
+ this looks.
+\end_layout
+
+\begin_layout Subsection
+All the terms put together - except well term
+\end_layout
+
+\begin_layout Standard
+We get
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+ & \left\{ {\displaystyle \int}\frac{1}{\triangle t}\left[\frac{B_{o}}{B_{w}}c_{op}+c_{wp}\right]N_{I}N_{J}d\Omega+\int\frac{1}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}+\frac{k_{rw}}{\mu_{w}}\right)K_{i}\left(d_{i}N_{I}\right)\left(d_{i}N_{J}\right)d\Omega\right\} \:\delta P_{J}=\\
+ & -\int\frac{1}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}+\frac{k_{rw}}{\mu_{w}}\right)K_{i}\left(d_{i}N_{I}\right)\left(d_{i}N_{J}\right)d\Omega P_{J}\\
+ & +\int\left(\frac{1}{B_{w}}\frac{k_{ro}}{\mu_{o}}K\nabla\left(\rho_{o}\ gz\right)+\frac{1}{B_{w}}\frac{k_{rw}}{\mu_{w}}K\nabla\left(\rho_{w}\ gz\right)\right)\cdot\nabla N_{J}d\Omega
+\end{eqnarray*}
+
+\end_inset
+
+The terms for the pressure Laplacian we have one on each side.
+ And they have exactly the same form.
+ I guess the one on the RHS I would obtain it just multiplying by the unknowns
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $P_{J}$
+\end_inset
+
+.
+ For the gravity terms we have for water.
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\nabla\left(\rho_{w}^{l}\ gz\right)$
+\end_inset
+
+ we could decompose it into 
+\begin_inset Formula $\rho_{w}^{l}\nabla\left(gz\right)+gz\nabla\left(\rho_{w}^{l}\right)$
+\end_inset
+
+.
+ The first term ends up as 
+\begin_inset Formula $\rho_{w}^{l}g\, e_{z}$
+\end_inset
+
+.
+ The second term looks a bit strange to me 
+\begin_inset Formula $gz\nabla\left(\rho_{w}^{l}\right)$
+\end_inset
+
+.
+ if the flow were incompressible it would disappear .
+ Perhaps we can neglect it??? if we neglect it the last term would end up
+ as 
+\begin_inset Formula 
+\[
+\int\frac{g}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}K_{z}\rho_{o}+\frac{k_{rw}}{\mu_{w}}K_{z}\rho_{w}\right)dzN_{J}d\Omega
+\]
+
+\end_inset
+
+Where for the moment we will suppose gravity is always in z.
+ If we want a more general gravity it should not be much more difficult.
+ 
+\end_layout
+
+\begin_layout Standard
+Some further comments on neglecting 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $gz\nabla\left(\rho_{w}^{l}\right)$
+\end_inset
+
+.
+ Actually the term 
+\begin_inset Formula $\nabla\Phi_{w}^{l}$
+\end_inset
+
+ is obtained after 'neglecting the variation of 
+\begin_inset Formula $\rho_{w}$
+\end_inset
+
+ in space' , Chen after eq (8.9).
+ Therefore it is perfectly valid to use this approximation again here!!!!
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+One further remark The density at each point for
+\begin_inset Formula $\rho_{o}$
+\end_inset
+
+ and
+\begin_inset Formula $\rho_{w}$
+\end_inset
+
+ is obtained as 
+\begin_inset Formula $\frac{\rho_{os}}{B_{o}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\frac{\rho_{ws}}{B_{w}}$
+\end_inset
+
+ respectivelly.
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+If we want to have a general gravity as in nsi, GRNOR_POR & GRAVI_POR.
+ Then g would be GRNOR_POR and the term to be added would be 
+\begin_inset Formula 
+\[
+\int\frac{g}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}\rho_{o}+\frac{k_{rw}}{\mu_{w}}\rho_{w}\right)\left(K_{i}d_{i}N_{J}*GRAVIPOR\left(i\right)\right)d\Omega.
+\]
+
+\end_inset
+
+In Alya we define gpgra(ndime, pgaus) 
+\begin_inset Formula $=\frac{g}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}\rho_{o}+\frac{k_{rw}}{\mu_{w}}\rho_{w}\right)\left(K_{i}*GRAVIPOR\left(i\right)\right)$
+\end_inset
+
+ so that the previous term can be written directly as 
+\begin_inset Formula 
+\[
+\int gpgra(i,pgaus)d_{i}N_{J}d\Omega.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Some Remarks on solving for 
+\begin_inset Formula $P$
+\end_inset
+
+ or 
+\begin_inset Formula $\delta P$
+\end_inset
+
+.
+ Now what I ahve is solving for 
+\begin_inset Formula $\delta P$
+\end_inset
+
+ following Chen.
+ I could write is as 
+\begin_inset Formula 
+\[
+M\delta P+K\delta P=KP+F_{g}
+\]
+
+\end_inset
+
+If I want to solve directly for 
+\begin_inset Formula $P_{new}=P+\delta P$
+\end_inset
+
+ it is straightforward
+\begin_inset Formula 
+\[
+\left(M+K\right)P_{new}=MP+F_{g}
+\]
+
+\end_inset
+
+Perhaps there can be some difficulty in the well terms?? I do not see any
+ difficulty for the well terms.
+\end_layout
+
+\begin_layout Standard
+in the well terms we have 
+\begin_inset Formula 
+\[
+F_{w}\left(\delta p,\delta p_{bh}\right)=F_{w}^{rhs}+F_{w}^{lhs}\delta p+F_{w}^{w0}+F_{w}^{w1}\delta p+F_{w}^{w2}\delta p_{bj}^{\left(j\right)}
+\]
+
+\end_inset
+
+The term related to 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\delta p_{bj}^{\left(j\right)}$
+\end_inset
+
+ is zero our case since the bottom hole pressure is given.
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ Then the remaining well terms are
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\begin_inset Formula $F_{w}^{w0}+F_{w}^{w1}\delta p$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{\triangle t}{B_{w}^{l}}q_{ws}^{l}-\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} \delta p
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\left[p_{bj}^{\left(j\right)}-p^{l}\right]\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} -\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} \delta p
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\left[p_{bj}^{\left(j\right)}-\left(p^{l}+\delta p\right)\right]\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} 
+\]
+
+\end_inset
+
+So if we want to solve for 
+\begin_inset Formula $\delta p$
+\end_inset
+
+ we only send that term to the LHS to end up with 
+\begin_inset Formula 
+\[
+\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\left[\delta p\right]\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} =\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\left[p_{bj}^{\left(j\right)}-p^{l}\right]\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} 
+\]
+
+\end_inset
+
+Or if we want to solve for 
+\begin_inset Formula $P_{new}=P+\delta P$
+\end_inset
+
+ we send that term to the LHS to end up with 
+\begin_inset Formula 
+\begin{equation}
+\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\left[p^{l}+\delta p\right]\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} =\frac{\triangle t}{B_{w}^{l}}\left\{ \sum_{j=1}^{N_{w}}\sum_{m=1}^{M_{wj}}WI^{\left(j,m\right)}\frac{k_{rw}}{\mu_{w}}\left[p_{bj}^{\left(j\right)}\right]\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)\right\} \label{eq:well1}
+\end{equation}
+
+\end_inset
+
+Finalmente vamos a resolver para 
+\begin_inset Formula $P_{new}$
+\end_inset
+
+ en la implementación .
+ 
+\begin_inset Formula $WI^{\left(j,m\right)}$
+\end_inset
+
+ se guarda directamente en un vector de tamaño npoin que tiene los valores
+ del WI en los nodos que tienen iwell_por(ipoin)/=0
+\end_layout
+
+\begin_layout Subsubsection
+Other terms for por_elmsup
+\end_layout
+
+\begin_layout Standard
+For the moment we will set gpvel(ndime,pgaus)=0 ; gpgrd(ndime,pgaus)=0.
+ to leave the subroutine quite general we can input gpden(pgaus)=1 .
+ the idea is perhaps to send this subroutine to mathru latter on.
+\end_layout
+
+\begin_layout Subsection
+Well implementation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+T_{0i}=\int_{K}k_{*}\left(\nabla^{*}\varphi_{i}\right)\cdot\nabla\varphi_{0}d\mathbf{x}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+r_{e}=exp\left(\frac{-2\pi+\sum_{i=1}^{ncone}T_{0i}ln\left(r_{i}\right)}{\sum_{i=1}^{ncone}T_{0i}}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+WI^{M}=\frac{2\pi k_{*}}{ln\left(\frac{r_{e}^{M}}{r_{w}}\right)}
+\]
+
+\end_inset
+
+ OJO aca si necesito 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $k_{*}$
+\end_inset
+
+ en los nodos smootheo directamente con rhsid(3,ipoin) /vmass
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+q_{M\alpha}=k_{r\alpha}\left(S_{w}\right)\frac{\rho_{\alpha}}{\mu_{\alpha}}WI^{M}\left(p_{bh}-p_{0}\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La implemetación la voy hacer muy sencilla.
+ Voy a guardar 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $T_{0i}$
+\end_inset
+
+ y 
+\begin_inset Formula $WI^{M}$
+\end_inset
+
+ en un vector de tamaño npoin welli_por(npoin).
+ No me voy a preocupar por a que well pertenece.
+ Para eso ya voy leer iwell_por(npoin).
+ Positivo= well , neg=Injector.
+\end_layout
+
+\begin_layout Standard
+La única salvedad es que ningun well tenga un conected node que tambien
+ sea connected node de otro well.
+ Esto pasa para brugge.
+ Más adelante podría poner un control para verificarlo.
+\end_layout
+
+\begin_layout Enumerate
+calculo 
+\begin_inset Formula $T_{0i}.$
+\end_inset
+
+ Esto no me genera ninguna dificultad.
+ Los valores de 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $k_{*}$
+\end_inset
+
+ Por ahora tomo el valor de kx que es igual a ky para Brugge.
+ Uso el valor elemental de cada elemento y listo.
+ Si los elem tienen distinta perme_x obviamente el flujo no va a ser axilsimétri
+co pero bue, eso es un problema del well model no de la implementación.
+ Estos valores quedan guardados en las posic de los nodos conectados al
+ nodo del well.
+ 
+\end_layout
+
+\begin_layout Enumerate
+calculo 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $r_{e}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ y luego 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $WI^{M}$
+\end_inset
+
+ la única sutileza que veo es como calcular 
+\begin_inset Formula $r_{i}$
+\end_inset
+
+.
+ Por ahora solo usaré 
+\begin_inset Formula $\delta_{x}$
+\end_inset
+
+ y 
+\begin_inset Formula $\delta_{y}$
+\end_inset
+
+ .
+ Parece lo más lógico para un flujo axilsimétrico.
+ Aca luego tocará hacer un modrhs y listo.
+\end_layout
+
+\begin_layout Standard
+A la hora de implementar ensamblar rhs y mat de masa hay que partir de 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:well1"
+
+\end_inset
+
+.
+ Las 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\delta\left(\mathbf{x}-\mathbf{x}^{\left(j,m\right)}\right)$
+\end_inset
+
+ desaparecen ya que estoy trabajando con wells en los nodos
+\begin_inset Formula 
+\begin{equation}
+\frac{\triangle t}{B_{w}^{l}}WI\frac{k_{rw}}{\mu_{w}}p^{l+1}=\frac{\triangle t}{B_{w}^{l}}WI\frac{k_{rw}}{\mu_{w}}p_{bj}\label{eq:well1-1}
+\end{equation}
+
+\end_inset
+
+Esto queda super facil simplemente calculo 
+\begin_inset Formula $\frac{\triangle t}{B_{w}^{l}}WI\frac{k_{rw}}{\mu_{w}}$
+\end_inset
+
+ para los nodos que tengan iwell_por(ipoin)/=0 .
+ mando ese valor a la diagonal de la matriz.
+ Y luego tambien lo multiplico por pbh del well y lo mando al RHS.
+\end_layout
+
+\begin_layout Standard
+Actually in the previous equation I have only taken into account the water
+ contribution .
+ Now adding also the oil contribution we have (see Finite Element discretization
+ -Pressure equation)
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula 
+\[
+\triangle t\left(\frac{1}{B_{w}^{l}}\frac{k_{rw}}{\mu_{w}}-\frac{c_{wSw}}{c_{oSw}}\frac{1}{B_{o}^{l}}\frac{k_{ro}}{\mu_{o}}\right)WI\: P_{J}^{l+1}=\triangle t\left(\frac{1}{B_{w}^{l}}\frac{k_{rw}}{\mu_{w}}-\frac{c_{wSw}}{c_{oSw}}\frac{1}{B_{o}^{l}}\frac{k_{ro}}{\mu_{o}}\right)WI\: p_{bj}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is for the pressure equation.
+\end_layout
+
+\begin_layout Standard
+For the Water Saturation equation we have on the RHS because the pressure
+ is known 
+\begin_inset Formula 
+\[
+....=q_{w}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+....=\frac{q_{ws}^{l}}{B_{w}^{l}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+....=\frac{1}{B_{w}^{l}}WI\frac{k_{rw}}{\mu_{w}}\left[p_{bj}^{\left(j\right)}-p^{l}\right].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Due to the similarity for both pressure and water saturation I will create
+ one single subrutine that shall calculate that deppends on kfl_incoi
+\end_layout
+
+\begin_layout Subsubsection*
+if kfl_incoi==1 
+\end_layout
+
+\begin_layout Standard
+(this is what we will use for the pressure equation)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{}\left(\frac{1}{B_{w}^{l}}\frac{k_{rw}}{\mu_{w}}-\frac{c_{wSw}}{c_{oSw}}\frac{1}{B_{o}^{l}}\frac{k_{ro}}{\mu_{o}}\right)WI
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+for all nodes.
+ 
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula 
+\[
+-\frac{c_{wSw}}{c_{oSw}}=-\frac{\frac{\phi}{B_{w}^{l}}}{-\frac{\phi}{B_{o}^{l}}}=\frac{B_{o}^{l}}{B_{w}^{l}}
+\]
+
+\end_inset
+
+ it can be rewritten as 
+\begin_inset Formula 
+\[
+\frac{1}{B_{w}^{l}}\left(\frac{k_{rw}}{\mu_{w}}+\frac{k_{ro}}{\mu_{o}}\right)WI
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+if kfl_incoi==0 
+\end_layout
+
+\begin_layout Standard
+(this is what we will use for the saturation equation)
+\begin_inset Formula 
+\[
+\frac{1}{B_{w}^{l}}\left(\frac{k_{rw}}{\mu_{w}}\right)WI
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Beware 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $k_{ro}$
+\end_inset
+
+ and 
+\begin_inset Formula $k_{rw}$
+\end_inset
+
+ change element per element, depending on lmate(ielem).
+ If we need to use a nodal value we will need to smooth them.
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+For the pressure equation
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+: multiply by 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\triangle t$
+\end_inset
+
+ for the pressure equation.
+ Put this into the matrix diagonal and also put it to the RHS multiplied
+ by 
+\begin_inset Formula $p_{bj}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+For the Saturation equation
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+: 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+put it to the RHS multiplied by 
+\begin_inset Formula $\left(p_{bj}-p\right)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The variables that I will use inside Alya are:
+\end_layout
+
+\begin_layout Itemize
+iwell_por(npoin) -positive well, negative injector.
+ Actually for the moment I do not know if I need distinguish between them.
+\end_layout
+
+\begin_layout Itemize
+winde_por(npoin) - well index .
+ In points with iwell_por(ipoin) /=0 it will have the well index and it
+ their connected nodes the transmisibility.
+ This gives no problem as long a node connected to one well is not also
+ connected to another well.
+ i think this is a logical assumption.
+\end_layout
+
+\begin_layout Itemize
+pboho_por(nwell,mtipb) bottom hole pressure.
+ For both wells and injectors.
+ whre nwell is the total number of wells + injectors.
+ for example it could be 7 and we would have iwell_por=(/-1,-2,-3,4,5,6,7/)
+ .
+ the first three are injectors and the rest wells.
+ mtipb is the maximum of time values for all bottom hole tables.
+\end_layout
+
+\begin_layout Itemize
+ntipb_por(nwell).
+ Number of time values for each well.
+\end_layout
+
+\begin_layout Itemize
+rwell_por(nwell) the well radius
+\end_layout
+
+\begin_layout Section
+Alya Program
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="15" columns="3">
+<features rotate="true" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="center" valignment="top" width="3cm">
+<column alignment="center" valignment="top" width="10cm">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+call Turnon()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+read datafiles
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+call Iniunk()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+initialize unknowns
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+pr(ip,icomp) = bvess_por(1,ip,1); pr(ip,1)= pr(ip,icomp) --- where icomp
+ = min(3_ip,ncomp_por)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+while
+\series default
+ time loop not done 
+\series bold
+do
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+call Timste()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+calculate time step size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+call Begste()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+begin time step - initial guess
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+in 
+\color blue
+por_updunk(1)
+\color inherit
+ ----P(n,0,*) <-- P(n-1,*,*) ---- press(ip,2) = press(ip,ncomp_por) - initial
+ guess for outer iterations , both P & S
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\series bold
+while
+\series default
+ coupling loop not done 
+\series bold
+do
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\series bold
+for all
+\series default
+ modules 
+\series bold
+do
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\begin_inset Formula $\qquad$
+\end_inset
+
+call Doiter()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+does 1 iteration 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="9cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+por_begite -->
+\color blue
+por_updunk(2)
+\color inherit
+ --P(n,i,0) <-- P(n,i-1,*), -- press(ip,1) = press(ip,2) -- initial guess
+ for inner it , both P & S
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+por_solitw-->
+\color blue
+por_updunk(8)
+\color inherit
+ -- unkno = wasat(ip,1)-- initial guess for solver
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+por_endite(3)-->
+\color blue
+por_updunk(7)
+\color inherit
+ -- S(n,i,j-1) <-- S(n,i,j), -- wasat(ip,1) = unkno-- update of the water
+ satuartion
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+por_solite-->
+\color blue
+por_updunk(9)
+\color inherit
+ -- unkno = press(ip,1)-- initial guess for solver
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+por_endite(1) -->
+\color blue
+por_updunk(3)
+\color inherit
+ -- P(n,i,j-1) <-- P(n,i,j), -- press(ip,1) = unkno-- update of the pressure
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+por_endite(2) -->
+\color blue
+por_updunk(4)
+\color inherit
+ -- P(n,i-1,*) <-- P(n,i,*), -- press(ip,2) = press(ip,1)-- update of both
+ P & S 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\begin_inset Formula $\qquad$
+\end_inset
+
+call Concou()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+check convergence
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\series bold
+end for
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+
+\series bold
+end while
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\qquad$
+\end_inset
+
+call Endste()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+end time step - calculate residual
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color blue
+por_updunk(5)
+\color inherit
+ some special things for CN or BDF2 for the moment comented - then press(ip,3)
+ = press(ip,1)-- update of both P & S
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+end while
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+call Turnof()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+write statistics
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Subs
+\end_layout
+
+\begin_layout Subsection
+def_porous
+\end_layout
+
+\begin_layout Standard
+still copy of temper ----- still needs to be completed
+\end_layout
+
+\begin_layout Subsection
+Por_inivar
+\end_layout
+
+\begin_layout Standard
+missing Nullify pointers
+\end_layout
+
+\begin_layout Standard
+If Sat explicit--- we would not need solver for it -- guillaume said explicit
+ acn be dealt by solver
+\end_layout
+
+\begin_layout Standard
+Subgris acle case 2 -- not implemented
+\end_layout
+
+\begin_layout Standard
+see if i need to define solver bvess & kfl_fixno in case 1
+\end_layout
+
+\begin_layout Subsection
+por_reaphy
+\end_layout
+
+\begin_layout Standard
+kfl_advec_por -- This I can use for the pressure equation - the conv term
+ that I do not know whether to include or not.
+ For the moment I wil not include it
+\end_layout
+
+\begin_layout Standard
+poro0_por(:), perme_por(:,:) I still have to think how to introduce since
+ they are elemental --- guillaume suggested an elemental field.
+ I still need to decide how to pass the field read in domdat to these variables.
+ I guess at some point in por-reaphy I will need to tell wich field corresponds
+ to which variable.
+ Moreover I have defined lmate_por in def_porous but I am still not using
+ it.
+\end_layout
+
+\begin_layout Subsection
+por_memphy
+\end_layout
+
+\begin_layout Standard
+empty for the moment
+\end_layout
+
+\begin_layout Subsection
+por_reanut
+\end_layout
+
+\begin_layout Standard
+kfl_advec_por
+\end_layout
+
+\begin_layout Subsection
+por_parall
+\end_layout
+
+\begin_layout Standard
+Just calls por_sendat 
+\end_layout
+
+\begin_layout Standard
+case (2) Exchange data read in por_reabcs ! ! call por_sendat(2_ip) for
+ the moment is commented out
+\end_layout
+
+\begin_layout Subsection
+por_sendat
+\end_layout
+
+\begin_layout Standard
+terminarla cuando tenga bien por_reanut etc: Por ahora he hecho un reemplazo
+ a lo pavote
+\end_layout
+
+\begin_layout Standard
+aca falta agregar por ejemplo comro_por etc
+\end_layout
+
+\begin_layout Standard
+FALAT terminar dejarla paar lo ultimo!!!!!!!!!!!!!!
+\end_layout
+
+\begin_layout Subsection
+por_outinf
+\end_layout
+
+\begin_layout Standard
+Por ahora vdejo vacia- ya me va bien por ahora.
+ Luego aca habría que escribi las ecs que se estan resolviendo
+\end_layout
+
+\begin_layout Subsection
+por_outerrr
+\end_layout
+
+\begin_layout Standard
+por ahora no he puesto que detecte ningun error o warning.
+\end_layout
+
+\begin_layout Standard
+Pero ya con esto esta ok paar comenzar
+\end_layout
+
+\begin_layout Subsection
+por_memall
+\end_layout
+
+\begin_layout Standard
+Ya la deje ok
+\end_layout
+
+\begin_layout Subsection
+por_openfi
+\end_layout
+
+\begin_layout Standard
+por ahora casi vacia y 
+\end_layout
+
+\begin_layout Standard
+creo que asi esta ok para comezar!!
+\end_layout
+
+\begin_layout Subsection
+por_timste
+\end_layout
+
+\begin_layout Standard
+elimine if(kfl_stead_por/=1) ya que es siempre transitorio -- estacionario
+ no tiene interes en porous
+\end_layout
+
+\begin_layout Standard
+ademas como por ahora voy a correr con dt fijo comentario el call updtss
+ con lo cual la sub queda vacia
+\end_layout
+
+\begin_layout Standard
+Ya con eso por ahora esta ok --- Para pdt prescripto en esta sub no es necesario
+ hacer nada
+\end_layout
+
+\begin_layout Standard
+dtinv_por se fija en por_tistep
+\end_layout
+
+\begin_layout Subsection
+por_iniunk
+\end_layout
+
+\begin_layout Standard
+smothing the water saturation que entra como u valor elemental usando smoot2
+ La presion se inicializa a un valor cte.
+ ver bien en que variables ingresar estos valores.
+\end_layout
+
+\begin_layout Standard
+En resumen inicializa presss ysatur con eso ya esta ok
+\end_layout
+
+\begin_layout Subsection
+por_doiter
+\end_layout
+
+\begin_layout Standard
+llegue a un punto en que decidí que mejor ir trabajando en la parte central
+ -- en lugar de segir con las inicializaciones.
+ Una vez que tuviera bien al parte central supuse sería más claro ir a la
+ parte de inicialización.
+\end_layout
+
+\begin_layout Standard
+Vuelvo a por_doiter
+\end_layout
+
+\begin_layout Standard
+tengo 2 problemas- hable con guillaume para definir estilo él me sugirio
+ que lo más similar es turbul en un caso de 2 eqs.
+ Ahi se llama 2 veces a por_solite desde por_doiter.
+ con lo cual los initial guess y updates quedan en doiter.
+ Ahi la ventaja es que se puede llamar siempre a la misma solite.
+ Aqui creo que voy a dejar solite para la presion y solitew para water saturatio
+n.
+ En cuanto al explicito me recomendo que lo haga con el solver.
+ Hay 2 opciones una donde se arma la amtriz y otar donde solo se arma el
+ rhs.
+ Esta última es al que guillaume me sugiere usar dice que es al que se usa
+ en nastal.
+\end_layout
+
+\begin_layout Standard
+FALTA
+\end_layout
+
+\begin_layout Subsection
+por_solitw
+\end_layout
+
+\begin_layout Standard
+Update inner iteration counter and write headings in solver file ! if(itera_por=
+=1) then itinn(modul) = itinn(modul) + 1 --- esto lo hago solo en water
+ en analogia a como se hace en tur_solite (iunkn_tur==1.and.)
+\end_layout
+
+\begin_layout Standard
+para el explicito guillaume me recomendo pasar por el solver como en nastal
+ -- - see nsa_inivar L172 solve(1) % kfl_algso = 9
+\end_layout
+
+\begin_layout Standard
+Hable con mariano sobre como hacerlo explicito.
+\end_layout
+
+\begin_layout Standard
+Mariano me dijo en la matrix de masa el mete la lumpeada y a cagar.
+ y ademas se carga los terminos que vendrian de la estabilización.
+\end_layout
+
+\begin_layout Standard
+Con las simplificaciones de mariano, hacer esto con elmadr parece ser muy
+ fácil.
+ Para cargarme el termino temporal alcanza con poner dtinv=0 (tal ves eso
+ podria joder en el acso de tracking de subescalas pero como por ahoar no
+ voy a hacer tarcking de subescalas no me jode.
+ Una ves que sale la elmat multiplicarla por elswa(3).
+ Ademas habría que agregar el término 
+\begin_inset Formula $M_{L}U^{n}$
+\end_inset
+
+ .
+ esto lo hago con la matriz lumpeada y a cagar.
+ La matriz de masa no es solo una matriz de masa sini va multiplicada por
+ algunos término ver como tenerlos en cuenta.
+\end_layout
+
+\begin_layout Standard
+notar que hay unos assrhs dentro de elmadr pero que funcionan solo para
+ task 4 y 5 Compute SGS and projection y Postprocess projection que por
+ ahora no voy a usar.
+ yo por ahora voy a usar ASGS pelado KFL_STABI = 0
+\end_layout
+
+\begin_layout Subsection
+por_solite
+\end_layout
+
+\begin_layout Standard
+de update inner iteration counter and write headings in solver file ya se
+ encargo solitw.
+\end_layout
+
+\begin_layout Standard
+Ya esta ok.
+\end_layout
+
+\begin_layout Subsection
+por_updunk
+\end_layout
+
+\begin_layout Standard
+meti pero aun no he hecho nada-- solo reemplace temper por press falatria
+ pensar swat etc
+\end_layout
+
+\begin_layout Standard
+a difrencia de tempre donde unkno & press(ip,1) = press(ip,2) las hace 
+\color blue
+_updunk(2) 
+\color black
+Aca lo vamos a ahcer mas como tur donde
+\color blue
+ 
+\color inherit
+press(ip,1) = press(ip,2) lo hace begite y lo del solver se hace aparte
+ en updunk(9)
+\end_layout
+
+\begin_layout Standard
+He terminado esta sub!!!!! creo ya esta ok
+\end_layout
+
+\begin_layout Subsection
+por_matrpr
+\end_layout
+
+\begin_layout Standard
+matrix for the pressure equation --- ya esta Ok
+\end_layout
+
+\begin_layout Subsection
+por_matrsw
+\end_layout
+
+\begin_layout Standard
+matrix for the saturation equation
+\end_layout
+
+\begin_layout Standard
+FALTA es mas no se si llamral matrix ya que por ahora es solo explicito
+\end_layout
+
+\begin_layout Subsection
+por_elmope
+\end_layout
+
+\begin_layout Standard
+element matrix for the pressure equation
+\end_layout
+
+\begin_layout Standard
+Now I will look here at what I need to pass to elmadr and then I will go
+ backwards
+\end_layout
+
+\begin_layout Standard
+variables que voy aceptando
+\end_layout
+
+\begin_layout Standard
+kfl_shock_por(kprsa),kfl_taust_por(kprsa),kfl_ortho_por(kprsa),0_ip,kfl_sgsti_po
+r(kprsa),kfl_limit_por(kprsa),staco_por(kprsa)
+\end_layout
+
+\begin_layout Standard
+dtinv_por --- por ahora falta mirar en todo por.
+\end_layout
+
+\begin_layout Standard
+
+\color red
+OJO mirar elmadr
+\color inherit
+ y se ev que el caso 
+\color red
+anisotropo
+\color inherit
+ no esta bien tenido en cuenta toma solo el valor en x ver L578 habrái que
+ revisar bien como corregirlo
+\end_layout
+
+\begin_layout Standard
+moreover gpgrd tampoco tiene en cuenta la posibilidad de k anisotropo!!!!!!!!!!!
+!!!!
+\end_layout
+
+\begin_layout Standard
+Guillaume sugiere corregir elmadr -- pero seguro sera compliacdo pr ahora
+ voya a escribir uan sub bien simple -- por_elmsup similar a lo que hizo
+ matias en tur_elmmsu.
+ Solo esbilizacion SUPG.
+ En la mia tendre en cuenat la k anisotropa.
+\end_layout
+
+\begin_layout Standard
+talves mas adelante la pueda mandar a mathru llamandola eladr0 - una especie
+ de elmadr simplificada.
+ 
+\end_layout
+
+\begin_layout Standard
+OK
+\end_layout
+
+\begin_layout Subsection
+por_elmpre(used by por_elmope)
+\end_layout
+
+\begin_layout Standard
+here I will need to obtain:
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+gpgra(pgaus) 
+\begin_inset Formula $=\frac{g}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}\rho_{o}+\frac{k_{rw}}{\mu_{w}}\rho_{w}\right)\left(K_{i}*GRAVIPOR\left(i\right)\right)$
+\end_inset
+
+ using 
+\begin_inset Formula $\rho_{o}=\frac{\rho_{os}}{B_{o}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\rho_{w}=\frac{\rho_{ws}}{B_{w}}$
+\end_inset
+
+ That is 
+\begin_inset Formula 
+\[
+=\frac{g}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}\frac{\rho_{os}}{B_{o}}+\frac{k_{rw}}{\mu_{w}}\frac{\rho_{ws}}{B_{w}}\right)\left(K_{i}*GRAVIPOR\left(i\right)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+gpdif
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+(ndime, pgaus) 
+\begin_inset Formula $=\frac{1}{B_{w}}\left(\frac{k_{ro}}{\mu_{o}}+\frac{k_{rw}}{\mu_{w}}\right)K_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+gpden(pgaus) 
+\begin_inset Formula $=\frac{B_{o}}{B_{w}}c_{op}+c_{wp}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula 
+\[
+c_{wp}=\phi^{0}c_{R}\left(\frac{S_{w}}{B_{w}}\right)^{l}+\left(\phi S_{w}\frac{dB_{w}^{-1}}{dp}\right)^{l}=S_{w}^{l}\left[\phi^{0}c_{R}\frac{1}{B_{w^{l}}}+\left(\phi\frac{dB_{w}^{-1}}{dp}\right)^{l}\right]
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+c_{op}=\phi^{0}c_{R}\left(\frac{S_{o}}{B_{o}}\right)^{l}+\left(\phi S_{o}\frac{dB_{o}^{-1}}{dp}\right)^{l}
+\]
+
+\end_inset
+
+and 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula 
+\[
+\frac{dB_{w}^{-1}}{dp}=\frac{1}{B_{w}(P_{ref})}\left(c_{w}\left(1+c_{w}\right)P-c_{w}^{2}P_{ref}\right)=\frac{c_{w}}{B_{w}(P_{ref})}\left(P+c_{w}\left(P-P_{ref}\right)\right)
+\]
+
+\end_inset
+
+And identically for Oil.
+\end_layout
+
+\begin_layout Standard
+In order to calculate this values we will need:
+\end_layout
+
+\begin_layout Standard
+Constants
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $c_{R}$
+\end_inset
+
+ scalar read in data files----
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+comro_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $c_{o}$
+\end_inset
+
+ scalar read in data files----
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+comwa_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $c_{w}$
+\end_inset
+
+ scalar read in data files
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+----comoi_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $B_{w}\left(P_{ref}\right)$
+\end_inset
+
+ to obtain 
+\begin_inset Formula $B_{w}^{l}\left(P\right)$
+\end_inset
+
+ --
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+bwref_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $B_{o}\left(P_{ref}\right)$
+\end_inset
+
+ to obtain 
+\begin_inset Formula $B_{o}^{l}\left(P\right)$
+\end_inset
+
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+---boref_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $P_{ref}$
+\end_inset
+
+----
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+----------------------------prref_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $\mu_{o}$
+\end_inset
+
+ and---------------------
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+-------muwat_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $\mu_{w}$
+\end_inset
+
+----------
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+-muoil_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $\rho_{os}$
+\end_inset
+
+ ----------
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+denoi_por
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $\rho_{ws}$
+\end_inset
+
+ --------
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+-denwa_por
+\end_layout
+
+\begin_layout Enumerate
+Grnor_por and gravi_por(ndime)
+\end_layout
+
+\begin_layout Standard
+Table of materials
+\end_layout
+
+\begin_layout Enumerate
+The relative permeabilities 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $k_{ro}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+-------------------------------------------------------------------------krelt_p
+or(2,:,:) ! 1 is Sw
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+and 
+\begin_inset Formula $k_{rw}$
+\end_inset
+
+ is obtained from tables depending on the material to which the element
+ belongs.---
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+krelt_por(3,:,:) ! 1 is Sw
+\end_layout
+
+\begin_layout Standard
+Elemental values read from datfiles
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $\phi\left(P_{ref}\right)$
+\end_inset
+
+ to obtain 
+\begin_inset Formula $\phi\left(P\right)$
+\end_inset
+
+ --------------------------------------------
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+poro0_por(:)
+\end_layout
+
+\begin_layout Enumerate
+The permeability 
+\begin_inset Formula $K$
+\end_inset
+
+ that is of size (ndime,nelem)--------------perme_por(:,:)
+\end_layout
+
+\begin_layout Enumerate
+lmate_por(nelem) actually I do not know if this should be of porous or kernel.
+ 
+\end_layout
+
+\begin_layout Standard
+The uknowns 
+\end_layout
+
+\begin_layout Enumerate
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $S_{w}^{l}$
+\end_inset
+
+ and-------------------WASAT
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $P$
+\end_inset
+
+ -------------------------PRESS
+\end_layout
+
+\begin_layout Subsection
+por_elmprs(used by por_elmops)
+\end_layout
+
+\begin_layout Standard
+calculates gprhs and gpadv
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+gpadv=\rho_{w}\mathbf{u^{*}}\cdot\frac{\partial f_{w}}{\partial S_{w}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+gprhs & = & -f_{w}\nabla\cdot\left(\rho_{w}\mathbf{u^{*}}\right)=\\
+ &  & -f_{w}\rho_{ws}\left\{ \mathbf{u^{*}}\cdot\frac{dB_{w}^{-1}}{dp}\nabla p+\frac{1}{B_{w}}\left[\nabla\cdot\mathbf{u+}\mathbf{g}\cdot\left\{ k\lambda_{o}\left(\rho_{ws}\frac{dB_{w}^{-1}}{dp}\nabla p-\rho_{os}\frac{dB_{o}^{-1}}{dp}\nabla p\right)+k\left(\rho_{w}-\rho_{o}\right)\frac{d\lambda_{o}}{dS_{w}}\nabla S_{w}\right\} \right]\right\} 
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula 
+\[
+\mathbf{u^{*}}=\mathbf{u+}k\lambda_{o}\left(\rho_{w}-\rho_{o}\right)g\nabla z
+\]
+
+\end_inset
+
+Actually I have a a gravity in any direction I can replace the previous
+ equation by 
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbf{u^{*}} & = & \mathbf{u+}k\lambda_{o}\left(\rho_{w}-\rho_{o}\right)\mathbf{g}\\
+ &  & =\mathbf{u+}k\lambda_{o}\left(\frac{\rho_{ws}}{B_{w}}-\frac{\rho_{os}}{B_{o}}\right)\mathbf{g}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One final remark: In this equation the last term includes a 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\nabla S_{w}$
+\end_inset
+
+ which we may keep in th LHS.
+ therefore we could rewrite 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\begin{eqnarray*}
+f_{w}\nabla\cdot\left(\rho_{w}\mathbf{u^{*}}\right) & = & f_{w}\rho_{ws}\mathbf{u^{*}}\cdot\frac{dB_{w}^{-1}}{dp}\nabla p+\frac{f_{w}\rho_{ws}}{B_{w}}\left[\nabla\cdot\mathbf{u+}\mathbf{g}\cdot\left\{ k\lambda_{o}\left(\rho_{ws}\frac{dB_{w}^{-1}}{dp}\nabla p-\rho_{os}\frac{dB_{o}^{-1}}{dp}\nabla p\right)\right\} \right]\\
+ &  & +\frac{f_{w}\rho_{ws}}{B_{w}}\left[\mathbf{g}\cdot\left\{ k\left(\rho_{w}-\rho_{o}\right)\frac{d\lambda_{o}}{dS_{w}}\nabla S_{w}\right\} \right]
+\end{eqnarray*}
+
+\end_inset
+
+The second line remains in the LHS
+\end_layout
+
+\begin_layout Standard
+In this case 
+\begin_inset Formula 
+\[
+gpadv=\frac{\rho_{ws}}{B_{w}}\left(\mathbf{u^{*}}\frac{\partial f_{w}}{\partial S_{w}}+\mathbf{g}f_{w}k\left(\rho_{w}-\rho_{o}\right)\frac{d\lambda_{o}}{dS_{w}}\right)
+\]
+
+\end_inset
+
+and 
+\begin_inset Formula 
+\begin{eqnarray*}
+gprhs & = & -f_{w}\nabla\cdot\left(\rho_{w}\mathbf{u^{*}}\right)\\
+ &  & =-f_{w}\rho_{ws}\left\{ \mathbf{u^{*}}\cdot\frac{dB_{w}^{-1}}{dp}\nabla p+\frac{1}{B_{w}}\left[\nabla\cdot\mathbf{u+}\mathbf{g}\cdot k\lambda_{o}\left(\rho_{ws}\frac{dB_{w}^{-1}}{dp}-\rho_{os}\frac{dB_{o}^{-1}}{dp}\right)\nabla p\right]\right\} \\
+ &  & =-\frac{f_{w}\rho_{ws}}{B_{w}}\nabla\cdot\mathbf{u}-f_{w}\rho_{ws}\left\{ \frac{dB_{w}^{-1}}{dp}\mathbf{u^{*}}\cdot+\frac{k\lambda_{o}}{B_{w}}\left(\rho_{ws}\frac{dB_{w}^{-1}}{dp}-\rho_{os}\frac{dB_{o}^{-1}}{dp}\right)\mathbf{g}\cdot\right\} \nabla p\\
+ &  & =-f_{w}\rho_{ws}\left[\frac{\nabla\cdot\mathbf{u}}{B_{w}}+\left\{ \frac{dB_{w}^{-1}}{dp}\mathbf{u^{*}}\cdot+\frac{k\lambda_{o}}{B_{w}}\left(\rho_{ws}\frac{dB_{w}^{-1}}{dp}-\rho_{os}\frac{dB_{o}^{-1}}{dp}\right)\mathbf{g}\cdot\right\} \nabla p\right]
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+this is the final form that I will implement.
+ Actually If I am going to work explicitlly in the end there is no difference
+ on where I leave the term 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\mathbf{g}\cdot f_{w}k\left(\rho_{w}-\rho_{o}\right)\frac{d\lambda_{o}}{dS_{w}}\nabla S_{w}$
+\end_inset
+
+ but if I then want to go implicit it is better to have it where it must
+ be.
+ More over for the stabilization it is better to send all the 'velocity'
+ not just part of it.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula 
+\[
+f_{w}=\frac{\lambda_{w}}{\lambda_{w}+\lambda_{o}}
+\]
+
+\end_inset
+
+with 
+\begin_inset Formula $\lambda_{\alpha}$
+\end_inset
+
+ given by
+\begin_inset Formula 
+\[
+\lambda_{\alpha}=\frac{k_{r\alpha}}{\mu_{\alpha}}
+\]
+
+\end_inset
+
+We also need 
+\begin_inset Formula $\frac{\partial f_{w}}{\partial S_{w}}$
+\end_inset
+
+ .
+ We have to apply chain rule
+\begin_inset Formula 
+\[
+\frac{\partial f_{w}}{\partial S_{w}}=\frac{\frac{\partial\lambda_{w}}{\partial S_{w}}-\frac{\partial\left(\lambda_{w}+\lambda_{o}\right)}{\partial S_{w}}}{\left(\lambda_{w}+\lambda_{o}\right)^{2}}=\frac{-\frac{\partial\lambda_{o}}{\partial S_{w}}}{\left(\lambda_{w}+\lambda_{o}\right)^{2}}=\frac{-\frac{\partial k_{ro}}{\partial S_{w}}}{\mu_{o}\left(\lambda_{w}+\lambda_{o}\right)^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Missing to check if we should use solve_sol(1) % or solve_sol(2) % !!!!!!!!!!!!!
+!!!!!!!!!!!! notice for example in nsi_matrix solve(ivari_nsi) % kfl_preco
+ is used .
+ This means that in our case we should use solve_sol(2) % or perhaps solve_sol(k
+prsa_por) % and have kprsa=2 when we are solving saturation!!! missing to
+ correct
+\end_layout
+
+\begin_layout Subsection
+por_massma
+\end_layout
+
+\begin_layout Standard
+actually what if forms is pmatr.
+ 
+\end_layout
+
+\begin_layout Subsection
+por_begite 
+\end_layout
+
+\begin_layout Standard
+parec estar ok--- 
+\end_layout
+
+\begin_layout Standard
+falta revisar por_inisol
+\end_layout
+
+\begin_layout Standard
+paar boundaries no hace nada pero este prob 'no tiene' bcs
+\end_layout
+
+\begin_layout Subsection
+por_begste 
+\end_layout
+
+\begin_layout Standard
+esta ok
+\end_layout
+
+\begin_layout Subsection
+por_concou 
+\end_layout
+
+\begin_layout Standard
+esta sub hay que revisarla bien -- que se entiende por resid_por??
+\end_layout
+
+\begin_layout Standard
+aca hay 2 residuos -- ec press y ec satur
+\end_layout
+
+\begin_layout Standard
+Supongo igual que en las priemars pruebas podrái correr aunque no este ok
+\end_layout
+
+\begin_layout Subsection
+por_cvgunk 
+\end_layout
+
+\begin_layout Standard
+deje bastante bien!!!!!!!!!!! hice un caso 4 paar satur y deje 1 para press
+ -- 2 y 3 hacen p & S
+\end_layout
+
+\begin_layout Subsection
+por_conblk
+\end_layout
+
+\begin_layout Standard
+deje vacia -- esta vacia tambien en temper
+\end_layout
+
+\begin_layout Standard
+ya esta ok
+\end_layout
+
+\begin_layout Subsection
+por_doiter
+\end_layout
+
+\begin_layout Standard
+creo que ya esta ok
+\end_layout
+
+\begin_layout Subsection
+por_endite
+\end_layout
+
+\begin_layout Standard
+creo esta bastanet bien
+\end_layout
+
+\begin_layout Standard
+1 se encarag de press
+\end_layout
+
+\begin_layout Standard
+2 presss y satur
+\end_layout
+
+\begin_layout Standard
+3 satur
+\end_layout
+
+\begin_layout Subsection
+por_iniunk
+\end_layout
+
+\begin_layout Standard
+OK
+\end_layout
+
+\begin_layout Standard
+lo que falta es en alguna otra sub leer prini_por y satin_por(nelem)
+\end_layout
+
+\begin_layout Subsection
+por_inivar
+\end_layout
+
+\begin_layout Standard
+ya he preparado --- falat algun nullify 
+\end_layout
+
+\begin_layout Subsubsection
+caso 0
+\end_layout
+
+\begin_layout Standard
+falta nulificar cosas revisar
+\end_layout
+
+\begin_layout Subsubsection
+case 1 
+\end_layout
+
+\begin_layout Standard
+prepara el solver loq ue podría faltar es solve()% bvess y kfl-fixno pero
+ como por ahora no pongo ninguna prescripción y ademas no lo haría el solver
+ creo que noe s necesario
+\end_layout
+
+\begin_layout Subsubsection
+case 2
+\end_layout
+
+\begin_layout Standard
+no hay nada es para subgrid
+\end_layout
+
+\begin_layout Subsection
+por_outvar
+\end_layout
+
+\begin_layout Standard
+OK
+\end_layout
+
+\begin_layout Subsection
+por_reabcs
+\end_layout
+
+\begin_layout Standard
+vacia -- ok ya que en pourous no hay bcs
+\end_layout
+
+\begin_layout Subsection
+por_turnof.
+ 
+\end_layout
+
+\begin_layout Standard
+vacia pero por ahora me va OK
+\end_layout
+
+\begin_layout Subsection
+por_inisol
+\end_layout
+
+\begin_layout Standard
+hace lo mismo que en temper y tambien solve_sol(2)%xdiag = 1.0_rp/dtinv
+\end_layout
+
+\begin_layout Standard
+habrái que revisar si falat algo mas
+\end_layout
+
+\begin_layout Subsection
+por_updbcs
+\end_layout
+
+\begin_layout Standard
+deje vacia -- OK ya que no hay bcs
+\end_layout
+
+\begin_layout Subsection
+por_conblk
+\end_layout
+
+\begin_layout Standard
+estaba vacia en tem deje vacia OK
+\end_layout
+
+\begin_layout Subsection
+por_output
+\end_layout
+
+\begin_layout Standard
+por_output --- casi vacia pero con eso alcanza por ahora
+\end_layout
+
+\begin_layout Subsection
+Algunas cosas que elimine
+\end_layout
+
+\begin_layout Standard
+3) "_por_tistep_", referenced from: por_begite.o !!!!!!! comente y puse runend
+ 
+\end_layout
+
+\begin_layout Standard
+4) "_por_smobcs_", referenced from: por_iniunk.o !!!!!!! comente 
+\end_layout
+
+\begin_layout Standard
+5) "_por_inicnd_", referenced from: por_iniunk.o !!!!!!! comente 
+\end_layout
+
+\begin_layout Standard
+6) "_por_newmsh_", referenced from Porous.o !!!!!!! comente 
+\end_layout
+
+\begin_layout Subsection
+por_timste
+\end_layout
+
+\begin_layout Standard
+por ahoar esta ok para BDF1 paar la press y explicito para satur.
+ Hay que pensarlo mejor para otras combinaciones 
+\end_layout
+
+\begin_layout Standard
+Hay que adaptar paar tener en cuenat que kfl_tiacc_por kfl_tiaor_por son
+ de tamaño 2 (pres y satur).
+ habrái que repensar bien si sejustifiac dejar esta flexibilidad
+\end_layout
+
+\begin_layout Standard
+OK
+\end_layout
+
+\begin_layout Subsection
+por_updbcs
+\end_layout
+
+\begin_layout Standard
+por ahora esta vacia pero ya me va ok ya que no hay que imponer ninguna
+ bc para este problema
+\end_layout
+
+\begin_layout Standard
+OK
+\end_layout
+
+\begin_layout Subsection
+por_cvgunk
+\end_layout
+
+\begin_layout Standard
+Similar a lo temper -- cvgunk(1) que antes se encargaba de temper ahoar
+ se encarga de press y cree cvgunk(4) para satur
+\end_layout
+
+\begin_layout Standard
+paar case 2 -- resid_por lo hago de size 2 -- 1 pr , 2 sat.
+ -- corergí esto ene l resto del modulo
+\end_layout
+
+\begin_layout Standard
+OK
+\end_layout
+
+\begin_layout Subsection
+por_concou
+\end_layout
+
+\begin_layout Standard
+glres(modul) = max(resid_por(1),resid_por(2))
+\end_layout
+
+\begin_layout Standard
+routp(1) = routp(1) = sqrt(dot_product(resid_por,resid_por))
+\end_layout
+
+\begin_layout Standard
+Con esto ya deje algo bastanet OK
+\end_layout
+
+\begin_layout Subsection
+por_velsmo
+\end_layout
+
+\begin_layout Standard
+check taht somewhere veloc is initialized to 0
+\end_layout
+
+\begin_layout Standard
+for the moment I understand I only need component 1.
+ This must be done after solving for pressure.
+ 
+\end_layout
+
+\begin_layout Standard
+What I need is the total velocity 
+\begin_inset Formula 
+\[
+\mathbf{u}=\mathbf{u}_{w}+\mathbf{u}_{o}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula 
+\[
+\mathbf{u}_{\alpha}=-K\lambda_{\alpha}\left(\nabla p_{\alpha}-\rho_{\alpha}\ g\nabla z\right)
+\]
+
+\end_inset
+
+which can also be written for a gravity in a general direction as 
+\begin_inset Formula 
+\[
+\mathbf{u}_{\alpha}=-K\lambda_{\alpha}\left(\nabla p_{\alpha}-\rho_{\alpha}\ \mathbf{g}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore in our case where the critical pressure is zero and both pressures
+ are equal
+\begin_inset Formula 
+\[
+\mathbf{u}=-K\left(\lambda_{w}+\lambda_{o}\right)\nabla p+K\left(\lambda_{w}\rho_{w}+\lambda_{o}\rho_{o}\right)\ \mathbf{g}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Initially I had thought to smooth the pressure gradient and then multiply
+ by 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $K$
+\end_inset
+
+, 
+\begin_inset Formula $\lambda_{w}$
+\end_inset
+
+ 
+\begin_inset Formula $\rho_{w}$
+\end_inset
+
+ etc.
+ This is not possible because 
+\begin_inset Formula $K$
+\end_inset
+
+, 
+\begin_inset Formula $\lambda_{w}$
+\end_inset
+
+ are elemental values.
+\end_layout
+
+\begin_layout Subsection
+por_wellin
+\end_layout
+
+\begin_layout Standard
+Obtain the ewll index WI
+\end_layout
+
+\begin_layout Subsection
+por_wellte
+\end_layout
+
+\begin_layout Standard
+adds the well terms for the pressure and saturation equations
+\end_layout
+
+\begin_layout Subsection
+por_smokrx
+\end_layout
+
+\begin_layout Standard
+Smooths krw and kro needed by por_wellte
+\end_layout
+
+\begin_layout Section
+Cosas faltan 
+\end_layout
+
+\begin_layout Itemize
+Decidir bien cual es solver a poner paar Saturation explicit, diagonal(9)
+ ,matri (10) o richa(11) .
+ Por ahora deje 10 porque con 9 me daba que pmatr no estba alocada ---pero
+ falta controlar bein que hace.
+ preguntar a Guillaume bien cuales son als diff entre los 3 --- TAL VES
+ MIRARLO UN POCO CON EL DEBBUGER.
+ Jugando el único que ví que alloca pmatr es 10 MATRI pero con eso tampoc
+ creo que me va bien.
+ en un momento se mete en soldia que llama a bcsrax que usa matr que no
+ esa definida en mi caso.
+ así que eso tampoco parec una opción válida.
+ REVISE UN POCO MAS Y lo que correspond es ALGEBRAIC_SOLVER: DIAGO PRECONDITIONE
+R: LOCDIAGONAL---es ams eso lo tengo anotado en Review prior to implementation.
+ Ahora veoq ue el acso LOCDI esta mal en alya corrijo soldef -- agrego if(solve_
+sol(ivari) % kfl_preco==10)
+\end_layout
+
+\begin_layout Itemize
+por_cvgunk saque prmin y prmax de write(momod(modul)%lun_conve,101) ittim,itcou,
+itinn(modul),cutim,ripor(1),ripor(2),& samin,samax,time1--- porque antes
+ de escribir esto solo habia sido calculados samin y samax no prmin y prmax
+ ...
+ sino el debbuger daba error
+\end_layout
+
+\begin_layout Subsubsection
+error poe_wellin
+\end_layout
+
+\begin_layout Standard
+ielem 316 in=4 jn=1
+\end_layout
+
+\begin_layout Standard
+316 2366 2288 2284 2365 2429 2372 2371 2425 
+\end_layout
+
+\begin_layout Standard
+2365 2.540597e+03 6.351492e+02 1.508706e+03 2366 2.540597e+03 6.351492e+02 1.562994e+0
+3
+\end_layout
+
+\begin_layout Standard
+claro aca la estoy cagando porque dista queda idem 0 y luego log falla esto
+ es hay que hay que repensar la teoria!!!
+\end_layout
+
+\begin_layout Section
+cosas ya hechas
+\end_layout
+
+\begin_layout Subsection
+well
+\end_layout
+
+\begin_layout Standard
+Creo listo
+\end_layout
+
+\begin_layout Subsection
+malla ijk- well
+\end_layout
+
+\begin_layout Standard
+al final maneje lo de los wells sin necesitar esto
+\end_layout
+
+\begin_layout Subsection
+Lmate
+\end_layout
+
+\begin_layout Standard
+ver si tengo que usar uno propio de por o uno general - Guillaume me dijo
+ usar el general LISTO
+\end_layout
+
+\begin_layout Subsection
+Some variables I have added but missing read and allocate 
+\end_layout
+
+\begin_layout Standard
+check if all variables in def_porous have been allocated
+\end_layout
+
+\begin_layout Standard
+FALTAN!!!!!!!!!!!! 
+\end_layout
+
+\begin_layout Standard
+1)SATIN_por, -----nelem - por_iniunk
+\end_layout
+
+\begin_layout Standard
+2)PORO0_por, -----nelem- por_iniunk
+\end_layout
+
+\begin_layout Standard
+3)PERME_POR -----ndime,nelem - por_iniunk
+\end_layout
+
+\begin_layout Standard
+also some form wells: 
+\end_layout
+
+\begin_layout Standard
+4)iwell_por(:) ! number of well to which ipoin belongs -----npoin- por_iniunk
+\end_layout
+
+\begin_layout Standard
+5)rwell_por(:), & ! Well radius -----nwell_por
+\end_layout
+
+\begin_layout Standard
+6)pboho_por(:) ! Well Boottom hole pressure-----nwell_por
+\end_layout
+
+\begin_layout Standard
+7)winde_por(:) ! Well index -----npoin 
+\end_layout
+
+\begin_layout Standard
+Creo usar lo de reabcs ADOC[1]> VALUES, FUNCTION= int, DIMENSION= int, ON_NODES/
+ON_BOUNDARIES, CODE= int ------------ agregar ON_ELEMENTS
+\end_layout
+
+\begin_layout Itemize
+satin_por, poro0_por, perme_por, iwell_por copio los valores de field 1
+ a 4 en por_iniunk, los alloco en porr memall y tambien a winde por.
+ Falta hacer el nullify donde???
+\end_layout
+
+\begin_layout Itemize
+rwell_por y pboho_por los hice de tamaño mwell_por(param) tambien leo nwell_por
+ (que debo controlar )
+\end_layout
+
+\begin_layout Itemize
+nullify--- listo meti en inivar(0) pa todos los pointerde def-porous
+\end_layout
+
+\begin_layout Itemize
+FALTA Reviar un poco esto a ver si falta algo.
+ sendat -- paar mandar a los slaves rwell wpress etc.
+ MIRAR TAMBIEN si esta hecho paar krelt_por.
+ Ya lo tengo ok
+\end_layout
+
+\begin_layout Subsection
+Solver
+\end_layout
+
+\begin_layout Itemize
+entender porque en por_elmops L164 solve(1)....L66 solve_sol(kprsa_por) ...........L173
+ solve(kprsa_por) YA lo ARREGLÉ!!!!!!!!! en general siempre se usa solve_sol(1)
+ porque solve _sol ya esta apuntando a solve(kprsa_por) .
+ en cuanto a solve en gral se usa solve(kprsa_por) pero en alguna parate
+ uso solve(1) 
+\end_layout
+
+\begin_layout Itemize
+v
+\color red
+er bien donde le digo que saturation usa el solver 2 y press el 1.
+ Por doiter primero llama a por_solitw que llama a solver pero como se entera
+ ahi que tiene que usar el solver 2???? y lo mismo para la presión!!!!!!!!!!!!!!
+!!!!!! 
+\color inherit
+YA lo ARREGLÉ!!!!!!!!! al llamar a por_inisol
+\end_layout
+
+\begin_layout Itemize
+por_inisol estab siendo llamada por por_begite pero no puede ser llamda
+ ahí tiene que ser llamada mas adentro una ves que haya sido elegido kprsa_por
+ para saber si se esta resolviendo sat o press.
+ Creo que por_inisol va aser mas similara a nsi_solini que a nsi_inisol.
+ YA lo ARREGLÉ!!!!!!!!!
+\end_layout
+
+\begin_layout Subsection
+Inicializacion
+\end_layout
+
+\begin_layout Standard
+ver donde meter esta inicializacion la habia puesto en def_porous pero al
+ compilador no le gustaba y en temper no esta ahí.
+\end_layout
+
+\begin_layout Standard
+kfl_sgsti_por = (/0,0/) ! Subgrid scale time tracking kfl_sgsno_por = (/0,0/)
+ ! Subgrid scale non-linear tracking kfl_taust_por = (/0,1/) ! Tau calculation
+ option kfl_ortho_por(kprsa) = 0 ! Orthogonal SGS kfl_limit_por(kprsa) =
+ 0 ! Lmiter kfl_shock_por(kprsa) = 0 ! Shock capturing off kfl_tiacc_por(kprsa)
+ = 1 ! First order time integ.
+\end_layout
+
+\begin_layout Standard
+esta en por_reanut!!!!!!!!!
+\end_layout
+
+\begin_layout Section
+Algunas ayudas varias
+\end_layout
+
+\begin_layout Subsection
+solver
+\end_layout
+
+\begin_layout Standard
+soldef : solve => momod(modul) % solve ---- Mirar bien llamadas y comparar
+ con otros modulos
+\end_layout
+
+\begin_layout Standard
+tipicamente todos los modulos tienene 2 llamadas a soldef
+\end_layout
+
+\begin_layout Standard
+1) desde inivar -- call soldel(-3) !!! significa 3 solvers -- aac se dan
+ solve(1) % wprob = 'LEVEL_SET' y solve(1) % kfl_solve
+\end_layout
+
+\begin_layout Standard
+2) desde memall -- call soldel(4)
+\end_layout
+
+\begin_layout Standard
+3) desde sendat -- call soldel(1)
+\end_layout
+
+\begin_layout Standard
+Otros valores dels olver se definen en reanut 'ALGEB' y 'PRECO'
+\end_layout
+
+\end_body
+\end_document

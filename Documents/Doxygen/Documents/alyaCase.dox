@@ -1,0 +1,68 @@
+/*! \page alyaCase Alya Inputs
+
+<p>When you get your first example case in your hands you’ll see a directory
+with several files inside, almost all of them finishing with the “*.dat” exten-
+sion. Something that all the files have in common is the beginning of the file
+name; that’s the CaseName. What each file have inside is related with the
+physics of the case and with the way it’s going to be solved. But, luckily,
+all the cases that you’ll encounter will have the same type of information
+inside the files with the same extension.</p>
+
+<h2>CaseName.dat </h2>
+
+General data for the run. For example, to run an incompressible flow simulation in parallel, one would specify in this file that the
+Nastin module and Parall service are required. It also specifies the time step used and the time period for calculation.
+
+
+<h2>CaseName.dom.dat </h2>
+It has options related to the mesh. For
+example the numer of then nodes, the type of elements used or the
+rule of integration. It also have links (seen as “include <file name
+>”) to the geometry file, the boundary file and other optional domain
+related files.
+
+<ul>
+	<li><b>CaseName.geo.dat</b> <br/> It has the main information about the mesh:
+the coordinates of each node and the conectivity of the nodes. </li>
+	<li><b>CaseName.set.dat</b></li>
+	<br/> No description
+</ul>
+
+To see all the options for Domain input data look at this page: \ref Domain_input_data
+
+<h2>CaseName.ker.dat </h2>
+
+<p>It contains the properties of the materials,
+some general options about numerical aspects as mesh division, and
+general posprocessing variable options.</p> <br/>
+
+<p>When coupling different physics some variables may be shared by modules. These variables are located
+here. This is a mandatory module that also includes specific numerical treatment, like mesh multiplication or division. And also post process for
+generic variables (materials, code nodes, etc.)</p><br>
+
+To see all the options for Kermod input data look at this page: \ref Kermod_input_data
+
+<h2>CaseName.'module'.dat </h2>
+
+Here we specify the different options for each module, of course each module will have their own options. In this case we change 'module' for the module name abbreviation.
+
+Each module have their own documentation for the specyfic inputs:
+<ul>
+	<li><b>Nastin</b> - CaseName.nsi.dat: \ref Nastin_input_data</li>
+	<li><b>Solidz</b> - CaseName.sld.dat: \ref Solidz_input_data</li>
+	<li><b>Temper</b> - CaseName.tem.dat: \ref Temper_input_data</li>
+	<li><b>Exmedi</b> - CaseName.exm.dat: \ref Exmedi_input_data</li>
+	<li><b>Alefor</b> - CaseName.ale.dat: \ref Alefor_input_data</li>
+	<li><b>Chemic</b> - CaseName.chm.dat: \ref Chemic_input_data</li>
+	<li><b>Nastal</b> - CaseName.nsa.dat: \ref Nastal_input_data</li>
+	<li><b>Turbul</b> - CaseName.tur.dat: \ref Turbul_input_data</li>
+</ul>
+
+<h2>CaseName.post.alyadat </h2>
+Yep, it’s OK, its “*.alyadat” don’t ask me why. It have information about the way the postprocess it’s going
+to be done.
+
+<p>So basically, those are the files you’ll encounter.</p>
+</ul>
+
+*/

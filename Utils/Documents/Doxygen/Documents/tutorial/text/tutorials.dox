@@ -1,0 +1,23 @@
+/*! 
+\page tutorials ALYA tutorials page	 
+
+\section Index Index
+-# \ref running_an_openAlya_case
+\n
+-# \ref problems
+\n
+-# \ref partitions
+\n
+-# \ref paraver
+\n
+-# \ref vtk_output
+\n
+-# \ref hdf5_output
+\n
+-# \ref mpio
+\n
+-# \ref cpugpu
+\n
+-# \ref boast-general
+\n
+*/

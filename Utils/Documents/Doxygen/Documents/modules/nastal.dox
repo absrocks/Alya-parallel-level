@@ -1,0 +1,42 @@
+/*! \page nastal Nastal
+
+\section Nastal Nastal documentation
+
+We describe in this section the incompressible flow module, including:
+- \ref Nastal_physical_problem : Governing equations
+- \ref Nastal_numerical_treatment : Stabilization, solvers, etc.
+- \ref Nastal_output_and_postprocess : Secondary variables derived from solution
+- \ref Nastal_boundary_conditions : Dirichlet, Neumann and mixed conditions
+
+For the corresponding input data file
+
+- \ref Nastal_inputdata_physical_problem 
+- \ref Nastal_inputdata_numerical_treatment 
+- \ref Nastal_inputdata_output_and_postprocess 
+- \ref Nastal_inputdata_boundary_conditions  
+
+\subsection Nastal_physical_problem Physical problem
+
+
+\subsection Nastal_numerical_treatment Numerical Treatment
+
+\subsubsection Nastal_stabilization Stabilization
+
+
+\subsubsection Nastal_SGS Subgrid scale modeling
+
+
+\subsubsection Nastal_SGS_tracking Subgrid scale convection and time tracking
+
+
+\subsubsection Nastal_solution_procedure Solution procedure
+
+
+\subsubsection Algebraic_solvers Algebraic solvers
+
+
+\subsection Nastal_output_and_postprocess Output and postprocess
+
+\subsection Nastal_boundary_conditions Boundary conditions
+
+*/

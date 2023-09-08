@@ -1,0 +1,64 @@
+/*! \page problems ALYA cases tutorials page
+
+
+\section Contents Contents 
+
+____
+\n
+- \ref case_cylinder : example of incompressible flow around a cylinder in a 2D rectangular domain (NASTIN). <a href="cylinder.zip" target="_self"><b>Download case here</b></a>
+\n
+\n
+\image html cylinder_Re100_r.png 
+<CENTER>
+[(see animation)](http://www.youtube.com/watch?feature=player_embedded&v=RnZXCHUSSuE)
+</CENTER>
+\n
+____
+\n
+- \ref case_venturi : example of the Venturi effect on a 2D quadrilateral structured mesh (NASTIN). <a href="venturi.zip" target="_self"><b>Download case here</b></a>
+\n
+\n
+\image html venturi_steady_flow_r.png 
+<CENTER>
+[(see animation)](http://www.youtube.com/watch?feature=player_embedded&v=lqJsO7gC02w)
+</CENTER>
+\n
+____
+\n
+- \ref case_elbow : example of the flow through an elbow discretized with a 3D tetrahedral unstructured mesh (NASTIN). <a href="elbow.zip" target="_self"><b>Download case here</b></a>
+\n
+\n
+\image html elbow_3Dflow_r.png
+<CENTER>
+[(see animation)](http://www.youtube.com/watch?feature=player_embedded&v=65YWYUH7zB8)
+</CENTER>
+\n
+____
+\n
+- \ref case_backward_facing_step : example of the flow through a rectangular section duct with a backward facing step, discretized with a 2D quadrilateral structured mesh (NASTIN, TURBUL). <a href="backward_facing_step.zip" target="_self"><b>Download case here</b></a>
+\n
+\n
+\image html backward_facing_step_turbulent_flow_r.png 
+<CENTER>
+[(see animation)](http://www.youtube.com/watch?feature=player_embedded&v=zlZId0YMjJs)
+</CENTER>
+\n
+____
+\n
+- \ref case_blasius : example of the boundary layer development of a flow over a plate with an edge facing the stream (NASTIN). <a href="blasius.zip" target="_self"><b>Download case here</b></a>
+\n
+\n
+\image html blasius_velocities_r.png 
+<CENTER>
+[(blasius tutorial)](case_blasius.html)
+</CENTER>
+\n
+____
+____
+
+\n
+
+____
+
+
+*/

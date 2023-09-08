@@ -1,0 +1,54 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+DIMENSIONS
+  INCLUDE ./Tetras01_01_SIZES.alya
+END_DIMENSIONS
+
+$----------------------------------------- gauss points
+STRATEGY
+  INTEGRATION_RULE:          OPEN
+  DOMAIN_INTEGRATION_POINTS: 0
+  SCALE:                     XSCALE=1.0, YSCALE=1.0, ZSCALE=1.0   
+  TRANS:                     XTRANS=0.0, YTRANS=0.0, ZTRANS=0.0  
+END_STRATEGY
+
+$----------------------------------------------- mesh files
+GEOMETRY
+  GROUPS=100
+  INCLUDE ./Tetras01_01_TYPES.alya
+  INCLUDE ./Tetras01_01_ELEMENTS.alya
+  INCLUDE ./Tetras01_01_COORDINATES.alya
+  INCLUDE ./Tetras01_01_BOUNDARIES.alya
+$
+$  FIELDS, NUMBE=1
+$    FIELD=1, DIMENSION=1, NODE
+$      INCLUDE  ./Tetras01_01_CHARACTERISTICS.alya
+$    END_FIELD
+$  END_FIELDS
+$
+END_GEOMETRY
+
+$--------------------------------------------------
+SETS
+$
+ BOUNDARIES
+  $INCLUDE ./Tetras01_01_ON_BOUNDARIES.dat  
+ END_BOUNDARIES
+$
+ ELEME, ALL= 69
+  $INCLUDE XXXX.alya 
+ END_ELEME
+$
+END_SETS
+
+$---------------------------------------------------
+BOUNDARY_CONDITIONS, EXTRAPOLATE
+  INCLUDE ./Tetras01_01_ON_BOUNDARIES.alya
+$
+$  VALUES, FUNCTION = -1, DIMENSION = -3 
+$    INCLUDE FIELD_3D.alya
+$  END_VALUES
+$
+END_BOUNDARY_CONDITIONS
+$---------------------------------------------------
+

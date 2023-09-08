@@ -1,0 +1,5 @@
+<column>
+	<property name="text">
+		<string><<colName>></string>
+	</property>
+</column>

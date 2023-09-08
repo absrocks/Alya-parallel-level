@@ -1,0 +1,18 @@
+ para hacer al vers de integer 4 solo hay que poner 
+#define IDXTYPEWIDTH 32 en  include/metis.h
+
+luego
+ make distclean
+ make config
+ make
+
+si queremos debug info cambiar make config  a make config debug=1 gdb=1
+
+------------------------------------------------------------------
+a notar que libmetis.a se genera en
+../../Thirdparties/metis-5.0.2_i8/build/Darwin-i386/libmetis -lmetis ----para mac
+../../Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/libmetis -lmetis ---paar linux
+
+esto toacrlo a mano en el  configure-macos-mpi-full-ai8-m5i8.txt
+
+

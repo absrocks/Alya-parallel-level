@@ -50,10 +50,6 @@ subroutine readinp
   heica =0.0d0
   damping         =0.0_rp
   z_damping       =0.0001_rp
-  kfl_hflx_wall = .false.
-  hflx_can  = 0.0_rp
-  hflx_rad  = 0.0_rp
-  hflx_wall = 0.0_rp
   !
   !*** Writes to the log file
   !
@@ -85,7 +81,7 @@ subroutine readinp
      kfl_abl2 = .true.
      print *, 'ABL2 wall model!!'
   end if
-  cvoid ='no'
+
   call get_input_cha(finp,'GENERAL','LOCAL',cvoid,1,istat,message)
   if(istat.gt.0) call wriwar(message)
   !  if(istat.lt.0) call runend(message)
@@ -305,13 +301,12 @@ subroutine readinp
            call get_input_cha(finp,'THERMAL','tsfc',cvoid,1,istat,message)
            if(istat.gt.0) call wriwar(message)
            if(istat.lt.0) call runend(message)
-           ! kinf of wall energy copling with WRF
            if (TRIM(cvoid).eq.'T2m_qw'.or.TRIM(cvoid).eq.'t2m_qw') &
-                kfl_temp = 1   !Through T2m and qw from WRF
+                kfl_temp = 1
            if (TRIM(cvoid).eq.'tsk'.or.TRIM(cvoid).eq.'TSK') &
-                kfl_temp = 2 ! Through Skin Temperature
+                kfl_temp = 2
            if (TRIM(cvoid).eq.'T2m'.or.TRIM(cvoid).eq.'t2m') &
-                kfl_temp = 3 ! Through T2m
+                kfl_temp = 3
 
            call get_input_cha(finp,'THERMAL','th_adv',cvoid,1,istat,message)
            if(istat.gt.0) call wriwar(message)
@@ -357,18 +352,13 @@ subroutine readinp
            print *, 'Meso file =', TRIM(meso_file)
         end if
      end if
-     ! non transient case !!! 
      if (.not.kfl_trtem.or.kfl_case.eq.4.or.kfl_case.eq.0) then
-       
-        call get_input_rea(finp,'THERMAL','wall_heatflx',rvoid,1,istat,message)
+        call get_input_rea(finp,'THERMAL','heatfl',rvoid,1,istat,message)
         if(istat.gt.0) call wriwar(message)
         if(istat.lt.0) call runend(message)
-        hflx_wall = rvoid(1) ! heat flux over the ground
-        hflx0 = rhocp*hflx_wall
-        if (abs(hflx_wall).gt.1.0e-7) &
-             kfl_hflx_Wall = .true. 
-!        if (abs(hflx0).gt.0.01) kfl_thcou = .true. 
-!        if (abs(hflx0).lt.0.01) kfl_thmod = 0 !stationary
+        hflx0 = rvoid(1) ! heat flux over the ground
+        if (abs(hflx0).gt.0.01) kfl_thcou = .true. 
+        if (abs(hflx0).lt.0.01) kfl_thmod = 0 !stationary
 
         call get_input_rea(finp,'THERMAL','height',rvoid,1,istat,message)
         if(istat.gt.0) call wriwar(message)
@@ -380,33 +370,33 @@ subroutine readinp
         if(istat.gt.0) call wriwar(message)
         if(istat.lt.0) call runend(message)
         lmoni = rvoid(1) !  Monin - Obukhov length (positive: stable, negative: unstable)
+
+        call get_input_rea(finp,'THERMAL','tewall',rvoid,1,istat,message)
+        if(istat.gt.0) call wriwar(message)
+        if(istat.lt.0) call runend(message)
+        tewal = rvoid(1) 
+
+        call get_input_rea(finp,'THERMAL','gradtop',rvoid,1,istat,message)
+        if(istat.gt.0) call wriwar(message)
+        if(istat.lt.0) call runend(message)
+        gradto = rvoid(1) 
+
+        call get_input_rea(finp,'THERMAL','gradbot',rvoid,1,istat,message)
+        if(istat.gt.0) call wriwar(message)
+        if(istat.lt.0) call runend(message)
+        gradbo = rvoid(1) 
+
+        call get_input_rea(finp,'THERMAL','zinfle',rvoid,1,istat,message)
+        if(istat.gt.0) call wriwar(message)
+        if(istat.lt.0) call runend(message)
+        ztemin = rvoid(1) 
+
+        if (ztemin.lt.0.0.or.ztemin.gt.length) ztemin = length
+        ! defines MO function parameters
+        alpha_mo = 16.0d0  
+        beta_mo  = 5.00d0
+        expon_mo = - 0.25d0
      end if
-
-     call get_input_rea(finp,'THERMAL','tewall',rvoid,1,istat,message)
-     if(istat.gt.0) call wriwar(message)
-     if(istat.lt.0) call runend(message)
-     tewal = rvoid(1) 
-
-     call get_input_rea(finp,'THERMAL','gradtop',rvoid,1,istat,message)
-     if(istat.gt.0) call wriwar(message)
-     if(istat.lt.0) call runend(message)
-     gradto = rvoid(1) 
-
-     call get_input_rea(finp,'THERMAL','gradbot',rvoid,1,istat,message)
-     if(istat.gt.0) call wriwar(message)
-     if(istat.lt.0) call runend(message)
-     gradbo = rvoid(1) 
-
-     call get_input_rea(finp,'THERMAL','zinfle',rvoid,1,istat,message)
-     if(istat.gt.0) call wriwar(message)
-     if(istat.lt.0) call runend(message)
-     ztemin = rvoid(1) 
-     print *, 'ztemin', ztemin
-     if (ztemin.lt.0.0.or.ztemin.gt.length) ztemin = length
-     ! defines MO function parameters
-     alpha_mo = 16.0d0  
-     beta_mo  = 5.00d0
-     expon_mo = - 0.25d0
   end if
   
   !

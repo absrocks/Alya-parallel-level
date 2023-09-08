@@ -7,7 +7,6 @@ subroutine ensmsh_bin(&
   use def_kintyp, only          :  ip,rp,cenam,nnode,cetop,cepos
   use def_kintyp, only          :  nelty,cenal,lnuty,varna_pos,varnu_pos
   use def_kintyp, only          :  tipoe_ens,nppti_ens,ncoun_pos
-  use def_kintyp, only          :  nmax_ensi
   use def_elmtyp
 
   implicit none
@@ -44,7 +43,7 @@ subroutine ensmsh_bin(&
   ncoun_pos = 0
   nppti_ens = 0
   varnu_pos = 0
-  do istpp=1,nmax_ensi
+  do istpp=1,100
      varna_pos(1,istpp) = 'NULL'
      varna_pos(2,istpp) = 'NULL'
   end do

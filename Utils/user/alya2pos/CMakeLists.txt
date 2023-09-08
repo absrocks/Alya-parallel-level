@@ -1,16 +1,19 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(alya2pos LANGUAGES Fortran)
+cmake_minimum_required(VERSION 3.0)
 
-file(GLOB_RECURSE SRC_FILES ${CMAKE_CURRENT_LIST_DIR}/*.f90 ${CMAKE_CURRENT_LIST_DIR}/*.c)
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+project(Alya2pos VERSION 0.1 LANGUAGES C CXX Fortran)
+set (CMAKE_CXX_STANDARD 11)
 
-set(WITH_STD2008 OFF)
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Release")
 
-include(compiler)
-set_flags()
-set_defs()
+# Include Directories (for all targets)
+include_directories(./ ${CMAKE_BINARY_DIR})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+# wildcard all the sources in src
+file(GLOB SOURCES ./*.f90)
 
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+add_executable(alya2pos ${SOURCES})
+
+target_compile_options(alya2pos PUBLIC -Mfree)
+target_compile_options(alya2pos PUBLIC -cpp)
+target_compile_options(alya2pos PUBLIC -Mbackslash)

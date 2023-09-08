@@ -53,4 +53,3 @@ rm -f *.reordered.mpio.bin
 rm -f *.post.mpio.bin
 rm -f *.rst.mpio.bin
 rm -f *.mpio.txt
-rm -f *.varcount

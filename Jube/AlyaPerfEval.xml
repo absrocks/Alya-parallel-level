@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jube>
+  <benchmark name="Alya_Benchmark" outpath="$WORK/alyajuberuns">
+    <comment>Performance analysis for the Alya code</comment>
+    
+    <!-- compiler configurations -->
+    <parameterset name="compile_modes" init_with="eocoe_jube.xml">
+      <!-- compilation flags-->
+      <!-- <parameter name="flags"> -O1, -O2 -no-vec -no-simd , -O2 -xHost, -O2 -xHost -ipo </parameter> -->
+      <parameter name="flags">-O2 -xHost</parameter>
+      <parameter name="flags" tag="ipo">-O2 -ipo -xHost</parameter>
+      <parameter name="flags" tag="O3-ipo">-O3 -ipo -xHost</parameter>
+      <!-- mode handling -->
+
+      <!--compile options for specific modes-->
+      <parameter name="flags2"></parameter>
+      <parameter name="flags2" mode="python">
+	{"no-fma" : "-no-fma", 
+	"no-vec" : "-no-simd -no-vec",
+	"debug" : "-g -traceback"}.get("$compile_mode", "")
+      </parameter>
+      <parameter name="LIBS"></parameter>
+      <parameter name="LIBS" mode="python">
+        {"memory" : "/homea/paj1561/paj15611/public/lib/libidrmem.a"}.get("$compile_mode", "")
+      </parameter>
+      <parameter name="compiler">mpif90</parameter>
+      <parameter name="compiler" mode="python">
+	{"scalasca" : "scorep mpif90"}.get("$compile_mode","mpif90")
+      </parameter>
+      <parameter name="compile_env" mode="python"> 
+        {"scalasca" : "$basic_modules ${scalasca_modules}"}.get("$compile_mode", "$basic_modules")  
+      </parameter>
+
+    </parameterset>
+
+    <parameterset name="machineset">
+      <!-- will be moved to external file, proper to the machine-->
+      <parameter name="basic_modules"> intel-para </parameter>
+      <parameter name="scalasca_modules">Scalasca</parameter>
+      <parameter name="darshan_modules">darshan-runtime darshan-util</parameter>
+      <parameter name="python_modules">Python/2.7.14 SciPy-Stack/2017b-Python-2.7.14</parameter> 
+    </parameterset>
+
+    <!-- job configurations -->
+    <parameterset name="execute_modes" init_with="eocoe_jube.xml">
+    </parameterset>
+    <parameterset name="executeset" init_with="platform.xml">
+    <!--  <parameter name="mode" mode="python">
+        {"ref" : ",".join([i for i in "${ref_mode} ${darshan_mode} ${scatter_mode} ${compact_mode}".split(" ") if len(i) > 0])}.get("${compile_mode}","${compile_mode}")
+      </parameter>
+      <parameter name="use_darshan" mode="python">"${mode}" == "darshan"</parameter> -->
+      <parameter name="args_starter" mode="python" separator="|">
+        {"scatter" : "--cpu_bind=map_cpu:"+(",".join(str(i) for i in range($taskspernode//2) + range(12,12+$taskspernode-$taskspernode//2))),
+        "compact" : "--cpu_bind=map_cpu:"+(",".join(str(i) for i in range($taskspernode))) }.get("${mode}","")
+      </parameter>
+    </parameterset>
+
+    <parameterset name="systemParameter" init_with="platform.xml">
+      <parameter name="problemname" type="character">case-000</parameter>
+      <parameter name="case_dir" type="character">$jube_benchmark_home/../../bench4jube_1melem/$problemname</parameter> 
+      <parameter name="machine_dir">Jureca</parameter>
+      <parameter name="timelimit">01:00:00</parameter>
+      <!-- measurements-->
+      <parameter name="measurement" mode="python">
+        {"scalasca" : "time scalasca -analyze $trace -f $jube_benchmark_home/scorep.filt",
+        "darshan" : "time LD_PRELOAD=$$EBROOTDARSHANMINRUNTIME/lib/libdarshan.so DARSHAN_LOG_PATH=. DARSHAN_LOGFILE=darshan.log"}.get("$mode","time")
+      </parameter>
+      <parameter name="trace">-t</parameter>
+      <!-- environment -->
+      <parameter name="env" mode="python">                                                                                                                                                                           {"scalasca" : "module load $basic_modules $scalasca_modules",
+      "darshan" : "module load $basic_modules $darshan_modules"}.get("$mode", "module load $basic_modules")
+      </parameter>
+      <parameter name="nodes" type="int">1</parameter>
+      <parameter name="taskspernode" type="int">24</parameter>
+      <parameter name="nodes" type="int" mode="python">
+        {"scatter" : 2,
+        "compact" : 2}.get("${mode}",1)
+      </parameter>
+      <parameter name="taskspernode" type="int" mode="python">
+        {"scatter" : 12,
+        "compact" : 12}.get("${mode}",24)
+      </parameter>
+      <parameter name="preprocess" mode="python">
+        {"scatter" : "export SLURM_CPU_BIND=verbose",
+        "compact" : "export SLURM_CPU_BIND=verbose",
+	"scalasca" : "export SCOREP_TOTAL_MEMORY=200MB"}.get("${mode}","")
+      </parameter>
+      <parameter name="postprocess"></parameter>
+    </parameterset>
+
+    
+    <!-- link to the build files -->
+    <fileset name="build_files">
+      <link name="bin">../Executables/unix</link>
+      <link name="libs">../Thirdparties</link>
+    </fileset>
+
+    <!-- replace compiler flags -->
+    <substituteset name="subs_comp">
+      <!-- files -->
+      <iofile in="dir/bin/configure.in/config_ifort.in" out="dir/bin/config.in" />
+      <!-- can this be done with pattern? -->
+      <sub source="FOPT      = -O1" dest="FOPT = ${flags} ${flags2}" />
+      <sub source="#CSALYA   := $(CSALYA) -DNDIMEPAR" dest="CSALYA   :=$(CSALYA) -DNDIMEPAR" />
+      <sub source="EXTRALIB   := $(EXTRALIB) -L../Thirdparties/metis-4.0 -lmetis" dest="EXTRALIB   := $(EXTRALIB) -L../Thirdparties/metis-4.0 -lmetis $LIBS" />
+      <sub source="mpif90" dest="$compiler" />
+    </substituteset>
+    
+
+    <!-- modify sources-->
+    <substituteset name="subs_sour">
+      <!-- files -->
+      <iofile in="dir/bin/../../Sources/modules/nastin/nsi_turbul.f90" out="dir/bin/../../Sources/modules/nastin/nsi_turbul.f90" />
+      <sub source="!#define ransopenint" dest="#define ransopenint" />
+      <sub source="usa def_turbul" dest="use def_turbul" />
+    </substituteset>
+
+
+    <substituteset name="executesub" init_with="platform.xml">
+      <sub source="#PREPROCESS#" dest="$preprocess" />
+      <sub source="#POSTPROCESS#" dest="$postprocess" />
+      <sub source="#MEASUREMENT#" dest="$measurement" />
+      <sub source="#ARGS_EXECUTABLE#" dest="case/$problemname" />
+      <sub source="#EXECUTABLE#" dest="./compile/Alya.x" />
+    </substituteset>
+
+    <!-- prepare the directory -->
+    <!-- different compilers (gnu/intel/parastation) can be used here -->
+    <step name="dir">
+      <use>machineset,build_files</use>
+      <!-- load modules -->
+      <do>module purge</do>
+      <do>module load $basic_modules</do>
+      <!-- build libraries -->
+      <do>cd libs/metis-4.0; make</do>
+    </step>
+
+    <!-- compile the applications -->
+    <step name="compile" depend="dir" suffix="$compile_mode">
+      <use>machineset, compile_modes, subs_sour, subs_comp</use>
+      <do> echo compile mode = ${compile_mode} </do>
+      <do> echo LIBS = ${LIBS} </do>
+      <!-- compilation -->
+      <do>module load ${compile_env}</do>
+      <do work_dir="dir/bin">./configure -x parall nastin turbul</do>
+      <do work_dir="dir/bin">make clean</do>
+      <do work_dir="dir/bin">make -j 12</do>
+      <!--<do work_dir="dir/bin">svn log ../ | head -30 &gt; svnlog</do>-->
+      <!--<do work_dir="dir/bin">svn diff ../ &gt; svndiff</do>-->
+      <do>cp dir/bin/Alya.x .</do>
+      <do>cp dir/bin/config.in .</do>
+    </step>
+
+    <!-- setup and submit the jobs -->
+    <step name="execute" depend="compile" suffix="$mode">
+      <use>machineset, executeset, execute_modes, systemParameter, executesub</use>
+      <use from="platform.xml">jobfiles</use>
+      <!-- <use from="platform.xml">plat_depend_param_set</use> -->
+      <!-- prepare the test case -->
+      <do>mkdir case; cp -r $case_dir/* case/</do>
+      <!-- submit the job -->
+      <do done_file="$done_file">$submit $submit_script</do>
+    </step>
+
+    <fileset name="postprocessing_files">
+      <copy>extract_metrics.py</copy>
+      <copy>shuffle_json.py</copy>
+      <copy tag="darshan,all">darshanparser_jube.py</copy>
+    </fileset>
+
+    <!-- RESULTS -->
+
+   <!-- 888888888888888888888888888888888888888888888888888888888888888888888888888 -->
+
+    <!-- postprocess metric extraction configuration -->
+    <parameterset name="postprocessing_parameter" init_with="eocoe_jube.xml">
+      <parameter name="darshan_log_file_path">execute/darshan.log</parameter>
+      <parameter name="scorep_folder_path">execute/scorep*</parameter>
+      <parameter name="scorep_trace_file_path">execute/scorep*/trace.cubex</parameter>
+      <parameter name="scorep_profile_file_path">execute/scorep*/profile.cubex</parameter>
+      <parameter name="time_information_file_path">execute/${errlogfile}</parameter>
+      <parameter name="time_format">cmd</parameter>
+      <parameter name="mem_information_file_path">execute/stdout</parameter>
+      <parameter name="mem_format">slurm</parameter>
+      <parameter name="postprocessing_scalasca_modules">
+        module load $basic_modules
+	module load $scalasca_modules
+      </parameter>
+      <parameter name="postprocessing_darshan_modules">
+        module load $basic_modules
+        module load $python_modules $darshan_modules
+      </parameter>
+    </parameterset>
+
+    <!-- load postprocessing step -->
+    <include from="eocoe_jube.xml" path="step[@name='postprocess']" />
+
+    <!-- 888888888888888888888888888888888888888888888888888888888888888888888888888 -->
+
+    <!-- load metric extraction pattern -->
+    <patternset name="eocoe_metrics" init_with="eocoe_jube.xml" />
+
+    <!-- load analyser -->
+    <include from="eocoe_jube.xml" path="analyser" />
+
+    <!-- load result table -->
+    <include from="eocoe_jube.xml" path="result" />
+
+    <patternset name="my_pattern">
+      <pattern name="CPU_time" type="float">TOTAL CPU TIME:[ \t]* $jube_pat_fp</pattern>
+      <pattern name="Start_ops" type="float">STARTING OPERATIONS:[ \t]* $jube_pat_fp</pattern>
+      <pattern name="NSI_total" type="float">NASTIN MODULE:[ \t]*$jube_pat_fp \(</pattern>
+      <pattern name="NSI_mat" type="float">NASTIN MODULE:[^-]*?Matrix construction: [^-]*?Maximum: [ \t]*$jube_pat_fp</pattern>
+      <pattern name="NSI_sol" type="float">NASTIN MODULE:[^-]*?Algebraic solver:[^-]*?Maximum: [ \t]*$jube_pat_fp</pattern>
+      <pattern name="TUR_total" type="float">TURBUL MODULE:[ \t]* $jube_pat_fp \(</pattern>
+      <pattern name="TUR_mat" type="float">TURBUL MODULE:[^-]*?Matrix construction:[^-]*?Maximum:[ \t]* $jube_pat_fp</pattern>
+      <pattern name="TUR_sol" type="float">TURBUL MODULE:[^-]*?Algebraic solver:[^-]*?Maximum:[ \t]* $jube_pat_fp</pattern>
+    </patternset>
+
+    
+    <!-- Analyse -->
+    <analyser name="my_analyse">
+      <use>my_pattern</use> <!-- use existing patternset -->
+      <analyse step="execute">
+        <file use="my_pattern">case/case-000.log</file> <!-- file which should be scanned -->
+      </analyse>
+    </analyser>
+
+    <!-- Create result table -->
+    <result name="my_result">
+      <use>my_analyse</use>
+      <table name="table_2" style="pretty">
+	<column title="jube_run_id">jube_wp_parent_run_id</column>
+        <column>mode</column>
+        <column>flags</column>
+        <column>CPU_time</column>
+        <column>Start_ops</column>
+        <column>NSI_total</column>
+        <column>NSI_mat</column>
+        <column>NSI_sol</column>
+        <column>TUR_total</column>
+        <column>TUR_mat</column>
+        <column>TUR_sol</column>
+      </table>
+    </result>
+
+  </benchmark>
+</jube>
+

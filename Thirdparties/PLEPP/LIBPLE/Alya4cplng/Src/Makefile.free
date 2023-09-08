@@ -1,0 +1,20 @@
+#  
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH: 
+#  
+PROGRAM  = alya4cplng
+
+CCOMPILER = mpicc
+FCOMPILER = mpif90
+
+
+all: lib  
+
+clean:
+	rm -rf $(OBJECTS) *~ *.o *.x *.mod *.so *.a  
+
+lib: alya_coupling_mpi_name_to_id.o
+	ar -cvq lib$(PROGRAM).a $^ 
+
+alya_coupling_mpi_name_to_id.o: alya_coupling_mpi_name_to_id.c 
+	$(CCOMPILER) $^ -c 
+

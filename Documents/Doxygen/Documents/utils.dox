@@ -1,0 +1,9 @@
+/*!
+  \page utils Alya Utils
+
+  Some utilities to prepare your simulation. Other utilities dedicated to postprocess are also available in the Output section.
+  <ol>
+  <li> <TT>alya-terminal-velocity.sh</TT>: Compute terminal velocity of a particle, and other coefficients (Re, Ar, Ri).
+  </ol>
+
+*/ 

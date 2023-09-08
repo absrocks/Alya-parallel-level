@@ -7,7 +7,7 @@ subroutine write_restart
   implicit none
   character*40 :: file
   real(8)      :: gpnut,tstar
-  integer      :: ipoin
+
   !
   !** Write Single value varibales
   !
@@ -47,7 +47,7 @@ subroutine read_restart
   implicit none
 
   character*40       :: file, cvoid
-  integer            :: iz,i,j,step, ipoin, ielem
+  integer            :: iz,i,j,step
   logical            :: mesh_coincide = .false., prev_thermal = .true.
   real(8)            :: diff,L,vel,velini,logs,phi_h,eta,shapes,zdif,thstar,ustar2_rst, time_rst
   real(8)            :: tnume, tdeno,  sqkey, gpcod, dz, z

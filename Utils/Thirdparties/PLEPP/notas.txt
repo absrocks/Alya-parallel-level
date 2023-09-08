@@ -1,0 +1,14 @@
++ 2016Ago22 
+ -he remplazado con esta version, la que habia previamente, que tenia la misma estructura pero usa una version mas nueva de ple.
+  si se quiere recuperar, hay que ir a la version r5606. La r5607 ya no la tiene. Y en alguna posterior (la que me de en ese momento) subire esta.
++ 2016Ago19
+ -agregada la opcion de hacer la 'distant_point_props' de dimension definida por el usuario
+  es decir que por nodo puedo enviar uno o mas valores.
++ 2016Jun13
+ -he agredado la variable 'distant_point_props'  
+  y los cambios relativos a la misma. 
+  todo compila bien. 
+ -Siguiente paso, python wrapper!! 
+
+
+

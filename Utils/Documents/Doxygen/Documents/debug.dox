@@ -1,0 +1,37 @@
+/*!
+\page debug Debug
+
+<h1>Debug Alya with DDT</h1>
+
+In Marenostrum,
+
+<ol>
+     <li> <TT>module load ddt/18.2</TT>
+     <li> Script file
+          \verbatim
+#!/bin/bash
+#SBATCH -J ddt
+#SBATCH -D .
+#SBATCH -o ddt_%j.out
+#SBATCH -e ddt_%j.err
+#SBATCH -N 1
+#SBATCH -c 24
+#SBATCH --ntasks-per-node 1
+#SBATCH --x11=batch
+#SBATCH --time=02:00:00
+#SBATCH --qos=debug
+ddt mpirun -np 12 Alya.g example1 : -np 12 Alya.g example2
+        \endverbatim
+</ol>
+
+<h1>Compiler options</h1>
+
+Maximum debug options:
+<ol>
+     <li> ifort (Intel): <TT> -ftrapuv -check all,noarg_temp_created -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -ansi-alias </TT>
+     <li> gfortran (GNU): <TT> -fbounds-check -Wall -fbacktrace -ftrapv -ffpe-trap=invalid,zero,overflow,underflow -fimplicit-none -Wall </TT>
+     <li> pfortran (PGI): <TT> -Mbounds -Mchkptr -Mchkstk -Mdalign -Mdclchk -Mdepchk -Miomutex -Mrecursive -Ktrap=fp -g -C </TT>
+</ol>
+
+
+*/

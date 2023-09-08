@@ -1,0 +1,67 @@
+$*****************************************************************************
+
+NUMERICAL_AND_PHYSICAL:
+  SUBDOMAINS: NUMBER=      [integer]    
+END_NUMERICAL_AND_PHYSICAL:
+
+$*****************************************************************************
+
+ELEMENT_SEARCH_STRATEGY
+   MAX_TOLERANCE=          [real]
+   INC_TOLERANCE=          [real]
+END_ELEMENT_SEARCH_STRATEGY 
+
+$*****************************************************************************
+
+SUBDOMAINS
+  DEFINITION: [integ]                                                           isubd
+    POSITION:          FIXED, MOVING                                            sumov_dod(isubd)
+    LIN_POSITION:      NORM=[real],X=[real],Y=[real],Z=[real]                   sulpo_dod(isubd)
+    LIN_VELOCITY:      NORM=[real],X=[real],Y=[real],Z=[real]                   sulve_dod(isubd)
+    LIN_ACCELARATION:  NORM=[real],X=[real],Y=[real],Z=[real]                   sulac_dod(isubd)
+    ANG_POSITION:      NORM=[real],X=[real],Y=[real],Z=[real]                   suapo_dod(isubd)
+    ANG_VELOCITY:      NORM=[real],X=[real],Y=[real],Z=[real]                   suave_dod(isubd)
+    ANG_ACCELERATION:  NORM=[real],X=[real],Y=[real],Z=[real]                   suaac_dod(isubd)
+    MESH_VELOCITY:
+      ipoin vmesh(ipoin)
+      ...
+    END_MESH_VELOCITY
+    EMBEDDING:         BOX, x1,y1,z1,x2,y2,z2...x8,y8,z8
+    MASS=              [real]                                                   sumas_dod(isubd)
+    INERTIA_TENSOR=    [real]                                                   suine_dod(3,isubd)
+  END_DEFINITION
+END_SUBDOMAINS
+
+$*****************************************************************************
+
+INTERFACES 
+  NUMBERS_OF_INTERFACE_NODES
+     Matrix of numbers of interface nodes                                       inlen_dod(isubd,jsubd)
+  END_NUMBER_OF_INTERFACE_NODES 
+  CONNECTVITY
+     List of connectivity nodes                                                 incon_dod(kconn,1-2)
+  END_CONNECTIVITY
+  BOUNDARY_TYPE                                                    
+     Matrix of interfaces types                                                 intyp_dod(isubd,jsubd)
+  END_BOUNDARY_TYPE  
+  DEFINITION: Interface number                                                  iinte_dod
+    INTERPOLATED_VARIABLE: variable 1 to be interpolated                        invar_dod(ivari,iinte)
+    INTERPOLATED_VARIABLE: variable 2 to be interpolated                        invar_dod(ivari,iinte)
+    ...
+    TOPOLOGY_UPDATE:       NEVER (FIRST_TIME_STEP,BEFORE_TIME_STEP)             intop_dod(iinte)  
+    CONNECTIVITY_UPDATE:   NEVER (FIRST_TIME_STEP,BEFORE_TIME_STEP)             inupd_dod(iinte)
+  END_DEFINITION
+
+  NB: Special options for the interpolated variables:
+      INTERPOLATED_VARIABLE: HEAT_FLUX, ROBIN, 
+                                        SOLID, ONE_POINT_APPROXIMATION,  \
+                                        RHOCP=[real], CONDU=[real], WIDTH=[real], \
+                                        HEAT_SOURCE=[real], INITIAL_TEMP=[real]
+                             HEAT_FLUX, ROBIN, ZERO_POINT_APPROXIMATION, \
+                                        RHOCP=[real], CONDU=[real], WIDTH=[real], \
+                                        HEAT_SOURCE=[real]
+                             HEAT_FLUX, ROBIN, CONSTANT=[real]
+                             HEAT_FLUX, ROBIN, VELOCITY
+END_INTERFACES 
+
+$*****************************************************************************

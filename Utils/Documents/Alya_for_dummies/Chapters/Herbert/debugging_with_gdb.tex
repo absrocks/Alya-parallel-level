@@ -1,0 +1,7 @@
+\subsection{Debugging with gdb}
+
+This works for small number of parallel processes.
+\begin{enumerate}
+\item bsub -Is -q interactive -W 1:00 /bin/bash
+\item mpirun -n 3 -env DISPLAY \$DISPLAY xterm -e gdb -ex run --args Alya.g
+cavtri03\end{enumerate}

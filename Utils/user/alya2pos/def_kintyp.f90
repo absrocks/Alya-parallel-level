@@ -61,8 +61,7 @@ module def_kintyp
   end type r3p
 
   integer(ip), parameter   :: &
-       nelty = 100,           & 
-       nmax_ensi = 500               ! Maximum number of output files to be postprocessed
+       nelty = 100 
   integer(ip)              :: &
        ldime(nelty),          &      ! List of element dimensions
        ltopo(nelty),          &      ! List of element topology
@@ -116,7 +115,7 @@ module def_kintyp
   integer(ip)              :: &
        npart_pos                     ! # of geometry part
   character(5)             :: &
-       varna_pos(4,nmax_ensi)              ! Variables names to postprocess
+       varna_pos(4,100)              ! Variables names to postprocess
   character(5)             :: &
        wopow(2)                      ! Variables names to postprocess
   integer(ip)              :: &      

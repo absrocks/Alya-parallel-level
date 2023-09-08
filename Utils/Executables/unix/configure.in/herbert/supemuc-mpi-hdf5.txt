@@ -1,0 +1,13 @@
+# implicit none para toni
+## Beware you need to put $$HDF.. in the makefile so that $HDF.. appears when you compile
+f90==     mpif90 -O1 -traceback $$HDF5_INC -module $O -c
+f77==     mpif90 -O1 -traceback $$HDF5_INC -module $O -c
+fpp90==   mpif90 -O1 -traceback $$HDF5_INC -module $O -c  -fpp
+fomp90==  mpif90 -O1 -traceback $$HDF5_INC -module $O -c  -fpp
+fpp77==   mpif90 -O1 -traceback $$HDF5_INC -module $O -c  -fpp
+#cpp==     mpicc -no-multibyte-chars -c
+cpp==     mpicc -c $$HDF5_INC
+link==    mpif90 -O1 -traceback
+libs==    -L../../Thirdparties/metis-4.0 -lmetis $$HDF5_F90_LIB $$HDF5_LIB $$SZIP_LIB -lz
+
+fa2p== mpif90 -module ../../Utils/user/alya2pos -c  -fpp

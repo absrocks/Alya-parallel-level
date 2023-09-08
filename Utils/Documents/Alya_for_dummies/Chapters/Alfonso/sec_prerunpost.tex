@@ -1,0 +1,35 @@
+\subsection{The mesher}
+An GNU-licensed easy-to-use mesher that allows you to build simple geometries and meshes to run with Alya is Gmsh \footnote{http://gmsh.info/}
+
+\subsection{ Real time convergence visualzation tools}
+There are a few utilities that  you can use to see how your case is going. This tools, as the other home-made tools, are locate in ``Alya/Utils/user''. Here you will see the ``alya-all-\textless phy \textgreater'' commands, where \textless phy \textgreater can be replaced by nsi, nsa, sld (etc.) depending if you are solving Navier Stokes incompresible, Navier Stokes compresible or solid mechanics respectively, among others.
+
+To use them, is pretty simple, just go to the directory in were you're running the case and type the path to the tool, and after that, the case name.
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=alya-all,caption=Visualizing the convergence]
+[mpriun -n nc] /path/to/Alya/Utils/user/alya-all-<phy> <problem_name>
+\end{lstlisting}
+
+This utilities read the ``*cvg'' files, that are written on-the-fly, and plot the graphs with gnuplot\footnote{gnuplot.info}. So,  a good thing about this tools is that they let you see live how your simulation is performing.
+
+\subsection{Postprocessing the results}
+So, now that you ran your case, and have all the ``*.post.alyabin'' files (alya binary results files) you need a way to get some software to read them and see those nice good looking colours that you were struggling for. For that, there is also a tool; it's called ``alya2pos'' and it's located in ``Alya/Utils/user/alya2pos''. The only thing is that you have to compile it. For that some generous soul built a script that is located in ``Alya/Executables/unix'' and is called ``alya2pos-compile.sh'', but before executing it you'll have to give it execution permissions:
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=alya2pos-compile,caption=Compiling the postprocessing software]
+chmod 777 alya2pos-compile.sh
+./alya2pos-compile.sh
+\end{lstlisting}
+
+So now, as always, you'll have to execute the postprocessing software inside the  problem case directory, using the problem name as attribute for the software:
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=alya2pos,caption=Postprocessing the results]
+/path/to/Alya/Utils/user/alya2pos/alya2pos.x <problem_name>
+\end{lstlisting}
+
+This software reads the \textless problem\_name \textgreater file where it's indicated the output format.
+
+\subsection{Visualizing the results}
+A frequently used GNU-licensed visualizing tool is Paraview \footnote{paraview.org}. This software can read ensight files which is one of the possible outputs of the alya2pos software. So here, what you've to do is going to File->open and select the ``\textless problem\_name\textgreater.ensi.case'' file.

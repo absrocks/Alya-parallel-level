@@ -12,7 +12,7 @@
      !
      integer, parameter :: &
           lun_ini = 99, lun_rst1 = 131, lun_rst2 = 132, lun_postp= 122, &
-          lun_globa = 123, lun_timre = 124,  mcuts = 10, lun_lad = 141, lun_3d=151 
+          lun_globa = 123, lun_timre = 124,  mcuts = 10, lun_lad = 141
      real, parameter :: &
           pi = 3.14159265358979323846d0,  &
 !          rhocp = 1234.5    ! rho 1.229 cp =1004.5          
@@ -21,7 +21,7 @@
           keyam = 1.0d-4,  & ! 1.0d-4 ambient key
           lmamb  = 1.0       ! ambient mixing length
 
-     real(8)        :: rad_time(1000), rad_heat(1000), wall_tempe(1000) ! time and rad heat
+     real(8)        :: rad_time(1000), rad_heat(1000) ! time and rad heat
      real(8)        :: ug_time(1000),  u_geos(1000,2), johans(216,56) ! time and geost velocity
      real(8)        :: epsam = 7.208d-8 ! 1.4d-9 !7.208d-8   ! ambient eps   
      
@@ -29,7 +29,7 @@
      data  lun_conve  /101, 102, 103, 104, 105/
      data  lun_cutre  /111, 112, 113, 114, 115, 116,117, 118, 119, 120/ !cut results
      
-     integer :: igaus, inode,   itime, iiter, &
+     integer :: igaus, inode, ielem,  itime, ipoin, iiter, &
           kfl_goite, izdom, jnode, jpoin, istep, icuts, &
           kfl_close, & ! close integration rule
           kfl_order, & ! finite element interpolation order
@@ -82,11 +82,11 @@
           dtinv, ugeos(2), vegeo, ustar, rough, densi,ustar2,  &
           dwall, toler(5), fcori, l_max, ctime, length, dz1, &
           hflx0, ztsbl, lmoni, alpha_mo, beta_mo, expon_mo, a(6,4), &
-          tewal,t2m,qw,logft, hflx_wall, hflx_can, hflx_rad, &   ! wall temp, for transient temp problem, it should be a transient function
+          tewal,t2m,qw,logft, &   ! wall temp, for transient temp problem, it should be a transient function
           cutpr(mcuts), &  ! cuts to be ploted
           lenmy, &         ! length mellor yamada
           tetop, &            ! temperature at top
-          cdcan, LAD,  heica, LAI, ustar_can, safet, &
+          cdcan, LAD,  heica, LAI, ustar_Can, safet, &
           ztemin, gradbo, gradto, & 
           teref = 283.15d0    ! reference temperature
 
@@ -120,7 +120,6 @@
      logical ::   &
           kfl_thcou, &        !thermal coupling  
           kfl_trtem, &        !transient temperature
-          kfl_hflx_wall, &   !constant heat flux at ground
           kfl_canop, &        !canopy 
           kfl_logva, &        !logarithmic variables 
           kfl_abl2 , &        !ABL2 wall law
@@ -159,15 +158,14 @@
      real(8)                        :: fc
      real(8)                        :: lat
      real(8)                        :: lon
-     real(8),allocatable            :: ust_wrf(:)  !nt
+     real(8),allocatable            :: ustini(:)  !nt
      real(8),allocatable            :: times(:)   !nt
      real(8),allocatable            :: height(:)  !nz
      real(8),allocatable            :: uini(:)    !nz
      real(8),allocatable            :: vini(:)    !nz
      real(8),allocatable            :: thini(:)   !nz
      real(8),allocatable            :: u(:,:)     !nz,nt
-     real(8),allocatable            :: v(:,:)     !nz,nt
-     real(8),allocatable            :: w(:,:)     !nz,nt
+     real(8),allocatable            :: v(:,:)     !nz,nt    
      real(8),allocatable            :: th(:,:)    !nz,nt 
      real(8),allocatable            :: ugeo(:,:)  !nz,nt
      real(8),allocatable            :: vgeo(:,:)  !nz,nt
@@ -175,30 +173,8 @@
      real(8),allocatable            :: vadv(:,:)  !nz,nt
      real(8),allocatable            :: thadv(:,:) !nz,nt
      real(8),allocatable            :: t2(:)      !nt
-     real(8),allocatable            :: ust(:)     !nt
      real(8),allocatable            :: tsk(:)     !nt
-     real(8),allocatable            :: hflux(:)   !nt is wt
-     real(8),allocatable            :: GLW(:)     !nt !Longwave radiation
-     real(8),allocatable            :: SWDOWN(:)  !nt !Incoming shortwave radiation
-     real(8),allocatable            :: HFX(:)  !nt !Shortwave radiation
-     real(8),allocatable            :: MO_WRF(:)   !nt !Monin Obukhov
-     ! variables to read
-     logical  ::  kfl_read_fc 
-     logical  ::  kfl_read_ug 
-     logical  ::  kfl_read_uadv 
-     logical  ::  kfl_read_thadv 
-     logical  ::  kfl_read_u 
-     logical  ::  kfl_read_w 
-     logical  ::  kfl_read_th 
-     logical  ::  kfl_read_t2 
-     logical  ::  kfl_read_tsk 
-     logical  ::  kfl_read_ust 
-     logical  ::  kfl_read_wt 
-     logical  ::  kfl_read_lat 
-     logical  ::  kfl_read_hf
-     logical  ::  kfl_read_L
-     
-          
+     real(8),allocatable            :: hflux(:)   !nt
      !Diagnosed variables
      Integer(4),allocatable         :: seconds(:) !nt   
 

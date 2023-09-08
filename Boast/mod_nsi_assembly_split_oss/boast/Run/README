@@ -1,0 +1,35 @@
+* MAIN SCRIPT *
+
+run_experiment.sh  
+ -> Usage: sh run_experiment.sh
+ -> Runs one of the scripts in Split/
+ -> Sets scripts options
+
+
+* RUBY FILES *
+
+format_data_comparison.rb
+format_data_comparison2.rb
+ -> Parse the results
+ -> Usage: ruby format_data_comparison.rb ../experiments/../Data.yaml test.cvs
+
+
+* SCRIPTS *
+
+parse.sh
+ -> Parse the test.cvs file to get time average
+ -> Beware of what is in test.cvs
+
+
+* GNUPLOT FILE *
+
+results.gplot
+ -> Plot the results
+ -> Usage: gnuplot results.gplot
+
+
+
+* INFOS * 
+
+To use with the intel compiler:
+CC=icc FC=ifort LD=icc sh run_experiment.sh

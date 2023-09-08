@@ -1,0 +1,95 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Coupling}
+
+
+\subsubsection{Coupled and uncoupled problems} 
+%
+We assume that these equations may be discretized using some numerical technique by the linear systems \cite{whiteley2011error}
+%
+\label{eq19.03}
+\begin{equation}
+A_{11} u_{1} = b_{1}, A_{22} u_{2} = b_{2}
+\end{equation}
+%
+where the first equation corresponds to the first model and 
+the second equation to the second model. 
+
+Now suppose we wish to couple the two mathematical models 
+that have been discretised by (\ref{eq19.03}) 
+%
+\label{eq19.04}
+\begin{equation}
+%
+\begin{pmatrix}
+A_{11}  & A_{12}  \\
+A_{21}  & A_{22}  \\
+\end{pmatrix} =
+%
+\begin{pmatrix}
+b_{1}  \\
+b_{2}  \\
+\end{pmatrix} 
+%
+\end{equation}
+%
+where 
+$A_{11}$ is a $M \times M$ matrix, 
+$A_{12}$ is a $M \times N$ matrix, 
+$A_{21}$ is a $N \times M$ matrix and 
+$A_{22}$ is a $N \times N$ matrix;  
+%
+$b_1$ and $u_1$ are  vectors of lengh $M$, 
+$b_2$ and $u_2$ are  vectors of lengh $N$. 
+%
+$A_{12}$ characterises the effect of $u_2$ on the first model and 
+$A_{21}$ characterises the effect of $u_1$ on the second model ($A_{ij}$, $u_j \rightarrow  A_{ii}$). 
+
+
+\subsubsection*{Schur complement} 
+%
+\label{eq19.05}
+\begin{equation}
+%
+\begin{pmatrix}
+\textbf{A} & \textbf{B} \\
+\textbf{C} & \textbf{D} \\
+\end{pmatrix} 
+\begin{pmatrix}
+\textbf{x} \\
+\textbf{y} \\
+\end{pmatrix} =
+\begin{pmatrix}
+\textbf{f} \\
+\textbf{g} \\
+\end{pmatrix}
+%
+\end{equation}
+%
+$$
+\textbf{x} = \textbf{A}^{-1} (\textbf{f} - \textbf{B} \textbf{y}) 
+$$
+%
+\label{eq19.06}
+\begin{equation}
+%
+\underbrace{ (\textbf{D} - \textbf{C}\textbf{A}^{-1}\textbf{B}) }_{ \textbf{S}_{y} }
+\textbf{y} 
+= 
+\underbrace{ \textbf{g} - \textbf{C}\textbf{A}^{-1}\textbf{f} }_{ \textbf{g}_{y} }
+%
+\end{equation}
+%
+The matrix $\textbf{S}_{y}$ is called the \textit{Schur complement} system for $\textbf{y}$. 
+Once $\textbf{y} (= \textbf{S}_{y}^{-1} \textbf{g}_{y}$) is found, the internal components $\textbf{x}$ can be found by using (\ref{eq19.06}). 
+An approximation, 
+$
+\lambda_{\textbf{y}} \equiv 
+\textbf{C} \textbf{x} + \textbf{D}\textbf{y} - \textbf{g} = 
+\textbf{S}_y \textbf{y} - \textbf{g}_y
+$ 
+of the functional representing the normal derivarive coincides with the residual $\textbf{r}$ corresponding 
+to the nodes on $\Gamma$ of a \textit{Poisson problem} with a Neumann condition on $\Gamma$ \cite{toselli2005domain}. 
+%
+%$\textbf{S}_y \textbf{y} = \textbf{g}_y$, 
+%
+%

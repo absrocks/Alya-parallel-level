@@ -11,7 +11,7 @@
      
      use def_master
      implicit none
-     integer :: kpoin, ipoin
+     integer :: kpoin
      real(8) :: grvel(2)
      real(8) :: tstar,  gpnut, facto, lenmo, htpbl, stre0
      real(8) :: velcu(2,mcuts), keycu(mcuts), epscu(mcuts), temcu(mcuts)
@@ -24,7 +24,6 @@
      gpnut =  cmu*keyva(1,1)*keyva(1,1)/epsil(1,1)
      ! qwall positive in stable atm, when floor is cold (heat flux going out)
      hflx0 =  rhocp*gpnut*(tempe(2,1)- tempe(1,1))/(coord(2)-coord(1))/sigte
-     if (kfl_canop.and.istep.gt.0) hflx0 = rhocp*hflx_can ! heat flux above the canopy level
      tstar =  hflx0/(rhocp*ustar_can)
      if (abs(tstar).lt.1.0e-8) tstar = 1.0e-8
      lenmo = ustar_can*ustar_can*teref/(kar*gravi*tstar)
@@ -97,16 +96,13 @@
         do ipoin = 1, npoin
            !
            vel = 0.0d0
-           call Postpr_ipoin(vel,mut,mixle,Richf,prodm,prodt,htflx,stres, ipoin)
+           call Postpr_ipoin(vel,mut,mixle,Richf,prodm,prodt,htflx,stres)
            !
            write (lun_timre, '(21(e17.10, x))') coord(ipoin),veloc(ipoin,1,1),veloc(ipoin,2,1), &
                 vel, keyva(ipoin,1), epsil(ipoin,1), mut, mixle, tempe(ipoin,1), &
                 Richf, prodm, prodt,htflx, stres, cmu_p, vel/ustar_can, htflx/ustar_can
-           write (lun_3d, '(21(e17.10, x))') ctime/3600.0, coord(ipoin),veloc(ipoin,1,1),veloc(ipoin,2,1), &
-                keyva(ipoin,1),mixle, tempe(ipoin,1)
            !
         end do
-        write (lun_3d, *) ' '
         close (lun_timre)
      end if
 
@@ -114,16 +110,15 @@
    end subroutine Postpr
 
    
-   subroutine Postpr_ipoin(vel,gpnut,mixle,Richf,prodm,prodt,htflx,stres, ipoin)
+   subroutine Postpr_ipoin(vel,gpnut,mixle,Richf,prodm,prodt,htflx,stres)
      !This subroutine calculates the output variables at each node
      
      use def_master
      implicit none
      real(8),intent(out) :: vel, gpnut,mixle,Richf,prodm,prodt,htflx,stres
-     integer(4), intent(in)  :: ipoin
      real(8)             :: grvel(2), grtem, deltz,cmu_p
-     real(8)             :: WW, uaste, A0, As
-    
+     real(8)             :: W, uaste, A0, As
+
      cmu_p = cmu
      ! realizable model
      if (kfl_model ==2)   A0=(1.0d0-3.0d0*sqrt(0.5d0*cmu0))/cmu0
@@ -140,7 +135,7 @@
      end if
      if (kfl_model==2) then ! realizable
         uaste = sqrt(grvel(1)*grvel(1)+grvel(2)*grvel(2))
-        WW=0.0d0
+        W=0.0d0
         As=1.5d0*sqrt(2.0d0)
         cmu_p = 1.0d0/(A0+As*uaste*keyva(ipoin,1)/epsil(ipoin,1))
      end if

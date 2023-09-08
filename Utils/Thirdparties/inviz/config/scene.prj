@@ -1,0 +1,560 @@
+#! index_app_project 0
+# -*- mode: Conf; coding: utf-8; -*-
+#
+# Options are defined one per line by <option-name> = <value>
+# All other lines are either comments or are used in generating documentation.
+# A single pound sign (#) followed by a space is a comment and is ignored.
+# Two pound signs (##) specify documentation text for the options that follow.
+# Two keywords are used in formatting the documentation:
+# A line beginning with #section defines a new group of options.
+# Single quotes (') define fixed font; double ('') defines italic.
+# A * creates an item in a bullet list.
+# A & creates an item in a numbered list.
+# A line containing only ## generates a line break.
+# Blank lines are ignored.
+
+#------------------------------------------------------------
+#section General scene settings
+
+## Window resolution setting
+index::canvas_resolution = 1024 1024
+index::image_file_canvas_resolution = 2048 2048
+
+## Global region of interest (XYZ)
+index::region_of_interest = 0 0 0 2039 2039 2039
+
+## Rendering seismic volume data.
+index::is_render_seismic_volume = yes
+
+## Adds a note related to the used dataset(s). The note
+## will be displayed at the bottom of the canvas of the demo viewer.
+## The note may be left empty so that no note will be displayed.
+## The note can be formatted using html.
+#app::dataset_note = Dataset information
+
+## Directory that contains dataset description files for use with the
+## scene editor.
+app::dataset_description_directory = dataset_descriptions
+
+## Picking is enabled by default
+#app::disable_pick_operations = yes
+
+## Show pick point(small sphere) when picking operation is performed
+#app::show_pick_point = no
+
+#------------------------------------------------------------
+#section Multi-view mode
+
+## Define number of viewports. With the default value of 0 a single
+## viewport covering the entire canvas is used.
+app::viewport::count = 0
+#app::viewport::count = 4
+
+## Camera changes can be applied to all viewports or just to the active viewport's camera
+app::viewport::share_camera = yes
+## Enable to generate additional debug output
+app::viewport::advisory = no
+
+## Define some example viewport.
+## The bounding boxes must be consistent with the canvas resolution.
+app::viewport::0::anchor_position = 0 0
+app::viewport::0::size = 512 512
+app::viewport::1::anchor_position = 512 0
+app::viewport::1::size = 512 512
+app::viewport::2::anchor_position = 0 512
+app::viewport::2::size = 512 512
+app::viewport::3::anchor_position = 512 512
+app::viewport::3::size = 512 512
+
+## Create additional local scopes.
+## By default all viewports will use the the global scope. When
+## creating local scopes, they will be used by the viewports starting
+## at viewport 1.
+#app::local_scopes = 3
+
+#------------------------------------------------------------
+#section Viewing parameters
+
+## Predefined n-views
+## Enable predefined n view functionality.
+app::examiner::predefined_view::enable = yes
+
+## Number of predefined views. The index of predefined view is 0 to
+## (view_count - 1).
+app::examiner::predefined_view::view_count = 7
+
+## GUI start up index. When the viewer startup, the item of this
+## predefined view index will be chosen.
+app::examiner::predefined_view::view_index = 2
+
+## When 'yes', the "Predefined view" update button will be pushed at
+## the startup time and camera parameters will be computed on the fly.
+## The previous parameter settings are ignored.
+app::examiner::predefined_view::startup_update = yes
+
+## view 0
+## name: name of the view
+## view_all: yes means view all function decides the camera "from"
+##           position, otherwise the specified value will be used.
+## from, dir, up, aspect, aperture, focal, clip_min, clip_max: see ICamera documentation
+## view_all_bbox_type: bounding box type for view all. {volume, scene_roi}
+## For aspect, aperture, focal, clip_min, and clip_max, an negative
+## value is accepted, this means do not set these values to the
+## camera, use the current value.
+app::examiner::predefined_view::0::name = Front View
+app::examiner::predefined_view::0::view_all = yes
+app::examiner::predefined_view::0::from = 0 0 0
+app::examiner::predefined_view::0::dir = 0 1 0
+app::examiner::predefined_view::0::up = 0 0 -1
+app::examiner::predefined_view::0::aspect = -1
+app::examiner::predefined_view::0::aperture = -1
+app::examiner::predefined_view::0::focal = -1
+app::examiner::predefined_view::0::clip_min = -1
+app::examiner::predefined_view::0::clip_max = -1
+app::examiner::predefined_view::0::orthographic = no
+app::examiner::predefined_view::0::view_all_bbox_type = scene_roi
+
+# view 1
+app::examiner::predefined_view::1::name = Side View
+app::examiner::predefined_view::1::view_all = yes
+app::examiner::predefined_view::1::from = 0 0 0
+app::examiner::predefined_view::1::dir = 1 0 0
+app::examiner::predefined_view::1::up = 0 0 -1
+app::examiner::predefined_view::1::aspect = -1
+app::examiner::predefined_view::1::aperture = -1
+app::examiner::predefined_view::1::focal = -1
+app::examiner::predefined_view::1::clip_min = -1
+app::examiner::predefined_view::1::clip_max = -1
+app::examiner::predefined_view::1::orthographic = no
+app::examiner::predefined_view::1::view_all_bbox_type = scene_roi
+
+# view 2
+app::examiner::predefined_view::2::name = Top View
+app::examiner::predefined_view::2::view_all = yes
+app::examiner::predefined_view::2::from = 0 0 0
+app::examiner::predefined_view::2::dir = 0 0 -1
+app::examiner::predefined_view::2::up = 0 1 0
+app::examiner::predefined_view::2::aspect = -1
+app::examiner::predefined_view::2::aperture = -1
+app::examiner::predefined_view::2::focal = -1
+app::examiner::predefined_view::2::clip_min = -1
+app::examiner::predefined_view::2::clip_max = -1
+app::examiner::predefined_view::2::orthographic = no
+app::examiner::predefined_view::2::view_all_bbox_type = scene_roi
+
+# view 3
+app::examiner::predefined_view::3::name = Tilt View
+app::examiner::predefined_view::3::view_all = yes
+app::examiner::predefined_view::3::from = 0 0 0
+app::examiner::predefined_view::3::dir = 0.312 -0.354 0.744
+app::examiner::predefined_view::3::up = 0 1 0
+app::examiner::predefined_view::3::aspect = -1
+app::examiner::predefined_view::3::aperture = -1
+app::examiner::predefined_view::3::focal = -1
+app::examiner::predefined_view::3::clip_min = -1
+app::examiner::predefined_view::3::clip_max = -1
+app::examiner::predefined_view::3::orthographic = no
+app::examiner::predefined_view::3::view_all_bbox_type = scene_roi
+
+# view 4: Show the Mandelbrot set texture in the default scene
+app::examiner::predefined_view::4::name = Mandelbrot
+app::examiner::predefined_view::4::view_all = no
+app::examiner::predefined_view::4::from = -0.941029667854309 0.378217130899429 -0.144639104604721
+app::examiner::predefined_view::4::dir = 0.97813868522644 0.0835187584161758 -0.190445363521576
+app::examiner::predefined_view::4::up = 0.190277680754662 0.0215865857899189 0.98149299621582
+app::examiner::predefined_view::4::aspect = -1
+app::examiner::predefined_view::4::aperture = -1
+app::examiner::predefined_view::4::focal = -1
+app::examiner::predefined_view::4::clip_min = -1
+app::examiner::predefined_view::4::clip_max = -1
+app::examiner::predefined_view::4::view_all_bbox_type = scene_roi
+
+# view 5: Show the cone in the default scene
+app::examiner::predefined_view::5::name = Cone
+app::examiner::predefined_view::5::view_all = no
+app::examiner::predefined_view::5::from = 0.339388966560364 -0.716737806797028 -0.155256748199463
+app::examiner::predefined_view::5::dir = 0.226982787251472 0.925143897533417 -0.304282009601593
+app::examiner::predefined_view::5::up = -0.97022157907486 0.242055416107178 0.00891260523349047
+app::examiner::predefined_view::5::aspect = -1
+app::examiner::predefined_view::5::aperture = -1
+app::examiner::predefined_view::5::focal = -1
+app::examiner::predefined_view::5::clip_min = -1
+app::examiner::predefined_view::5::clip_max = -1
+app::examiner::predefined_view::5::orthographic = no
+app::examiner::predefined_view::5::view_all_bbox_type = scene_roi
+
+# view 6: Example for orthographic projection
+app::examiner::predefined_view::6::name = Orthographic
+app::examiner::predefined_view::6::view_all = yes
+app::examiner::predefined_view::6::from = 0 0 0
+app::examiner::predefined_view::6::dir = 0.829899907112122 0.0792848467826843 -0.55224996805191
+app::examiner::predefined_view::6::up = 0.621537327766418 0.0157590918242931 0.783226013183594
+app::examiner::predefined_view::6::aspect = -1
+app::examiner::predefined_view::6::aperture = 3.14991641230881
+# For an orthographic camera, "focal" has no effect, but existing doesn't harm.
+app::examiner::predefined_view::6::focal = -1
+app::examiner::predefined_view::6::clip_min = -1
+app::examiner::predefined_view::6::clip_max = -1
+app::examiner::predefined_view::6::orthographic = yes
+app::examiner::predefined_view::6::view_all_bbox_type = scene_roi
+
+
+## Examiner navigation setup
+##
+## The initial_rotation_center::type defines how to set the initial
+## rotation point.
+##
+## - When initial_rotation_center::type = roi_center, the initial
+## rotation center point will be calculated from the region of
+## interest.
+## - When initial_rotation_center::type = world_coordinates,
+## initial_rotation_center::world_coordinates will be used.
+##
+## When pan_reference_point_use_pick_point is enabled, first use the
+## reference point at the last pick point. If not selected, 
+## pan_reference_point_roi_bisect_and_solid will be tried.
+## When picking a point and it is valid, then the pan reference point is set.
+## The key CTRL+SHIFT+R invalidates the pan reference point.
+##
+## When pan_reference_point_roi_bisect_and_solid is enabled, the
+## camera pan reference point is adjusted to the bisection of roi_center
+## and its reflection point, but limited to a solid epsilon (The
+## camera clip_min was chosen for the epsilon).  Note: If
+## pan_reference_point_use_pick_point is enabled, and there is a valid
+## pick point, then this heuristic will be disregarded.
+##
+## reference_point_zoom_factor is a zoom factor used when pressing the key
+## CTRL+SHIFT+Z. This is also used for the zoom out factor which is
+## 1/reference_point_zoom_factor with the key CTRL+ALT+Z.
+##
+app::examiner::initial_rotation_center::type = roi_center
+#app::examiner::initial_rotation_center::type = world_coordinates
+app::examiner::initial_rotation_center::world_coordinates = 1.02 1.02 -1.02
+app::examiner::pan_reference_point_use_pick_point = yes
+app::examiner::pan_reference_point_roi_bisect_and_solid = yes
+app::examiner::reference_point_zoom_factor = 1.5;
+
+## Camera settings
+index::camera::from = 0.0 0.0 -5.0
+index::camera::dir = 0.0 0.0 1.0
+index::camera::up = 0.0 1.0 0.0
+index::camera::aspect = 1.0
+index::camera::aperture = 0.033
+index::camera::focal = 0.03
+index::camera::clip_min = 0.001
+index::camera::clip_max = 10000.0
+
+## Scene translation vector
+index::translation = 0 0 0
+
+## Scene scaling vector
+index::scaling = 0.001 0.001 -0.001
+
+#------------------------------------------------------------
+#section Scene graph
+## Children of scene graph
+app::scene::root::children = headlight group_volumes group_heightfields group_planes group_lines group_points group_shapes
+
+app::scene::headlight::type = directional_headlight
+app::scene::headlight::direction = 1 -1 -1
+app::scene::headlight::intensity = 1 1 1
+
+## Point sets
+app::scene::group_points::type = transformed_scene_group
+app::scene::group_points::children = mat_red point_set_0 point_set_1
+
+app::scene::mat_red::type = phong_gl
+app::scene::mat_red::ambient = 0.3 0.0 0.0
+app::scene::mat_red::diffuse = 0.4 0.0 0.0
+app::scene::mat_red::specular = 0.8 0.8 0.8
+app::scene::mat_red::shininess = 100
+app::scene::mat_red::opacity = 1.0
+
+app::scene::point_set_0::type = point_set
+app::scene::point_set_0::radius = 4
+app::scene::point_set_0::style = shaded_circle
+app::scene::point_set_0::nb_vertices = 10
+app::scene::point_set_0::v0 = 30 50 10
+app::scene::point_set_0::v1 = 34 51 40
+app::scene::point_set_0::v2 = 39 58 70
+app::scene::point_set_0::v3 = 50 62 100
+app::scene::point_set_0::v4 = 53 70 140
+app::scene::point_set_0::v5 = 55 50 190
+app::scene::point_set_0::v6 = 70 51 240
+app::scene::point_set_0::v7 = 90 58 370
+app::scene::point_set_0::v8 = 91 62 500
+app::scene::point_set_0::v9 = 93 70 640
+
+app::scene::point_set_1::type = point_set
+app::scene::point_set_1::radius = 10
+app::scene::point_set_1::style = flat_triangle
+app::scene::point_set_1::nb_vertices = 10
+app::scene::point_set_1::v0 = 40 60 15
+app::scene::point_set_1::v1 = 44 61 45
+app::scene::point_set_1::v2 = 59 68 75
+app::scene::point_set_1::v3 = 60 70 109
+app::scene::point_set_1::v4 = 60 75 141
+app::scene::point_set_1::v5 = 60 80 196
+app::scene::point_set_1::v6 = 80 81 242
+app::scene::point_set_1::v7 = 100 88 393
+app::scene::point_set_1::v8 = 101 82 530
+app::scene::point_set_1::v9 = 108 90 655
+app::scene::point_set_1::v10 = 113 109 685
+app::scene::point_set_1::v11 = 129 115 688
+app::scene::point_set_1::c0 = 0.2 0.7 0.2 0.5
+app::scene::point_set_1::c1 = 0.2 0.7 0.2 0.55
+app::scene::point_set_1::c2 = 0.2 0.2 0.9 0.6
+app::scene::point_set_1::c3 = 0.2 0.7 0.2 0.7
+app::scene::point_set_1::c4 = 0.2 0.2 0.9 0.8
+app::scene::point_set_1::c5 = 0.2 0.7 0.2 0.9
+app::scene::point_set_1::c6 = 0.2 0.2 0.9 1.0
+app::scene::point_set_1::c7 = 0.2 0.7 0.2 1.0
+app::scene::point_set_1::c8 = 0.2 0.7 0.2 1.0
+app::scene::point_set_1::c9 = 0.2 0.7 0.2 1.0
+app::scene::point_set_1::c10 = 0.2 0.7 0.2 1.0
+app::scene::point_set_1::c11 = 0.2 0.7 0.2 1.0
+
+## Line sets
+app::scene::group_lines::type = transformed_scene_group
+app::scene::group_lines::children = lines
+
+app::scene::lines::type = line_set
+app::scene::lines::width = 2
+app::scene::lines::style = solid
+app::scene::lines::nb_vertices = 40
+app::scene::lines::v0 = 30 50 10
+app::scene::lines::v1 = 34 51 40
+app::scene::lines::v2 = 34 51 40
+app::scene::lines::v3 = 39 58 70
+app::scene::lines::v4 = 39 58 70
+app::scene::lines::v5 = 50 62 100
+app::scene::lines::v6 = 50 62 100
+app::scene::lines::v7 = 53 70 140
+app::scene::lines::v8 = 53 70 140
+app::scene::lines::v9 = 55 50 190
+app::scene::lines::v10 = 55 50 190
+app::scene::lines::v11 = 70 51 240
+app::scene::lines::v12 = 70 51 240
+app::scene::lines::v13 = 90 58 370
+app::scene::lines::v14 = 90 58 370
+app::scene::lines::v15 = 91 62 500
+app::scene::lines::v16 = 91 62 500
+app::scene::lines::v17 = 93 70 640
+app::scene::lines::v18 = 40 60 15
+app::scene::lines::v19 = 44 61 45
+app::scene::lines::v20 = 44 61 45
+app::scene::lines::v21 = 59 68 75
+app::scene::lines::v22 = 59 68 75
+app::scene::lines::v23 = 60 70 109
+app::scene::lines::v24 = 60 70 109
+app::scene::lines::v25 = 60 75 141
+app::scene::lines::v26 = 60 75 141
+app::scene::lines::v27 = 60 80 196
+app::scene::lines::v28 = 60 80 196
+app::scene::lines::v29 = 80 81 242
+app::scene::lines::v30 = 80 81 242
+app::scene::lines::v31 = 100 88 393
+app::scene::lines::v32 = 100 88 393
+app::scene::lines::v33 = 101 82 530
+app::scene::lines::v34 = 101 82 530
+app::scene::lines::v35 = 108 90 655
+app::scene::lines::v36 = 108 90 655
+app::scene::lines::v37 = 113 109 685
+app::scene::lines::v38 = 113 109 685
+app::scene::lines::v39 = 129 115 688
+
+## Plane
+app::scene::group_planes::type = transformed_scene_group
+app::scene::group_planes::children = mat_plane tex_mandelbrot mandelbrot tex_checkerboard checkerboard
+
+app::scene::mat_plane::type = phong_gl
+app::scene::mat_plane::ambient = 1.0 1.0 1.0
+app::scene::mat_plane::diffuse = 0.0 0.0 0.0
+app::scene::mat_plane::specular = 0.0 0.0 0.0
+
+app::scene::mandelbrot::type = plane
+app::scene::mandelbrot::position = 10 100 50
+app::scene::mandelbrot::normal = 1 0 0
+app::scene::mandelbrot::up = 0 0 1
+app::scene::mandelbrot::extent = 800 500
+
+app::scene::tex_mandelbrot::type = compute_technique
+app::scene::tex_mandelbrot::generator = mandelbrot
+app::scene::tex_mandelbrot::resolution = 800 500
+
+app::scene::checkerboard::type = plane
+app::scene::checkerboard::position = 50 50 10
+app::scene::checkerboard::normal = 0 0 1
+app::scene::checkerboard::up = 0 1 0
+app::scene::checkerboard::extent = 320 320
+
+app::scene::tex_checkerboard::type = compute_technique
+app::scene::tex_checkerboard::generator = checkerboard
+app::scene::tex_checkerboard::resolution = 320 320
+
+## Other shapes
+app::scene::group_shapes::type = transformed_scene_group
+app::scene::group_shapes::translate = 100 300 450
+app::scene::group_shapes::children = mat_blue ellipsoid mat_red cone
+
+app::scene::ellipsoid::type = ellipsoid
+app::scene::ellipsoid::center = 100 100 0
+app::scene::ellipsoid::semi_axis_a = 55 0 0
+app::scene::ellipsoid::semi_axis_b = 0 35 0
+app::scene::ellipsoid::semi_axis_c = 35
+
+app::scene::cone::type = cone
+app::scene::cone::center = 250 75 0
+app::scene::cone::tip = 500 75 0
+app::scene::cone::radius = 100
+app::scene::cone::capped = no
+
+app::scene::mat_blue::type = phong_gl
+app::scene::mat_blue::ambient = 0.0 0.0 0.3
+app::scene::mat_blue::diffuse = 0.0 0.0 0.4
+app::scene::mat_blue::specular = 0.4 0.4 0.4
+app::scene::mat_blue::shininess = 100
+
+#------------------------------------------------------------
+#section Volume Dataset definition
+
+## Scene group that contains all volumes
+app::scene::group_volumes::type = static_scene_group
+app::scene::group_volumes::children = Test_dataset
+# app::scene::group_volumes::children = Test_synthetic
+
+## Test volume data
+app::scene::Test_dataset::type = volume
+app::scene::Test_dataset::name = Somewhere on the planet
+app::scene::Test_dataset::input_file = C:\nienhaus/data/anonymous/1/seismic_volume_raw_326_321_751.raw
+app::scene::Test_dataset::size = 326 321 751
+#app::scene::Test_dataset::clip = 0 0 0 2040 2040 2040
+## Values for 'importer':
+## * 'raw'
+## * 'repeat'
+## * 'synthetic'
+app::scene::Test_dataset::importer = raw
+#app::scene::Test_dataset::importer = repeat
+app::scene::Test_dataset::repeat = 10 10 5
+
+## Synthetic volume generation by a function.
+##
+app::scene::Test_synthetic::type = volume
+app::scene::Test_synthetic::name = test_synthetic_data
+app::scene::Test_synthetic::size = 2040 2040 2040
+app::scene::Test_synthetic::importer = synthetic
+# app::scene::Test_synthetic::synthetic_type = default
+# app::scene::Test_synthetic::synthetic_type = ij
+# app::scene::Test_synthetic::synthetic_type = jk
+# app::scene::Test_synthetic::synthetic_type = ki
+# app::scene::Test_synthetic::synthetic_type = i
+# app::scene::Test_synthetic::synthetic_type = j
+# app::scene::Test_synthetic::synthetic_type = k
+#app::scene::Test_synthetic::synthetic_type = sphere_0
+app::scene::Test_synthetic::synthetic_type = perlin_noise
+app::scene::Test_synthetic::parameter = cube_unit=2040,time=0,terms=5,turbulence_weight=1 1 1 1,abs_noise=0,ridged=1
+
+#------------------------------------------------------------
+#section Heightfield definition
+
+## Scene group that contains heightfields and their materials
+app::scene::group_heightfields::type = static_scene_group
+app::scene::group_heightfields::children = headlight mat_Event_2 Event_2 mat_Event_8 Event_8
+
+## Event 2
+app::scene::Event_2::type = heightfield
+app::scene::Event_2::name = Event 2
+app::scene::Event_2::importer = raw
+app::scene::Event_2::input_file = C:\nienhaus/data/anonymous/1/heightmap_02_nvec.bin
+app::scene::Event_2::size = 3260 3210
+#app::scene::Event_2::clip = 0 0 0 2040 2040 2040
+app::scene::Event_2::range = 0.0004 547.397
+#app::scene::Event_2::rotate = 0
+#app::scene::Event_2::translate = 0 0 0
+#app::scene::Event_2::clip = 0 0 0 100 100 100
+
+## Event 8
+app::scene::Event_8::type = heightfield
+app::scene::Event_8::name = Event 8
+app::scene::Event_8::importer = raw
+app::scene::Event_8::input_file = C:\nienhaus/data/anonymous/1/heightmap_08_nvec.bin
+app::scene::Event_8::size = 3260 3210
+app::scene::Event_8::range = 1454.5 1667
+
+## Heightfield materials
+app::scene::mat_Event_2::type = phong_gl
+app::scene::mat_Event_2::ambient = 0.2 0.2 0.35
+app::scene::mat_Event_2::diffuse = 0.2 0.2 0.35
+app::scene::mat_Event_2::specular = 0.4 0.4 0.4
+app::scene::mat_Event_2::shininess = 10
+
+app::scene::mat_Event_8::type = phong_gl
+app::scene::mat_Event_8::ambient = 0.38 0.31 0.04
+app::scene::mat_Event_8::diffuse = 0.38 0.31 0.04
+app::scene::mat_Event_8::specular = 0.4 0.4 0.4
+app::scene::mat_Event_8::shininess = 10
+
+#------------------------------------------------------------
+#section Application colormap setup
+
+## The number of colormap files. Colormap index is zero-origin:
+##
+##  '0' <= ''index'' < 'app::colormap::file_count'
+app::colormap::file_count = 44
+
+## Colormaps
+app::colormap::file_0 = ./colormaps/1.cmap
+app::colormap::file_1 = ./colormaps/1.ppm
+app::colormap::file_2 = ./colormaps/2.cmap
+app::colormap::file_3 = ./colormaps/2.ppm
+app::colormap::file_4 = ./colormaps/3.cmap
+app::colormap::file_5 = ./colormaps/3.ppm
+app::colormap::file_6 = ./colormaps/4.cmap
+app::colormap::file_7 = ./colormaps/4.ppm
+app::colormap::file_8 = ./colormaps/5.cmap
+app::colormap::file_9 = ./colormaps/5.ppm
+app::colormap::file_10 = ./colormaps/6.cmap
+app::colormap::file_11 = ./colormaps/6.ppm
+app::colormap::file_12 = ./colormaps/7.cmap
+app::colormap::file_13 = ./colormaps/7.ppm
+app::colormap::file_14 = ./colormaps/8.cmap
+app::colormap::file_15 = ./colormaps/8.ppm
+app::colormap::file_16 = ./colormaps/9.cmap
+app::colormap::file_17 = ./colormaps/9.ppm
+app::colormap::file_18 = ./colormaps/10.cmap
+app::colormap::file_19 = ./colormaps/10.ppm
+app::colormap::file_20 = ./colormaps/11.cmap
+app::colormap::file_21 = ./colormaps/11.ppm
+app::colormap::file_22 = ./colormaps/12.cmap
+app::colormap::file_23 = ./colormaps/12.ppm
+app::colormap::file_24 = ./colormaps/13.cmap
+app::colormap::file_25 = ./colormaps/13.ppm
+app::colormap::file_26 = ./colormaps/14.cmap
+app::colormap::file_27 = ./colormaps/14.ppm
+app::colormap::file_28 = ./colormaps/15.cmap
+app::colormap::file_29 = ./colormaps/15.ppm
+app::colormap::file_30 = ./colormaps/16.cmap
+app::colormap::file_31 = ./colormaps/16.ppm
+app::colormap::file_32 = ./colormaps/17.cmap
+app::colormap::file_33 = ./colormaps/17.ppm
+app::colormap::file_34 = ./colormaps/18.cmap
+app::colormap::file_35 = ./colormaps/18.ppm
+app::colormap::file_36 = ./colormaps/19.cmap
+app::colormap::file_37 = ./colormaps/19.ppm
+app::colormap::file_38 = ./colormaps/20.cmap
+app::colormap::file_39 = ./colormaps/20.ppm
+app::colormap::file_40 = ./colormaps/21.cmap
+app::colormap::file_41 = ./colormaps/22.cmap
+app::colormap::file_41 = ./colormaps/23.cmap
+app::colormap::file_42 = ./colormaps/perlin_noise.cmap
+app::colormap::file_43 = ./colormaps/rgby.ppm
+
+## Set the colormap used at startup
+#app::colormap::startup_colormap_index = 0
+
+#----------------------------------------------------------------------
+#section Experimental options (might be removed anytime)
+## Show pick point(small sphere) in the scene editor
+
+app::experimental::show_pick_point_in_scene_editor = no
+#app::experimental::show_pick_point_in_scene_editor = yes

@@ -1,0 +1,19 @@
+This directory contains the boast files to generate the Split and ASGS kernels
+
+* Common
+	Contains the mechanisms shared by the two kernels
+* Split
+	Contains the ruby files to generate the nsi_element_assembly_split_oss kernel
+* Tools
+	Just contains a ruby file which records every information about
+        the platform. Generally =get_info= is run before running the
+        kernel. =register_kernel_info= is used to store the kernel
+        as a string
+* ASGS
+	Contains the ruby files to generate the nsi_element_assembly_asgs_oss kernel
+* scripts
+	Contains scripts to convert data from yaml to csv and scripts to launch an experiment
+
+
+* DOCS
+  Contains a documentation

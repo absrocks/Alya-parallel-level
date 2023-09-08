@@ -1,0 +1,93 @@
+/*! \page vtk_output How to post process the VTK output in Alya at Marenostrum III 
+
+\section intro Introduction
+This tutorial explains how to genereate output data with VTK 6.1.0 librairies at Marenostrum III.
+
+\section Compiling the wrapper
+
+Go to Alya/Thirdparties/VTK : 
+compil the wrapper fortran to C with the command
+
+./complil.sh
+
+This command produces the vtkXMLWriterF.o, used after by the livrairies of VTK 
+
+\section Compil Alya
+
+You have to compil Alya with configure-marenostrum-mpi-vtk.txt
+
+@code
+# Forced compilation options
+# Sample file
+# start comment lines with a #
+# implicit none para toni
+
+f90==     mpif90 -O1 -ip -DVTK  -xAVX -traceback -module $O -c 
+f77==     mpif90 -O1 -ip -DVTK  -xAVX -traceback -module $O -c 
+fpp90==   mpif90 -O1 -ip -DVTK  -xAVX -traceback -module $O -c -fpp
+fomp90==  mpif90 -O1 -ip -DVTK  -xAVX -traceback -module $O -c -fpp
+fpp77==   mpif90 -O1 -ip -DVTK  -xAVX -traceback -module $O -c -fpp
+cpp==     mpicc -no-multibyte-chars -c -DVTK 
+link==    mpif90 -O1 -ip -DVTK -xAVX -traceback
+
+libs==    -L../../Thirdparties/metis-4.0 -lmetis ../../Thirdparties/VTK/vtkXMLWriterF.o -L/apps/VTK/6.1.0_patched/lib -lvtkIOXML-6.1 -lvtkIOGeometry-6.1
+ -lvtkIOXMLParser-6.1 -lvtksys-6.1 -lvtkIOCore-6.1 -lvtkCommonExecutionModel-6.1 -lvtkCommonDataModel-6.1 -lvtkCommonMisc-6.1 -lvtkCommonSystem-6.1 -lvt
+kCommonTransforms-6.1 -lvtkCommonMath-6.1 -lvtkCommonCore-6.1 -lvtkzlib-6.1 -lvtkjsoncpp-6.1 -lvtkexpat-6.1 -L/gpfs/apps/MN3/INTEL/tbb/lib/intel64/ -ltb
+b
+
+fa2p== mpif90 -module ../../Utils/user/alya2pos -c  -fpp 
+@endcode
+
+\section Command in Alya code
+ you have to introduce in the file.dat one line 
+
+@code
+$-------------------------------------------------------------------
+RUN_DATA
+   ......
+   OUTPUT_FORMAT:          VTK
+o
+   OUTPUT_FORMAT:          VTK ASCII
+END_RUN_DATA
+$-------------------------------------------------------------------
+@endcode
+
+\section Run Alya with VTK at Marenostrum III.
+
+-in parallel 
+use at the final of your script to lauch the job (.bat or .sh)
+module load VTK/6.1.0_patched (the intel module and intel mpi have to be loaded)
+
+fo example
+ 
+@code 
+#!/bin/bash
+ 
+#BSUB -n 4
+#BSUB -o alya.out
+#BSUB -e alya.err
+#BSUB -R"span[ptile=16]"
+
+#### This will launch 1456 tasks with 16 tasks per node
+#BSUB -J cube
+#BSUB -W 00:10
+
+module purge
+module load intel
+module load impi
+module load VTK/6.1.0_patched
+
+mpirun /home/bsc21/bsc21270/svn/Alya/Executables/unix/Alya.x cube
+@endcode
+
+-in sequencial
+only you have to load the VTK module:
+module load VTK/6.1.0_patched
+
+WARNING: Any test of scalability was performed. It is the beta version.
+____
+
+\n
+
+
+*/

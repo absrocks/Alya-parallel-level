@@ -1,0 +1,4827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Nastin</class>
+ <widget class="QToolBox" name="Nastin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>775</width>
+    <height>680</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>ToolBox</string>
+  </property>
+  <property name="currentIndex">
+   <number>4</number>
+  </property>
+  <widget class="QWidget" name="physProblemPage">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>775</width>
+     <height>525</height>
+    </rect>
+   </property>
+   <attribute name="label">
+    <string>Physical Problem</string>
+   </attribute>
+   <widget class="QTabWidget" name="physProblemtab">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>771</width>
+      <height>611</height>
+     </rect>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::West</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="definitionTab">
+     <attribute name="title">
+      <string>Definition</string>
+     </attribute>
+     <widget class="QLabel" name="label_644">
+      <property name="geometry">
+       <rect>
+        <x>433</x>
+        <y>120</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>GY:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinGravGYEdit">
+      <property name="geometry">
+       <rect>
+        <x>463</x>
+        <y>120</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_639">
+      <property name="geometry">
+       <rect>
+        <x>303</x>
+        <y>90</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Temperature:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_641">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>120</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Gravity:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_657">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>260</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Velocity function:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_672">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>29</y>
+        <width>121</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>*Convective term:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_665">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>370</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Turbulence model:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_658">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>300</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Center rotation:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinTempCoupBetaEdit">
+      <property name="geometry">
+       <rect>
+        <x>333</x>
+        <y>330</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_650">
+      <property name="geometry">
+       <rect>
+        <x>553</x>
+        <y>150</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>OZ:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeVelNormEdit">
+      <property name="geometry">
+       <rect>
+        <x>223</x>
+        <y>180</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_670">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>90</y>
+        <width>54</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Regime:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeVelVXEdit">
+      <property name="geometry">
+       <rect>
+        <x>343</x>
+        <y>180</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_656">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>220</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Rotation function:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_661">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>330</y>
+        <width>121</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Temper coupling:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinCentRotEdit2">
+      <property name="geometry">
+       <rect>
+        <x>213</x>
+        <y>300</y>
+        <width>30</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_662">
+      <property name="geometry">
+       <rect>
+        <x>423</x>
+        <y>330</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TR:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeRotOZEdit">
+      <property name="geometry">
+       <rect>
+        <x>583</x>
+        <y>150</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_651">
+      <property name="geometry">
+       <rect>
+        <x>433</x>
+        <y>180</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>VY:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinGravGXEdit">
+      <property name="geometry">
+       <rect>
+        <x>343</x>
+        <y>120</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinTempEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>403</x>
+        <y>90</y>
+        <width>113</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string notr="true" comment="int" extracomment="int">real</string>
+      </property>
+      <property name="statusTip">
+       <string extracomment="int"/>
+      </property>
+      <property name="whatsThis">
+       <string extracomment="int"/>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhDigitsOnly</set>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_643">
+      <property name="geometry">
+       <rect>
+        <x>313</x>
+        <y>120</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>GX:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinCentRotEdit3">
+      <property name="geometry">
+       <rect>
+        <x>263</x>
+        <y>300</y>
+        <width>30</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeRotNormEdit">
+      <property name="geometry">
+       <rect>
+        <x>223</x>
+        <y>150</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_652">
+      <property name="geometry">
+       <rect>
+        <x>313</x>
+        <y>180</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>VX:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinTempCoupCombo">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>330</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="OFF">Off</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="BOUSSINESQ">BOUSSINESQ</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="nastinVelFuncCombo">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>260</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="CONSTANT">CONSTANT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="PARABOLIC">PARABOLIC</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="SINUS">SINUS</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="EXTERIOR">EXTERIOR</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLineEdit" name="nastinPressEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>90</y>
+        <width>113</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinTempCoupTREdit">
+      <property name="geometry">
+       <rect>
+        <x>453</x>
+        <y>330</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinCentRotEdit1">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>300</y>
+        <width>30</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_654">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>180</y>
+        <width>51</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Norm:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinGravNormEdit">
+      <property name="geometry">
+       <rect>
+        <x>223</x>
+        <y>120</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinGravGZEdit">
+      <property name="geometry">
+       <rect>
+        <x>583</x>
+        <y>120</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinViscoTermcombo">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>57</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string comment="OFF">OFF</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="LAPLACIAN">LAPLACIAN</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="DIVERGENCE">DIVERGENCE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="COMPLETE">COMPLETE</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_653">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>180</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Axes velocity</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_660">
+      <property name="geometry">
+       <rect>
+        <x>243</x>
+        <y>310</y>
+        <width>16</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>,</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_671">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>57</y>
+        <width>101</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>*Viscous term:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_646">
+      <property name="geometry">
+       <rect>
+        <x>433</x>
+        <y>150</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>OY:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinRegCombo">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>90</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="INCOMPRESSIBLE">INCOMPRESSIBLE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="LOW_MACH">LOW_MACH</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLineEdit" name="nastinTurbModelParamEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>503</x>
+        <y>360</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="nastinLeveCoupCheck">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>400</y>
+        <width>75</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>on/off</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_647">
+      <property name="geometry">
+       <rect>
+        <x>313</x>
+        <y>150</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>OX:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeRotOYEdit">
+      <property name="geometry">
+       <rect>
+        <x>463</x>
+        <y>150</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_645">
+      <property name="geometry">
+       <rect>
+        <x>553</x>
+        <y>120</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>GZ:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_667">
+      <property name="geometry">
+       <rect>
+        <x>423</x>
+        <y>360</y>
+        <width>81</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Parameter:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="nastinSurfTensCheck">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>430</y>
+        <width>75</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>on/off</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeRotOXEdit">
+      <property name="geometry">
+       <rect>
+        <x>343</x>
+        <y>150</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_668">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>430</y>
+        <width>81</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Coefficient:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_659">
+      <property name="geometry">
+       <rect>
+        <x>203</x>
+        <y>310</y>
+        <width>16</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>,</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeVelVZEdit">
+      <property name="geometry">
+       <rect>
+        <x>583</x>
+        <y>180</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="nastinTempDeriCheck">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>1</y>
+        <width>75</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>on/off</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_649">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>150</y>
+        <width>51</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Norm:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinaAxeVelVYEdit">
+      <property name="geometry">
+       <rect>
+        <x>463</x>
+        <y>180</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinSurfTensCoefEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>430</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinTurbModelCombo2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>293</x>
+        <y>360</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="SMAGORINSKY">SMAGORINSKY</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="WALE">WALE</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="nastinRotFuncCombo">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>220</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="CONSTANT">CONSTANT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="PARABOLIC">PARABOLIC</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="SINUS">SINUS</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLineEdit" name="nastinTempCoupGEdit">
+      <property name="geometry">
+       <rect>
+        <x>573</x>
+        <y>330</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>real</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_648">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>150</y>
+        <width>101</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Axes rotation:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_663">
+      <property name="geometry">
+       <rect>
+        <x>553</x>
+        <y>330</y>
+        <width>21</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>G:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_640">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>90</y>
+        <width>81</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>or Pressure:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_673">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>1</y>
+        <width>161</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>*Temporal Derivatives:</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinTurbModelCombo1">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>360</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="LES_MODEL">LES_MODEL</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="FROM_TURBUL">FROM_TURBUL</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_642">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>120</y>
+        <width>51</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Norm:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="nastinConveTermCheck">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>29</y>
+        <width>75</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>on/off</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_655">
+      <property name="geometry">
+       <rect>
+        <x>553</x>
+        <y>180</y>
+        <width>31</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>VZ:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_664">
+      <property name="geometry">
+       <rect>
+        <x>293</x>
+        <y>330</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>BETA:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="nastinLeveCoupActiveCheck">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>400</y>
+        <width>141</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Levels coupling:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="nastinSurfTensActiveCheck">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>430</y>
+        <width>141</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Surface tension:</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Properties</string>
+     </attribute>
+     <widget class="QComboBox" name="nastinTherPressCombo">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>10</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="MASS_CONSERVATION">MASS_CONSERVATION</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="TIME_DEPENDANT">TIME_DEPENDANT</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLineEdit" name="nastinAirViscEdit">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>70</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinTherPressEdit">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>10</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinAirDensEdit">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>40</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_676">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>70</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Air viscosity:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_674">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>10</y>
+        <width>171</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Thermodinamic pressure:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_675">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>40</y>
+        <width>81</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Air density:</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="numTreatmentPage">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>775</width>
+     <height>525</height>
+    </rect>
+   </property>
+   <attribute name="label">
+    <string>Numerical Treatment</string>
+   </attribute>
+   <widget class="QTabWidget" name="tabWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>771</width>
+      <height>611</height>
+     </rect>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::West</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>General</string>
+     </attribute>
+     <widget class="QComboBox" name="nastinTAUStratCombo">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>10</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="CODINA">CODINA</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="SHAKIB">SHAKIB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="EXACT">EXACT</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_677">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>10</y>
+        <width>92</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TAU Strategy:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinStabilizationCombo1_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>50</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="FIRST_ORDER">FIRST_ORDER</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="SOTO">SOTO</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="NO_LIMITER">NO_LIMITER</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_678">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>60</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stabilization:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinStabilizationCombo1">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>50</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="ASGS">ASGS</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="FULL_OSS">FULL_OSS</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="SPLIT_OSS">SPLIT_OSS</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="nastinDiriCondCombo">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>210</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="OFF">Off</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="LAPLACIAN">Laplacian</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="DIVERGENCE">Divergence</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="COMPLETE">Complete</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_680">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>210</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dirichlet condition:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinIntForCombo">
+      <property name="geometry">
+       <rect>
+        <x>473</x>
+        <y>210</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="OFF">Off</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="LAPLACIAN">Laplacian</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="DIVERGENCE">Divergence</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="COMPLETE">Complete</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_681">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>210</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Internal forces:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinElemLenghtCombo">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>240</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MINIMUM</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MAXIMUM</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_682">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>240</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Element Length</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_727">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>240</y>
+        <width>121</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Pre penalization:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinPenalEdit">
+      <property name="geometry">
+       <rect>
+        <x>473</x>
+        <y>240</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_729">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>270</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Shock capturing:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_728">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>270</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Value:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinShockCaptValueEdit">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>270</y>
+        <width>113</width>
+        <height>27</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinShockCaptCombo">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>270</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="INCOMPRESSIBLE">Incompressible</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="LOW_MATCH">Low match</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QCheckBox" name="nastinUpdPressCheck">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>310</y>
+        <width>75</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>on/off</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_684">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>340</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Time integration</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinOrderEdit">
+      <property name="geometry">
+       <rect>
+        <x>373</x>
+        <y>340</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_730">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>340</y>
+        <width>51</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Order:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinTimeIntegCombo">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>340</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>TRAPEZOIDAL</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>BDF</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLineEdit" name="nastinEulerEdit">
+      <property name="geometry">
+       <rect>
+        <x>513</x>
+        <y>340</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_731">
+      <property name="geometry">
+       <rect>
+        <x>463</x>
+        <y>340</y>
+        <width>41</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Euler:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_685">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>380</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Safety factor:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinSafFactorEdit">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>380</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_686">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>380</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bemol:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinBemolEdit">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>380</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_687">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>420</y>
+        <width>161</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Steady state tolerance:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinSteStaTolEdit">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>420</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_688">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>450</y>
+        <width>161</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Maximum iterations:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinStartAtEdit">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>450</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinMaxIntEdit">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>450</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_689">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>450</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Start at:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinConvTolerEdit">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>420</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_690">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>420</y>
+        <width>161</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Convergence tolerance:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_691">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>480</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Linearitzation</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nastinPicardEdit">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>480</y>
+        <width>80</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_732">
+      <property name="geometry">
+       <rect>
+        <x>323</x>
+        <y>480</y>
+        <width>121</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Picard:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinLinearitzationCombo">
+      <property name="geometry">
+       <rect>
+        <x>183</x>
+        <y>480</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>PICARD</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>NEWTON</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>681</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Traking subgrid scale</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Time:</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="nastinTrSubScTimeCheck">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>30</y>
+         <width>31</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>30</y>
+         <width>67</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Order:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="nastinTrSubScOrderCombo">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>30</y>
+         <width>120</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>300</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string comment="1">1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string comment="2">2</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>81</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Convection:</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="nastinTrSubScConvCheck">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>70</y>
+         <width>21</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="nastinTrSubScConvCombo">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>70</y>
+         <width>120</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>300</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string comment="PICARD">Picard</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string comment="NEWTON">Newton</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLineEdit" name="nastinTrSubScIteraEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>70</y>
+         <width>80</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_733">
+       <property name="geometry">
+        <rect>
+         <x>270</x>
+         <y>70</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Itera:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="nastinTrSubScTolerEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>70</y>
+         <width>80</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_734">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>70</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Toler:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="nastinTrSubScRelaxEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>70</y>
+         <width>80</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_735">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>70</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Relax:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QCheckBox" name="nastinUpdPressActiveCheck">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>310</y>
+        <width>151</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Update pressure:</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="xxxEquationTab">
+     <attribute name="title">
+      <string>XXX Equation</string>
+     </attribute>
+     <widget class="QGroupBox" name="momentuSolverBox">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>0</y>
+        <width>471</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Momentum algebraic solver</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>61</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>*Solver:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="momSolverCombo">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>40</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Gmres</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Deflated_cg</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>50</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Krylov:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="momSolverKrylovEdit">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>40</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_20">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>50</y>
+         <width>61</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Coarse:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="momSolverCoarseCombo">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>40</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Default</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sparse</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_21">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Convergence:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_22">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Itera:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="momSolverIteraEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="momSolverTolerEdit">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_23">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Toler:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_24">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>120</y>
+         <width>81</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Adaptative:</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="momSolverAdapCheck">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>120</y>
+         <width>97</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>on/off</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="momSolverRatioEdit">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_25">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ratio:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>140</y>
+         <width>67</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Output:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="momSolverOutputCombo">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>140</y>
+         <width>121</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Convergence</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_27">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>140</y>
+         <width>111</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Preconditioner:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="momSolverPrecondCombo">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>140</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Diagonal</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="continuitySolverBox">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>180</y>
+        <width>471</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Continuity algebraic solver</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QLabel" name="label_28">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>61</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>*Solver:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="conSolverCombo">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>40</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Gmres</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Deflated_cg</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_29">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>50</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Krylov:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="conSolverKrylovEdit">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>40</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_30">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>50</y>
+         <width>61</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Coarse:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="conSolverCoarseCombo">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>40</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Sparse</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_31">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Convergence:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_32">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Itera:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="conSolverIteraEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="conSolverTolerEdit">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_33">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Toler:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_34">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>120</y>
+         <width>81</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Adaptative:</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="conSolverAdapCheck">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>120</y>
+         <width>97</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>on/off</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="conSolverRatioEdit">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_35">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ratio:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_36">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>140</y>
+         <width>67</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Output:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="conSolverOutputCombo">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>140</y>
+         <width>121</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Convergence</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_37">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>140</y>
+         <width>111</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Preconditioner:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="conSolverPrecondCombo">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>140</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Diagonal</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="hydrostaticSolverBox">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>370</y>
+        <width>471</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Hydrostatic state algebraic solver</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QLabel" name="label_38">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>61</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>*Solver:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="hydSolverCombo">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>40</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Gmres</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Deflated_cg</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_39">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>50</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Krylov:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="hydSolverKrylovEdit">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>40</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_40">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>50</y>
+         <width>61</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Coarse:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="hydSolverCoarseCombo">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>40</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Sparse</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_41">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Convergence:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_42">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Itera:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="hydSolverIteraEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="hydSolverTolerEdit">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_43">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Toler:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_44">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>120</y>
+         <width>81</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Adaptative:</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="hydSolverAdapCheck">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>120</y>
+         <width>97</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>on/off</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="hydSolverRatioEdit">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>80</y>
+         <width>71</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_45">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>80</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ratio:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_46">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>140</y>
+         <width>67</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Output:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="hydSolverOutputCombo">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>140</y>
+         <width>121</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Convergence</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_47">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>140</y>
+         <width>111</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Preconditioner:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="hydSolverPrecondCombo">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>140</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Diagonal</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Schur complement</string>
+     </attribute>
+     <widget class="QComboBox" name="nastinSolverCombo1">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>60</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>ORTHOMIN</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>RICHARDSON</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_692">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>60</y>
+        <width>92</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Solver:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinSolverCombo2">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>60</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>MOMENTUM_PRESERVING</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CONTINUITY_PRESERVING</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_693">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>110</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Preconditioner:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinPrecondCombo">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>110</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>DT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>TAU</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="nastinTauStratCombo">
+      <property name="geometry">
+       <rect>
+        <x>173</x>
+        <y>150</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>CODINA</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SHAKIB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>EXACT</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_694">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Tau strategy:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_695">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Element length:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinElemLengCombo">
+      <property name="geometry">
+       <rect>
+        <x>173</x>
+        <y>190</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>MINIMUM</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MAXIMUM</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_696">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>230</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Correction:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="nastinCorrectionCombo">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>230</y>
+        <width>120</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>OFF</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CLOSE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>OPEN</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QCheckBox" name="schurActiveCheck">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>97</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Active</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="page">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>775</width>
+     <height>525</height>
+    </rect>
+   </property>
+   <attribute name="label">
+    <string>Output and postprocess</string>
+   </attribute>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>0</y>
+      <width>701</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Post process</string>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Variables</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Assigned</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="postProcessTable">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>40</y>
+       <width>351</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Variable</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Steps</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Filter</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QListWidget" name="postProcessVarslist">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>131</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Velocity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Vorticity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Kinetic energy</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mean pressure</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mass</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Force</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Torque</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mean Yplus</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mean  Velocity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Weat force</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Weat surface</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="addPostProcessButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>70</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&gt;&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delPostProcessButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>100</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;&lt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>341</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Element set</string>
+    </property>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Variables</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Assigned</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="elementSetVarsList">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>VELOCITY_MODULE</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>VORTICITY</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>KINETIC_ENERGY</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="addElementSetButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>50</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&gt;&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delElementSetButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>80</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;&lt;</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="elementSetList">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>170</y>
+      <width>341</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Boundary set</string>
+    </property>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Variables</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Assigned</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="boundarySetVarsList">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>MEAN_PRESSURE</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>MASS</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>FORCE</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TORQUE</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>MEAN_YPLUS</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>MEAN_VELOCITY</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>WEAT_FORCE</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>WEAT_SURFACE</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="addBoundarySetButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>50</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&gt;&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delBoundarySetButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>80</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;&lt;</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="boundarySetList">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>300</y>
+      <width>341</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Node set</string>
+    </property>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Variables</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Assigned</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="nodeSetVarsList">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>VELOX</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>VELOY</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>VELOZ</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>PRESS</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>YPLUS</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="addNodeSetButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>50</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&gt;&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delNodeSetButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>80</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;&lt;</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="nodeSetList">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_6">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>300</y>
+      <width>341</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Witness points</string>
+    </property>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Variables</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>20</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Assigned</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="witnessPointsVarslist">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>VELOX</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>VELOY</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>VELOZ</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>PRESS</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="addWitnessPointsButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>50</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&gt;&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delWitnessPointsButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>80</y>
+       <width>31</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;&lt;</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="witnessPointsList">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>40</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>440</y>
+      <width>151</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Output error solution:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="outputErrSolCombo">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>440</y>
+      <width>85</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>5</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>13</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>20</string>
+     </property>
+    </item>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="page_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>775</width>
+     <height>525</height>
+    </rect>
+   </property>
+   <attribute name="label">
+    <string>Boundary Conditions</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QScrollArea" name="scrollArea_2">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>737</width>
+           <height>890</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QPushButton" name="BtnEx_CharSel">
+            <property name="text">
+             <string>Character Select</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="Fr_CharSel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>400</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QLabel" name="label_6">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>100</y>
+               <width>101</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>Character Name:</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="Btn_NxStep">
+             <property name="geometry">
+              <rect>
+               <x>110</x>
+               <y>280</y>
+               <width>201</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Next Step: Create Modules</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="Combo_CharSelect">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>70</y>
+               <width>135</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="toolTip">
+              <string>Select your character</string>
+             </property>
+             <property name="statusTip">
+              <string>Select your character or create a new one</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Create New Character</string>
+              </property>
+             </item>
+            </widget>
+            <widget class="QLineEdit" name="TxtIn_CharName">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>100</y>
+               <width>133</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Enter Character Name</string>
+             </property>
+             <property name="statusTip">
+              <string>Enter Character Name</string>
+             </property>
+             <property name="text">
+              <string>Enter Character Name</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="Btn_Rename_Char">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>300</x>
+               <y>100</y>
+               <width>75</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="toolTip">
+              <string>Rename Character.</string>
+             </property>
+             <property name="statusTip">
+              <string>Rename your character.(only available if you selected an existing character)</string>
+             </property>
+             <property name="text">
+              <string>Rename</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_8">
+             <property name="geometry">
+              <rect>
+               <x>90</x>
+               <y>0</y>
+               <width>211</width>
+               <height>71</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Step 1: Select Character</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_48">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>72</y>
+               <width>131</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Select your character:</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>210</y>
+               <width>121</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Assign geometry</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_49">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>170</y>
+               <width>311</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Please select the geometry that make up the character</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="BtnEx_Mods">
+            <property name="text">
+             <string>Modules</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="Fr_Mods">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>400</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QLabel" name="label_50">
+             <property name="geometry">
+              <rect>
+               <x>90</x>
+               <y>0</y>
+               <width>211</width>
+               <height>71</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Step 2: Create Modules</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="geometry">
+              <rect>
+               <x>120</x>
+               <y>70</y>
+               <width>75</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>testbtn</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_5">
+             <property name="geometry">
+              <rect>
+               <x>130</x>
+               <y>130</y>
+               <width>75</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>testbtn</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="page_3">
+   <attribute name="label">
+    <string>Page</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <property name="leftMargin">
+     <number>4</number>
+    </property>
+    <property name="topMargin">
+     <number>1</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
+    <property name="bottomMargin">
+     <number>1</number>
+    </property>
+    <property name="spacing">
+     <number>3</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea_3">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>-17</y>
+         <width>749</width>
+         <height>824</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Definition</string>
+          </property>
+          <widget class="QLabel" name="label_679">
+           <property name="geometry">
+            <rect>
+             <x>7</x>
+             <y>24</y>
+             <width>161</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>*Temporal Derivatives:</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::RichText</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_683">
+           <property name="geometry">
+            <rect>
+             <x>7</x>
+             <y>52</y>
+             <width>121</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>*Convective term:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_697">
+           <property name="geometry">
+            <rect>
+             <x>7</x>
+             <y>80</y>
+             <width>101</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>*Viscous term:</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="nastinConveTermCheck_2">
+           <property name="geometry">
+            <rect>
+             <x>160</x>
+             <y>52</y>
+             <width>75</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>on/off</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="nastinTempDeriCheck_2">
+           <property name="geometry">
+            <rect>
+             <x>160</x>
+             <y>24</y>
+             <width>75</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>on/off</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="nastinViscoTermcombo_2">
+           <property name="geometry">
+            <rect>
+             <x>160</x>
+             <y>80</y>
+             <width>120</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string comment="OFF">OFF</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string comment="LAPLACIAN">LAPLACIAN</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string comment="DIVERGENCE">DIVERGENCE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string comment="COMPLETE">COMPLETE</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLineEdit" name="nastinPressEdit_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>617</x>
+             <y>330</y>
+             <width>113</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string>real</string>
+           </property>
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_666">
+           <property name="geometry">
+            <rect>
+             <x>527</x>
+             <y>330</y>
+             <width>81</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>or Pressure:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_698">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>330</y>
+             <width>54</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Regime:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_669">
+           <property name="geometry">
+            <rect>
+             <x>310</x>
+             <y>330</y>
+             <width>91</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Temperature:</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="nastinRegCombo_2">
+           <property name="geometry">
+            <rect>
+             <x>173</x>
+             <y>330</y>
+             <width>120</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string>Default</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string comment="INCOMPRESSIBLE">INCOMPRESSIBLE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string comment="LOW_MACH">LOW_MACH</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLineEdit" name="nastinTempEdit_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>330</y>
+             <width>113</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string notr="true" comment="int" extracomment="int">real</string>
+           </property>
+           <property name="statusTip">
+            <string extracomment="int"/>
+           </property>
+           <property name="whatsThis">
+            <string extracomment="int"/>
+           </property>
+           <property name="autoFillBackground">
+            <bool>true</bool>
+           </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhDigitsOnly</set>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_8">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Properties</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

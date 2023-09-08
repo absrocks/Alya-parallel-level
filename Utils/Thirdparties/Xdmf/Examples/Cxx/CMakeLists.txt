@@ -1,0 +1,28 @@
+ADD_EXECUTABLE(XdmfFormatExample XdmfFormatExample.cxx)
+TARGET_LINK_LIBRARIES(XdmfFormatExample Xdmf)
+
+IF (XDMF_BUILD_MPI)
+  ADD_EXECUTABLE(XdmfDsmH5 XdmfDsmH5.cxx)
+  TARGET_LINK_LIBRARIES(XdmfDsmH5 Xdmf ${XDMF_MPI_LIBRARIES})
+
+  ADD_EXECUTABLE(XdmfDsmH5Slice XdmfDsmH5Slice.cxx)
+  TARGET_LINK_LIBRARIES(XdmfDsmH5Slice Xdmf ${XDMF_MPI_LIBRARIES})
+
+  ADD_EXECUTABLE(XdmfDsmThreads XdmfDsmThreads.cxx)
+  TARGET_LINK_LIBRARIES(XdmfDsmThreads Xdmf ${XDMF_MPI_LIBRARIES})
+
+  ADD_EXECUTABLE(XdmfDsmExample XdmfDsmExample.cxx)
+  TARGET_LINK_LIBRARIES(XdmfDsmExample Xdmf ${XDMF_MPI_LIBRARIES})
+ENDIF (XDMF_BUILD_MPI)
+
+IF (XDMF_SYSTEM_HDF5_IS_PARALLEL)
+  ADD_EXECUTABLE(XdmfMpiExample XdmfMpiExample.cxx)
+  TARGET_LINK_LIBRARIES(XdmfMpiExample Xdmf)
+ENDIF (XDMF_SYSTEM_HDF5_IS_PARALLEL)
+
+# Fortran examples
+IF (XDMF_BUILD_FORTRAN)
+  ADD_EXECUTABLE(XdmfFortranExample XdmfFortranExample.F90)
+  TARGET_LINK_LIBRARIES(XdmfFortranExample Xdmf ${XDMF_HDF5_FORTRAN_LIBRARIES}
+                                                ${XDMF_CXX_LIBRARIES})
+ENDIF (XDMF_BUILD_FORTRAN)

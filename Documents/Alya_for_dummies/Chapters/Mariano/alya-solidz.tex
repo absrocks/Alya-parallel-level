@@ -1,0 +1,258 @@
+\documentclass[12pt]{article} 
+
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage[all]{xy} %diagrammes
+\usepackage{mathrsfs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{varioref}
+\usepackage{multirow}	% Para poder unir filas en las tablas
+\usepackage{colortbl}	% Para colorear tablas
+\usepackage[dvips]{epsfig,graphicx}
+\usepackage{booktabs}
+\usepackage{tabulary}
+\usepackage{array}
+\usepackage{caption}
+
+%%%%%%%%%%%%%PALABRAS%%%%%%%%%%%%%%
+\pretolerance=6000
+\tolerance=3000
+%Asi evitamos que corte las palabras
+
+\renewcommand{\arraystretch}{2.5} \renewcommand{\raggedbottom}
+%Tamano letra pie. Opciones \tiny \scriptsize \small \normalsize \large \huge
+\renewcommand{\footnotesize}{\tiny} 
+\newcommand{\Real}{\mbox{\toto R}}
+\newcommand{\refeq}[1]{(\ref{eq:#1})}
+\newcommand{\labeq}[1]{\label{eq:#1}}
+\newcommand{\refig}[1]{Fig.\ref{fig:#1}}
+\newcommand{\tab}[1]{Table \ref{tab:#1}}
+\newcommand{\lafig}[1]{\label{fig:#1}}
+\newcommand{\si}[1]{\rm\scriptscriptstyle{#1}}
+\newcommand{\bm}[1]{\mathbf{#1}}
+\newcommand{\mbo}{\mbox{}}
+\newcommand{\Frac}[2]{\displaystyle{\frac{\displaystyle{#1}}{\displaystyle{#2}}}}
+\newcommand{\pal}[2]{\Frac{\partial #1}{\partial #2}}
+\newcommand{\pat}[1]{\pal{#1}{t}}
+\newcommand{\paxi}[1]{\pal{#1}{x_i}}
+\newcommand{\paxj}[1]{\pal{#1}{x_j}}
+\newcommand{\pxi}{\pal{\mbo}{x_i}}
+\newcommand{\pxj}{\pal{\mbo}{x_j}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\bK}{\mathbf{K}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bfex}{\mathbf{f_\textrm{ext}}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bS}{\mathbf{S}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\bM}{\mathbf{M}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\Dt}{\Delta t}
+\newcommand{\Dtau}{\Delta \tau}
+\newcommand{\Du}{\Delta \mathbf{u}}
+\newcommand{\Da}{\Delta \mathbf{a}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\Dut}{\Delta \mathbf{\tilde{u}}}
+\newcommand{\Duf}{\Delta {u}}
+\newcommand{\Duft}{\Delta {\tilde{u}}}
+
+\begin{document}
+
+%\title{Alya Red CCM: HPC-based Cardiac Computational Modeling} 
+%\author{M. V\'azquez $^{1,2}$, R. Ar\'{\i}s $^1$, J. Aguado-Sierra $^1$, 
+%G. Houzeaux $^1$, A. Santiago $^1$ \\ 
+%M. L\'opez $^1$, P. C\'ordoba $^1$, M. Rivero $^1$ and J.C. Cajas $^1$} 
+%\date{}
+%\maketitle
+%\vskip-0.5cm
+%{\small {
+%\centerline{$^1$ Barcelona Supercomputing Center, Ed. Nexus I, Campus Nord UPC, Barcelona, Spain}
+%\centerline{$^2$ IIIA-CSIC, UAB Campus Bellaterra, Spain}
+%}
+
+\centerline{\bf Alya} 
+\centerline{\bf The \texttt{SOLIDZ} module } 
+\vskip1cm
+\centerline{M. V\'azquez$^{1,2}$ and The Solidettes}
+\vskip1cm
+{\small {
+\centerline{$^1$ Barcelona Supercomputing Center, Ed. Nexus I, Campus Nord UPC, Barcelona, Spain}
+\centerline{$^2$ IIIA-CSIC, UAB Campus Bellaterra, Spain}
+\vskip0.5cm
+\centerline{Contact mail: mariano.vazquez@bsc.es}
+}
+
+
+\vskip0.5cm 
+
+%{\abstract Numerical schemes of the Alya SOLIDZ module.}
+
+\section{Problem Statement}
+
+Once discretized, the differential equations coming from the total-Lagrangian form are transformed in the following algebraic system:
+\begin{equation}
+\rho\bM \ba + \bK \bu + \bfex = 0.
+\labeq{algebraic}
+\end{equation}
+
+The size of this system is $ndime \times npoin$.
+In this system, $\bM$ is the mass matrix, $\ba$ is the mass matrix, $\rho$ is the density (which could be defined locally
+per-node), 
+$\Dt$ is the time increment, $\bu$ is the vector of unknowns, i.e. the displacements, $\bK$ is the
+system matrix resulting from the space discretization of the continuum operator and including all numerical terms,
+$\bK \bu$ are the internal forces and $\bfex$ are the external forces.
+We define also $\Du= \bu^{n+1} - \bu^n$ which is the unknown difference between two time steps. 
+It must be recalled that $\bK=\bK(\bu)$ could be (strongly) non-linearly dependent on $\bu$ due to both material and geometrical issues, 
+so at each time step, the system is solved iteratively. 
+
+\section{Implicit solution}
+
+\subsection{Newton iterations}
+At each time step $n+1$, \refeq{algebraic} must verified.
+Let us solve this equation iteratively on the unknown's increments.
+From now on, and otherwise is explicitly said, let us eliminate the subindex for the current iteration $i$,
+so $\Du_i = \Du$, $\bu_i = \bu$ or $\ba_i = \ba$.
+Let us define respectively, iteration and time increments as follows
+\begin{eqnarray}
+  && \Dut = \bu_{i+1} - \bu_{i} = \bu_{i+1} - \bu \\\\
+  && \Du  = \bu_{i+1} - \bu^n,
+\end{eqnarray}
+that gives
+\begin{eqnarray}
+  \Du = \Dut + \bu - \bu^n. \labeq{timeitera} 
+\end{eqnarray}
+
+Newton iterations are computed through a first-order Taylor expansion of the {\it discrete} residual of the current iteration $i$.
+Leaving aside external forces to simplify notation, we define the residual at iteration $i$ as $r_i = r$:
+\begin{eqnarray}
+\rho\bM \ba + \bK \bu = \br
+\end{eqnarray}
+Then, we at each iteration we try to find
+\begin{eqnarray}
+\rho\bM ( \ba + \Da )  + \bK \bu + \Dut \pal{\bK}{\bu} = \br_ {i+1} = 0
+\end{eqnarray}
+which can be iteratively solved until convergence is achieved:
+\begin{eqnarray}
+\rho\bM ( \Da )  + \Dut \pal{\bK}{\bu} = - \left( \rho\bM \ba + \bK \bu \right) = -\br.
+\end{eqnarray}
+For the sake of generality, we prefer to solve in $\Dut$:
+\begin{eqnarray}
+\left[f_{ie}\Frac{\rho\bM}{\Dt^2}  + \pal{\bK}{\bu}\right] \Dut= -\br,
+\labeq{solve-notau} 
+\end{eqnarray}
+with two possibilities ($f_{ie}$ is called \texttt{fimpex}):
+\begin{itemize}
+\item \texttt{EXPLICITSCHEME}: $f_{ie}=1$. Tangent matrix dissapears and mass matrix $\bM$ is a lumped
+diagonal matrix. 
+\item \texttt{IMPLICITSCHEME}: $f_{ie}=1/\beta$, where $\beta$ 
+comes from the $\alpha$-generalized scheme (see below). Tangent matrix is computed 
+and the mass matrix is the consistent one.
+\end{itemize}
+It is worth to mention that in both cases $\br$ is computed in the same way. 
+In some cases, specially with elongated elements, a pseudotime continuation is used, so \refeq{solve-notau} becomes
+\begin{eqnarray}
+\left[f_{\tau} \Frac{\rho\bM}{\Dtau^2} + f_{ie}\Frac{\rho\bM}{\Dt^2}  + \pal{\bK}{\bu}\right] \Dut= -\br,
+\labeq{solve-tau} 
+\end{eqnarray}
+where $\Dtau$ is the local time step and $f_{\tau}$ a factor to weight the pseudotime term. Pseudotime continuation can be solved,
+again, following the same two possibilities described above.
+
+\subsubsection{Computing the tangent matrix}
+The main implementation difference between a Jacobi and a Newton iteration is the tangent matrix term $\bu \pal{\bK}{\bu}$.
+We compute it analitically only for simple material models, for all the rest of the models, 
+we prefer to compute it numerically. A usual strategy to avoid large computational effort is to
+compute it inexactly {\it \`a la Frechet}. We do it with three main features. Firstly, we consider independent variations
+for each of the degrees of freedom computed at the same time. 
+Secondly, we compute it as a secant first order
+finite differences directional derivative, in the direction of the last iteration. 
+Thirdly, the independent variations are computed simultaneously.
+See the appendix for a precise description.
+
+\subsection{Time integration schemes}
+The time integration numerical schemes chosen are of the $\alpha$-generalized form. In \texttt{SOLIDZ} module,
+both explicit and implicit time schemes are solved in the \texttt{SOLIDZ/SLD\_UPDISP()} subroutine, 
+calling \texttt{SOLIDZ/SLD\_ELMMAT()} to compute the matrix and the rhs's for both schemes.
+When solving an equation of the form $\rho a = f$, these schemes are [REF FROM ALPHA-GEN-JAYNEGRUT]:
+\begin{eqnarray}
+u^{n+1} &=& u^{n} + \Dt v^{n} + \Dt^2 (\Frac{1}{2} - \beta ) a^{n} + \Dt^2 \beta  a^{n+1}, \\
+v^{n+1} &=& v^{n} + \Dt (1 - \gamma) a^{n} + \Dt \gamma a^{n+1}, \\ 
+(1-\alpha_m) \rho a^{n+1} + \alpha_m \rho a^{n} &=& (1-\alpha_f) f^{n+1} + \alpha_f f^{n}. 
+\end{eqnarray}
+For specific choices of the paremeters, we get [in brackets, the input tags]:
+\begin{itemize}
+\item The Newmark's family: $\alpha_m=0$, $\alpha_f=0$,
+\begin{itemize}
+\item The undamped trapezoidal rule: $\beta = 0.25$, $\gamma = 0.5$ [\texttt{NEWMARK, UNDAMPED}]. 
+\item The damped trapezoidal rule: $\beta = 0.65$, $\gamma = 0.90$ [\texttt{NEWMARK, DAMPED}]. 
+\item The Stormer's or mid-point or central differences rule: $\beta = 0.0$, $\gamma = 0.5$ [\texttt{NEWMARK, CDIFFERENCES}]. 
+\end{itemize}
+\item The Hilber-Hughes-Taylor $\alpha$ (HHT-$\alpha$): \\
+$\alpha_m=0$, \\
+$\alpha_f \in [-1/3,0]$,\\
+$\beta = (1-\alpha_f)^2/4$,\\ 
+$\gamma = 1/2 - \alpha_f$.
+\end{itemize}
+
+The \texttt{SOLIDZ} time scheme is programmed as follows:
+
+\begin{algorithm}
+\caption{Subroutine \texttt{solidz/sld\_doiter} time scheme.}
+\begin{algorithmic}
+\FOR{each time step}
+\WHILE{\texttt{(kfl\_goite\_sld == 1)}}
+\STATE \texttt{call sld\_solite} $\rightarrow$  \texttt{call sld\_updisp} 
+\STATE \texttt{call sld\_endite(one)}
+\ENDWHILE
+\STATE \texttt{call sld\_endite(two)}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+We use the following conventions:
+\begin{itemize}
+\item Current iteration $i$ is noted as \texttt{ITER\_K}, as in \texttt{accel\_sld(...,ITER\_K)}, \texttt{veloc\_sld(...,ITER\_K)}, ...
+\item Current time step $n$ is noted as \texttt{TIME\_N}, as in \texttt{accel\_sld(...,TIME\_N)}, \texttt{veloc\_sld(...,TIME\_N)}, ...
+\item Current unknown $\bu$ (for iter $i$) is stored in \texttt{unkno} and current $\Dut$ is \texttt{dunkn\_sld}. 
+\end{itemize}
+
+Algorithm 2 describes what is implemented in \texttt{solidz/sld\_updisp}.
+\begin{algorithm}
+\caption{Subroutine \texttt{solidz/sld\_updisp} time scheme.}
+\begin{algorithmic}
+\FOR{each iteration $i$}
+\STATE !!! First guess:
+\IF {\texttt{(FIRSTITERATION)}} 
+\STATE $f_{ie}= 1.0$
+\STATE {\bf if} \texttt{(IMPLICITSCHEME)} $f_{ie}= 1/\beta$
+\IF {\texttt{(DYNAMICPROBLEM)}} 
+\STATE $\bu = \bu^n + \Dt \bv^n + \Dt^2 \left(\Frac{1}{2} - \beta \right) \ba^n$
+\STATE $\bv = \bv^n + \Dt (1 - \gamma) \ba^n$
+\STATE $\ba = 0$
+\STATE $\Dut = \alpha \ba^n$
+\ELSIF {\texttt{(STATICPROBLEM)}} 
+\STATE $\bu = \bu^n$
+\ENDIF
+\STATE Correct boundary conditions
+\ENDIF
+\STATE !!! Solve:
+\STATE Compute matrix and residual with: 
+\STATE \texttt{call sld\_matrix(EXPLICITSCHEME / IMPLICITSCHEME)}
+\STATE Solve for $\Dut$ using \refeq{solve-tau}. 
+%\STATE IMPORTANT: Subroutine \texttt{solver\_solve()} returns 
+\STATE Rotate back local boudary conditions (when needed)
+\STATE !!! Update:
+\STATE {\bf if} {\texttt{(IMPLICITSCHEME)}} $\bu = \bu + \Dut$ 
+\STATE $\ba = \ba + f_{ie} (1 - \alpha) \Dut / \Dt^2$
+\STATE $\bv = \bv + f_{ie} \gamma \Dut / \Dt$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\bibliographystyle{acm}
+\bibliography{../biblio}
+
+\end{document}

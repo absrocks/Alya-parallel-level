@@ -1,0 +1,89 @@
+#!/usr/bin/python2.7
+import fnmatch
+import re
+import os
+
+"""----------------------------------------------------
+	Read a file and return a list of lines.
+----------------------------------------------------"""
+def readFile(fileName):
+	with open(fileName, 'r') as content_file:
+		content = content_file.read()
+	return content.split("\n")
+
+"""----------------------------------------------------
+	Write a file with a given list of lines.
+----------------------------------------------------"""
+def writeFile(fileName, l):
+	with open(fileName, 'w') as f:
+		for line in l:
+			f.write(line)
+
+"""----------------------------------------------------
+	Parser the input format lines.
+----------------------------------------------------"""
+def getDataInputFormat(inputFormat):
+	text = []
+	for line in inputFormat:
+		adoc = re.search("ADOC\[\d\].", line).group()
+		numIdent = int(re.search("\d", adoc).group())
+		d = re.search(".+ADOC\[\d\]>?\s", line)
+		line = line[:d.start()] + line[d.end():]
+		line +="\n"
+		text.append("    "*numIdent+line)
+	return text
+
+"""----------------------------------------------------
+	Parser the documentation lines.
+----------------------------------------------------"""
+def getDocumentation(documentation):
+	text = []
+	for line in documentation:
+		adoc = re.search("ADOC\[d\].", line).group()
+		d = re.search(".+ADOC\[d\]>?\s", line)
+		if d == None:
+			line = ""
+		else:
+			line = line[:d.start()] + line[d.end():]
+		line +="\n"
+		if re.search(":", line):
+			d = re.search(":",line)
+			line = "<b>"+line[:d.end()]+"</b>"+line[d.end():]
+		text.append(line)
+	return text
+
+"""----------------------------------------------------
+	Split the lines from a files between documentation
+	and input lines, write the output.
+----------------------------------------------------"""
+def fileInputDocumentation(path, fileName):
+	fileData = readFile(path+"/"+fileName)
+	inputFormat = []
+	documentation = []
+	saveFolder = "../include"
+
+	prevLine = "Code"
+	for line in fileData:
+		if re.search("ADOC\[\d\].", line):
+			inputFormat.append(line)
+			prevLine = "Input"
+		elif re.search("ADOC\[d\].", line):
+			documentation.append(line)
+			prevLine = "Doc"
+		else:
+			if prevLine == "Doc":
+				documentation.append(" "*4+"ADOC[d]> <br/>")
+			prevLine = "Code"
+			
+	if(len(inputFormat) > 0):
+		writeFile(saveFolder+"/in_"+fileName, getDataInputFormat(inputFormat))
+
+	if(len(documentation) > 0):
+		writeFile(saveFolder+"/doc_"+fileName, getDocumentation(documentation))
+
+"""----------------------------------------------------
+	MAIN
+----------------------------------------------------"""
+for root, dirnames, filenames in os.walk("../../../Sources/"):
+	for filename in fnmatch.filter(filenames, '*.f90'):
+		fileInputDocumentation(root, filename)

@@ -1,0 +1,41 @@
+/*!
+  \page output Alya Output
+
+  <h1>Alya Output Files</h1>
+
+  <h2>casename.log</h2>
+
+  <h2>casename.module.log</h2>
+
+  <h2>casename-system.log</h2>
+
+  <h2>casename.module.cso</h2>
+
+  <h2>casename.module.sol</h2>
+
+  <h2>casename.module.cvg</h2>
+
+  <h2>casename.cvg</h2>
+
+  <h2>casename-partition.par.post.mesh, casename-partition.par.post.res </h2>
+
+  <h1>Alya scripts</h1>
+
+  If you are lucky enough to have gnuplot installed, you can make use of ALya cockpit to follow your simulation at runtime!
+  
+  <ol>
+  <li> <TT>alya-memory</TT>: check your memory usage.
+  <li> <TT>alya-parall-stats</TT>: some statistics about parallelization. Use option -o casename.ps to save your stats in ps format.
+  <li> <TT>alya-all-nsi</TT>: convergence of Nastin module... updated during the simulation!
+  <li> <TT>alya-wit-all</TT>: extract witness point values for all time steps in file <TT>alya-wit-all.out</TT>.
+
+  </ol>
+
+  For programmers, the following scripts are also available:
+  
+  <ol>
+  <li> <TT>alya-what</TT>: tells you the modules and services you have compiled. Must be in Executables/unix directory
+  <li> <TT>call-tree.pl</TT>: call this script where is your makefile and see the dependence tree (level 1) of a list of subroutines. E.g. call-tree.pl mod_graphs mod_elmgeo.
+  </ol>
+  
+*/ 

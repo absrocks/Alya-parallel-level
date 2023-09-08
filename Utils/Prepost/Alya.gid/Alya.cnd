@@ -1,0 +1,186 @@
+#########################################################################
+#
+#             D O M A I N
+#
+#########################################################################
+BOOK:         DOMAIN
+NUMBER: 1     CONDITION: DOMAIN_boundary_2D
+CONDTYPE:     over lines
+CONDMESHTYPE: over face elements
+CANREPEAT:    yes
+QUESTION:     Entity_2D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER: 2     CONDITION: DOMAIN_boundary_3D
+CONDTYPE:     over surfaces 
+CONDMESHTYPE: over face elements
+CANREPEAT:    yes
+QUESTION:     Entity_3D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER: 3     CONDITION: DOMAIN_Periodic_Master_2D
+CONDTYPE:     over lines
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Entity_3D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER: 4     CONDITION: DOMAIN_Periodic_Slave_2D
+CONDTYPE:     over lines
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Entity_3D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER: 5     CONDITION: DOMAIN_Periodic_Master_3D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Entity_3D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER:  6    CONDITION: DOMAIN_Periodic_Slave_3D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Entity_3D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER:  7    CONDITION: DOMAIN_element_2D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over body elements
+CANREPEAT:    yes
+QUESTION:     Entity_2D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+NUMBER:  8    CONDITION: DOMAIN_element_3D
+CONDTYPE:     over volumes 
+CONDMESHTYPE: over body elements
+CANREPEAT:    yes
+QUESTION:     Entity_3D#FUNC#(NumEntity)
+VALUE:        0
+STATE:        HIDDEN
+END CONDITION
+#########################################################################
+#
+#             S U B D O M A I N S
+#
+#########################################################################
+BOOK:         SUBDOMAINS
+NUMBER: 36    CONDITION: SUBDOMAINS_3D
+CONDTYPE:     over volumes
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Subdomain
+VALUE:        1
+END CONDITION
+NUMBER: 37    CONDITION: SUBDOMAINS_2D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Subdomain
+VALUE:        1
+END CONDITION
+#########################################################################
+#
+#             B O U N D A R Y    C O N D I T I O N S
+#
+#########################################################################
+BOOK:         ALYA_CODES
+NUMBER: 60    CONDITION: ALYA_CODES_node_point
+CONDTYPE:     over points
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Number:#CB#(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)
+VALUE:        1
+END CONDITION
+NUMBER: 61    CONDITION: ALYA_CODES_node_line
+CONDTYPE:     over lines
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Number:#CB#(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)
+VALUE:        1
+END CONDITION
+NUMBER: 62    CONDITION: ALYA_CODES_node_surface
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Number:#CB#(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)
+VALUE:        1
+END CONDITION
+NUMBER: 63    CONDITION: ALYA_CODES_node_volume
+CONDTYPE:     over volumes
+CONDMESHTYPE: over nodes
+CANREPEAT:    yes
+QUESTION:     Number:#CB#(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)
+VALUE:        1
+END CONDITION
+NUMBER: 64    CONDITION: ALYA_CODES_boundary_2D
+CONDTYPE:     over lines
+CONDMESHTYPE: over face elements
+CANREPEAT:    yes
+QUESTION:     Number:#CB#(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)
+VALUE:        1
+END CONDITION
+NUMBER: 65    CONDITION: ALYA_CODES_boundary_3D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over face elements
+CANREPEAT:    yes
+QUESTION:     Number:#CB#(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)
+VALUE:        1
+END CONDITION
+#########################################################################
+#
+#             F I E L D S
+#
+#########################################################################
+BOOK:         FIELDS
+NUMBER: 80    CONDITION: FIELD_ELEMENT_1_3D
+CONDTYPE:     over volumes
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Values
+VALUE:        1
+END CONDITION
+NUMBER: 81    CONDITION: FIELD_ELEMENT_2_3D
+CONDTYPE:     over volumes
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Values
+VALUE:        1
+END CONDITION
+NUMBER: 82    CONDITION: FIELD_ELEMENT_3_3D
+CONDTYPE:     over volumes
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Values
+VALUE:        1
+END CONDITION
+NUMBER: 90    CONDITION: FIELD_ELEMENT_1_2D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Values
+VALUE:        1
+END CONDITION
+NUMBER: 91    CONDITION: FIELD_ELEMENT_2_2D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Values
+VALUE:        1
+END CONDITION
+NUMBER: 92    CONDITION: FIELD_ELEMENT_3_2D
+CONDTYPE:     over surfaces
+CONDMESHTYPE: over body elements
+CANREPEAT:    no
+QUESTION:     Values
+VALUE:        1
+END CONDITION

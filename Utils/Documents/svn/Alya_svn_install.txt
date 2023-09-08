@@ -1,0 +1,245 @@
+ 
+Repository:/gpfs/projects/bsc21/svnroot <=> Account in Minotauro <=> Local machine
+
+USERS:
+------
+Hadrien:           bsc21270  ! CASE
+Anne-Cecile:       bsc21655  ! CASE
+Beatriz:           bsc21240  ! CASE
+Guillaume:         bsc21943  ! CASE
+Jose Maria:        bsc21291  ! CASE
+Mariano:           bsc21222  ! CASE
+Miquel:            bsc21741  ! CASE
+Raul:              bsc21399  ! CASE
+Rogeli:            bsc21017  ! CASE
+Romain:            bsc21142  ! CASE
+Ruth:              bsc21075  ! CASE
+Xavi:              bsc21331  ! CASE
+Pierre:            bsc21335  ! CASE
+Arnau:             bsc21365  ! CASE
+Christophe:        bsc62027  ! Christophe Ortiz (CIEMAT)
+Antoine:           bsc62437  ! Antoine Jerusalem (IMDEA)
+Jelena:            bsc21796  ! CASE      
+Herbert:           bsc21257  ! CASE
+Cristobal:         bsc21567  ! CASE
+Mohammad:          bsc21351  ! CASE
+Margarida:         bsc21133  ! CASE
+Fernando:          bsc21845  ! CASE
+Olfa:              bsc62989  ! Olfa Trabelsi (Univ. Zaragoza)
+Simone:            bsc21235  ! CASE
+Matias:            bsc21811  ! CASE
+Toni:              bsc21967  ! CASE
+Daniel:            bsc21808  ! CASE
+Eva:               bsc21371  ! CASE
+Alejandro:         bsc62670  ! Argentina carajo
+Miguel
+Octavio:           bsc21325  ! CASE
+Yacine Ould Rouis: bsc21816  ! CEA
+Carles Riera:      bsc21055  ! CASE
+Ricard Borrell:    bsc21665  ! CASE
+
+-------------------------------------------------------------------------
+1. Get Alya repository users:
+-------------------------------------------------------------------------
+
+   cd /gpfs/projects/bsc21/svnroot
+   getfacl Alya or 
+   /usr/lpp/mmfs/bin/mmgetacl Alya
+
+-------------------------------------------------------------------------
+2. Add a new user bsc21***:
+-------------------------------------------------------------------------
+ 
+   cd /gpfs/projects/bsc21/svnroot
+   setfacl -m    u:bsc21***:rwx Alya   (change current rights)
+   setfacl -d -m u:bsc21***:rwx Alya   (change rights from now on)
+
+   or 
+
+   cd /gpfs/projects/bsc21/svnroot
+   /usr/lpp/mmfs/bin/mmgetacl Alya > Alya.acl
+   Add user in Alya.acl
+   /usr/lpp/mmfs/bin/mmputacl -i Alya.acl Alya
+
+-------------------------------------------------------------------------
+3. Define the following environment variables and change path in local machine:
+-------------------------------------------------------------------------
+
+   En linux:
+
+   setenv  SVN_SSH     'ssh -l bsc21***'
+   setenv  SVN_EDITOR  vi
+   setenv  SVN_DIR     $HOME/svn
+   setenv  ALYA_DIR    $SVN_DIR/Alya
+   setenv  PATH        $ALYA_DIR/Utils/programmer:$ALYA_DIR/Utils/user:$ALYA_DIR/Executables/unix:$ALYA_DIR/Utils/user/alya2pos:$PATH
+
+   En Windows:
+
+   SVN_SSH   'ssh -l bsc21***'
+   SVN_EDIT  emacs
+   SVN_DIR   %HOME%\svn
+   ALYA_DIR  %SVN_DIR%\Alya
+   PATH      ...;%ALYA_DIR%\Utils\programmer:%ALYA_DIR%\Utils\user:%ALYA_DIR%\Executables\dos\Release
+   
+-------------------------------------------------------------------------
+4. Update environment variables
+-------------------------------------------------------------------------
+
+   source .cshrc
+   
+   To change bash to tcsh: chsh -s /bin/tcsh "username"
+
+-------------------------------------------------------------------------
+5. Define the following environment variables and change path in Minotauro:
+-------------------------------------------------------------------------
+
+   TO BE CHECKED!!!!!
+
+
+   - In .cshrc:
+
+     source /gpfs/projects/bsc21/svnroot/.proj_cprofile
+
+     or,
+
+     setenv LD_LIBRARY_PATH /gpfs/projects/bsc21/svn/usr/lib
+     setenv PATH            /gpfs/projects/bsc21/svn/usr/bin:$PATH
+
+   - And in .bashrc (because svn passes through bash):
+  
+     export LD_LIBRARY_PATH=/gpfs/projects/bsc21/svn/usr/lib
+     export PATH=/gpfs/projects/bsc21/svn/usr/bin:$PATH
+
+-------------------------------------------------------------------------
+6. Change svn config file:
+-------------------------------------------------------------------------
+
+   TO BE CHECKED!!!!!
+
+   copy $ALYA_DIR/Documents/svn/Alya_svn_config.txt to config
+
+   In windows:
+   C:\Archivos de programa\Subversion\config
+   
+   In linux:
+   $HOME/subversion/config
+
+   In Marenostrum:
+   $HOME/.subversion/config
+
+-------------------------------------------------------------------------
+7. To avoid entering the password each time svn connect to Marenostrum:
+-------------------------------------------------------------------------
+
+   - In local machine, generate the key:
+     ssh-keygen -t rsa
+   - Copy the contents of the file 
+     $HOME/.ssh/id_rsa.pub
+     at the end of the following file in Marenostrum:
+     $HOME/.ssh/authorized_keys
+     This step can be done simpler with 'ssh-copy-id  bsc21xxx@mn1.bsc.es' in case you have several 'ssh-copy-id -i .ssh/id_rsa bsc21xxx@mn1.bsc.es'
+
+-------------------------------------------------------------------------
+8. First checkout in one directory before ALYA_DIR:
+-------------------------------------------------------------------------
+
+   In local machine:
+
+   cd $SVN_DIR
+   svn co svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk Alya
+
+   or, from Marenostrum:
+
+   cd $SVN_DIR
+   svn co file:///gpfs/projects/bsc21/svnroot/Alya/Trunk Alya
+
+-------------------------------------------------------------------------
+9. Export:
+-------------------------------------------------------------------------
+
+   In local machine:
+
+   cd $SVN_DIR
+   svn export svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk Alya
+
+   or, from Marenostrum:
+
+   cd $SVN_DIR
+   svn export file:///gpfs/projects/bsc21/svnroot/Alya/Trunk Alya
+
+   To export a given svn version number XYZ, add "-rXYZ". 
+
+-------------------------------------------------------------------------
+10. Lisp file for emacs. Copy $ALYA_DIR/Utils/user/alya.el in the following directory:
+-------------------------------------------------------------------------
+
+    - Option 1:
+
+      In windows: emacs-21.3/lisp/progmodes
+      In linux:   /usr/share/emacs/EMACS_VERSION/lisp/progmodes
+                  or /usr/local/share/emacs/EMACS_VERSION/lisp/progmodes 
+
+      and add the follwing lines in the .emacs file
+
+      (load-library "alya")
+      (load-alya-modes) 
+
+    - Option 2:
+
+      (load-library "$ALYA_DIR/Utils/user/alya")
+      (load-alya-modes) 
+
+    If you are using WINDOWS or MACOS, add the following lines to the .emacs
+    to avoid having carriage returns in your files:
+    
+    (set-terminal-coding-system 'utf-8)
+    (set-keyboard-coding-system 'utf-8)
+    (prefer-coding-system 'utf-8)
+
+-------------------------------------------------------------------------
+11. GiD as a preprocess 
+-------------------------------------------------------------------------
+
+    In order to have ALya appearing as a problem type in GiD, do the
+    following:
+    - Goto GiD's problemtype directory, for example: 
+      cd /Applications/GiD-*.app/Contents/MacOS/problemtypes
+    - Create a static link:
+      ln -s $ALYA_DIR/Prepost/Alya.gid ./Alya.gid
+    - chmod +x $ALYA_DIR/Prepost/Alya.gid/Alya.unix.bat
+    - chmod +x $ALYA_DIR/Executables/unix/Alya.sh
+    - Check if the shell "csh" is installed. If not, install it, as Alya.sh is in csh and not bash for now
+
+-------------------------------------------------------------------------
+12. First checkout of Testsuite in one directory before ALYA_DIR:
+-------------------------------------------------------------------------
+
+   In local machine:
+
+   cd $SVN_DIR
+   svn co svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/AlyaTS AlyaTS
+
+   or, from Marenostrum:
+
+   cd $SVN_DIR
+   svn co file:///gpfs/projects/bsc21/bsc21903/svnroot/AlyaTS AlyaTS
+
+
+-------------------------------------------------------------------------
+13. Create branches
+-------------------------------------------------------------------------
+
+In local machine:
+
+svn copy svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/branches/Alya-solver
+svn co svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/branches/Alya-solver Alya-solver
+
+Merge on local machine:
+
+svn merge svn+ssh://bsc21***@mn1.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------

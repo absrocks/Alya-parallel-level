@@ -45,7 +45,7 @@ CSALYA   := $(CSALYA) -DNDIMEPAR
 CSALYA   := $(CSALYA) -DVECTOR_SIZE=16
 
 #@Marenostrum IV Optimizations
-# CSALYA   := $(CSALYA) -xCORE-AVX512 -mtune=skylake
+#CSALYA   := $(CSALYA) -xCORE-AVX512 -mtune=skylake
 
 ###################################################################
 #                          USER SPECIFIC FLAGS                    #
@@ -73,6 +73,7 @@ CSALYA     := $(CSALYA) -DMETIS
 # Uncomment the following lines for using metis 5.0
 #@Using Metis 5.0
 #CSALYA   := $(CSALYA) -DV5METIS
+#EXTRALIB   := $(EXTRALIB) -L/opt/ohpc/pub/libs/intel/metis/5.1.0/lib -lmetis
 # uncoment FOR MAC
 #@Using Metis 5.0 for MAC.
 #EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.0.2_i8/build/Darwin-i386/libmetis -lmetis
@@ -105,8 +106,8 @@ CSALYA     := $(CSALYA) -DMETIS
 
 # Uncomment the following lines for OPENMP version
 #@OpenMP Activated.
-#CSALYA    := $(CSALYA) -openmp
-#EXTRALIB   := $(EXTRALIB) -openmp
+#CSALYA    := $(CSALYA) -qopenmp
+#EXTRALIB   := $(EXTRALIB) -qopenmp
 
 # Uncomment the following line to disable OPENMP coloring
 #@OpenMP Coloring Activated.

@@ -1,0 +1,18 @@
+<<label>>
+<item>
+    <widget class="QComboBox" name="#comboName">
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+            </sizepolicy>
+        </property>
+        <property name="maximumSize">
+            <size>
+                <width>300</width>
+                <height>16777215</height>
+            </size>
+        </property>
+        #item
+    </widget>
+</item>

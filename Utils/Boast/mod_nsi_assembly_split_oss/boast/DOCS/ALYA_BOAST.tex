@@ -1,0 +1,295 @@
+
+\documentclass[10pt,twoside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper, bottom=2.5cm, top=2cm, left=2cm, right=2cm}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx,subfigure, array}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex	
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref,url}
+\usepackage[hang,  bf, margin=19pt, tableposition=top,textfont=it]{caption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multicol,multirow}
+\usepackage{subfigure}
+\usepackage{fancyvrb,newverbs,xcolor}
+
+
+\newlength{\textlarg}
+\newcommand{\barre}[1]{%
+   \settowidth{\textlarg}{#1}
+   #1\hspace{-\textlarg}\rule[0.5ex]{\textlarg}{0.5pt}}
+
+
+
+% COLORS
+\definecolor{bleugris}{RGB}{43,78,103}
+\definecolor{codegreen}{rgb}{0.56,0.74,0.56}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.96}
+\definecolor{lightgray}{gray}{0.35}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codered}{rgb}{0.87,0.19,0.39}
+\definecolor{cverbbg}{gray}{0.93}
+
+\lstdefinestyle{mystyle}{
+	%backgroundcolor=\color{backcolor},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{codered},
+	numberstyle=\tiny\color{codegray},
+	basicstyle=\footnotesize,
+	breaklines=true,
+	breakatwhitespace=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+\newenvironment{cverbatim}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{\BUseVerbatim{cverb}}%
+  \endflushleft
+}
+\newenvironment{lcverbatim}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{%
+    \makebox[\dimexpr\linewidth-2\fboxsep][l]{\BUseVerbatim{cverb}}%
+  }
+  \endflushleft
+}
+
+\newcommand{\ctexttt}[1]{\colorbox{cverbbg}{\texttt{#1}}}
+\newverbcommand{\cverb}
+  {\setbox\verbbox\hbox\bgroup}
+  {\egroup\colorbox{cverbbg}{\box\verbbox}}
+
+
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\textwidth}{\hspace{15pt}#3}}}
+\DeclareCaptionFormat{listing2}{\colorbox[cmyk]{0.9, 0.9, 0.9,0.01}{\parbox{\textwidth}{\hspace{15pt}#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white,singlelinecheck=false,margin=0pt,font={bf}}
+
+\title{Porting ALYA kernels with BOAST}
+\date{}						
+
+
+
+\begin{document}
+\maketitle
+
+
+The performance portability of computing kernels is a challenging problem. Indeed, they need to be tuned for each platform the application is launched on. BOAST is a metaprogramming framework that overcomes this problem.
+This document presents how we use BOAST to optimize ALYA's kernels.
+
+\section{BOAST}
+
+BOAST aims at simplifying the optimization of computing kernels of HPC applications. It uses a high level language to define an API of computing kernels i.e. subroutines and their related arguments, and describes the way to optimize it (unrolling, vectorization, parametrization, templating, tiling). BOAST automatically tests the many possibilities of optimizations and chooses the best one after validation from a reference version.
+BOAST can generate C, FORTRAN, OpenCL and CUDA codes and test them for a specific target architecture.
+
+\subsection{How to install BOAST (version 2.1.0)}
+
+\noindent On your machine :
+
+\begin{cverbatim}
+$git clone https://github.com/Nanosim-LIG/boast.git
+$cd boast
+$gem build BOAST.gemspec
+$gem install --user-install BOAST-2.1.0.gem 
+\end{cverbatim}
+
+\noindent On Marenostrum IV:
+
+\begin{cverbatim}
+$module load ruby
+$export PATH=$PATH:/gpfs/home/bsc21/bsc21xxx/.gem/ruby/2.4.0/bin
+
+$gem build BOAST.gemspec
+$gem install --local --user-install BOAST-2.1.0.gem
+\end{cverbatim}
+
+
+
+% --------- Exemple
+\subsection{My first program using BOAST}
+
+\begin{center}
+\begin{lstlisting}[caption=my\_first\_program.rb]
+#!/usr/bin/ruby
+
+require 'BOAST'
+include BOAST
+
+k=CKernel::new
+
+a = Real( "a", :dir => :in)
+b = Real( "b", :dir => :inout)
+
+p = Procedure("plus_two", [a,b]){
+        pr b === a + 2
+}
+
+pr p
+k.procedure = p
+puts k.print
+k.build
+
+res = k.run(5,0)
+puts res
+\end{lstlisting}
+\end{center}
+
+
+\noindent The program is launched with the following command : \texttt{VERBOSE=true ruby my\_first\_program.rb}.\\
+\noindent Note that \texttt{VERBOSE=true} is optional, it prints the compilation lines.
+The output obtained is:
+
+\begin{cverbatim}
+SUBROUTINE plus_two(a, b)
+  integer, parameter :: wp=kind(1.0d0)
+  real(kind=8), intent(in) :: a
+  real(kind=8), intent(inout) :: b
+  b = a + 2
+END SUBROUTINE plus_two
+
+{:reference_return=>{:b=>7.0}, :duration=>2.4000000000000003e-08}
+\end{cverbatim}
+
+
+\noindent To use different compilers with BOAST, change the compiler in: {\texttt{~/.config/BOAST/compiler\_options}}.
+
+
+% --------- SECTION
+\section{ALYA}
+
+You can clone ALYA (you need access) with the command:
+
+\begin{cverbatim}
+$git clone git@bitbucket.org:bsc_case_alya/alya.git
+\end{cverbatim}
+
+% --------- SECTION
+\section{Optimizing the Split kernel of ALYA using BOAST}
+
+\indent In this section, we focus on {\texttt{nsi\_element\_assembly\_split}}, one of the nastin's subroutines. This subroutine is a kernel assembly of Navier Stokes equations using the Split OSS variational multiscale model. We ported the kernel using BOAST and integrated it in the whole ALYA application. In the rest of the section, {\texttt{nsi\_element\_assembly\_split}} is referred to as "split kernel".
+
+In addition to the BOAST version of the kernel, we generated a reference version of it in order to compare the results in terms of both correctness and performance.
+The reference version keeps the initial FORTRAN code and only wraps it with BOAST whereas the BOAST version uses the BOAST dedicated language and the metaprogramming style. 
+The split kernel contains 12 loop nests that we isolated to ease the porting. Also, it gives us the possibility to test and bench each nest separately and extract the nests into different subroutines that can be either included in the main kernel procedure, inlined or simply called as functions.
+
+\subsection{Structure}
+
+The directory {\texttt{PATH\_TO\_ALYA/BOAST/mod\_nsi\_assembly/boast}} contains the boast files to generate the Split and ASGS kernels. It contains 5 directories:
+
+\begin{itemize}
+\item {\bf{ASGS}}\\
+$\rightarrow$ Contains the ruby files to generate the nsi\_element\_assembly\_asgs\_oss kernel\\
+Files: \texttt{Debug.rb, KASGS.rb, KASGBoast.rb, KASGSRef.rb} (never updated, created by Steven)
+\item {\bf{Common}}\\
+$\rightarrow$ Contains the mechanisms shared by the two kernels\\
+Files: \texttt{CommonArgs.rb, Parameters.rb, subroutine.rb}
+\item {\bf{Split}}\\
+$\rightarrow$ Contains the ruby files to generate the nsi\_element\_assembly\_split\_oss kernel (Split kernel)\\
+Files: \texttt{KSplitOss.rb, KSplitOssBoast.rb, KSplitOssRef.rb, README, run.rb, run\_COMP.rb,} \\
+\texttt{run\_COMP\_nests.rb, run\_VERIF.rb, run\_boast.rb, run\_boast\_COMP.rb, run\_ref.rb}
+\item {\bf{Tools}}\\
+$\rightarrow$ Just contains a ruby file which records every information about
+        the platform. Generally {\texttt{get\_info}} is run before running the
+        kernel. {\texttt{register\_kernel\_info}} is used to store the kernel\\
+        as a string\\
+Files: \texttt{LogInfo.rb}
+\item {\bf{scripts}}\\
+$\rightarrow$ Contains scripts to launch an experiment and scripts to convert data from yaml to csv\\
+Files: \texttt{README, format\_data\_comparison.rb, format\_data\_comparison2.rb, parse.sh, results.gplot, run\_experiment.sh}
+\end{itemize}
+
+\subsection{Optimizing the Split kernel}
+
+The file \texttt{/scripts/run\_experiment.sh} contains execution commands to launch all scripts in \texttt{/Split/}.
+For example, to generate different optimized versions of the Split kernel using BOAST, uncomment the second point (2) in \texttt{run\_experiment.sh} and launch the script:
+
+\begin{cverbatim}
+$sh run_experiment.sh
+\end{cverbatim}
+
+\noindent With the intel compiler:
+
+\begin{cverbatim}
+$CC=icc FC=ifort LD=icc sh run_experiment.sh
+\end{cverbatim}
+
+
+\noindent Note that the language is set in the ruby file in \texttt{/Split/}. 
+A particular optimized version of the kernel can be generated with the point (4) in \texttt{run\_experiment.sh}.
+The generated optimized kernel can be directly integrated in ALYA.
+
+
+\subsection{Results}
+
+All results were launched on the BSC machine Marenostrum IV.\\
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=16cm]{Kernel_results.eps}
+\caption{Comparison between the reference and the BOAST versions of the Split kernel  - Intel compiler 17.0.4}
+\label{fig:1}
+\end{figure}
+
+
+%Figures \ref{fig:1} and \ref{fig:3} show the execution time of the reference and BOAST versions of the Split kernel. The BOAST version calls the nests with the inlined usage.
+
+
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=10cm]{Ref_Boast_COMP_IFORT}
+%\caption{Comparison between the reference and the BOAST versions of the Split kernel, launched on the nord3 cluster (in FORTRAN, optimisation: -O3, some loops are unrolled for the BOAST version) - Intel compiler version 16.0.3}
+%\label{fig:3}
+%\end{figure}
+
+
+%Figure \ref{fig:2} shows the execution time for the BOAST version of the kernel. The figure compares the usage of all nests in the kernel: inlined, included and call. 
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=10cm]{Usage_COMP_IFORT}
+%\caption{Comparison between the different usages of the  BOAST version of the Split kernel, launched on the nord3 cluster (in FORTRAN, optimisation: -O3, some loops are unrolled) - Intel compiler version 16.0.3}
+%\label{fig:2}
+%\end{figure}
+
+
+% --------- SECTION
+\section{Optimizing ASGS kernel of ALYA using BOAST}
+
+
+TODO
+
+\newpage
+
+% --------- BIBLIO
+
+\begin{thebibliography}{9}
+
+\bibitem{boast}
+BOAST. Available at \url{https://forge.imag.fr/scm/?group_id=628}
+
+\bibitem{boastDOC} 
+BOAST documentation. Available at \url{http://www.rubydoc.info/github/Nanosim-LIG/boast/master}, and \url{https://github.com/Nanosim-LIG/boast}
+
+\bibitem{alya}
+Tutorial: Porting Alya kernels with BOAST. Available at \url{https://github.com/Nanosim-LIG/boast/wiki/Alya}
+
+\end{thebibliography}
+
+\end{document}

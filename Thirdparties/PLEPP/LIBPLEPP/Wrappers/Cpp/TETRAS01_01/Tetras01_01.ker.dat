@@ -1,0 +1,51 @@
+$$Create by J. MIGUEL ZAVALA-AKE 
+$-------------------------------------------------------xxx.ker.dat
+PHYSICAL_PROBLEM
+$
+$ Pr = mu cp / k                         -> 0.71 = 1.7149e-3 / 0.024119 * cp  
+$ Re = rho v L / mu                      ->   Re = 1.294240 / 1.7149e-3 v * L 
+$ Ma = v/c = v/sqrt( gamma Rair/Mair T ) ->   Ma = v / sqrt( 1.4 * 8.314621/0.0289531 * 273.0 ) = 331.416468 
+$  
+$  LOWMACH:
+$  MATERIAL = 1
+$    DENSITY       = LOW_MACH, GMIXT 
+$    SPECIFIC_HEAT = CONSTANT, PARAMETER = 1003.744     $ J/kg/K 
+$    CONDUCTIVITY  = CONSTANT, PARAMETER =    0.024119  $ W/M/K  
+$    VISCOSITY     = CONSTANT, PARAMETER =    1.7149e-3 $ Ns/m2 
+$  END_MATERIAL
+$
+$  COUPLING
+$  END_COUPLING
+$
+END_PHYSICAL_PROBLEM
+
+NUMERICAL_TREATMENT
+$
+  MESH
+   $DIVISION=1
+  END_MESH
+$
+  ELSEST: ON
+    STRATEGY: BIN
+    NUMBER: 50,50,50
+  END_ELSEST
+$  
+  $TIME_FUNCTIONS
+  $  FUNCTION=XXX, DISCRETE, NUMBER= 4
+  $    INCLUDE inflow-velocity.txt
+  $  END_FUNCTION
+  $END_TIME_FUNCTIONS
+$
+END_NUMERICAL_TREATMENT
+
+OUTPUT_&_POST_PROCESS
+  ON_LASTMESH
+  STEPS = 2
+$
+ $WITNESS_POINTS, NUMBER=N?
+   $X0 Y0 Z0?
+ $END_WITNESS_POINTS
+$
+END_OUTPUT_&_POST_PROCESS
+$-------------------------------------------------------------------
+

@@ -15,23 +15,20 @@ program Wind
   !    Turnof
   !***
   !-----------------------------------------------------------------------
-  use def_master
+  use      def_master
   implicit none
   integer :: kfl_gotim
 
-  call Reapro  ! Reads program data and loads some variables 
-    
+  call Reapro  ! Reads program data
+
   ! Gets the mesoscale input variables if GABLS3 type
   ! This allows to compile without read_meso subroutine
   ! and avoid netCDF library
 #ifdef _NETCDF_
-  ! GABLS3
   if (kfl_case.eq.3) call read_meso
   
 #endif
-  ! call read_qrad
-!  call read_johans
-  ! call read_horna_tower_2
+ ! call read_qrad
 !  call read_radiat ! read radiative heat
 !  call read_vegeo  ! read geostrophic velocity
   ! Turns on problem

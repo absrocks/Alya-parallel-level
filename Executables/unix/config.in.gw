@@ -1,0 +1,386 @@
+###################################################################
+#                          IFORT CONFIGURE                        #
+#MN4 RECOMENDED MODULE:                                           #
+#module load intel/2017.4 impi/2017.4                             #
+###################################################################
+
+#@Compiler: Using Intel Fortran Compiler ifort.
+F77      = mpiifort
+F90      = mpiifort
+FCOCC    = mpiicc -c
+FCFLAGS  = -module $O -c
+FPPFLAGS = -fpp
+EXTRALIB =
+EXTRAINC =
+fa2p     = mpif90 -module ../../Utils/user/alya2pos -c  -fpp
+fa2plk   = mpif90
+
+###################################################################
+#                          PERFORMANCE FLAGS                      #
+###################################################################
+
+#@Optimization: O3
+FOPT      = -O3
+
+#Compilation flags applied only to the Source/modules folder
+#@Special flags only for Souce/modules folder activaded.
+#MODULEFLAGS = 
+
+#Uncomment the following line to enable NDIME as a parameter (OPTIMIZATION FOR 3D PROBLEMS)
+#@Optimization for 3D PROBLEMS activated.
+CSALYA   := $(CSALYA) -DNDIMEPAR
+
+#Uncomment the following line for DEBUG AND CHECKING FLAGS
+#@Debug flags activated.
+#CSALYA   := $(CSALYA) -ftrapuv -check all,noarg_temp_created -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -ansi-alias
+                       
+#Vectorization: put vector size (in principle=4 for MN)
+#@Vectorization activated.
+CSALYA   := $(CSALYA) -DVECTOR_SIZE=16
+
+#@Marenostrum IV Optimizations
+#CSALYA   := $(CSALYA) -xCORE-AVX512 -mtune=skylake -ipo
+
+###################################################################
+#                          PROFILING FLAGS                        #
+###################################################################
+
+# Uncomment the following line to generate profiling info files
+#@Profiling info files will be generated.
+#CSALYA   := $(CSALYA) -profile-loops=all -profile-loops-report=2
+
+###################################################################
+#                          EXTRAE FLAGS                           #
+###################################################################
+
+# Uncomment the following line to compile Alya using extrae
+# 1. Define EXTRAE_HOME
+# 2. Add xml file. See e.g. in /apps/BSCTOOLS/extrae/latest/impi_2017_4/share/example/*/extrae.xml
+# 3. In batch file, use: srun ./trace.sh Alya.x xxx
+
+#@Linking with Extrae
+#EXTRAE_HOME  =/apps/BSCTOOLS/extrae/latest/impi_2017_4
+#EXTRALIB     := $(EXTRALIB) -L${EXTRAE_HOME}/lib/ -lmpitracef
+#@Enabling Extrae user calls (normal)
+#CSALYA       := $(CSALYA) -DEXTRAE
+
+###################################################################
+#                          METIS LIBRARY                          #
+###################################################################
+
+#@Using Metis 4.0
+EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-4.0 -lmetis
+CSALYA     := $(CSALYA) -DMETIS
+
+#@Using Metis 5.0.2 or metis 5.1.0
+#CSALYA   := $(CSALYA) -DV5METIS
+#CSALYA   := $(CSALYA) -DV51METIS
+#@Using Metis 5.0.2 or metis 5.1.0 for MAC
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.0.2_i8/build/Darwin-x86_64/libmetis -lmetis
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.1.2_i8/build/Darwin-x86_64/libmetis -lmetis
+#@Using Metis 5.0.2 or metis 5.1.0 for Linux
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/libmetis -lmetis
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.1.0_i8/build/Linux-x86_64/libmetis -lmetis
+
+#@Using parametis.
+#CSALYA   := $(CSALYA) -DPARMETIS
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/
+
+###################################################################
+#                           BLAS LIBRARY                          #
+###################################################################
+
+# Uncomment the following lines for using blas
+#@BLAS Activated
+#EXTRALIB   := $(EXTRALIB) -lblas
+#CSALYA     := $(CSALYA) -DBLAS
+
+###################################################################
+#                          MPI/THREADS/TASKS                      #
+###################################################################
+
+# Uncomment the following lines for sequential (NOMPI) version
+#@Sequential ALYA.
+#VERSIONMPI  = nompi
+#CSALYA    := $(CSALYA) -DMPI_OFF
+
+# Uncomment the following lines for OPENMP version
+#@OpenMP Activated. heap-arrays option may be used to stack overflow and have Alya crash
+#CSALYA     := $(CSALYA) -qopenmp
+#CSALYA     := $(CSALYA) -heap-arrays 
+#EXTRALIB   := $(EXTRALIB) -qopenmp
+
+# Uncomment the following line to disable OPENMP coloring
+#@OpenMP Coloring Activated.
+#CSALYA    := $(CSALYA) -DNO_COLORING
+
+# Uncomment the following line to enable OMPSS in order to activate
+# loops with multidependencies whenever we have a race condition
+#@OMPPS Activated.
+#CSALYA    := $(CSALYA) -DALYA_OMPSS
+
+# To activate MPI3 (non-blocking MPI_Allreduce)
+#@MPI3 activated.
+#CSALYA    := $(CSALYA) -DMPI3
+
+###################################################################
+#                             DLB                                 #
+#  To use DLB with OMPSS: Define -DALYA_DLB -DALYA_OMPSS          #
+#  To use DLB barrier:    Define -DALYA_DLB_BARRIER               #
+#  If we compile with mercurium, there is no need to link         #
+#  with DLB                                                       #
+#                                                                 #
+###################################################################
+
+#@DLB Activated.
+#CSALYA   := $(CSALYA)   -DALYA_DLB
+#FCFLAGS  := $(FCFLAGS)  --dlb
+#FPPFLAGS := $(FPPFLAGS) --dlb
+
+###################################################################
+#                          INTEGER TYPE                           #
+###################################################################
+# Uncomment the following lines for 8 byte integers
+#@Integers size: 8
+#CSALYA   := $(CSALYA) -DI8 -m64
+# Uncomment the following line for 8 byte integers ONLY in Metis
+# In this mode Alya can work in I4 and Metis in I8 (mixed mode)
+# For this option the use of Metis v5 library is mandatory
+#@Metis I8 Activated.
+#CSALYA   := $(CSALYA) -DMETISI8
+
+###################################################################
+#                          HDF5                                   #
+#                                                                 #
+#MANDATORY MODULES TO LOAD ON MN3 FOR 4 BYTE INTEGERS VERSION     #
+#module load HDF5/1.8.14 SZIP                                     #
+#                                                                 #
+#MANDATORY MODULES TO LOAD ON MN3 FOR 8 BYTE INTEGERS VERSION     #
+#module load SZIP/2.1 HDF5/1.8.15p1_static                        #
+#                                                                 #
+#MANDATORY SERVICES TO COMPILE                                    #
+#hdfpos                                                           #
+#MORE INFO:bsccase02.bsc.es/alya/tutorial/hdf5_output.html        #
+###################################################################
+
+# Uncomment the following lines for using HDF5 IN 4 BYTE INTEGER VERSION
+#@HDF5 4 Bytes integer Activated please load the module HDF5/1.8.14 SZIP
+#CSALYA   := $(CSALYA) -I/apps/HDF5/1.8.14/INTEL/IMPI/include
+#EXTRALIB   := $(EXTRALIB) /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5_fortran.a /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5.a
+#EXTRALIB   := $(EXTRALIB) /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5hl_fortran.a /apps/HDF5/1.8.14/INTEL/IMPI/lib/libhdf5_hl.a
+#EXTRALIB   := $(EXTRALIB) -L/apps/SZIP/2.1/lib -lsz -L/usr/lib64 -lz -lgpfs
+
+# Uncomment the following lines for using HDF5 IN 8 BYTE INTEGER VERSION
+#@HDF5 8 Bytes integer Activated please load the module SZIP/2.1 HDF5/1.8.15p1_static
+#CSALYA   := $(CSALYA) -I/apps/HDF5/1.8.15p1/static/include
+#EXTRALIB   := $(EXTRALIB) /gpfs/apps/MN3/HDF5/1.8.15p1/static/lib/libhdf5_fortran.a /gpfs/apps/MN3/HDF5/1.8.15p1/static/lib/libhdf5_f90cstub.a
+#EXTRALIB   := $(EXTRALIB) /gpfs/apps/MN3/HDF5/1.8.15p1/static/lib/libhdf5.a /gpfs/apps/MN3/HDF5/1.8.15p1/static/lib/libhdf5_tools.a
+#EXTRALIB   := $(EXTRALIB) -L/apps/SZIP/2.1/lib -lsz -L/usr/lib64 -lz -lgpfs
+
+# latest Hdf5 (1.8.16) to be used with latest impi (5.1.2.150) and intel(16.0.1)
+# there is module load HDF5/1.8.16-mpi for integers 4 but I have seen it is not necesary to call it
+# Toni should clean up this  - my reconmendation is to only leave this last version
+# moreover there seems to be no need for module load hdf5 (in the i8 case there exists no module load)
+
+# Uncomment the following lines for using HDF5 IN 4 BYTE INTEGER VERSION
+#@HDF5 1.8.16 - 4 Bytes integer Activated
+#CSALYA   := $(CSALYA) -I/apps/HDF5/1.8.16/INTEL/IMPI/include
+#EXTRALIB   := $(EXTRALIB) /apps/HDF5/1.8.16/INTEL/IMPI/lib/libhdf5_fortran.a /apps/HDF5/1.8.16/INTEL/IMPI/lib/libhdf5hl_fortran.a
+#EXTRALIB   := $(EXTRALIB) /apps/HDF5/1.8.16/INTEL/IMPI/lib/libhdf5.a /apps/HDF5/1.8.16/INTEL/IMPI/lib/libhdf5_hl.a
+#EXTRALIB   := $(EXTRALIB) -L/apps/SZIP/2.1/lib -lsz -L/usr/lib64 -lz -lgpfs
+
+# Uncomment the following lines for using HDF5 IN 8 BYTE INTEGER VERSION
+#@HDF5 1.8.16 - 8 Bytes integer Activated
+#CSALYA   := $(CSALYA) -I/apps/HDF5/1.8.16/INTEL/IMPI/int8/include
+#EXTRALIB   := $(EXTRALIB) /apps/HDF5/1.8.16/INTEL/IMPI/int8/lib/libhdf5_fortran.a /apps/HDF5/1.8.16/INTEL/IMPI/int8/lib/libhdf5hl_fortran.a
+#EXTRALIB   := $(EXTRALIB) /apps/HDF5/1.8.16/INTEL/IMPI/int8/lib/libhdf5.a /apps/HDF5/1.8.16/INTEL/IMPI/int8/lib/libhdf5_hl.a
+#EXTRALIB   := $(EXTRALIB) -L/apps/SZIP/2.1/lib -lsz -L/usr/lib64 -lz -lgpfs
+
+###################################################################
+#                          VTK                                    #
+#                                                                 #
+#MANDATORY THIRDPARTY COMPILATION                                 #
+#Go to Alya/Thirdparties/VTK                                      #
+#                                                                 #
+#MORE INFO:bsccase02.bsc.es/alya/tutorial/vtk_output.html         #
+###################################################################
+
+# Uncomment the following lines for using VTK as output
+#@VTK Output Activated
+#CSALYA   := $(CSALYA) -DVTK
+#EXTRALIB   := $(EXTRALIB) ../../Thirdparties/VTK/vtkXMLWriterF.o -L/apps/VTK/6.1.0_patched/lib -lvtkIOXML-6.1 -lvtkIOGeometry-6.1
+#EXTRALIB   := $(EXTRALIB) -lvtkIOXMLParser-6.1 -lvtksys-6.1 -lvtkIOCore-6.1 -lvtkCommonExecutionModel-6.1 -lvtkCommonDataModel-6.1 -lvtkCommonMisc-6.1
+#EXTRALIB   := $(EXTRALIB) -lvtkCommonSystem-6.1 -lvtkCommonTransforms-6.1 -lvtkCommonMath-6.1 -lvtkCommonCore-6.1 -lvtkzlib-6.1
+#EXTRALIB   := $(EXTRALIB) -lvtkjsoncpp-6.1 -lvtkexpat-6.1 -L/gpfs/apps/MN3/INTEL/tbb/lib/intel64/ -ltbb
+
+###################################################################
+#                           MUMPS                                 #
+# in MN4 use  module load mkl intel impi mumps/5.1.2_metis4
+# if you just put mumps it loads  mumps/5.1.2 that is with metis 5
+###################################################################
+
+#to automatically switch between metis 4 or 5  -choose one option -- for the moment I have only used metis4
+# because metis 5 was having problems with alya but guillaume seems to have solved that
+# metis 5 just leave empty
+#MUM_METV   :=
+# metis 4
+#MUM_METV   := _metis4
+
+#@MUMPS Activated
+#CSALYA   := $(CSALYA) -DMUMPS -I/apps/MUMPS/5.1.2$(MUM_METV)/INTEL/IMPI/include/  -I${MKLROOT}/include
+
+#EXTRALIB := $(EXTRALIB) -L/apps/PARMETIS/4.0.3/INTEL/IMPI/lib/ -lparmetis
+# you also need to do export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/apps/PARMETIS/4.0.3/INTEL/IMPI/lib/ or put it in your bashrc
+# since there is no module load for parmetis
+
+#EXTRALIB := $(EXTRALIB) -L/apps/MUMPS/5.1.2$(MUM_METV)/INTEL/IMPI/lib -ldmumps -lmumps_common -lpord
+
+#EXTRALIB := $(EXTRALIB) -L${MKLROOT}/lib/intel64  -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -lm -ldl
+
+# en la parte de openmp descomento EXTRALIB   := $(EXTRALIB) -qopenmp  que MUMPS necesita (ojo agrego la q creo me lo dijo ifort)
+
+#EXTRALIB := $(EXTRALIB) -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm  -lmkl_blacs_intelmpi_ilp64 -lmkl_blacs_intelmpi_lp64 -lmkl_scalapack_ilp64 -lmkl_scalapack_lp64
+
+
+###################################################################
+#                          NINJA                                  #
+#GPU based solvers : GMRES,DEFLATED_CG,CG                         #
+#Specify solver in configuration as:				  #
+#GMRES -------------> GGMR	 				  #
+#CG ----------------> GCG					  #
+#DEFLATED_CG -------> GDECG					  #
+#GPU Multi Grid-----> GAMGX(Requires CONFIGURATION_FILE in solver)#
+#export CUDA_HOME to CUDA version to be used			  #
+###################################################################
+# Uncomment the following lines to enable NINJA
+#@NINJA Activated (Alya With GPU)
+#GPU_HOME := ${CUDA_HOME}/
+#CSALYA   := $(CSALYA) -DNINJA
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/ninja -L${GPU_HOME}lib64/ -lninja -lcublas_static -lcusparse_static -lculibos -lcudart -lpthread -lstdc++ -ldl -lcusolver
+
+# NINJA also support AMGX. Uncomment the following lines and set AMGX_HOME
+#AMGX_HOME :=
+#CSALYA   := $(CSALYA) -DAMGX
+#EXTRALIB   := $(EXTRALIB) -L${AMGX_HOME}/lib -lamgxsh
+
+###################################################################
+#                          INVIZ                                  #
+#IN situ Visulization, using NVIDIA INDEX (GPUs only)             #
+#export CUDA_HOME to CUDA version to be used			  #
+#export MPI_HOME to MPI version under use			  #
+#export NVINDEX_ROOT to NVIDIA INDEX suite			  #
+###################################################################
+#Uncomment the following lines
+#@ INVIZ Activated.
+#CSALYA   := $(CSALYA) -DINVIZ
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/inviz -linviz -lviewer -lz -lm -lHalf -llog4cplus -lrt -pthread -lstdc++ -ldl  -lmpi_cxx -lcudart
+
+###################################################################
+#                          CATALYST                               #
+#                                                                 #
+#MANDATORY THIRDPARTY COMPILATION                                 #
+#Go to Alya/Thirdparties/Catalyst                                 #
+#                                                                 #
+#MORE INFO:hadrien.calmet at bsc.es                               #
+###################################################################
+# Uncomment the following lines for using CATALYST as output
+#@CATALYST Activated.
+#CSALYA   := $(CSALYA) -DVTK -DCATA -mt_mpi -I../../Thirdparties/Catalyst
+#EXTRALIB   := $(EXTRALIB) ../../Thirdparties/VTK/vtkXMLWriterF.o ../../Thirdparties/Catalyst/FEFortranAdaptor.o ../../Thirdparties/Catalyst/FECxxAdaptor.o
+#EXTRALIB   := $(EXTRALIB) -L/apps/PARAVIEW/4.2.0/lib/paraview-4.2/ -lvtkIOXML-pv4.2 -lvtkIOGeometry-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkIOXMLParser-pv4.2 -lvtksys-pv4.2 -lvtkIOCore-pv4.2 -lvtkCommonExecutionModel-pv4.2 -lvtkCommonDataModel-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkCommonMisc-pv4.2 -lvtkCommonSystem-pv4.2 -lvtkCommonTransforms-pv4.2 -lvtkCommonMath-pv4.2 -lvtkCommonCore-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkzlib-pv4.2 -lvtkjsoncpp-pv4.2 -lvtkexpat-pv4.2 -lvtkPVPythonCatalyst-pv4.2 -lvtkPVCatalyst-pv4.2 -lvtkPythonInterpreter-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkUtilitiesPythonInitializer-pv4.2  -lvtkPVServerManagerCore-pv4.2 -lvtkPVServerImplementationCore-pv4.2 -lvtkPVClientServerCoreCore-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkFiltersParallel-pv4.2 -lvtkFiltersModeling-pv4.2 -lvtkRenderingCore-pv4.2 -lvtkFiltersExtraction-pv4.2 -lvtkFiltersStatistics-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkImagingFourier-pv4.2 -lvtkImagingCore-pv4.2 -lvtkalglib-pv4.2 -lvtkFiltersGeometry-pv4.2 -lvtkFiltersSources-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkFiltersGeneral-pv4.2 -lvtkCommonComputationalGeometry-pv4.2 -lvtkFiltersProgrammable-pv4.2 -lvtkPVVTKExtensionsCore-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lvtkPVCommon-pv4.2 -lvtkClientServer-pv4.2 -lvtkFiltersCore-pv4.2 -lvtkParallelMPI-pv4.2 -lvtkParallelCore-pv4.2 -lvtkIOLegacy-pv4.2
+#EXTRALIB   := $(EXTRALIB) -lprotobuf -lvtkWrappingPython27Core-pv4.2 -lvtkpugixml-pv4.2 -lvtkPVServerManagerApplication-pv4.2 -L/gpfs/apps/MN3/INTEL/tbb/lib/intel64/ -ltbb
+
+
+###################################################################
+#                       PSBLAS & MLD2P4                           #
+###################################################################
+# goes first else problem at link time
+# for use with ./configure --with-psblas=/gpfs/projects/bsc21/WORK-HERBERT/svn/solvers-herbert/Thirdparties/psblas3-development
+#CSALYA   := $(CSALYA) -I../../Thirdparties/mld2p4-2-development/modules
+#EXTRALIB := $(EXTRALIB) -L../../Thirdparties/mld2p4-2-development/lib -lmld_prec
+
+# for use with  ./configure --with-blas=" -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -lm -ldl" --with-include-path =" -I${MKLROOT}/include" in psblas
+#CSALYA   := $(CSALYA) -DINC_PSBLAS -I${MKLROOT}/include -I../../Thirdparties/psblas3-development/modules
+#EXTRALIB := $(EXTRALIB) -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -lm -ldl -L../../Thirdparties/psblas3-development/lib -lpsb_krylov -lpsb_prec -lpsb_util -lpsb_base
+
+
+#  solo cambio para que use la psblas ya compilado por salvatore
+#CSALYA   := $(CSALYA) -DINC_PSBLAS -I${MKLROOT}/include -I/gpfs/scratch/bsc21/bsc21495/NUMERICAL/PSBLAS/Intel/modules
+#EXTRALIB := $(EXTRALIB) -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -lm -ldl -L/gpfs/scratch/bsc21/bsc21495/NUMERICAL/PSBLAS/Intel/lib -lmld_prec -lpsb_krylov -lpsb_prec -lpsb_util -lpsb_base
+
+
+###################################################################
+#                    AGMG Flags                                   #
+###################################################################
+# the library yvan had sent me expired I created a new one with his object files using 'ar cr libdagmg_par.a dagmg_mpi.o'
+
+# parallel version prof  (copy dagmg_par.o from Thirdparties/agmg)
+#CSALYA   := $(CSALYA) -DPARAL_AGMG -Duse_dagmg_mumps -I${MKLROOT}/include
+#EXTRALIB := $(EXTRALIB) -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm -lmkl_blacs_intelmpi_lp64 -lmkl_scalapack_lp64 -L../../Thirdparties/agmg/ -ldagmg_par
+
+###################################################################
+#                          SUNDIALS CVODE                         #
+###################################################################
+
+# Uncomment the following lines for using Sundials CVode
+#@Sundials CVode Activated
+#EXTRALIB   := $(EXTRALIB) ../../Thirdparties/sundials/sundials-install/lib/*.a ../../Thirdparties/sundials/sundials-install/lib/libsundials_cvode.a
+
+###################################################################
+#                          DBParicles LIBRARY                     #
+###################################################################
+
+# Uncomment the following lines for using DBParticles library
+#@DBParicles Activated
+#CSALYA   := $(CSALYA) -DDBPARTICLES
+#--FOR THRIFT connector--
+#@DBParicles THRIFT connector ON
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/dbparticles -ldbparticles -I/usr/local/include/thrift/ -I/usr/local/include -L/usr/local/lib -lm -lstdc++
+#EXTRALIB   := $(EXTRALIB) -lthrift -lthriftnb -lthriftqt -lthriftz
+#--FOR CASSANDRA connector--
+#@DBParicles CASSANDRA ON
+#EXTRALIB   := $(EXTRALIB) ../../Thirdparties/dbparticles/MurmurHash3.o -L../../Thirdparties/dbparticles -ldbparticles -I/usr/lib/x86_64-linux-gnu/include -L/usr/lib/x86_64-linux-gnu -luv -lcassandra -I/usr/local/include -L/usr/local/lib -lm -lstdc++
+
+###################################################################
+#                     WSMP SOLVER ILLINOIS                        #
+###################################################################
+
+# Uncomment the following lines to use WSMP library
+#@WSMP SOLVER ILLINOIS Activated
+#CSALYA   := $(CSALYA) -DWSMP
+#EXTRALIB := $(EXTRALIB) /gpfs/projects/bsc21/bsc21103/wsmpint/wsmp-Linux64-Intel/lib/ -lwsmp64 -lpthread /apps/LAPACK/3.5.0/lib -mkl
+
+###################################################################
+#                             MPI-IO                              #
+#                                                                 #
+#MORE INFO:damien.dosimont at bsc.es                              #
+###################################################################
+# Uncomment the following lines to generate I/O log files
+#@I/O log files will be generated.
+#CSALYA   := $(CSALYA) -DMPIOLOG
+
+###################################################################
+#                             BOAST                               #
+#                                                                 #
+#MORE INFO:damien.dosimont at bsc.es                              #
+###################################################################
+
+# This section will be filled automatically by BOAST.
+# Don't add or touch anything
+
+#START_SECTION_BOAST
+#END_SECTION_BOAST
+
+###################################################################
+#                          DO NOT TOUCH                           #
+###################################################################
+FCFLAGS    := $(FCFLAGS) $(CSALYA) $(EXTRAINC)
+

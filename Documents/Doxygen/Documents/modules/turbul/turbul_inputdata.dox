@@ -1,0 +1,36 @@
+/*! \page Turbul_input_data Turbul Input data
+
+The different mandatory fields in the sample.nsi.dat files are:
+
+- \ref Turbul_inputdata_physical_problem 
+- \ref Turbul_inputdata_numerical_treatment 
+- \ref Turbul_inputdata_output_and_postprocess 
+- \ref Turbul_inputdata_boundary_conditions  
+
+\section Turbul_inputdata Turbul Input data
+
+\subsection Turbul_inputdata_physical_problem Turbul Input data: physical problem
+
+\verbinclude  in_tur_reaphy.f90
+<br>
+\htmlinclude  doc_tur_reaphy.f90
+
+\subsection Turbul_inputdata_numerical_treatment Turbul Input data: Numerical treatment
+
+\verbinclude  in_tur_reanut.f90
+<br>
+\htmlinclude  doc_tur_reanut.f90
+
+\subsection Turbul_inputdata_output_and_postprocess Turbul Input data: Output and postprocess
+
+\verbinclude  in_tur_reaous.f90
+<br>
+\htmlinclude  doc_tur_reaous.f90
+
+\subsection Turbul_inputdata_boundary_conditions Turbul Input data: Boundary conditions
+
+\verbinclude  in_tur_reabcs.f90
+<br>
+\htmlinclude  doc_tur_reabcs.f90
+
+*/

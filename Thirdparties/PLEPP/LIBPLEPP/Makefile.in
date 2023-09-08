@@ -1,0 +1,139 @@
+############################################################################## GENERAL ##  
+## ldd xxx.x show links  
+HOME        = 
+
+## Ple
+ROOT_PLE    =
+
+## Saturne  
+ROOT_SATURNE=
+## Alya
+#ROOT_ALYA   = 
+
+
+## compilers. 
+## .mpich2  doesnt use -> -lmpi_cxx  
+CPPCOMPILER = 
+CCOMPILER   = 
+FCOMPILER   = 
+#
+############################################################################## PYTHON ## (2016MAY04) 
+#
+#  Where 'PythonX.X.h' and 'libythonX.X.so' are? 
+INCLUDE_PY      = -I/usr/include/python2.6/
+LIBS_PY         = -L/usr/lib -lpython2.6
+#
+#  Where 'mpi4py' is??  
+ROOT_MPI4PY     = /home/bsc21/bsc21704/z2016/REPOSITORY/COMMDOM/MATIAS/PLE_2016ENE28/MPI4PY200/Execs/lib64/python/
+INCLUDE_MPI4PY  = -I$(ROOT_MPI4PY)/mpi4py/include/
+INCLUDE_PY     +=   $(INCLUDE_MPI4PY)
+#
+#  Where 'mpi4py.i' is?
+INCLUDE_SWIG    = -I$(ROOT_MPI4PY)/mpi4py/include/mpi4py/
+#
+#  Where 'swig' is? 
+ROOT_SWIG       = /home/bsc21/bsc21704/z2015/REPOSITORY/SWIG308/Execs/bin/
+# 
+# Include paths
+export      PYTHONPATH:=$(PYTHONPATH):$(HOME)/Wrappers/Python
+export      PYTHONPATH:=$(PYTHONPATH):$(ROOT_MPI4PY)
+export LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(ROOT_PLE)/lib
+# 
+#INCLUDE_PY  = -I/usr/include/python2.7/
+##
+## solution: 'undefined symbol: PyUnicodeUCS4_Decode' 
+#INCLUDE_PY      = -I/home/jmake/z2014/ParaView410/lib/paraview-4.1/include/python2.7
+#INCLUDE_MPI4PY  = -I/home/jmake/z2014/ParaView410/lib/paraview-4.1/site-packages/mpi4py/include
+#INCLUDE_PY     += $(INCLUDE_MPI4PY)
+##
+#LIBS_PY         = -L/home/jmake/z2014/ParaView410/lib/paraview-4.1/ -lpython2.7
+##LIBS_MPI4PY     = -L/home/jmake/z2014/ParaView410/lib/paraview-4.1/site-packages/mpi4py -lMPI
+#LIBS_PY        += $(LIBS_MPI4PY) 
+#
+
+############################################################################# NO TOUCH ##
+
+## 
+LIBS_PLE    = -L$(ROOT_PLE)/lib/ -lple  
+INCLUDE_PLE = -I$(ROOT_PLE)/include/
+INCLUDE_PLE+= -I$(ROOT_PLE)/
+
+
+## includes  
+INCLUDE     = -I$(HOME)/Include
+INCLUDE    += -I$(HOME)/Wrappers
+INCLUDE_PLE+= $(INCLUDE)
+
+LIBS_SATURNE=
+
+SATURNE=0
+ifneq ($(SATURNE), 0)
+# fvm_nodal_priv.h, fvm_tesselation.h
+INCLUDE_PLE+= -I$(ROOT_SATURNE)/src/fvm
+INCLUDE_PLE+= -I$(ROOT_SATURNE)/Execs/include
+INCLUDE_PLE+= -I$(ROOT_SATURNE)/Execs/include/code_saturne
+LIBS_SATURNE=$(ROOT_SATURNE)/Execs/lib/libsaturne.a
+#LIBS_PLE   += -L$(ROOT_SATURNE)/Execs/lib/libsaturne.la
+#
+# cs_config.h
+#INCLUDE_PLE+= -I$(ROOT_SATURNE)
+# cs_defs.h
+#INCLUDE_PLE+= -I$(ROOT_SATURNE)/src/base/ 
+# cs_defs.h
+#INCLUDE_PLE+= -I$(ROOT_SATURNE)/src/fvm/
+#
+endif
+
+
+## directories 
+SRC      = $(HOME)/Src/
+TESTS    = $(HOME)/Tests/
+INCLUDES = $(HOME)/Include/
+WRAPPERS = $(HOME)/Wrappers/
+DOCS     = $(HOME)/Docs/
+TOOLS    = $(HOME)/Tools/
+
+
+## tests 
+CTESTS    = $(HOME)/Tests/CLaplace/
+FTESTS    = $(HOME)/Tests/FLaplace/
+PTESTS    = $(HOME)/Wrappers/Python/
+
+
+#========================================================================#
+#
+# +SATURNE COMPILATION
+#  ./configure CC=mpicc --enable-static=no --enable-dynamic=no --enable-relocatable --without-cgns --without-scotch --disable-gui --prefix=WHERE_WILL_BE_INSTALLED?
+#  make 
+#  make install 
+#
+# +ALYA+SATURNE COMPILATION 
+#   make libplepp SATURNE=1 ROOT_SATURNE=/home/bsc21/bsc21704/z2014/Repository/Saturne330/
+#
+#========================================================================#
+
+#========================================================================#
+# 1) set $(ALYA_PATH) 
+# 2) cd $(ALYA_PATH)/Thirdparties/libple/ 
+# 3) ./configure CC=mpicc --prefix=$(ALYA_PATH)/Thirdparties/libple/Execs 
+# 4) make 
+# 5) make install    
+# 6) export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(ALYA_PATH)/Thirdparties/libple/Execs 
+# 7)
+# 8) set HOME, ROOT_PLE, ROOT_ALYA
+# 9) into .bashrc set  
+#    export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(ROOT_PLE)/lib
+#    export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(WRAPPERS)/Fortran
+#10) into configure chosed 
+#    add -L$(WRAPPERS)/Fortran -lcommdom
+#11) compile Alya
+#12) ldd Alya.x show where the libcommdom.so is 
+#13) into $(TOOLS)/Meshes/Impinging try  
+#    mpirun -np 1 $(ALYA_PATH)/Executables/unix/Alya.x LOW/mesh01_nsi --name FLUID :  $(ALYA_PATH)/Executables/unix/Alya.x  TEM/temper03 --name SOLID 
+#
+#14)  ln -s $(TOOLS)/Alya/mod_commdom.f90 $(ALYA_PATH)Sources/kernel/parall/mod_commdom.f90  
+#15) reconfigure 
+#16) make 
+#
+#
+#========================================================================#

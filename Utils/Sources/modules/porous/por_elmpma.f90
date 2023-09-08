@@ -1,0 +1,86 @@
+!------------------------------------------------------------------------
+!> @addtogroup Porous 
+!> @{
+!> @file    por_elmpma.f90
+!> @date    13/05/2013
+!> @author  Herbert Owen
+!> @brief   Compute elemental matrix for pressure eq
+!> @details Compute elemental matrix for pressure eq - similar to tur_elmmsu
+!> @} 
+!------------------------------------------------------------------------
+subroutine por_elmpma(&
+     pnode,pgaus,gpdif,gpgra,gppre,&
+     gpden,gpsha,gpcar,gpvol,&
+     elmat,elrhs)
+  use def_kintyp, only       :  ip,rp
+  use def_domain, only       :  ndime,mnode,mgaus
+  use def_porous, only       :  dtinv_por
+  implicit none
+  integer(ip), intent(in)    :: pnode,pgaus
+  real(rp),    intent(in)    :: gppre(mgaus,2)     ! component 2 is previous time step
+  real(rp),    intent(in)    :: gpdif(ndime,pgaus) ! Note that we include anisotropic difusion 
+  real(rp),    intent(in)    :: gpgra(ndime,pgaus) ! Gravity terms  (g/Bw)(rho_o*k_ro/mu_o+rho_w*k_rw/mu_w)K(idime)*gravi_por(idime)
+  real(rp),    intent(in)    :: gpden(pgaus)       ! Despite it is not actually a density but cwp +cop *B0/Bw we still call it dens
+  real(rp),    intent(in)    :: gpsha(pnode,pgaus)
+  real(rp),    intent(in)    :: gpcar(ndime,mnode,pgaus)
+  real(rp),    intent(in)    :: gpvol(pgaus)
+  real(rp),    intent(out)   :: elmat(pnode,pnode),elrhs(pnode)
+
+  integer(ip)                :: inode,jnode,idime,igaus
+  real(rp)                   :: fact2,resid(pnode),gpper(pnode),elrh0(pnode),rhsit,xmuit
+  !
+  ! Initialization
+  !
+  do inode=1,pnode
+     elrhs(inode)=0.0_rp
+     do jnode=1,pnode
+        elmat(jnode,inode)=0.0_rp
+     end do
+  end do
+
+  do igaus=1,pgaus
+     !
+     ! calculus of residual resid and perturbation function gppre
+     !
+     do inode=1,pnode
+        resid(inode) = gpden(igaus) * gpsha(inode,igaus) * dtinv_por        ! MASS (beware here gpden is not actually the density)
+        gpper(inode) = gpsha(inode,igaus)         
+     end do
+     rhsit  = dtinv_por * gpden(igaus) * gppre(igaus,2)
+     ! 
+     !   Diffusion Term & gravity term
+     !
+     fact2 = gpvol(igaus)
+     do inode = 1, pnode
+        do jnode= 1,inode -1 ! Off diagonal terms
+           xmuit = 0.0_rp
+           do idime= 1, ndime
+              xmuit = xmuit + gpcar(idime, jnode, igaus) * gpcar(idime, inode,igaus)*gpdif(idime,igaus)
+           end do
+           xmuit = xmuit*fact2
+           elmat(inode, jnode)= elmat(inode, jnode) + xmuit
+           elmat(jnode, inode)= elmat(jnode, inode) + xmuit
+        end do
+        xmuit = 0.0_rp       ! diagonal terms & gravity term
+        elrh0(inode) =  0.0_rp
+        do idime=1, ndime
+           xmuit = xmuit + gpcar(idime, inode, igaus) * gpcar(idime, inode,igaus) * gpdif(idime,igaus)
+           elrh0(inode) = elrh0 (inode) + gpcar(idime,inode,igaus) * gpgra(idime,igaus) * fact2
+        end do
+        elmat(inode, inode)= elmat(inode, inode) + xmuit * fact2
+     end do
+     !
+     ! Assembly of the matrix 
+     !
+     do inode =1, pnode
+        do jnode =1, pnode
+           elmat(inode, jnode) = elmat(inode, jnode) + resid(jnode) * gpper(inode) * fact2  !   &        
+!                + resi2(jnode) * (gpper(inode)-gpsha(inode,igaus)*gpvol(igaus)) !this term will be needed for convective terms
+        end do
+        elrhs(inode) = elrhs(inode) + elrh0(inode) + rhsit * gpper(inode) * fact2
+     end do
+
+  end do
+
+end subroutine por_elmpma
+

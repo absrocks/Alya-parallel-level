@@ -1,0 +1,36 @@
+\subsection{Debugging with totalview}
+
+First logging to nodes 4 or 5. ssh -Y login5. Then submit the following
+run.
+
+\begin{lstlisting}
+#!/bin/bash 
+#BSUB -n 32 
+#BSUB -oo output_32_%J.out 
+#BSUB -eo output_32_%J.err 
+#BSUB -R"span[ptile=16]" 
+#BSUB -J totalview 
+#BSUB -x 
+#BSUB -W 00:30 
+#BSUB -q x11
+module purge 
+module load impi totalview 
+export PATH=$PWD:$PATH 
+totalview
+\end{lstlisting}
+
+
+You need to create in the folder where you are going to submit the
+run an additional file named mpiexec with:
+\begin{lstlisting}
+#!/bin/bash 
+mpirun $@
+\end{lstlisting}
+
+
+and give it execute rights (chmod a+x mpiexec).
+
+There is more information in the Marenostrum users guide. 
+
+When its starts chose a parallel debugging session and then select
+MPI-hydra.

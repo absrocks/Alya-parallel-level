@@ -70,7 +70,7 @@ endif
 #
 # Lists
 #
-FMODS=   def_master.o KindType.o InpOut.o def_netCDF.o mod_usenetcdf.o
+FMODS=   def_master.o KindType.o InpOut.o def_netCDF.o
 ifeq ($(NETCDF),YES)
     FOBJS=  runend.o Turnon.o Doiter.o Reapro.o Solite.o Solvtr.o Turnof.o Wind.o readinp.o Begste.o Postpr.o GABLS.o read_meso.o netCDF_output.o Restart.o Endste.o read_qrad.o
 else

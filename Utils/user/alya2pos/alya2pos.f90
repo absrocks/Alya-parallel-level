@@ -204,7 +204,7 @@ program alya2pos
   kfl_stlbo = 0
   kfl_resta = 0     ! restart
   kfl_order = 0     ! Original numbering for elements
-
+  
   !----------------------------------------------------------------------
   !
   ! Header
@@ -243,7 +243,6 @@ program alya2pos
 
   open(unit=8,file=trim(namda)//'.post.alyapar',form='formatted')
   read(8,*) npart_par
-
   allocate( nelem_par(npart_par) )
   allocate( npoin_par(npart_par) )
   allocate( nboun_par(npart_par) )
@@ -433,7 +432,7 @@ program alya2pos
         do ipart = 1,npart_par
            if( lsubd(ipart) == 1 ) then
               read(ii) nelem
-              if( nelem > 0 ) read(ii) ( ltype(ielem),ielem=ieles+1,ieles+nelem)
+              read(ii) ( ltype(ielem),ielem=ieles+1,ieles+nelem)
               do ielem = ieles+1,ieles+nelem
                  ielty = abs(ltype(ielem))
                  lexis(ielty) = lexis(ielty) + 1
@@ -460,18 +459,16 @@ program alya2pos
         call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
 
         call livinf(2_ip,'LNODS',0_ip)
-
         ieles = 0
         ipois = 0
         nelem_total = iiiii(2)
         mnode = iiiii(1)
-
         allocate(  lnods(mnode,nelem_total) )
 
         do ipart = 1,npart_par
            if( lsubd(ipart) == 1 ) then
               read(ii) nelem
-              if( nelem > 0 ) read(ii) ( (lnods(inode,ielem),inode=1,mnode),ielem=ieles+1,ieles+nelem)
+              read(ii) ( (lnods(inode,ielem),inode=1,mnode),ielem=ieles+1,ieles+nelem)
               do ielem = ieles+1,ieles+nelem
                  do inode = 1,nnode(ltype(ielem))
                     lnods(inode,ielem) = lnods(inode,ielem) + ipois
@@ -509,11 +506,11 @@ program alya2pos
         do ipart = 1,npart_par
            if( lsubd(ipart) == 1 ) then
               read(ii) npoin
-              if( npoin > 0 ) read(ii) ( (coord_loc(idime,ipoin),idime=1,ndime),ipoin=ipois+1,ipois+npoin)
+              read(ii) ( (coord_loc(idime,ipoin),idime=1,ndime),ipoin=ipois+1,ipois+npoin)
               ipois = ipois + npoin_par(ipart)
            else
               read(ii) npoin
-              if( npoin > 0 ) read(ii) ( (dummi,idime=1,ndime),ipoin=1,npoin)
+              read(ii) ( (dummi,idime=1,ndime),ipoin=1,npoin)
            end if
         end do
 
@@ -542,11 +539,11 @@ program alya2pos
         do ipart = 1,npart_par
            if( lsubd(ipart) == 1 ) then
               read(ii) npoin
-              if( npoin > 0 ) read(ii) ( lninv(ipoin),ipoin=ipois+1,ipois+npoin)
+              read(ii) ( lninv(ipoin),ipoin=ipois+1,ipois+npoin)
               ipois = ipois + npoin_par(ipart)
            else
               read(ii) npoin
-              if( npoin > 0 ) read(ii) ( dummi,ipoin=1,npoin)
+              read(ii) ( dummi,ipoin=1,npoin)
            end if
         end do
 
@@ -557,125 +554,113 @@ program alya2pos
         !
         ! LELCH
         !
-        inquire(FILE=trim(namda)//'-LELCH.post.alyabin',EXIST=lgexi)
-        if( lgexi ) then
-           if( kfl_conve == 0 ) then
-              open(unit=19,file=trim(namda)//'-LELCH.post.alyabin',form='unformatted')
-           else
-              open(unit=19,file=trim(namda)//'-LELCH.post.alyabin',form='unformatted',convert='BIG_ENDIAN')
-           end if
-           call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
-
-           ieles = 0
-           nelem_total = iiiii(2)
-           call livinf(2_ip,'LELCH',0_ip)
-           allocate(  lelch(nelem_total) )
-
-           do ipart = 1,npart_par
-              read(ii) nelem
-              if( nelem > 0 ) read(ii) ( lelch(ielem),ielem=ieles+1,ieles+nelem)
-              do ielem = ieles+1,ieles+nelem
-                 lelch(ielem) = lelch(ielem)+10
-              end do
-              ieles = ieles + nelem_par(ipart)
-           end do
-
-           close(unit=19)
-           call livinf(3_ip,'LELCH',0_ip)
+        if( kfl_conve == 0 ) then
+           open(unit=19,file=trim(namda)//'-LELCH.post.alyabin',form='unformatted')
+        else
+           open(unit=19,file=trim(namda)//'-LELCH.post.alyabin',form='unformatted',convert='BIG_ENDIAN')
         end if
+        call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
+
+        ieles = 0
+        nelem_total = iiiii(2)
+        call livinf(2_ip,'LELCH',0_ip)
+        allocate(  lelch(nelem_total) )
+
+        do ipart = 1,npart_par
+           read(ii) nelem
+           read(ii) ( lelch(ielem),ielem=ieles+1,ieles+nelem)
+           do ielem = ieles+1,ieles+nelem
+              lelch(ielem) = lelch(ielem)+10
+           end do
+           ieles = ieles + nelem_par(ipart)
+        end do
+
+        close(unit=19)
+        call livinf(3_ip,'LELCH',0_ip)
 
      else if( ii == 20 .and. kfl_bound == 1 ) then
         !
         ! LTYPB
         !
-        inquire(FILE=trim(namda)//'-LTYPB.post.alyabin',EXIST=lgexi)
-        if( lgexi ) then
-           if( kfl_conve == 0 ) then
-              open(unit=20,file=trim(namda)//'-LTYPB.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr)
-           else
-              open(unit=20,file=trim(namda)//'-LTYPB.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr,convert='BIG_ENDIAN')
-           end if
-           if( ioerr /= 0 ) then
-              kfl_bound = 0
-              goto 998
-           end if
-           call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
-
-           ibous = 0
-           nboun_total = iiiii(2)
-           call livinf(2_ip,'LTYPB',0_ip)
-           allocate(  ltypb(nboun_total) )
-
-           do ipart = 1,npart_par
-              if( lsubd(ipart) == 1 ) then
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( ltypb(iboun),iboun=ibous+1,ibous+nboun)
-                 do iboun = ibous+1,ibous+nboun
-                    iblty = abs(ltypb(iboun))
-                    lbxis(iblty) = lbxis(iblty) + 1
-                    lexis(iblty) = lexis(iblty) + 1
-                 end do
-                 ibous = ibous + nboun_par(ipart)
-              else
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( dummi,iboun=1,nboun)
-              end if
-           end do
-
-           close(unit=20)
-           call livinf(3_ip,'LTYPB',0_ip)
+        if( kfl_conve == 0 ) then
+           open(unit=20,file=trim(namda)//'-LTYPB.post.alyabin',form='unformatted',status='old',iostat=ioerr)
+        else
+           open(unit=20,file=trim(namda)//'-LTYPB.post.alyabin',form='unformatted',status='old',iostat=ioerr,convert='BIG_ENDIAN')
         end if
+        if( ioerr /= 0 ) then
+           kfl_bound = 0
+           goto 998
+        end if
+        call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
+
+        ibous = 0
+        nboun_total = iiiii(2)
+        call livinf(2_ip,'LTYPB',0_ip)
+        allocate(  ltypb(nboun_total) )
+
+        do ipart = 1,npart_par
+           if( lsubd(ipart) == 1 ) then
+              read(ii) nboun
+              read(ii) ( ltypb(iboun),iboun=ibous+1,ibous+nboun)
+              do iboun = ibous+1,ibous+nboun
+                 iblty = abs(ltypb(iboun))
+                 lbxis(iblty) = lbxis(iblty) + 1
+              end do
+              ibous = ibous + nboun_par(ipart)
+           else
+              read(ii) nboun
+              read(ii) ( dummi,iboun=1,nboun)
+           end if
+        end do
+
+        close(unit=20)
+        call livinf(3_ip,'LTYPB',0_ip)
 
      else if( ii == 21 .and. kfl_bound == 1 ) then
         !
         ! LNODB
         !
-        inquire(FILE=trim(namda)//'-LNODB.post.alyabin',EXIST=lgexi)
-        if( lgexi ) then
-           if( kfl_conve == 0 ) then
-              open(unit=21,file=trim(namda)//'-LNODB.post.alyabin',form='unformatted')
-           else
-              open(unit=21,file=trim(namda)//'-LNODB.post.alyabin',form='unformatted',convert='BIG_ENDIAN')
-           end if
-           call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
-
-           call livinf(2_ip,'LNODB',0_ip)
-           ibous = 0
-           ipois = 0
-           nboun_total = iiiii(2)
-           mnodb = iiiii(1)
-           allocate(  lnodb(mnodb,nboun_total) )
-
-           do ipart = 1,npart_par
-              if( lsubd(ipart) == 1 ) then
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( (lnodb(inodb,iboun),inodb=1,mnodb),iboun=ibous+1,ibous+nboun)
-                 do iboun = ibous+1,ibous+nboun
-                    do inodb = 1,nnode(ltypb(iboun))
-                       lnodb(inodb,iboun) = lnodb(inodb,iboun) + ipois
-                    end do
-                 end do
-                 ibous = ibous + nboun_par(ipart)
-                 ipois = ipois + npoin_par(ipart)
-              else
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( (dummi,inodb=1,mnodb),iboun=1,nboun)
-              end if
-
-           end do
-
-           !write(*,*)'nboun_total=',nboun_total
-           !write(*,*)'mnodb=',mnodb
-           !write(*,*)''
-           !do iboun=1,nboun_total
-           !   write(*,*)'lnodb(inodb,iboun)',(lnodb(inodb,iboun),inodb=1,mnodb)
-           !end do
-
-           close(unit=21)
-           call livinf(3_ip,'LNODB',0_ip)
+        if( kfl_conve == 0 ) then
+           open(unit=21,file=trim(namda)//'-LNODB.post.alyabin',form='unformatted')
+        else
+           open(unit=21,file=trim(namda)//'-LNODB.post.alyabin',form='unformatted',convert='BIG_ENDIAN')
         end if
+        call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
+
+        call livinf(2_ip,'LNODB',0_ip)
+        ibous = 0
+        ipois = 0
+        nboun_total = iiiii(2)
+        mnodb = iiiii(1)
+        allocate(  lnodb(mnodb,nboun_total) )
+
+        do ipart = 1,npart_par
+           if( lsubd(ipart) == 1 ) then
+              read(ii) nboun
+              read(ii) ( (lnodb(inodb,iboun),inodb=1,mnodb),iboun=ibous+1,ibous+nboun)
+              do iboun = ibous+1,ibous+nboun
+                 do inodb = 1,nnode(ltypb(iboun))
+                    lnodb(inodb,iboun) = lnodb(inodb,iboun) + ipois
+                 end do
+              end do
+              ibous = ibous + nboun_par(ipart)
+              ipois = ipois + npoin_par(ipart)
+           else
+              read(ii) nboun
+              read(ii) ( (dummi,inodb=1,mnodb),iboun=1,nboun)
+           end if
+
+        end do
+
+        !write(*,*)'nboun_total=',nboun_total
+        !write(*,*)'mnodb=',mnodb
+        !write(*,*)''
+        !do iboun=1,nboun_total
+        !   write(*,*)'lnodb(inodb,iboun)',(lnodb(inodb,iboun),inodb=1,mnodb)
+        !end do
+
+        close(unit=21)
+        call livinf(3_ip,'LNODB',0_ip)
 
      else if( ii == 22 ) then
         !
@@ -700,14 +685,14 @@ program alya2pos
            do ipart = 1,npart_par
               if( lsubd(ipart) == 1 ) then
                  read(ii) nelem
-                 if( nelem > 0 ) read(ii) ( lesub(ielem),ielem=ieles+1,ieles+nelem)
+                 read(ii) ( lesub(ielem),ielem=ieles+1,ieles+nelem)
                  ieles = ieles + nelem_par(ipart)
               else
                  read(ii) nelem
-                 if( nelem > 0 ) read(ii) ( dummi,ielem=1,nelem)
+                 read(ii) ( dummi,ielem=1,nelem)
               end if
            end do
-
+           
            !do ipart = 1,npart_par
            !   read(ii) nelem
            !   read(ii) ( lesub(ielem),ielem=ieles+1,ieles+nelem)
@@ -753,7 +738,7 @@ program alya2pos
 
         do ipart = 1,npart_par
            read(ii) nelem
-           if( nelem > 0 ) read(ii) ( leinv(ielem),ielem=ieles+1,ieles+nelem)
+           read(ii) ( leinv(ielem),ielem=ieles+1,ieles+nelem)
            ieles = ieles + nelem_par(ipart)
         end do
 
@@ -766,120 +751,103 @@ program alya2pos
         !
         ! LMATE
         !
-        inquire(file=trim(namda)//'-LMATE.post.alyabin',exist=lgexi)
-        if( lgexi ) then
-           if( kfl_conve == 0 ) then
-              open(unit=24,file=trim(namda)//'-LMATE.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr)
-           else
-              open(unit=24,file=trim(namda)//'-LMATE.post.alyabin',form='unformatted',&
-                   status='old',convert='BIG_ENDIAN',iostat=ioerr)
-           end if
-
-           !call livinf(1_ip,'WARNING! ELEMENT NUMBERING IS NOT THE ORIGINAL',0_ip)
-           if( ioerr /= 0 ) then
-              call livinf(1_ip,'WARNING! MATERIAL FILE NOT AVAILABLE',0_ip)
-              goto 1999
-           end if
-
-           call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
-
-           ieles = 0
-           nelem_total = iiiii(2)
-           call livinf(2_ip,'LMATE',0_ip)
-           allocate(  lmate(nelem_total) )
-
-           do ipart = 1,npart_par
-              read(ii) nelem
-              if( nelem > 0 ) read(ii) ( lmate(ielem),ielem=ieles+1,ieles+nelem)
-              ieles = ieles + nelem_par(ipart)
-           end do
-
-           close(unit=24)
-           call livinf(3_ip,'LMATE',0_ip)
-
-1999       continue
-
+        if( kfl_conve == 0 ) then
+           open(unit=24,file=trim(namda)//'-LMATE.post.alyabin',form='unformatted',status='old',iostat=ioerr)
+        else
+           open(unit=24,file=trim(namda)//'-LMATE.post.alyabin',form='unformatted',status='old',convert='BIG_ENDIAN',iostat=ioerr)
         end if
+
+        !call livinf(1_ip,'WARNING! ELEMENT NUMBERING IS NOT THE ORIGINAL',0_ip)
+        if( ioerr /= 0 ) then
+           call livinf(1_ip,'WARNING! MATERIAL FILE NOT AVAILABLE',0_ip)
+           goto 1999
+        end if
+
+        call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
+
+        ieles = 0
+        nelem_total = iiiii(2)
+        call livinf(2_ip,'LMATE',0_ip)
+        allocate(  lmate(nelem_total) )
+
+        do ipart = 1,npart_par
+           read(ii) nelem
+           read(ii) ( lmate(ielem),ielem=ieles+1,ieles+nelem)
+           ieles = ieles + nelem_par(ipart)
+        end do
+
+        close(unit=24)
+        call livinf(3_ip,'LMATE',0_ip)
+
+1999    continue
 
      else if( ii == 25 .and. kfl_bound == 1 ) then
         !
         ! LBOCH
         !
-        inquire(file=trim(namda)//'-LBOCH.post.alyabin',exist=lgexi)
-        if( lgexi ) then
-           if( kfl_conve == 0 ) then
-              open(unit=25,file=trim(namda)//'-LBOCH.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr)
-           else
-              open(unit=25,file=trim(namda)//'-LBOCH.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr,convert='BIG_ENDIAN')
-           end if
-           if( ioerr /= 0 ) then
-              goto 998
-           end if
-           call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
-
-           ibous = 0
-           nboun_total = iiiii(2)
-           call livinf(2_ip,'LBOCH',0_ip)
-           allocate(  lboch(nboun_total) )
-
-           do ipart = 1,npart_par
-              if( lsubd(ipart) == 1 ) then
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( lboch(iboun),iboun=ibous+1,ibous+nboun)
-                 ibous = ibous + nboun_par(ipart)
-              else
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( dummi,iboun=1,nboun)
-              end if
-           end do
-
-           close(unit=25,iostat=ioerr)
-           if( ioerr /= 0 ) call runend('COULD NOT CLOSE FILE')
-           call livinf(3_ip,'LBOCH',0_ip)
-
+        if( kfl_conve == 0 ) then
+           open(unit=25,file=trim(namda)//'-LBOCH.post.alyabin',form='unformatted',status='old',iostat=ioerr)
+        else
+           open(unit=25,file=trim(namda)//'-LBOCH.post.alyabin',form='unformatted',status='old',iostat=ioerr,convert='BIG_ENDIAN')
         end if
+        if( ioerr /= 0 ) then
+           goto 998
+        end if
+        call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
+
+        ibous = 0
+        nboun_total = iiiii(2)
+        call livinf(2_ip,'LBOCH',0_ip)
+        allocate(  lboch(nboun_total) )
+
+        do ipart = 1,npart_par
+           if( lsubd(ipart) == 1 ) then
+              read(ii) nboun
+              read(ii) ( lboch(iboun),iboun=ibous+1,ibous+nboun)
+              ibous = ibous + nboun_par(ipart)
+           else
+              read(ii) nboun
+              read(ii) ( dummi,iboun=1,nboun)
+           end if
+        end do
+
+        close(unit=25,iostat=ioerr)
+        if( ioerr /= 0 ) call runend('COULD NOT CLOSE FILE')
+        call livinf(3_ip,'LBOCH',0_ip)
 
      else if( ii == 26 .and. kfl_bound == 1 ) then
         !
         ! LBINV
         !
-        inquire(file=trim(namda)//'-LBINV.post.alyabin',exist=lgexi)
-        if( lgexi ) then
-           if( kfl_conve == 0 ) then
-              open(unit=26,file=trim(namda)//'-LBINV.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr)
-           else
-              open(unit=26,file=trim(namda)//'-LBINV.post.alyabin',form='unformatted',&
-                   status='old',iostat=ioerr,convert='BIG_ENDIAN')
-           end if
-           if( ioerr /= 0 ) then
-              goto 998
-           end if
-           call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
-
-           ibous = 0
-           nboun_total = iiiii(2)
-           call livinf(2_ip,'LBINV',0_ip)
-           allocate(  lbinv(nboun_total) )
-
-           do ipart = 1,npart_par
-              if( lsubd(ipart) == 1 ) then
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( lbinv(iboun),iboun=ibous+1,ibous+nboun)
-                 ibous = ibous + nboun_par(ipart)
-              else
-                 read(ii) nboun
-                 if( nboun > 0 ) read(ii) ( dummi,iboun=1,nboun)
-              end if
-           end do
-
-           close(unit=26,iostat=ioerr)
-           if( ioerr /= 0 ) call runend('COULD NOT CLOSE FILE')
-           call livinf(3_ip,'LBINV',0_ip)
+        if( kfl_conve == 0 ) then
+           open(unit=26,file=trim(namda)//'-LBINV.post.alyabin',form='unformatted',status='old',iostat=ioerr)
+        else
+           open(unit=26,file=trim(namda)//'-LBINV.post.alyabin',form='unformatted',status='old',iostat=ioerr,convert='BIG_ENDIAN')
         end if
+        if( ioerr /= 0 ) then
+           goto 998
+        end if
+        call reahed(ii,npart_par,wwww8,iiiii,rrrrr)
+
+        ibous = 0
+        nboun_total = iiiii(2)
+        call livinf(2_ip,'LBINV',0_ip)
+        allocate(  lbinv(nboun_total) )
+        
+        do ipart = 1,npart_par
+           if( lsubd(ipart) == 1 ) then
+              read(ii) nboun
+              read(ii) ( lbinv(iboun),iboun=ibous+1,ibous+nboun)
+              ibous = ibous + nboun_par(ipart)
+           else
+              read(ii) nboun
+              read(ii) ( dummi,iboun=1,nboun)
+           end if
+        end do
+
+        close(unit=26,iostat=ioerr)
+        if( ioerr /= 0 ) call runend('COULD NOT CLOSE FILE')
+        call livinf(3_ip,'LBINV',0_ip)
 
      end if
 
@@ -1009,21 +977,20 @@ program alya2pos
         nboun_2 = nboun_2 + nboun_par(ipart)
      end if
   end do
+
   !
   ! Initialization flag for cohesive element detection
   !
-  if( associated(lelch) ) then
-     flag_coh = .False.
-     do ielem = 1,nelem_total
-        if( lelch(ielem) == 17_ip) then
-           flag_coh = .True.
-           exit
-        end if
-     end do
-  end if
-  
+  flag_coh = .False.
+  do ielem = 1,nelem_total
+     if( lelch(ielem) == 17_ip) then
+        flag_coh = .True.
+        exit
+     end if
+  end do
+
   if( kfl_elimi == 1 ) npoin_2 = npoin_total
-  
+
   if( forma == 'vtk' ) then
      open(unit=100,file=trim(namda)//'.msh.vtu',form='formatted')
      write (6,*) '     WARNING!! VTK FORMAT ONLY EXPORTS THE MESH'
@@ -1147,7 +1114,6 @@ program alya2pos
 
      ipois = 0
      ieles = 0
-     
      if( kfl_inter == 1 ) then
         !
         ! Reroder elements (mainly for debugging purpose)
@@ -1156,7 +1122,7 @@ program alya2pos
            allocate(leinv_cpy(nelem_total))
            leinv_cpy(1:nelem_total) = leinv(1:nelem_total) 
            call maths_heapsort_int(2_ip,mnode,nelem_total,leinv,lnods)
-        end if
+        end if        
         call output_gid_mesh(mnode,npoin_2,nelem_2,100_ip,lexis,ltype,lnods, &
              coord,markm,lelch,leinv,ieles,ipois,ndime,ndime,kfl_markm,   &
              flag_coh,namda)
@@ -1164,10 +1130,9 @@ program alya2pos
         !   leinv(1:nelem_total) = leinv_cpy(1:nelem_total)
         !   deallocate(leinv_cpy)
         !end if
-
+        
      end if
-
-     if( kfl_bound == 1 .and. nboun_total > 0 ) then
+     if( kfl_bound == 1 ) then
         !if( associated(lboch) ) then
         !   markm => lboch
         !else
@@ -1178,17 +1143,15 @@ program alya2pos
            allocate(lbinv_cpy(nboun_total))
            lbinv_cpy(1:nboun_total) = lbinv(1:nboun_total) 
            call maths_heapsort_int(2_ip,mnodb,nboun_total,lbinv,lnodb)
-        end if
+        end if        
         call output_gid_mesh(mnodb,npoin,nboun_2,100_ip,lbxis,ltypb,lnodb,  &
              coord,markm,lboch,lbinv,ieles,ipois,ndime,ndime-1,kfl_markm, &
              flag_coh,trim(namda)//'_BOU')
      end if
-     
-     if( kfl_markm > 0 ) then
-        if( associated(markm) ) deallocate( markm )
-     end if
-     
-    close(100)
+
+     if( kfl_markm > 0 ) deallocate( markm )
+
+     close(100)
 
   else if ( forma == 'alya' ) then
 
@@ -1246,7 +1209,7 @@ program alya2pos
      if ( kfl_ensbi == 0 ) then
         open(unit=101,file=trim(namda)//'.ensi.geo', form='formatted')
         if (kfl_markm == 4) open(unit=202,file=trim(namda)//'.ensi.LELCH', form='formatted')
-        if( kfl_bound == 1 .and. nboun_total > 0 ) then
+        if( kfl_bound == 1 ) then
            call ensmsh(&
                 kfl_bound,mnode,mnodb,npoin_2,nelem_2,nboun_2,100_ip,&
                 101_ip,lexis,ltype,leinv,lnods,lbxis,ltypb,lnodb,lelch,coord,&
@@ -1285,7 +1248,6 @@ program alya2pos
                 101_ip,lexis,ltype,lnods,dummi,dummi,dummi,lelch,coord,&
                 ndime,namda,kfl_markm,npart_par,lsubd,nelem_par)
         end if
-
      end if
 
      !close(100)
@@ -1403,12 +1365,6 @@ program alya2pos
      read(49,'(a)',end=999) filna
      kauxi = len(trim(namda))+1
      if(filna(kauxi:kauxi)=='/') filna = filna(kauxi+1:len(filna))
-
-     kauxi = index(filna,'/')
-     if( kauxi /= 0 ) then
-        filna = filna(kauxi+1:)
-     end if
-     
      if( kfl_onlys /= 0 ) then
         kauxi = index(filna,'-',BACK = .TRUE.)
         read(filna(kauxi+1:kauxi+8),*) jstep
@@ -1453,10 +1409,8 @@ program alya2pos
            !-------------------------------------------------------------
 
            if( forma == 'gid' ) then
-              
               if( wwwww(5) == 'NELEM' .or. wwwww(5) == 'NBOUN' ) then
-
-                 do ielty=1,iesto
+                 do ielty=iesta,iesto
                     if(lexis(ielty)/=0) then
                        if(ndime==2) then
                           if(     nnode(ielty)==2) then
@@ -1473,7 +1427,7 @@ program alya2pos
                              elemt='Hexahedra'
                           else if(nnode(ielty)==6.or.nnode(ielty)==15) then
                              elemt='Prism'
-                          end if
+                          end if 
                        end if
 
                        write(11,81) 'GaussPoints '//'GP'//' Elemtype '//trim(elemt)
@@ -1571,11 +1525,11 @@ program alya2pos
                     do ipart = 1,npart_par
                        if( lsubd(ipart) == 1 ) then
                           read(ii) npoin
-                          if( npoin > 0 ) read(ii) (gisca(ipoin),ipoin=1+ipois,npoin+ipois)
+                          read(ii) (gisca(ipoin),ipoin=1+ipois,npoin+ipois)
                           ipois = ipois + npoin_par(ipart)
                        else
                           read(ii) npoin
-                          if( npoin > 0 ) read(ii) (dummi,ipoin=1,npoin)
+                          read(ii) (dummi,ipoin=1,npoin)
                        end if
                     end do
                  else
@@ -1585,7 +1539,7 @@ program alya2pos
                           if( lsubd(ipart) == 1 ) then
                              read(ii) npoin
                              allocate( gisc2(npoin_par(ipart)) )
-                             if( npoin > 0 ) read(ii) ( gisc2(ipoin),ipoin=1,npoin)
+                             read(ii) ( gisc2(ipoin),ipoin=1,npoin)
                              do ipoin = 1,npoin
                                 jpoin = lninv(ipoin+ipois)
                                 gisca(jpoin) = real(gisc2(ipoin),rp)
@@ -1594,7 +1548,7 @@ program alya2pos
                              ipois = ipois + npoin_par(ipart)
                           else
                              read(ii) npoin
-                             if( npoin > 0 ) read(ii) ( dummi,ipoin=1,npoin)
+                             read(ii) ( dummi,ipoin=1,npoin)
                           end if
                        end do
                     else if( wwwww(5) == 'NELEM' ) then
@@ -1751,11 +1705,11 @@ program alya2pos
                     do ipart = 1,npart_par
                        if( lsubd(ipart) == 1 ) then
                           read(ii) nelem
-                          if( nelem > 0 ) read(ii) (gesca(ielem),ielem=1+ieles,nelem+ieles)
+                          read(ii) (gesca(ielem),ielem=1+ieles,nelem+ieles)
                           ieles = ieles + nelem_par(ipart)
                        else
                           read(ii) nelem
-                          if( nelem > 0 ) read(ii) (dummr,ielem=1,nelem)
+                          read(ii) (dummr,ielem=1,nelem)
                        end if
                     end do
 
@@ -1781,18 +1735,18 @@ program alya2pos
 
                     deallocate(gesca)
 
-                 else if( wwwww(5) == 'NBOUN' ) then
+                  else if( wwwww(5) == 'NBOUN' ) then
 
                     allocate( gesca(nboun_total) )
                     ieles = 0
                     do ipart = 1,npart_par
                        if( lsubd(ipart) == 1 ) then
                           read(ii) nboun
-                          if( nboun > 0 ) read(ii) (gesca(ielem),ielem=1+ieles,nboun+ieles)
+                          read(ii) (gesca(ielem),ielem=1+ieles,nboun+ieles)
                           ieles = ieles + nboun_par(ipart)
                        else
                           read(ii) nboun
-                          if( nboun > 0 ) read(ii) (dummr,ielem=1,nboun)
+                          read(ii) (dummr,ielem=1,nboun)
                        end if
                     end do
 
@@ -1803,7 +1757,7 @@ program alya2pos
                        !call maths_heapsort_real(2_ip,1_ip,nboun_total,lbinv_cpy,gesca)
                        if( kfl_order == 1 ) call maths_heapsort_real(2_ip,1_ip,nboun_total,lbinv_cpy,gesca,SAVING=.true.)                       
                        do iboun = 1,nboun_total 
-                          write(11,4) lbinv(iboun)+nelem_total,gesca(iboun)
+                          write(11,4) lbinv(iboun),gesca(iboun)
                        end do
                        !deallocate(lbinv_cpy)
 
@@ -1814,7 +1768,7 @@ program alya2pos
 
                     deallocate(gesca)
 
-                 else
+                else
 
                     allocate( gesca(npoin_2) )
                     ipois = 0
@@ -1822,11 +1776,11 @@ program alya2pos
                        do ipart = 1,npart_par
                           if( lsubd(ipart) == 1 ) then
                              read(ii) npoin
-                             if( npoin > 0 ) read(ii) (gesca(ipoin),ipoin=1+ipois,npoin+ipois)
+                             read(ii) (gesca(ipoin),ipoin=1+ipois,npoin+ipois)
                              ipois = ipois + npoin_par(ipart)
                           else
                              read(ii) npoin
-                             if( npoin > 0 ) read(ii) (dummr,ipoin=1,npoin)
+                             read(ii) (dummr,ipoin=1,npoin)
                           end if
                        end do
                     else
@@ -1837,7 +1791,7 @@ program alya2pos
                           if( lsubd(ipart) == 1 ) then
                              read(ii) npoin
                              allocate( gesc2(npoin_par(ipart)) )
-                             if( npoin > 0 ) read(ii) ( gesc2(ipoin),ipoin=1,npoin)
+                             read(ii) ( gesc2(ipoin),ipoin=1,npoin)
                              do ipoin = 1,npoin
                                 jpoin = lninv(ipoin+ipois)
                                 gesca(jpoin) = gesc2(ipoin)
@@ -1846,7 +1800,7 @@ program alya2pos
                              ipois = ipois + npoin_par(ipart)
                           else
                              read(ii) npoin
-                             if( npoin > 0 ) read(ii) ( dummr,ipoin=1,npoin)
+                             read(ii) ( dummr,ipoin=1,npoin)
                           end if
                        end do
                     end if
@@ -2046,11 +2000,11 @@ program alya2pos
                  do ipart = 1,npart_par
                     if(lsubd(ipart) == 1 ) then
                        read(ii) nelem
-                       if( nelem > 0 ) read(ii) ( (gevec(idime,ielem),idime=1,pdime),ielem=ieles+1,nelem+ieles)
+                       read(ii) ( (gevec(idime,ielem),idime=1,pdime),ielem=ieles+1,nelem+ieles)
                        ieles = ieles + nelem_par(ipart)
                     else
                        read(ii) nelem
-                       if( nelem > 0 ) read(ii) ( dummr,ielem=1,pdime*nelem)
+                       read(ii) ( dummr,ielem=1,pdime*nelem)
                     end if
                  end do
 
@@ -2084,11 +2038,11 @@ program alya2pos
                  do ipart = 1,npart_par
                     if(lsubd(ipart) == 1 ) then
                        read(ii) nboun
-                       if( nboun > 0 ) read(ii) ( (gevec(idime,iboun),idime=1,pdime),iboun=ieles+1,nboun+ieles)
+                       read(ii) ( (gevec(idime,iboun),idime=1,pdime),iboun=ieles+1,nboun+ieles)
                        ieles = ieles + nboun_par(ipart)
                     else
                        read(ii) nboun
-                       if( nboun > 0 ) read(ii) ( dummr,iboun=1,pdime*nboun)
+                       read(ii) ( dummr,iboun=1,pdime*nboun)
                     end if
                  end do
 
@@ -2102,39 +2056,39 @@ program alya2pos
                        write(11,4) lbinv(iboun),(gevec(idime,iboun),idime=1,pdime)
                     end do
                     !deallocate(lbinv_cpy)
-
+                    
                  else
-
+                    
                     print*,'FORMAT NOT CODED'
-
+                    
                  end if
 
               else
-                 !if( forma == 'alya' .and. wwwww(3) == 'CODNO' ) then
-                 !   allocate( gevec(pdime,npoin_2) )
-                 !   read(ii) npoin_2
-                 !   if( npoin_2 > 0 ) read(ii) ( dummr,ipoin=1,pdime*npoin_2)
-                 !   do ipoin = 1,npoin_2
-                 !      if( abs(gevec(1,ipoin)-3.0_8) < 1.0e-3 ) then
-                 !         write(97,*) ipoin,2,1
-                 !      else if( abs(gevec(1,ipoin)-4.0_8) < 1.0e-3 ) then
-                 !         write(97,*) ipoin,1,2
-                 !      end if
-                 !   end do
-                 !   print*,'caca'
-                 !   stop 
-                 !end if
+                 if( forma == 'alya' .and. wwwww(3) == 'CODNO' ) then
+                    allocate( gevec(pdime,npoin_2) )
+                    read(ii) npoin_2
+                    read(ii) ( dummr,ipoin=1,pdime*npoin_2)
+                    do ipoin = 1,npoin_2
+                       if( abs(gevec(1,ipoin)-3.0_8) < 1.0e-3 ) then
+                          write(97,*) ipoin,2,1
+                       else if( abs(gevec(1,ipoin)-4.0_8) < 1.0e-3 ) then
+                          write(97,*) ipoin,1,2
+                       end if
+                    end do
+                    print*,'caca'
+                    stop
+                 end if
                  allocate( gevec(pdime,npoin_2) )
                  ipois = 0
                  if( kfl_elimi == 0 ) then
                     do ipart = 1,npart_par
                        if( lsubd(ipart) == 1 ) then
                           read(ii) npoin
-                          if( npoin > 0 ) read(ii) ( (gevec(idime,ipoin),idime=1,pdime),ipoin=1+ipois,npoin+ipois)
+                          read(ii) ( (gevec(idime,ipoin),idime=1,pdime),ipoin=1+ipois,npoin+ipois)
                           ipois = ipois + npoin_par(ipart)
                        else
                           read(ii) npoin
-                          if( npoin > 0 ) read(ii) ( dummr,ipoin=1,pdime*npoin)
+                          read(ii) ( dummr,ipoin=1,pdime*npoin)
                        end if
                     end do
                  else
@@ -2146,8 +2100,8 @@ program alya2pos
                     do ipart = 1,npart_par
                        if( lsubd(ipart) == 1 ) then
                           read(ii) npoin
-                         allocate( geve2(ndime,npoin_par(ipart)) )
-                          if( npoin > 0 ) read(ii) ( (geve2(idime,ipoin),idime=1,pdime),ipoin=1,npoin)
+                          allocate( geve2(ndime,npoin_par(ipart)) )
+                          read(ii) ( (geve2(idime,ipoin),idime=1,pdime),ipoin=1,npoin)
                           do ipoin = 1,npoin
                              jpoin = lninv(ipoin+ipois)
                              do idime = 1,ndime
@@ -2158,7 +2112,7 @@ program alya2pos
                           ipois = ipois + npoin_par(ipart)
                        else
                           read(ii) npoin
-                          if( npoin > 0 ) read(ii) ( dummr,ipoin=1,pdime*npoin)
+                          read(ii) ( dummr,ipoin=1,pdime*npoin)
                        end if
                     end do
                  end if
@@ -2247,12 +2201,12 @@ program alya2pos
                  if( lsubd(ipart) == 1 ) then
                     read(ii) nelem
                     read(ii) dummi
-                    if( nelem > 0 ) read(ii) ( ( (geve4(idim1,idim2,ielem),idim1=1,pdime),&
+                    read(ii) ( ( (geve4(idim1,idim2,ielem),idim1=1,pdime),&
                          idim2=1,ngaus(abs(ltype(ielem)))),ielem=ieles+1,ieles+nelem)
                  else
                     read(ii) nelem
                     read(ii) dummi
-                    if( nelem > 0 ) read(ii) ( ( (dummr,idim1=1,pdime),idim2=1,ngaus(abs(ltype(ielem)))),ielem=ieles+1,ieles+nelem)
+                    read(ii) ( ( (dummr,idim1=1,pdime),idim2=1,ngaus(abs(ltype(ielem)))),ielem=ieles+1,ieles+nelem)
                  end if
                  ieles = ieles + nelem_par(ipart)
               end do
@@ -2297,9 +2251,9 @@ program alya2pos
           wwwww(7),rttim,kfl_markm,kfl_multi)
   end if
 
-  !  call livinf(1_ip,'KEEP READING (YES=1)?',0_ip)
-  !  read(5,'(i1)') ipoin
-  !  if( ipoin == 1 ) goto 111
+!  call livinf(1_ip,'KEEP READING (YES=1)?',0_ip)
+!  read(5,'(i1)') ipoin
+!  if( ipoin == 1 ) goto 111
 
   call livinf(0_ip,' ',0_ip)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

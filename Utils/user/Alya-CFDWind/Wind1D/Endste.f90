@@ -5,7 +5,7 @@ subroutine endste
   use      def_master
   implicit none
 
-  integer  ipoin
+
   ! Updates unknowns
   do ipoin = 1, npoin
      veloc(ipoin, 1,2)=veloc(ipoin, 1,1)

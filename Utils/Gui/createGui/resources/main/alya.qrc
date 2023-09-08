@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/Alya_Icons" >
+    <file>help.img</file>
+    <file>plus.png</file>
+    <file>minus.png</file>
+  </qresource>
+</RCC>

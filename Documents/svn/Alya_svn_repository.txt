@@ -1,0 +1,22 @@
+
+Creating a new Alya related project in the repository machine:
+--------------------------------------------------------------
+
+- type in the repository machine:
+cd /gpfs/projects/bsc21/svnroot
+mkdir AlyaNewProject
+
+- create there svn structure:
+svnadmin create /gpfs/projects/bsc21/svnroot/AlyaNewProject
+
+- now from your local machine, step on the AlyaNewProject upper folder 
+and type:
+
+svn import AlyaNewProject svn+ssh://bsc21***@mn2.bsc.es/gpfs/projects/bsc21/svnroot/AlyaNewProject/Trunk
+
+and listo calisto.
+
+OJO (herbert) : A mi me costo un poco mas para el caso de Alya-Utilities. Hubo que cambiar permisos de escritura en varias
+carpetas y archivos de svnroot/Alya-Utilities;  inicialmente creado por Matias.
+
+

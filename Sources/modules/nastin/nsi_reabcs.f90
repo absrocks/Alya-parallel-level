@@ -21,12 +21,11 @@ subroutine nsi_reabcs()
   use def_nastin 
   use mod_memchk
   use mod_opebcs
-  use def_kermod
   use mod_ker_space_time_function
   use mod_vortex, only: VORTEX_NAME, vortex_reabcs  
   use mod_ecoute, only : ecoute
   implicit none
-  integer(ip)  :: dummi,iflow,ifunc
+  integer(ip)  :: dummi,iflow
   character(5) :: wfname
   !
   ! Allocate memory
@@ -39,26 +38,24 @@ subroutine nsi_reabcs()
   end if
   if( kfl_icodb > 0 ) then
      call opebcs_initialization_structure(1_ip,tbcod_nsi)     ! Velocity 
-     call opebcs_initialization_variable (5_ip,tbcod_nsi)
+     call opebcs_initialization_variable (4_ip,tbcod_nsi)
    end if
   if( kfl_geome > 0 ) then
      call opebcs_initialization_structure( 1_ip,tgcod_nsi)    ! Velocity, geometrical
      call opebcs_initialization_variable (ndime,tgcod_nsi)    ! Velocity
-  end if
+  end if 
   !
   ! NOTE: by now mflow_nsi is a parameter defined in def_nastin. but in the future it should be read from nsi.dat file.
   !
   nullify(kfl_flow_rate_codes_nsi) ! Flow rates codes
   nullify(kfl_flow_rate_normal_nsi) ! Flow rates normals 
   nullify(kfl_flow_rate_stfn_nsi)    ! Flow rates space time function number       
-  nullify(kfl_flow_rate_tfn_nsi)    ! Flow rates  time function number       
   nullify(flow_rate_values_nsi)     ! Flow rate values
   nullify(flow_rate_normals_nsi)     ! Flow rate values
   
   allocate(kfl_flow_rate_codes_nsi(mflow_nsi))
   allocate(kfl_flow_rate_normal_nsi(mflow_nsi))
   allocate(kfl_flow_rate_stfn_nsi(mflow_nsi))
-  allocate(kfl_flow_rate_tfn_nsi(mflow_nsi))
   allocate(flow_rate_values_nsi(mflow_nsi))
   allocate(flow_rate_normals_nsi(ndime,mflow_nsi))
  
@@ -77,23 +74,21 @@ subroutine nsi_reabcs()
      kfl_cadan_nsi           = 0                                    ! No coupling with ADAN for the pressure condition
      neddy_nsi               = 0                                    ! Number of eddies in the inlet box for SEM
      itebc_nsi               = 1                                    ! Initial step boundary condition
-     nodpr_global_nsi        = 0                                    ! Node where to impose pressure (global numbering)
+     nodpr_nsi               = 0                                    ! Node where to impose pressure
      exfpr_nsi               = 0                                    ! Extension of o fixpr one layer of elements
      kfl_imppr_nsi           = 0                                    ! Imposses pressure in nodes w/ fixpr>0
      kfl_divcorrec_nsi       = 0                                    ! No div(u) correction
      delta_nsi               = 0.0_rp                               ! Distance to the wall
      relbc_nsi               = 1.0_rp                               ! Boundary condition relaxation
      valpr_nsi               = 0.0_rp                               ! Pressure value
-     mulpr_nsi               = 100.0_rp                             ! Multiplicative factor for pressure imposition
      velin_nsi               = 0.0_rp                               ! Initial velocity
      poise_nsi               = 0.0_rp                               ! Parameters for Poiseuille distribution
      divcorrec_nsi           = 0.0_rp                               ! div(u)=0 parameter (alpha)
      kfl_flow_rate_codes_nsi = 0                                    ! Code on which flow rates are imposed 
-     kfl_flow_rate_normal_nsi= 0                                    ! Code on which flow rates are imposed 
+     kfl_flow_rate_normal_nsi = 0                                    ! Code on which flow rates are imposed 
      kfl_flow_rate_stfn_nsi  = 0                                    ! Flow rate with space time functions
-     kfl_flow_rate_tfn_nsi   = 0                                    ! Flow rate with space time functions
      flow_rate_values_nsi    = 0.0_rp                               ! Values of flow rates
-     flow_rate_normals_nsi   = 0.0_rp                               ! Values of flow rates
+     flow_rate_normals_nsi    = 0.0_rp                               ! Values of flow rates
      !
      ! Flow rates
      !
@@ -385,7 +380,13 @@ subroutine nsi_reabcs()
 
                  else if( exists('SPACE') ) then                                           ! >100: Space time function
                     wfname = getcha('SPACE','NULL ','#Space/time Function name')
-                    kfl_initi_nsi = 100 + space_time_function_number(wfname)
+                    if( exists('TWOFL') ) then
+                       kfl_initi_nsi = 1000
+                    else if( exists('TSUNA') ) then
+                       kfl_initi_nsi = 1002
+                    else
+                       kfl_initi_nsi = 100 + space_time_function_number(wfname)
+                    end if
                  else if( exists('VALUE') ) then                                           ! <0: value function
                     if( exists('PRESS') )then
                        kfl_inipr_nsi = &
@@ -422,35 +423,21 @@ subroutine nsi_reabcs()
                  !.md<com>where to prescribe the pressure to a zero value.
                  !
                  if( words(2) == 'AUTOM' ) then
-                    
                     kfl_confi_nsi = 0
                  else if( words(2) == 'NO   '.or. words(2) == 'OFF  ' ) then
-                    
                     kfl_confi_nsi = -1
                  else if( words(2) == 'AVERA' ) then
-                    
                     kfl_confi_nsi = -2
                  else if( words(2) == 'YES  '.or. words(2) == 'ON   ' ) then
-                    
                     kfl_confi_nsi =  1
                     if( exists('ONNOD') ) then
-                       nodpr_global_nsi = getint('ONNOD',1_ip,'#Node where to impose pressure')
+                       nodpr_nsi = getint('ONNOD',1_ip,'#Node where to impose pressure')
                     else if( exists('NODE ') ) then
-                       nodpr_global_nsi = getint('NODE ',1_ip,'#Node where to impose pressure')
+                       nodpr_nsi = getint('NODE ',1_ip,'#Node where to impose pressure')
                     end if
                     valpr_nsi = getrea('VALUE',0.0_rp,'#Pressure value')
-                    
-                 else if( words(2) == 'WEAK ' ) then
-                    kfl_confi_nsi =  2
-                    if( exists('ONNOD') ) then
-                       nodpr_global_nsi = getint('ONNOD',1_ip,'#Node where to impose pressure')
-                    else if( exists('NODE ') ) then
-                       nodpr_global_nsi = getint('NODE ',1_ip,'#Node where to impose pressure')
-                    end if
-                    valpr_nsi = getrea('VALUE',0.0_rp,'#Pressure value')
-                    mulpr_nsi = getrea('MULTI',0.0_rp,'#Pressure multiplicative factor')
                  end if
-                 
+
               else if( words(1) == 'VARIA' ) then
                  !
                  !.md<2>VARIATION:         CONSTANT | NON_CONSTANT                                     $ Boundary conditions constant/variable in time
@@ -519,7 +506,6 @@ subroutine nsi_reabcs()
            kfl_flow_rate_codes_nsi(iflow) = getint('CODE ',1_ip,  '#Imposed flow rate code')  
            flow_rate_values_nsi(iflow)    = getrea('FLOWR',0.0_rp,'#Imposed flow rate value')                 
            kfl_flow_rate_stfn_nsi(iflow) = 0_ip
-           kfl_flow_rate_tfn_nsi(iflow) = 0_ip
            if (exists('NORMA')) then
               call runend('NSI_REABCS: FLOW RATE NORMAL NOT IMPLEMENTED YET, TALK TO YOU RESPONSIBLE')
               kfl_flow_rate_normal_nsi(iflow) = kfl_flow_rate_codes_nsi(iflow) 
@@ -529,21 +515,7 @@ subroutine nsi_reabcs()
               wfname = getcha('SPACE','NULL ','#Space/time Function name')
               kfl_flow_rate_stfn_nsi(iflow) = space_time_function_number(wfname)
            end if
-           !
-           ! KFL_FUNNO_TMP > 0: Time function
-           ! KFL_FUNNO_TMP < 0: Space/time function
-           !
-           ! Time function
-           !
-           wfname = '     '
-           if( exists('TIMEF') ) then
-              wfname  = getcha('TIMEF','     ','#Time Function name')
-              do ifunc = 1,number_time_function
-                 if( trim(wfname) == trim(time_function(ifunc) % name) ) then
-                    kfl_flow_rate_tfn_nsi(iflow) = ifunc
-                 end if
-              end do
-           end if
+ 
         else if( words(1) == 'COUAD') then           
            !
            ! Pressure prescriptions will respond to coupling with ADAN
@@ -681,3 +653,60 @@ subroutine nsi_reabcs()
   end if
 
 end subroutine nsi_reabcs
+
+subroutine nsi_extnor(ibopo,exwor)
+  !------------------------------------------------------------------------
+  !****f* Nastin/nsi_extnor
+  ! NAME 
+  !    nsi_extnor
+  ! DESCRIPTION
+  !    Computes the normal at a boundary node
+  ! USES
+  ! USED BY
+  !    nsi_reabcs
+  !***
+  !------------------------------------------------------------------------  
+  use def_kintyp, only     :  ip,rp
+  use def_domain, only     :  ndime,skcos,exnor
+  use def_nastin, only     :  kfl_local_nsi,skcos_nsi,kfl_fixrs_nsi
+  implicit none
+  integer(ip), intent(in)  :: ibopo
+  real(rp),    intent(out) :: exwor(ndime,ndime)
+  integer(ip)              :: iroty,idime,jdime
+
+  if( kfl_local_nsi == 1 ) then
+     iroty = kfl_fixrs_nsi(ibopo)
+     if(iroty==-1) then                                    ! Tangent system
+        do idime = 1,ndime
+           do jdime = 1,ndime
+              exwor(jdime,idime) = exnor(jdime,idime,ibopo)
+           end do
+        end do
+     else if(iroty>=1) then                                ! Given system
+        do idime = 1,ndime
+           do jdime = 1,ndime
+              exwor(jdime,idime) = skcos(jdime,idime,iroty)
+           end do
+        end do
+     else if(iroty==-2) then                               ! Given system
+        do idime = 1,ndime
+           do jdime = 1,ndime
+              exwor(jdime,idime) = skcos_nsi(jdime,idime,ibopo)
+           end do
+        end do
+     else if(iroty==-3) then                               ! Geometrical normals
+        do idime = 1,ndime
+           do jdime = 1,ndime
+              exwor(jdime,idime) = skcos(jdime,idime,ibopo)
+           end do
+        end do
+     end if
+  else
+     do idime = 1,ndime
+        do jdime = 1,ndime
+           exwor(jdime,idime) = exnor(jdime,idime,ibopo)
+        end do
+     end do
+  end if
+
+end subroutine nsi_extnor

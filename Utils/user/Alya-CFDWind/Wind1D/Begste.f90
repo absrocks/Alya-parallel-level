@@ -31,37 +31,32 @@ subroutine Begste
      dtinv= max (dtinv*0.9d0,limit )
      if (kfl_local)   safet = dtinv 
   end if
-
+  
   ctime = ctime +1.0d0/dtinv
-  if (istep.eq.1.or.kfl_hflx_wall) tewal = tempe(1,1) 
-  if (kfl_trtem) then      ! Transient temperature
-     htime =ctime/3600.0d0 ! Current time in hours
+  if (istep.eq.1) tewal = tempe(1,1)
+  if (kfl_trtem) then     
+     htime =ctime/3600.0d0 !Current time in hours
      !
-     ! Wall temperature 'tewal' evolution calculation
+     ! Tewal calculation
      !
      if (kfl_case.eq.1) then        ! GABLS2
         call gabls2_begste(htime)
         !
-     else if (kfl_case.eq.2) then   ! Diurnal cycle
+     else if (kfl_case.eq.2) then   ! Daily cycle
         call cycle_begste(htime)
         !
-     else if (kfl_case.eq.3) then   ! GABLS3 (adds mesoscale tendencies)
-        call gabls3_begste
-        !
-     else if (kfl_case.eq.4) then   ! GABLS1  ! May is now by defauls
-        tewal =  265.0 - htime*0.25d0
-        if (istep.eq.1)     teref = tewal
-     else if (istep==1) then ! no prescribed case! 
-       teref = tewal
-  !        call runend('Begste: Transient THERMAL case is incorrect or not implemented')
-
-     else ! no prescribed case! example: radiation case 
-!        call interp_wallte(tewal)  ! only for prescribed wall temperature 
-!        tewal = tewal +265.0 - 285.15
-!        teref = tewal
+    else if (kfl_case.eq.3) then    ! GABLS3 (adds mesoscale tendencies)
+       call gabls3_begste
+       !
+    else if (kfl_case.eq.4) then    ! GABLS1
+       tewal =  265.0 - htime*0.25d0
+       if (istep.eq.1)     teref = tewal            
+    else if (istep==1) then
+       teref = tewal 
+       !        call runend('Begste: Transient THERMAL case is incorrect or not implemented')
+!!$    else
 !!$       perio = 24.0*3600.0
 !!$       tewal = 265.0 - 8.0*sin(2.0*pi/perio*ctime)
-!        print *, 'tewal',ctime/3600.0, tewal
-       end if
-  end if
+    end if
+ end if
 end subroutine begste

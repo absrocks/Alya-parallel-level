@@ -1,0 +1,25 @@
+\subsection{File  of a case}
+When you get your first example case in your hands you'll see a directory with several files inside, almost all of them finishing with the ``*.dat'' extension. Something that all the files have in common is the beginning of the file name; that's the case name. What each file have inside is related with the physics of the case and with the way it's going to be solved. But, luckily, all the cases that you'll encounter will have the same type of information inside the files with the same extension.
+
+So, a brief description for this is:
+
+\begin{itemize}
+	\item \textbf{\textless case\_name\textgreater .dat} it has information about the time discretization and the modules used 
+	\item \textbf{\textless case\_name\textgreater.ker.dat} it contains the properties of the materials, some general options about numerical aspects as mesh division, and general posprocessing variable options.
+	\item \textbf{\textless case\_name\textgreater.dom.dat} it has options related to the mesh. FOr example the numer of then nodes, the type of elements used or the rule of integration. It also have links (seen as ``include \textless file\_name \textgreater'') to the geometry file, the boundary file and other optional domain related files.
+	\item \textbf{\textless case\_name\textgreater.geo.dat} it has the main information about the mesh: the coordinates of each node and the conectivity of the nodes.
+	\item \textbf{\textless case\_name\textgreater.\textless physi\textgreater.dat} here, the \textless physi\textgreater portion depends in the physics selected to solve. For example to solve the Navier Stokes incombresible it should be an ``*nsi.dat'' file. Inside of it you'll find options related with the physic of that particular set of equations to solve, and the solver used to obtain the results.
+	\item \textbf{\textless case\_name\textgreater.post.alyadat} Yep, it's OK, its ``*.alyadat'' don't ask me why. It have information about the way the postprocess it's going to be done.
+\end{itemize}
+
+So basically, those are the files you'll encounter. Now, let's solve the thing.
+
+\subsection{Running the case}
+Oh, this is the easy part. Just get inside of the directory of your case, and write the path to the executable, using the problem name as input:
+
+\belowcaptionskip=-10pt
+\begin{lstlisting}[label=making,caption=Making Alya]
+[mpriun -n nc] /path/to/Alya/Executables/unix/Alya.x <problem_name>
+\end{lstlisting}
+
+If you want to run the case in parallel, make sure to execute it with the ``mpirun'' command. If you don't specify the number of cores, it's going to use all the cores available.

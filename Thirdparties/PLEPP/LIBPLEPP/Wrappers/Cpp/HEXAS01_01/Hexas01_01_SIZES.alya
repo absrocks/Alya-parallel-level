@@ -1,0 +1,8 @@
+$$Create by J. MIGUEL ZAVALA-AKE!
+$----------------------------------------- mesh dims
+NODAL_POINTS=       7623
+ELEMENTS=           6144
+SPACE_DIMENSIONS=   3
+BOUNDARIES=         2816
+TYPES_OF_ELEMS=     HEX08 QUA04
+$--------------------------------------------------

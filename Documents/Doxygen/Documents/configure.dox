@@ -1,0 +1,131 @@
+/*! \page configure Alya Configure and config.in
+\section configureFile The config.in file
+
+<p>You need a config file in order to execute the configure command. You can specify a config file or name it config.in as default.</p>
+<p>For easy configuration do:</p>
+<ul>
+  <li>For <b>Intel Fortran compiler:</b></li>
+    \code cp configure.in/config_ifort.in config.in \endcode
+  <li>For <b>GNU Fortran compiler:</b></li>
+  \code cp configure.in/config_gfortran.in config.in \endcode
+</ul>
+
+<h2>What can you find inside the config file?</h2>
+
+<ul>
+  <li><b>F77:</b> Fortran 77 compiler</li>
+  <li><b>F90:</b> Fortran 90 compiler</li>
+  <li><b>FCOCC:</b> C Compiler</li>
+  <li><b>FCFLAGS:</b> Fortran compiler arguments</li>
+  <li><b>FPPFLAGS:</b> C++ compiler arguments</li>
+  <li><b>EXTRALIB:</b> Extern libraries</li>
+  <li><b>EXTRAINC:</b> Path to the header files</li>
+  <li><b>FOPT:</b> Compiler optimizations (O1, O2, 03)</li>
+  <li><b>MODULEFLAGS:</b> SECRET!</li>
+  <li><b>CSALYA:</b> Extra libraries or flags for specific ALYA compilation</li>
+  <br/><br/>
+  <li><b>Simbol #:</b> All lines starting with '#' are comments</li>
+  <li><b>Simbol #@:</b> All lines starting with '#@' are information provided to the configure command about the next line or section</li>
+</ul>
+
+
+<h2>Example config.in file</h2>
+\verbatim
+###################################################################
+#                          GFORTRAN CONFIGURE                     #
+#MN3 RECOMENDED MODULE:                                           #
+#module load gcc/5.1.0 openmpi/1.8.5                              #
+###################################################################
+
+#@Compiler: Using gfortran Compiler.
+F77      = mpif90
+F90      = mpif90
+FCOCC    = mpicc -c
+FCFLAGS  = -c -J$O -I$O -ffree-line-length-none -fimplicit-none
+FPPFLAGS = -x f95-cpp-input
+EXTRALIB = -lc
+EXTRAINC =
+fa2p     = mpif90 -c -x f95-cpp-input -DMPI_OFF -J../../Utils/user/alya2pos -I../../Utils/user/alya2pos
+fa2plk   = mpif90 -lc
+
+###################################################################
+#                          PERFORMANCE FLAGS                      #
+###################################################################
+#@Optimization: O1
+FOPT      = -O1
+
+#@Optimization: O2
+#FOPT      = -O2
+
+#@Optimization: O3
+#FOPT      = -O3
+
+...
+
+\endverbatim
+
+\section configureCommand The configure command
+
+<p> This command generate the ALYA makefile. Depending on the parameteers it will compile one or more ALYA modules. </p>
+
+Usage:
+
+\verbatim
+Module options:
+  module1, module2... :  Build only the listed modules.
+
+Compilation options:
+  Default options     :  Detect compiler, build debugger AND production binaries, 
+                         compile using some standard compiler options and no optimization. 
+  -lib                :  Build AlyaLib.a library.
+  -g                  :  Build ONLY debugger binary.
+  -x                  :  Build ONLY production (non-debugger) binary.
+  -v                  :  Show the detailed information of the selected flags.
+  -pg                 :  Build ONLY profiler binary.
+  -f=filename         :  Force compilation options (see companion file sample-comp.txt) 
+  -xopt=option        :  Optimization for the production binary (e.g. -xopt=O3).
+\endverbatim
+
+<h2>Configure output</h2>
+<p>We can divide the configure output in 3 sections:</p>
+<ul>
+  <li>The first part show some information about the used configuration.</li>
+
+\verbatim
+  ----------------------------------------------------------------------------
+  | COMPILATION INFORMATION:                                                 |
+  ----------------------------------------------------------------------------
+
+    -Compiler: Using Intel Fortran Compiler ifort.
+    -Optimization: O1
+    -Using Metis 4.0
+    -Linux OS identified. 
+
+\endverbatim
+
+<li>The second part show which Alya modules will be compiled. </li>
+
+\verbatim
+  ----------------------------------------------------------------------------
+  | MODULES READY FOR COMPILATION:                                            |
+  ----------------------------------------------------------------------------
+
+    -nastin
+    -parall
+\endverbatim
+
+<li>And the last part show which Alya executables will be generated (production Alya.x, Debug Alya.g)</li>
+
+\verbatim
+  ----------------------------------------------------------------------------
+  | Makefile will make the following binaries:                               |
+  ----------------------------------------------------------------------------
+
+      Alya.x    -->  Production (non debugger) binary  
+      Alya.g    -->  Debugger binary   
+
+\endverbatim
+
+</ul>
+
+*/

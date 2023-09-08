@@ -1,0 +1,82 @@
+ /*! \page comInputs How to comment Alya Inputs
+
+
+When we want to create an Alya case we find that there are a lot of options and many different files where to write this options. In order to avoid mistakes during the execution of a case we must document all the alya options.
+
+Also it could happen that someone implements something that is already implemented but he or she do not know the option.
+
+For all of this we have thought a easy method to comment all the Alya Inputs only once in the code, and we are able to generate a nice documentantion in doxygen from this comments. In the next section we explain how to use this special commets named Adoc.
+
+
+<h2>How to document your code with adoc directives</h2>It is very easy! You can comment as usually using ! and then you should write <b>"adoc[]>"</b>
+
+There are two kinds of adoc directives, one is for the description: <b>"adoc[d]>"</b>, and the other is for the option itself: <b>"adoc[integer]>"</b>
+
+<br/>
+
+<h3>How to document and input option</h3>
+
+We need to write a comment with the following format: <b>"adoc[number]> OPTION"</b>, the "number" is the position of the option in the document here an example:
+
+\verbatim
+ 	 ! ADOC[0]> $-----------------------------------------------------------------------
+     ! ADOC[0]> $ Physical properties definition
+     ! ADOC[0]> $-----------------------------------------------------------------------
+     ! ADOC[0]> PHYSICAL_PROBLEM
+     !
+     do while(words(1)/='ENDPH')
+        call ecoute('nsi_reaphy')
+        if(words(1) == 'PROBL' ) then
+           call ecoute('nsi_reaphy')
+           do while(words(1)/='ENDPR')
+              ! ADOC[1]> PROBLEM_DEFINITION
+              if(words(1)=='TEMPO') then          
+                 ! ADOC[2]> TEMPORAL_DERIVATIVES: ON | OFF                                                              $ Existence of temporal derivatives
+                 if(exists('ON   ')) kfl_timei_nsi = 1
+              else if(words(1)=='CONVE') then 
+                 ! ADOC[2]> CONVECTIVE_TERM:      ON | OFF                                                              $ Existence of convective term    
+              else if(words(1)=='VISCO') then 
+                 ! ADOC[2]> VISCOUS_TERM:         OFF | LAPLACIAN | DIVERGENCE | COMPLETE                               $ Viscous term
+
+        .
+        .
+        .        
+
+     	! ADOC[1]> END_PROBLEM_DEFINITION        
+     ! ADOC[0]> END_PHYSICAL_PROBLEM
+\endverbatim
+<br/>
+The result of this code in the doxygen documentation will be something like this:
+
+\verbatim
+$-----------------------------------------------------------------------
+$ Physical properties definition
+$-----------------------------------------------------------------------
+PHYSICAL_PROBLEM
+    PROBLEM_DEFINITION
+        TEMPORAL_DERIVATIVES: ON | OFF                                                              $ Existence of temporal derivatives
+        CONVECTIVE_TERM:      ON | OFF                                                              $ Existence of convective term    
+        VISCOUS_TERM:         OFF | LAPLACIAN | DIVERGENCE | COMPLETE                               $ Viscous term 
+    END_PROBLEM_DEFINITION
+END_PHYSICAL_PROBLEM
+\endverbatim
+
+<h3>How to document the description of the input options </h3>
+
+It is very easy to write the description of an option! Just write <b>"adoc[d]> OPTION: Description"</b>, here and small example:
+
+\verbatim
+	! ADOC[d]> TEMPORAL_DERIVATIVES:
+	! ADOC[d]> Decide if time derivative should be calculated in the Navier-Stokes equations.
+	! ADOC[d]> This term should be put to ON as for most of the problems, the convergence
+	! ADOC[d]> is enhanced when passing through a stationary regime to reach a steady state
+\endverbatim
+
+<br/>
+This will produce the following documentation:
+
+<b>TEMPORAL_DERIVATIVES:</b> Decide if time derivative should be calculated in the Navier-Stokes equations. This term should be put to ON as for most of the problems, the convergence is enhanced when passing through a stationary regime to reach a steady state
+
+\note The text before ":" will be bold \endnote
+
+*/

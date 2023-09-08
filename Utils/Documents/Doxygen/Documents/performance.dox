@@ -1,0 +1,312 @@
+/*!
+\page performance Performance
+
+<h1>Measure Alya performance</h1>
+
+The output files (log, cvg) of Alya give a lot of information about performance.
+In addition, you can check any time your parallel partition, the performance of the solvers
+for each MPI process in the -partition.par.post.res file. If you have GiD,
+this can be visualized!
+
+<h2> Variability </h2>
+
+Variability along time can be checked in the *.log file, in the timings of the module:
+\verbatim
+  Theoretical average:        0.59
+  Theoretical maximum:        0.61
+  Theoretical load bal.:      0.96
+  Maximum variability:        7.28 % 
+\endverbatim
+
+Assuming assembly should always have the same duration and that variability during the run should only
+increase this time, we have computed timings using the minimum time over the iterations... that is
+the expected time one would obtain without variability. Then, we display the maximum variability among
+the MPIs as a percentage of the time: 100*(maximum-minimum)/average.
+
+<h2> Strong scalability </h2>
+
+There are many ways to compute the scalability, although each module has its own output file.
+We take here the example of Nastin module.
+<br>
+
+<ol>
+<li> For the complete cycle including element assembly, boundary assembly, subgrid scale assembly, solvers, etc.
+<li> For single kernels: element assembly, boundary assembly, subgrid scale assembly, solvers
+<li> Using overall times
+</ol>
+<br>
+
+Here is all the information:
+<p>
+<ol>
+<li> In one columne of *.nsi.cvg file, for each iteration of each time step:
+<ul>
+<li> Complete cycle: <tt>30. Elapsed CPU time</tt>
+</ul>
+<li> Single kernels. Here, average and maximum times are indicated in columns of *.nsi.cvg, at each iteration of each time step:
+<ul>
+<li> Element assembly:       <tt> 19. Ass. ave cpu time    20. Ass. max cpu time </tt>   
+<li> Boundary assembly:      <tt> 33. Bou. ave cpu time    34. Bou. max cpu time </tt>   
+<li> Subgrid scale assembly: <tt> 31. SGS  ave cpu time    32. SGS  max cpu time  </tt>   
+<li> Iterative solvers:      <tt> 21. Sol. ave cpu time    22. Sol. max cpu time </tt>   
+</ul>
+<li> At the end of *.log file, total timings are shown for all modules
+</ol>
+<br>
+
+In cases 1 and 2, first iteration shouid be discarded as it measures time from the start.
+One can also do an average using *.nsi.cvg instead of picking one single iteration.
+
+<br>
+
+VERY IMPORTANT: the scalability you measure in the *.nsi.cvg file can be greatly affected by hardware variability.
+Let  \f$ t \f$ be the max assembly time coming from the *.nsi.cvg file, \f$ t = \max_i(t_i) \f$ where \f$ i \f$ is a core. 
+If  \f$ k \f$ iterations are performed, the total time will thus be \f$ t1 = \sum_k \max_i(t_i(k)) \f$. In the log file, we output
+the max of the sum of the times, that is \f$t_2 = \max_i(\sum_k t_i(k)) \f$. Therefore  \f$ t_1 > t_2 \f$.
+If there is a lot of variability, then \f$ t_1 \f$ is likely to be large at any iteration. However, these large values will be absorded
+in \f$ t_2 \f$. So \f$ t_1 \f$ measures the real time, while \f$ t_2 \f$ should be used to measure the "theoretical" scalability,
+whenever \f$ k \f$ is sufficiently high. The variablity affects the load balance: the load balance can be displayed by
+dividing column 19 (average time) by column 20 (maximum time) of the *.nsi.cvg file.
+
+<h2> Use Extrae and Paraver! </h2>
+
+To instrument your code, you have to link Alya and run with extrae.
+<br>
+
+<ol>
+<li> Compile with extrae:
+<ul>
+<li> Activate extrae options in the <tt>config.in</tt> file.
+<li> Define <tt>EXTRAE_HOME</tt> in the config.in file before compiling. For example, if you are using Intel compiler: <tt>EXTRAE_HOME=/apps/BSCTOOLS/extrae/latest/impi_2017_4</tt>
+</ul>	     
+<li> In your problem data directory:
+<ul>
+<li> Add an xml file and edit it according to what you want to instrument. Some examples are available at <tt>/apps/BSCTOOLS/extrae/latest/impi_2017_4/share/example/*/extrae.xml</tt>, depending on your favorite compiler.
+<li> Add the script for extrae <tt>trace.sh</tt>. See for example <a href="../file/trace.sh">here</a>.
+<li> Instead of executing Alya directly with srun in your batch file, use instead: <tt>srun ./trace.sh Alya.x xxx</tt>.
+</ul>	  
+</ol>
+
+To know how to use paraver, go to <a href="https://tools.bsc.es/paraver>Paraver</a>!!!
+
+<h2> General </h2> 
+
+log file: in section "OPTIMIZATION OPTIONS", you can check if you are using BLAS, the size of the VECTOR_SIZE
+for vectorized assembly, if you are using DLB, etc.
+
+<h2> Load balance     </h2>
+
+log file: load balance of assembly presented at the end of the file. A low
+load balance can be fixed by activating DLB.
+cvg file: some modules (like Nastin) gives the load balance of assembly at each iteration.
+partition.post.res: you will find information on the relative times for assembly and SpMV
+of your module.
+
+<h2> SpMV </h2> 
+
+log file: performance is indicated with and without OpenMP.
+
+<h1>Enhance Alya performance</h1>
+
+<h2> Partitioning </h2> 
+
+Three partitioners are available in Alya:
+<ul>
+  <li> Topological: METIS
+  <li> Geometrical: SFC, oriented BIN.
+</ul>
+
+METIS load balances the elements while minimizing the interfaces. The geometrical partitioners enables
+a strict control on the load balance, but no control at all on the interfaces. If communciations
+are sufficiently overlaped by work, then these partitioners should be preferred because they enable 
+parallel partitioning. Here are the options:
+\verbatim
+  PARALL_SERVICE: ON
+    ...
+    PARTITIONING
+      METHOD:         SFC/ORIENTED_BIN/METIS    $ partitioning strategy
+      BOXES:          16 16 16 FINE             $ size of fine bin (for sfc and oriented bin)
+      BOXES:          4  4  4 COARSE            $ size of coarse bin (only sfc)
+      DIRECTION;      x,y,z                     $ direction orthogonal to partiton plane (only oriented bin)
+      WEIGHTS:        GAUSS/SUARE/NONE/ELEMENT  $ weights to give to elements
+      EXECUTION_MODE: PARALLEL/SEQUENTIAL       $ parallel mode only for sfc and oriented bin
+    END_PARTITIONING
+    ...
+  END_PARTITIONING
+\endverbatim
+
+With the option <tt>ELEMENT</tt> for the <tt>WEIGHTS</tt>, you can specify the weight of each single element
+of your mesh. Example: <tt>WEIGHT: ELEMENT, TET04=1.0, PEN06=1.4, PYR05=1.1</tt>
+<br>
+
+Next figure shows an example of partitioning of a cube using the three methods available in Alya.
+\image html partition.png "Different partitionings of a cube" width=700px
+
+<h2> SpMV auto-tuning </h2> 
+Auto-tuning is also possible for OpenMP when using dynamic scheduling, by activating the following options in the solver:
+\verbatim
+ALGEBRAIC_SOLVER
+  ...
+  OPENMP: DYNAMIC, CHUNK_SIZE: AUTO_TUNING
+  ...
+END_ALGEBRAIC_SOLVER
+\endverbatim
+Chunks can also be prescribed, for example: <TT>CHUNK_SIZE=200</TT>.
+
+<h2> Renumbering </h2>
+Choose your preferred node renumbering! You now have three possibilities:
+<ul>
+  <li> METIS renuymbering, using <tt>metis_nodend</tt>
+  <li> Recursive SFC, dont forget to prescribe the bin size!
+  <li> Cuthill-Mckee
+  </ul>
+  In the numerical section of the ker.dat file:
+\verbatim
+MESH
+  ...
+  NODES_RENUMBERING: OFF/METIS/CUTHILL_MCKEE/SFC, SIZE=256
+  ...
+END_MESH
+\endverbatim
+
+<h2> Hybrid parallelization </h2>
+
+Three kinds of hybrid parallelism are possible:
+<ol>
+<li> Loop parallelism with OpenMP
+<ul>
+<li> With <TT>ATOMICS</TT>: compile with <TT>-DNO_COLORING</TT>
+<li> With Coloring
+</ul>
+<li> Task parallelism with OpenMP (OmpSs) using multidependences and commutatives.
+<ul>
+<li> It uses the source-to-source Mercurium: ismpfc. Compile with <TT>-DALYA_OMPSS</TT>
+</ul>
+</ol>
+<br>
+Last option is the preferred one as we avoid the overhead of ATOMICS pragma and the loss in IPC due to the
+coloring. In all cases, chunk sizes must be defined for elements, nodes and boundaries. In the case of using
+the coloring strategy, the coloring algorithm should be specified as well. In the problem.dat file:
+<br>
+\verbatim
+  PARALL_SERVICE: ON
+    ...
+    OPENMP
+       COLORING:            MIN_COLOR/GREEDY
+       ELEMENT_CHUNK_SIZE=  int
+       NODE_CHUNK_SIZE=     int
+       BOUNDARY_CHUNK_SIZE= int
+    END_OPENMP
+    ...
+  END_PARALL_SERVICE
+\endverbatim
+
+<h2> Load balance     </h2>
+
+If you detect a load imbalance, use DLB with OmpSs taskification of assembly!
+On MN4, to compile Alya, you have to follow the following steps:
+<ol>
+	<li> <TT>module load ompss</TT>
+	<li> <TT>module load dlb</TT>
+	<li> Use configure file: <TT>config_ompss_dlb.in</TT>, that makes the following:
+	     <ul>
+	          <li> It uses the source-to-source Mercurium: ismpfc
+	          <li> Defines: <TT>-DALYA_OMPSS</TT>
+	          <li> Defines: <TT>-DALYA_DLB</TT>
+	          <li> To pass non-strandard options to Mercurium, use Wn: e.g. <TT>\--Wn,-module,$O -c</TT>
+	     </ul>
+</ol>
+<br>
+Now, you are ready to run! in your script, use IMPI and do the following:
+<ol>
+	<li> <TT>#SBATCH -c xxx</TT>: set the number of cores to <tt>xxx</tt> per MPI task. Put 1 for pure MPI.
+        <li> <TT>module load ompss</TT>
+	<li> <TT>module load dlb</TT>
+	<li> <TT>srun \--cpu_bind=cores ./ompss_dlb.sh Alya.x mycase</TT> <p> It does the following:
+	     <ul>
+	          <li> <TT>\--cpu_bind=cores</TT>: ensure that each MPI tasks has its own cores for using OpenMP.
+		  <li> If you want to make sure the binding is ok, execute <tt>srun \--cpu_bind=cores nanox-bindings</tt>
+	          <li> <TT>./ompss_dlb.sh</TT>: set DLB and OmpSs environment. Click <a href="../file/ompss_dlb.sh">here</a> to see the script ompss_dlb.sh.
+	     </ul>	
+</ol>
+
+You can find some examples and the script <TT>./ompss_dlb.sh</TT> in <tt>Executables/unix/script/OMPSS_DLB</tt>.
+
+<br>
+For more information on Mercurium, see <a href="https://pm.bsc.es/mcxx">Mercurium web page</a>.<p>
+For more information on OmpSs, see <a href="https://pm.bsc.es/ompss">OmpSs web page</a>.<p>
+For more information on DLB, see <a href="https://pm.bsc.es/dlb">DLB web page</a>.
+
+<br>
+
+If you have any question, contact <mailto:marta.garcia@bsc.es>, she will answer for sure!
+
+<h2> Vectorization      </h2>
+
+<ul>
+<li> Some modules include an element assembly porcess specially designed to enable vectorization. This is done
+by assembling chunks of elements at the same time. The size of the chunks should be given as 
+a parameter, through the compilation option <TT>-DVECTOR_SIZE=int</TT>, where int is typically
+between 4 and 32, depending on your computer.
+<li> For GPUs, the same concept is used, although chunks should be much bigger (maybe millions of elements).
+Then the vector size can be computed on the fly (<TT>ADJUSTED</TT>) or prescribed (<TT>int</TT>) in the problem.ker.dat file:
+\verbatim
+NUMERICAL_TREATMENT 
+  ...
+  VECTOR_SIZE: ADJUSTED/int
+  ...
+END_NUMERICAL_TREATMENT  
+\endverbatim
+</ul>
+
+<h2> Compilation      </h2>
+
+Use the correct options! If you want to vectorize assembly, make sure you have selected
+the vectorization options of the compiler! 
+
+<h2> Element data base </h2>
+
+The element database enables one to gain time when assembling matrices during the element assembly.
+Instead of a costly loop to find the position in the CSR matrix when assembling an element matrix to the global one,
+it saves this position in an array <TT>element_to_csr(inode,jnode,ielem)</TT>.
+Attention, it requires additional memory!
+Put option <TT>SAVE_ELEMENT_DATA_BASE = Yes</TT> in the <TT>MESH</TT> section of the ker.dat file.
+
+<br>
+
+\verbatim
+NUMERICAL_TREATMENT 
+  MESH
+    ...
+    SAVE_ELEMENT_DATA_BASE: ON
+    ...
+  END_MESH
+\endverbatim
+
+<h2> Fast assembly for Nastin for CPU and GPU </h2>
+If you are reluctant in using a fancy stabilization method and want to rely only on the power of EMAC scheme,
+select the option
+\verbatim
+  NUMERICAL_TREATMENT 
+    ...
+    ASSEMBLY: GPU2
+    ...
+  END_NUMERICAL_TREATMENT 
+\endverbatim
+in the numerical TREATMENT of Nastin! With this specific
+assembly, you can also run on GPUs by activating the OpenACC pragmas!
+
+
+<h1>Alya performance in literature</h1>
+
+<ul>
+ <li> <a href="../pdf/gtc-2018.pdf">CPU/GPU Co-execution with OpenACC: Techniques for Algebraic Assembly in Finite Element Methods</a> (2018).</li>
+ <li> <a href="../pdf/Audit_Alya_draft.pdf">Alya in PoP</a> (2018).</li>
+ <li> <a href="../pdf/Alya_Montblanc.pdf">Alya in Montblanc</a> (2016).</li>
+ <li> <a href="../pdf/1-s2.0-S1877750315300521-main.pdf">Alya MPI performance</a>. (2016)</li>
+ <li> <a href="../pdf/Alya_Blue_Waters.pdf">Alya on Blue Waters</a> (2014).</li>
+ <li> <a href="../pdf/Newsletter2013-1-hres.pdf">Alya seen from KTH</a> (2013).</li>
+ <li> <a href="https://arxiv.org/abs/1805.03949">MPI+X: task-based parallelization and dynamic load balance of finite element assembly</a> (2018).</li>
+</ul>
+
+*/

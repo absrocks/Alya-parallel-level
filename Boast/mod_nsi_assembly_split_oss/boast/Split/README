@@ -1,0 +1,66 @@
+
+<<<<<<< HEAD
+*** RUBY FILES ***
+=======
+* RUBY FILES *
+>>>>>>> a9543e7d8840fb4be16b7a3d6c2dc09bda412581
+
+KSplitOss.rb
+ -> Contains common parameters/definitions
+KSplitOssBoast.rb
+ -> Defines the Boast kernel
+KSplitOssRef.rb
+ -> Defines the reference (Ref) kernel
+
+
+
+<<<<<<< HEAD
+*** SCRIPTS ***
+
+
+run_VERIF.rb
+ -> Ref/Boast comparison to be sure the results are correct
+ -> USAGE: ruby run_VERIF.rb
+
+run_COMP_nests.rb
+ -> Compares the Ref and Boast kernels with different options (defined by OptimizationSpace) 
+ -> For each nest
+ -> Options: 	how nests are called (inlined, call, included) 
+							unrollment of loops (true or false) 
+							optimization flags (-O2, -O3), 
+							vector size (2,4) 
+ -> Kernels are run 'repeat' times and the minimal time value is kept
+ -> USAGE: ruby run_COMP_nests.rb --data=.. --info=.. --kernel=..
+
+run_COMP.rb
+ -> Compares the Ref and Boast kernels with different options (call, unroll, ...  defined by OptimizationSpace)
+ -> For all nests
+ -> Options: same options as run_COMP_nests.rb
+ -> USAGE: ruby run_COMP.rb --data=.. --info=.. --kernel=..
+
+run_boast.rb
+ -> Tests the Boast kernel
+ -> Use this script to generate your best version of the kernel
+ -> USAGE: ruby run_boast.rb --vector_size=.. --unroll=.. --inline=.. --oflags=..
+
+run_boast_COMP.rb
+ -> Compares included/call/inlined versions of the Boast kernel (for the nests)
+ -> USAGE: ruby run_boast_COMP.rb --data=.. --info=.. --kernel=.. --vector_size=..
+
+run_ref.rb
+ -> Tests the Ref kernel
+ -> USAGE: ruby run_ref.rb --vector_size=..
+=======
+* SCRIPTS *
+
+run_boast.rb
+ -> Tests the Boast kernel
+run_ref.rb
+ -> Tests the Ref kernel
+run.rb
+ -> Compares included/call/inlined versions of the Boast kernel (for the nests)
+run_COMP.rb
+ -> Compares the Ref and Boast kernels with different options (call, unroll, ...  defined by OptimizationSpace)
+run_COMP_orig
+ -> Old version of the Ref/Boast comparison
+>>>>>>> a9543e7d8840fb4be16b7a3d6c2dc09bda412581

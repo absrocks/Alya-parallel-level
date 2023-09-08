@@ -1,0 +1,42 @@
+/*! \page chemic Chemic
+
+\section Chemic Chemic documentation
+
+We describe in this section the incompressible flow module, including:
+- \ref Chemic_physical_problem : Governing equations
+- \ref Chemic_numerical_treatment : Stabilization, solvers, etc.
+- \ref Chemic_output_and_postprocess : Secondary variables derived from solution
+- \ref Chemic_boundary_conditions : Dirichlet, Neumann and mixed conditions
+
+For the corresponding input data file
+
+- \ref Chemic_inputdata_physical_problem 
+- \ref Chemic_inputdata_numerical_treatment 
+- \ref Chemic_inputdata_output_and_postprocess 
+- \ref Chemic_inputdata_boundary_conditions  
+
+\subsection Chemic_physical_problem Physical problem
+
+
+\subsection Chemic_numerical_treatment Numerical Treatment
+
+\subsubsection Chemic_stabilization Stabilization
+
+
+\subsubsection Chemic_SGS Subgrid scale modeling
+
+
+\subsubsection Chemic_SGS_tracking Subgrid scale convection and time tracking
+
+
+\subsubsection Chemic_solution_procedure Solution procedure
+
+
+\subsubsection Algebraic_solvers Algebraic solvers
+
+
+\subsection Chemic_output_and_postprocess Output and postprocess
+
+\subsection Chemic_boundary_conditions Boundary conditions
+
+*/

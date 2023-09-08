@@ -1,0 +1,91 @@
+/*! \page case_elbow Elbow case tutorial 
+
+This tutorial analyses the flow through an elbow discretized with a 3D tetrahedral unstructured mesh.
+- \ref Steady_state_flow_2 :       description of the problem
+
+- \ref Domain_boundaries_2 :       boundaries of the computational domain
+
+- \ref Convergence_2 :             numerical convergence of the model 
+
+- \ref Velocity_profiles_2 :       post-processing of velocity field and pressure drop according to Re
+
+- \ref Pressure_drop :		   pressure drop vs. Reynolds number
+
+- \ref Input_files_2 :             detailed description of case input files
+
+ + \ref elbow_dat
+
+ + \ref elbow_dom_dat
+
+ + \ref elbow_geo_dat
+
+ + \ref elbow_set_dat
+
+ + \ref elbow_fix_dat
+
+ + \ref elbow_ker_dat
+
+ + \ref elbow_nsi_dat
+
+ + \ref elbow_post_alya_dat
+ 
+\n 
+____
+____
+
+\section Steady_state_flow_2 Steady state flow
+
+\n
+
+\image html elbow_3Dflow.png\n<CENTER>elbow case – 3D turbulent flow (Re=1e4) <A HREF="http://www.youtube.com/watch?feature=player_embedded&v=65YWYUH7zB8">  (click for Turbulent Flow Development animation) </A></CENTER>  
+\n
+\nSimulation settings are specified to reach a steady state flow condition. The case is run with different Reynolds numbers, by changing the viscosity of the fluid, in order to analize pressure drop variation.Total pipe length is roughly 6m. \n
+\n
+\section Domain_boundaries_2 Domain Boundaries
+\n
+____
+____
+
+Boundary numbers are as follow, outlet on the short straight. Inlet velocity is specifyed with a paraboloid surface function.
+
+\image html elbow_boundaries.png <CENTER>elbow case – domain boundaries</CENTER>         
+\n
+____
+____
+
+\section Convergence_2 Case convergenceTime iteration is let to calculate automatically the time increment within each timestep and the maximum number of iterations is set to infinity (1e6), so that the simulation will finish when convergence criteria are reached.Next figure show two convergence plot (alya-all-nsi app) of the simulations with Re=150. \image html elbow_convergence.png <CENTER>elbow case – numerical convergence</CENTER>\n____
+____
+\section Velocity_profiles_2 Velocity fieldAn animation of the resulting turbulent flow is found in this link: see elbow case animation. This is only a roughly aproximate solution, since Re=1.0e4 is much beyond the limit of laminar flow and no turbulence model is used in the simulation.Next figure shows velocity results for Re=100: \image html elbow_velocities.png <CENTER>elbow case – velocity distribution (Re = 100)</CENTER>\n____
+____\section Pressure_drop Pressure dropIn the following, pipe pressure drop results are compared to semi-empirical results calculated with classical engineering methods, such as Poiseuille and Darcy equations.
+
+\n
+\image html elbow_poiseuille.png <CENTER>elbow case – empirical data</CENTER>\n\n
+The relation between flow pressure drop and Reynolds number is analysed from the previous runs. 
+
+Reynolds number is calculated as follows (taking ‘l’ as pipe diameter):
+\n<CENTER>                     \f$ \displaystyle{\mbox{Re} = \frac{(\rho \cdot {U} \cdot {l})}{\mu}} \f$ </CENTER>                       \n
+\n
+Theoretical pressure drop calculations have been performed using Poiseuille equation to account for pressure losses along pipe length, and an empirical formula to add minor fitting pressure loss: \n<CENTER>                     \f$ \displaystyle{{\Delta p} = 8 \cdot \frac{{Q} \cdot \nu \cdot {l}}{\pi{R}^4} + \frac{1}{2}{k} \rho {U}^2} \f$</CENTER>                       \n
+being,- Q = mass rate- ν = dynamic viscosity- l  = pipe axis lenght - k = elbow pressure loss coefficient (diagram)- ρ = density\nNext table and plot show the correlation between results calculated by Alya and the theoretical-empirical ones:\n
+
+<CENTER><TABLE>
+<TR><TD>mu</TD>	<TD>2.000E-02</TD>	<TD>1.000E-02</TD>	<TD>6.667E-03</TD></TR><TR><TD>Re</TD>	<TD>5.000E+01</TD>	<TD>1.000E+02</TD>	<TD>1.500E+02</TD></TR><TR><TD>Alya pressure drop</TD>	<TD>2.0903</TD>	<TD>1.0934</TD>	<TD>0.7906</TD></TR><TR><TD>Theoretical pressure drop</TD>	<TD>2.0515</TD>	<TD>1.0315</TD>	<TD>0.6982</TD></TR><TR><TD>error</TD>	<TD>1.9%</TD>	<TD>6.0%</TD>	<TD>13.2%</TD></TR>
+</TABLE></CENTER>\n\n
+\image html elbow_dP_vs_Re.png <CENTER>elbow case – pressure drop vs. Reynolds number</CENTER>\n
+\nPressure drop values from the different Alya runs are obtained from the file elbow-boundary.nsi.set, by reading inlet and outlet mean pressure values from the last time step results, corresponding in this case boundary sets 9 and 13 to inlet and outlet surfaces respectively.\n____
+____\section Input_files_2 Input files\n
+____\subsection elbow_dat elbow.dat			(case global parameters)$-------------------------------------------------------------RUN_DATA	ALYA:                   elbow			$ case nameEND_RUN_DATA$-------------------------------------------------------------PROBLEM_DATA        TIME_COUPLING:	Global, From_critical		$ global time step is prescribed        TIME_INTERVAL=	0.0, 1.0e6			$ integration time domain from t=0 to t=10s        NUMBER_OF_STEPS=  1e5				$ infinite time steps        MAXIMUM_NUMBER_GLOBAL= 1			$ only used when coupling modules        NASTIN_MODULE:	On				$ nastin module (Incompressible Navier-Stokes) is used        END_NASTIN_MODULE        PARALL_SERVICE:         On        END_PARALL_SERVICEEND_PROBLEM_DATA$-------------------------------------------------------------\n____\subsection elbow_dom_dat elbow.dom.dat 		(domain input data)$-------------------------------------------------------------DIMENSIONS	NODAL_POINTS=		5682			$ number of nodes	ELEMENTS=		26410			$ number of elements	SPACE_DIMENSIONS=	3			$ 3D mesh	TYPES_OF_ELEMENTS=      30			$ 4 node tetrahedral elements		BOUNDARIES=		4046			$ number of boundary edgesEND_DIMENSIONS$-------------------------------------------------------------STRATEGY							INTEGRATION_RULE:	    Open  		$ open rule is the default	DOMAIN_INTEGRATION_POINTS:  0  			$ 0 = automatic, depending on each element type END_STRATEGY$-------------------------------------------------------------GEOMETRY						     GROUPS=100						$ number of groups (for deflation based solvers)     INCLUDE  		elbow.geo.dat			$ include geometry file (nodes, elements & boundaries)END_GEOMETRY  $-------------------------------------------------------------SETS						     INCLUDE		elbow.set.dat  			$ include set file (groups for post-processing)END_SETS$-------------------------------------------------------------BOUNDARY_CONDITIONS, EXTRAPOLATE			$ edge BC’s extrapolate to nodes     INCLUDE		elbow.fix.dat  			$ include boundary conditions fileEND_BOUNDARY_CONDITIONS$-------------------------------------------------------------\n____\subsection elbow_geo_dat elbow.geo.dat			(mesh information)							$-------------------------------------------------------------NODES_PER_ELEMENT			        1 4						$ element number, # nodes        2 4        3 4         :         :        26409 4        26410 4END_NODES_PER_ELEMENT$-------------------------------------------------------------ELEMENTS						(element connectivity list)        1 5585 5586 5518 5562				$ element number, node number 1, node number 2, ...          2 5660 5630 5629 5613        3 5676 5662 5647 5666                :  	        :        26409 1638 1433 1313 1315          26410 1491 1638 1313 1315  END_ELEMENTS  $-------------------------------------------------------------COORDINATES
+        1   1.638713e+00 -2.971132e+00  2.893691e-02	$ node number, coord X, coord Y , coord Z          2   1.533333e+00 -2.971132e+00  2.886751e-02           3   1.873338e+00 -2.971128e+00  2.852064e-01      
+	        :  	        :        5681   1.045415e+00  0.000000e+00  0.000000e+00           5682   1.000000e+00  0.000000e+00  0.000000e+00   END_COORDINATES$-------------------------------------------------------------BOUNDARIES, ELEMENT       
+	1  5681 5676 5682   9402			$ boundary element #, node #s, element # boundary belongs to 	2  5666 5676 5681   9399 	3  5666 5638 5660   9763 		 : 		 : 	4045  54 71 12   24996 	4046  12 67 54   26111END_BOUNDARIESMATERIALS, NUMBER=0, DEFAULT=1				$ vall elements have material 1END_MATERIALSCHARACTERISTICSEND_CHARACTERISTICS$-------------------------------------------------------------\n____\subsection elbow_set_dat elbow.set.dat			(groups for post-processing, optional)$-------------------------------------------------------------ELEMENTS						       
+	1 1						$ element number, set number	2 1	3 1         :         :         :	26409 1	26410 1END_ELEMENTS$-------------------------------------------------------------BOUNDARIES				 		(boundary sets definition)        1 2						$ boundary element number, boundary set number        2 2        3 2         :         :         :        4045 13        4046 13							END_BOUNDARIES$-------------------------------------------------------------NODES							(node sets definition)	0END_NODES$-------------------------------------------------------------\n____
+\subsection elbow_fix_dat elbow.fix.dat			(boundary conditions data)$-------------------------------------------------------------ON_BOUNDARIES	1     4	  					$ boundary element number,  boundary set number	2     4	3     4           :	   :	   :	4045     1         4046     1END_ON_BOUNDARIES$-------------------------------------------------------------\n____
+\subsection elbow_ker_dat elbow.ker.dat			$------------------------------------------------------------PHYSICAL_PROBLEM	PROPERTIES						$ fluid physical properties (water)		DENSITY:      CONSTANT, PARAMETERS = 1.0	$ mass density		VISCOSITY:   CONSTANT, PARAMETERS = 0.0005	$ dynamic viscosity (μ)	END_PROPERTIESEND_PHYSICAL_PROBLEM  $------------------------------------------------------------NUMERICAL_TREATMENT 	MESH								     DIVISION=1						$ 2 automatic mesh subdivisions	END_MESH	ELSEST							$ element search strategy  	   STRATEGY: BIN					  BIN divide mesh into boxes to find elements that host 								  witness points (suited for structured meshes) 	   NUMBER: 20, 20, 20 	   DATAF: LINKED_LIST
+	END_ELSEST	SPACE_&_TIME_FUNCTIONS 	   FUNCTION=INFLOW						        -4*y**2-4*z**2+12*y-8				$ paraboloid surface function (Umax=1)	   END_FUNCTION	END_SPACE_&_TIME_FUNCTIONS						END_NUMERICAL_TREATMENT  $------------------------------------------------------------OUTPUT_&_POST_PROCESS          ON_LAST_MESH        STEPS=10						$ post-process every ‘STEPS’ time stepsEND_OUTPUT_&_POST_PROCESS  $------------------------------------------------------------\n____
+\subsection elbow_nsi_dat elbow.nsi.dat			(incompressible Navier-Stokes solver parameters)$------------------------------------------------------------PHYSICAL_PROBLEM						PROBLEM_DEFINITION       		TEMPORAL_DERIVATIVES:	On 		$ transient problem		CONVECTIVE_TERM:	On		$ off for Stokes flow (negligible for high viscosity fluids)		VISCOUS_TERM:		LAPLACIAN	$ suitable for constant viscosity fluid assumption	END_PROBLEM_DEFINITION  END_PHYSICAL_PROBLEM  $------------------------------------------------------------NUMERICAL_TREATMENT 	ELEMENT_LENGTH:	Minimum				$ element length for Alya to calculate critical time step	STABILIZATION: 		ASGS			$ numerical stabilization method	TIME_INTEGRATION:	Trapezoidal, ORDER: 1, EULER=20		$ time integration scheme
+	SAFETY_FACTOR:		100.0			$ multiply global time step: Alya calculates critical time step							  as required by explicit solvers, which is suited for transient							  analysis but makes stationary solutions converge very slowly	STEADY_STATE_TOLER:	1.0e-10			$ convergence tolerance for steady state	MAXIMUM_NUMBER_OF_IT:	1			$ max number of inner NS iterations 	CONVERGENCE_TOLERANCE:	1.0e-3			$ convergence tolerance for inner NS loop (useless in this case)	ALGORITHM:		SCHUR			$ NS solution algorithm (uncouples p & V)           SOLVER: ORTHOMIN, CONTINUITY_PRESERVING	$ default is MOMENTUM_PRESERVING            PRECONDITION: DT 	END_ALGORITHM	MOMENTUM					$ velocity solver	   ALGEBRAIC_SOLVER     	        SOLVER:		GMRES, KRYLOV=10	$ solver suited for asymmetric matrix	        CONVERGENCE:	ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01	  $ max iter #, convergence criteria										    ADAPTIVE, RATIO=0.01 means that the loop 										      will end also if the difference of the 										        norm of convergence value changes less 										          than 1% in two consecutive iterations                OUTPUT:		CONVERGENCE		$ solver convergence file (.cso) is generated                PRECONDITIONER:	DIAGONAL		$ matrix preconditioner type           END_ALGEBRAIC_SOLVER        	END_MOMENTUM	CONTINUITY 					$ pressure solver           ALGEBRAIC_SOLVER                SOLVER:		DEFLATED_CG, COARSE: SPARSE	$ CG solvers are suited for symmetric matrix                CONVERGENCE:	ITERA=1000, TOLER=1.0e-12, ADAPTIVE, RATIO=0.01	  $ max iter #, convergence criteria										    ADAPTIVE, RATIO=0.01 means that the loop 										    will end also if the difference of the 										    norm of convergence value changes less 										    than 1% in two consecutive iterations                OUTPUT:		CONVERGENCE			$ solver convergence file (.cso) is generated                PRECONDITIONER:	DIAGONAL			$ matrix preconditioner type           END_ALGEBRAIC_SOLVER        	END_CONTINUITYEND_NUMERICAL_TREATMENT  $------------------------------------------------------------OUTPUT_&_POST_PROCESS  	START_POSTPROCES_AT	STEP = 0			$ initial step to post process	POSTPROCESS VELOCITY	STEPS = 10 			$ post process velocity every 10 steps (priority ker.dat)	POSTPROCESS PRESSURE	STEPS = 10			$ post process pressure every 10 steps (priority ker.dat)	POSTPROCESS MEAN_PRESSURE, STEPS = 1	BOUNDARY_SET	   FORCE           TORQUE, CENTER=0,0,0           MASS           MEAN_PRESSURE	END_BOUNDARY_SETEND_OUTPUT_&_POST_PROCESS   $------------------------------------------------------------BOUNDARY_CONDITIONS	PARAMETERS               VARIATION:    NON_CONSTANT			$ there will be parameters specifyed by function               INITIAL: COARSE		     			$ domain velocity initialization	END_PARAMETERS	CODES, NODES						$ Boundary Conditions           1  000  0.000000  0.000000 0.000000      		$ outlet           2  111  1.000000  0.000000 0.000000, SPACE_TIME_FUNCTION=INFLOW      $ inlet	           3  111  0.000000  0.000000 0.000000      		$ wall           4  001  0.000000  0.000000 0.000000      		$ symmetry           1 & 3  111  0.000000  0.000000 0.000000      	$ edges...           1 & 4  001  0.000000  0.000000 0.000000           2 & 3  111  0.000000  0.000000 0.000000           2 & 4  111  1.000000  0.000000 0.000000, SPACE_TIME_FUNCTION=INFLOW	$ inlet           3 & 4  111  0.000000  0.000000 0.000000           1 & 3 & 4  111  0.000000  0.000000 0.000000      	$ $ vertex...           2 & 3 & 4  111  0.000000 0.000000  0.000000     	END_CODES					$ inlet(note that BC’s apply to boundaries, not to boundary sets)END_BOUNDARY_CONDITIONS  $------------------------------------------------------------\n____
+\subsection elbow_post_alya_dat elbow.post.alya.dat 		(alya2pos parameters)$-------------------------------------------------------------------DATA	FORMAT:                   visit		$ also valid for ParaView	MARK_ELEMENTS:            type		$ to create automatic layers in post process according to some criterion	ELIMINATE_BOUNDARY_NODES: yes		$ for parallel runs, to avoid node duplicity between subdomain	BOUNDARY:                 ON		$ to post process boundary mesh	SUBDOMAINS, ALL				$ subdomains (parallel partitions) to post process	END_SUBDOMAINSEND_DATA$-------------------------------------------------------------------
+\n
+____
+\n
+*/

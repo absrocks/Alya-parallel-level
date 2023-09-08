@@ -1,0 +1,6 @@
+<widget class="<<moduleClass>>" name="<<moduleName>>">
+   <attribute name="title">
+   <string><<moduleName>></string>
+   </attribute>
+<layout class="QVBoxLayout" name="verticalLayout_7"/>
+</widget>

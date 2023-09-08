@@ -1,0 +1,61 @@
+/*!
+  \page first_steps First steps
+
+<p>What should you do to use Alya for first time.</p>
+\section step1 CheckOut
+
+First you need access to gpfs File system (nord3, minotauro, data transfer, etc).
+
+<ul>
+<li>Then for a local checkout from inside GPFS do:</li>
+\verbatim svn co file:///gpfs/projects/bsc21/svnroot/Alya/Trunk Alya \endverbatim
+<li>Then for a remote checkout from outside GPFS do:</li>
+\verbatim svn co svn+ssh://bsc21***@mn3.bsc.es/gpfs/projects/bsc21/svnroot/Alya/Trunk Alya \endverbatim
+</ul>
+
+
+\section step2 Compile
+
+<p>Luckily for the users, Alya is almost a selfcontained software. It does not
+depend on any external library or application. But, of course, you will need
+a compiler to compile it, particularly, a Fortran and C ones. It has been
+tested in tons of architectures and operative systems, but, of course, the
+recommended ones are linux under x86-64 PC. Talking about the compilers,
+it can be build with the intel and the gcc ones.</p>
+
+<p>We said before that Alya does not have almost any dependency. That
+“almost” it because it has one dependency to run in parallel, a mesh parti-
+tioning library called metis 3. It solves the very complex geometrical problem
+of partitioning the mesh in a way to reduce the contact area between sec-
+tions, in an efficient way. To avoid version problems, this library is included
+in the Alya repository.</p>
+
+<ol>
+	<li>Enter to Executables/unix: </li>
+	\verbatim cd Execuables/unix \endverbatim
+	<li>Choose a configuration file: <a href="configure.html"> (help with config.in)</a></li>
+	\verbatim cp configure.in/yourConfig.in config.in \endverbatim
+	<li>Configure Alya: <a href="configure.html">(help with configure)</a></li>
+	\verbatim ./configure [-g, -x] modules \endverbatim
+	<li>Compile metis:</li>
+	\verbatim make metis4\endverbatim
+	<li>Compile Alya</li>
+	\verbatim make -j 8\endverbatim
+</ol>
+
+
+\section step3 Run
+
+<p>First you need to configure your \link alyaCase Alya Case \endlink or download a case from \link problems here</p>
+
+<ul>
+	<li>With MPI:</li>
+	\verbatim mpirun -np NUM_PROCS path/Executables/unix/Alya.x /path/casename \endverbatim
+	<li>Serial:</li>
+	\verbatim  path/Executables/unix/Alya.x /path/casename \endverbatim
+</ul>
+
+
+
+<br>
+*/

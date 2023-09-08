@@ -1,0 +1,165 @@
+/*! \page paraver How to create and visualize traces with Paraver in Alya at Marenostrum III 
+
+\section intro Introduction
+This tutorial explains how to genereate an visualize traces with Paraver software at Marenostrum III.
+
+Paraver was developed to respond to the need to have a qualitative global perception of the application behavior by visual inspection and then to be able to focus on the detailed quantitative analysis of the problems. Expressive power, flexibility and the capability of efficiently handling large traces are key features addressed in the design of Paraver. The clear and modular structure of Paraver plays a significant role towards achieving these targets.
+
+Some Paraver features are the support for
+
+- Detailed quantitative analysis of program performance
+- Concurrent comparative analysis of several traces
+- Customizable semantics of the visualized information
+- Cooperative work, sharing views of the tracefile
+- Building of derived metrics
+
+For full information about paraver click on this <a href="http://www.bsc.es/computer-sciences/performance-tools/paraver/general-overview">link</a>
+
+The first step is to copy your Alya code and your case problem into a folder in gpfs and go to your Marenostrum account.
+
+All the files you need are packaged in this <a href="paraver.zip" target="_self"><b>zip file</b></a>
+
+
+\section compile_alya_inst Compile Alya with paraver instrumentation support
+
+Yo need to compile with de -g debug parameter:
+./configure parall [list of required modules] -g -f=configure.in/your_configure_file
+
+We need to link to the paraver mpitracef tool library:
+
+- For openmpi the library are located at /apps/CEPBATOOLS/extrae/latest/openmpi/64/lib
+- For intel mpi the library are located at /apps/CEPBATOOLS/extrae/latest/impi/64/lib
+
+The line that we need to modify in our configure file is:
+- libs== -L../../Thirdparties/metis-4.0 -lmetis -L/apps/CEPBATOOLS/extrae/latest/openmpi/64/lib -lmpitracef (for metis 4)
+- libs== -L../../Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/libmetis -lmetis -L/apps/CEPBATOOLS/extrae/latest/openmpi/64/lib -lmpitracef (for linux metis5)
+- libs== -L../../Thirdparties/metis-5.0.2_i8/build/Darwin-i386/libmetis -lmetis -L/apps/CEPBATOOLS/extrae/latest/openmpi/64/lib -lmpitracef (for mac metis5)
+
+Here are one example for ifort compiler and openmpi:
+ 
+@code
+# start comment lines with a #
+f90==     mpif90 -O1 -traceback -module $O -c 
+f77==     mpif90 -O1 -traceback -module $O -c
+fpp90==   mpif90 -O1 -traceback -module $O -c  -fpp 
+fomp90==   mpif90 -O1 -traceback -module $O -c  -fpp 
+fpp77==   mpif90 -O1 -traceback -module $O -c  -fpp
+cpp==     mpicc -no-multibyte-chars -c
+link==    mpif90 -O1 -traceback 
+libs==    -L../../Thirdparties/metis-4.0 -lmetis -L/apps/CEPBATOOLS/extrae/latest/openmpi/64/lib -lmpitracef
+
+fa2p== mpif90 -module ../../Utils/user/alya2pos -c  -fpp
+@endcode
+
+\section Configure_extrae_tool Configure extrae instrumentation tool
+
+The instrumentation tool used to create traces in Paraver is called "extrae". In order to configure how the traces have to be recorded you need to configure a xml file.
+For example, here are the configuration for mpi and openmp sample level:
+@code
+  <!-- Configuration of some MPI dependant values -->
+  <mpi enabled="yes">
+    <!-- Gather counters in the MPI routines? -->
+    <counters enabled="yes" />
+  </mpi>
+
+  <!-- Emit information of the callstack -->
+  <callers enabled="yes">
+    <!-- At MPI calls, select depth level -->
+    <mpi enabled="yes">1-3</mpi>
+    <!-- At sampling points, select depth level -->
+    <sampling enabled="yes">1-5</sampling>
+  </callers>
+
+  <!-- Configuration of some OpenMP dependant values -->
+  <openmp enabled="no">
+    <!-- If the library instruments OpenMP, shall we gather info about locks?
+         Obtaining such information can make the final trace quite large.
+    -->
+    <locks enabled="no" />
+    <!-- Gather counters in the OpenMP routines? -->
+    <counters enabled="yes" />
+  </openmp>
+@endcode
+
+In the zip <a href="paraver.zip" target="_self"><b>paraver.zip</b></a> you can find a file called extrae.xml with all the needed basic information filled in.
+
+You need to copy the extrae.xml file into your problem folder.
+
+
+\section run_simulation Run the simulation with instrumentation
+
+To run the simulation you need to start the extrae tool pointing to you Alya executable:
+
+extrae -config ./extrae.xml /alya_folder/Executables/unix/Alya.g module_name
+
+In order to make this process easier you can run directly this script:
+@code
+#!/bin/bash
+
+#Workaround for tracing in MN3, make TMPDIR point to an existing dir
+export TMPDIR=$TMPDIR/extrae
+mkdir -p $TMPDIR
+
+export EXTRAE_HOME=/apps/CEPBATOOLS/extrae/latest/openmpi/64
+source ${EXTRAE_HOME}/etc/extrae.sh
+
+export EXTRAE_CONFIG_FILE=./extrae.xml
+$@
+@endcode
+
+You can find this script, called trace.sh, in the <a href="paraver.zip" target="_self"><b>zip file</b></a> too.
+
+The job script needed to launch this script are:
+
+@code
+#!/bin/bash
+#BSUB -n num_processes
+#BSUB -R"span[ptile=16]"
+#BSUB -o output.%J.out
+#BSUB -e output.%J.err
+#BSUB -W hh:mm
+#BSUB -J job_name
+mpirun ./trace.sh /alya_folder/Executables/unix/Alya.g problem_name > out_mn.txt
+@endcode
+
+Where:
+	- num_processes: Number of mpi processes to run
+	- hh:mm: Change to de desired maximum total execution time, for example 00:30 for thirty minutes.
+	- job_name: Your job name.
+	- alya_folder: The path to your alya folder
+	- module_name: The name of your alya problem
+	
+To launch the job you need to run: bsub < job.sh
+	
+
+\section Analize the trace with Paraver
+
+If everything goes well you will see this generated files in your problem folder:
+	- *.prv
+	- *.pcf
+	- *.row
+	- *.mpits
+
+The one that we use to open it with paraver is the prv file.
+Take into account that you need to start your ssh connection with "-X" option in order to start paraver in Marenostrum.
+
+To open paraver and start analizyng the results you have to run:
+
+/apps/CEPBATOOLS/wxparaver/latest/bin/wxparaver your_file_name.prv
+
+\image html paraver1.png
+
+Once you have loaded the paraver app you need to open a configuration related to the kind of analysis you want to do.
+Click on "File -> Load Configuration" and go to this folder: /apps/CEPBATOOLS/wxparaver/latest/cfgs/
+
+In this folder you will find all the configuration files for paraver. For example, to veiw the mpi calls you can open mpi/view/MPI_call.cfg configuration file.
+
+
+\image html paraver2.png
+
+
+\n
+____
+\n
+
+*/

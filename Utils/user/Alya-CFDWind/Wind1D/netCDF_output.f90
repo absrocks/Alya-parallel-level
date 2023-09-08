@@ -532,7 +532,7 @@ subroutine netCDF_Postpr
   implicit none
   real(8)             :: tstar,  gpnut, lenmo
   real(8)             :: vel, mut,mixle,Richf,prodm,prodt,htflx,stres
-  integer(4 )         :: ipoin
+
 
   gpnut =  cmu*keyva(1,1)*keyva(1,1)/epsil(1,1)
   ! qwall positive in stable atm, when floor is cold (heat flux going out)
@@ -552,7 +552,7 @@ subroutine netCDF_Postpr
   do ipoin=1,npoin
      dir_out(ipoin) = (180.0d0/pi)*(atan2(-veloc(ipoin,1,1),-veloc(ipoin,2,1)))
      if (dir_out(ipoin).lt.0.0d0) dir_out(ipoin) = dir_out(ipoin) + 360.0d0
-     call Postpr_ipoin(vel,mut,mixle,Richf,prodm,prodt,htflx,stres, ipoin)
+     call Postpr_ipoin(vel,mut,mixle,Richf,prodm,prodt,htflx,stres)
      mut_out(ipoin)  = mut
      lm_out(ipoin)   = mixle
      Rf_out(ipoin)   = Richf

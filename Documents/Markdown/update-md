@@ -1,0 +1,49 @@
+#!/bin/bash
+OPT=$1
+WIKI=alya.wiki
+AUTO=$WIKI/auto
+MD=md
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+WIKI=$DIR/$WIKI
+AUTO=$DIR/$AUTO
+MD=$DIR/$MD
+CURRENT_DIR=`pwd`
+cd $DIR
+rm -fr $MD
+./generate-md
+if [ $? -ne 0 ]
+then
+    python2.7 generate-md
+fi
+rm -fr $WIKI
+if [ "$OPT" = "extern" ]
+then
+  if [ ! -z "$ALYA_WIKI_GITUSER" -a ! -z "$ALYA_WIKI_GITPWD" ]
+  then
+    ALYA_WIKI_GITPWD=`echo $ALYA_WIKI_GITPWD | sed -e "s/\@/\%40/g"`
+    git clone https://$ALYA_WIKI_GITUSER:$ALYA_WIKI_GITPWD@gitlab.bsc.es/alya/alya.wiki.git $WIKI
+  else
+    git clone https://gitlab.bsc.es/alya/alya.wiki.git $WIKI
+  fi
+else
+  git clone git@gitlab-internal.bsc.es:alya/alya.wiki.git $WIKI
+fi
+rm -fr $AUTO
+cp -r $MD $AUTO
+cd $WIKI
+git add $AUTO
+git commit -am "Automatic update of the in-code documentation"
+if [ "$OPT" = "extern" ]
+then
+  if [ ! -z "$ALYA_WIKI_GITUSER" -a ! -z "$ALYA_WIKI_GITPWD" ]
+  then
+    #git push https://$ALYA_WIKI_GITUSER:$ALYA_WIKI_GITPWD@gitlab.bsc.es/alya/alya.wiki.git
+    git push
+  else
+    git push
+  fi
+else
+  git push
+fi
+cd $CURRENT_DIR
+rm -fr $WIKI

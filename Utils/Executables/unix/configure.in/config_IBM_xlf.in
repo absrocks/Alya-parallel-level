@@ -1,0 +1,115 @@
+###################################################################
+#                          IBM XLF  CONFIGURE                     #
+###################################################################
+
+F77              = mpif90
+F90              = mpif90
+FCOCC            = mpicc -qflag=i -c  -DNOUNDERSCORE
+FCFLAGS          = -c -qflag=i -qnoescape -qextname=flush:etime -qfree=f90 -qmoddir=$O -I$O -qsuffix=cpp=f90 -qextname
+FPPFLAGS         = -qsuffix=cpp=f90
+EXTRALIB         =
+EXTRAINC         = 
+fa2p             = xlf -c -qnoescape -qsuffix=cpp=f90 -qfree=f90 -qmoddir=../../Utils/user/alya2pos -I../../Utils/user/alya2pos
+fa2plk           = xlf -qmoddir=../../Utils/user/alya2pos -I../../Utils/user/alya2pos
+export METIS_CC  = xlc
+export METIS5_CC = xlc
+
+###################################################################
+#                          PERFORMANCE FLAGS                      #
+###################################################################
+
+#MINUM
+#FOPT      = -g
+#MAXIMUM
+#FOPT      = -O3
+
+# Use this option to avoid using non-standard intrinsic FSEEK: compulsory
+CSALYA    := $(CSALYA) -WF,-DFORTRAN_STD
+
+# Uncomment the following line to enable NDIME as a parameter (OPTIMIZATION FOR 3D PROBLEMS)
+#CSALYA   := $(CSALYA) -WF,-DNDIMEPAR
+
+# Uncomment the following line for DEBUG AND CHECKING FLAGS
+#CSALYA   := $(CSALYA) -C -qsigtrap -qflttrap=overflow:zerodivide:enable
+
+###################################################################
+#                          METIS LIBRARY                          #
+###################################################################
+
+# Uncomment the following lines for using metis 4.0 (default)
+#GPU_HOME := ${CUDA_HOME}/
+EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-4.0 -lmetis 
+CSALYA     := $(CSALYA) -WF,-DMETIS
+
+# Uncomment the following lines for using metis 5.0
+#CSALYA   := $(CSALYA) -WF,-DV5METIS
+# uncoment FOR MAC
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.0.2_i8/build/Darwin-i386/libmetis -lmetis
+# uncoment FOR LINUX
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/metis-5.0.2_i8/build/Linux-x86_64/libmetis -lmetis
+
+###################################################################
+#                          MPI/THREADS                            #
+###################################################################
+
+# Uncomment the following lines for sequential (NOMPI) version
+#VERSIONMPI  = nompi
+#CSALYA    := $(CSALYA) -WF,-DMPI_OFF
+
+# Uncomment the following lines for OPENMP version, NOT TERMINATED
+#CSALYA    := $(CSALYA)
+
+# Uncomment the following line to disable OPENMP coloring
+#CSALYA    := $(CSALYA) -WF,-DNO_COLORING
+
+# Uncomment the following line to enable ....
+#----
+
+###################################################################
+#                          INTEGER TYPE                           #
+###################################################################
+# Uncomment the following lines for 8 byte integers
+#CSALYA   := $(CSALYA) -WF,-DI8
+# Uncomment the following line for 8 byte integers ONLY in Metis
+# In this mode Alya can work in I4 and Metis in I8 (mixed mode)
+# For this option the use of Metis v5 library is mandatory
+#CSALYA   := $(CSALYA) -DMETISI8
+
+
+###################################################################
+#                          NINJA                                  #
+#GPU based solvers : GMRES,DEFLATED_CG,CG                         #
+#Specify solver in configuration as:				  #
+#GMRES -------------> GGMR	 				  #
+#CG ----------------> GCG					  #
+#DEFLATED_CG -------> GDECG					  #
+#GPU Multi Grid-----> GAMGX(Requires CONFIGURATION_FILE in solver)#
+#export CUDA_HOME to CUDA version to be used			  #
+###################################################################
+# Uncomment the following lines to enable NINJA
+#GPU_HOME := ${CUDA_HOME}/
+#CSALYA   := $(CSALYA) -WF,-DNINJA
+#EXTRALIB   := $(EXTRALIB) -L../../Thirdparties/ninja -L${GPU_HOME}lib64/ -lninja -lcublas_static -lcusparse_static -lculibos -lcudart -lpthread -lstdc++ -ldl -lcusolver
+
+# NINJA also support AMGX. Uncomment the following lines and set AMGX_HOME
+#AMGX_HOME :=
+#CSALYA   := $(CSALYA) -WF,-DAMGX
+#EXTRALIB   := $(EXTRALIB) -L${AMGX_HOME}/lib -lamgxsh
+
+
+###################################################################
+#                          HDF5                                   #
+#                          TO ADD                                 #
+###################################################################
+
+
+###################################################################
+#                          VTK                                    #
+#                          TO ADD                                 #
+###################################################################
+
+
+###################################################################
+#                          DO NOT TOUCH                           #
+###################################################################
+FCFLAGS    := $(FCFLAGS) $(CSALYA) $(EXTRAINC)

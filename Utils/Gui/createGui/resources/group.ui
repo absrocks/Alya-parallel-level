@@ -1,0 +1,57 @@
+<widget class="QWidget" name="#tabName">
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>775</width>
+            <height>525</height>
+        </rect>
+    </property>
+    <attribute name="label">
+        <string>#tabLabel</string>
+    </attribute>
+    <layout class="QGridLayout" name="#layoutName">
+        <property name="leftMargin">
+            <number>4</number>
+        </property>
+        <property name="topMargin">
+            <number>1</number>
+        </property>
+        <property name="rightMargin">
+            <number>4</number>
+        </property>
+        <property name="bottomMargin">
+            <number>1</number>
+        </property>
+        <property name="spacing">
+            <number>3</number>
+        </property>
+        <item row="0" column="0">
+            <widget class="QScrollArea" name="#scrollAreaName">
+                <property name="widgetResizable">
+                    <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="#scrollAreaContentName">
+                    <property name="geometry">
+                        <rect>
+                            <x>0</x>
+                            <y>-163</y>
+                            <width>749</width>
+                            <height>716</height>
+                        </rect>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>0</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <layout class="QVBoxLayout" name="#verticalLayoutName">
+                        #subgroup       
+                    </layout>
+                </widget>
+            </widget>
+        </item>
+    </layout>
+</widget>
+

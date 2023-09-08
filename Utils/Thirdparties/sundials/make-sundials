@@ -1,0 +1,4 @@
+cmake -DCMAKE_INSTALL_PREFIX=./sundials-install -DFCMIX_ENABLE=ON  -DEXAMPLES_INSTALL_PATH=./sundials-install/examples ./sundials-2.7.0
+make
+make install
+

@@ -1,14 +1,13 @@
   subroutine turnon
   ! This routines reads initial and boundary condition
 
-  use kindtype, only : ip, rp
   use def_master
   implicit none
 
   real(8)      :: z,  ustar1, dz, distz, rageo, tnume, tdeno,  sqkey, gpcod
   real(8)      :: lm, kz
   real(8)      :: heights(2000), lam, ztoh, LADEN, n
-  integer      :: flag, kpoin, ipoin, ielem
+  integer      :: flag, kpoin
   character*20 :: label, file
   logical      :: wind = .true. ! realizable for wind
 
@@ -238,24 +237,13 @@
   allocate (tempe(npoin,2))
   allocate (tempe_ini(npoin))
 
-  !Allocates specific GABLS3 variables
-  if (kfl_case.eq.3) then
-     allocate (tempe_adv(npoin))
-     allocate (u_adv(npoin))
-     allocate (v_adv(npoin))
-     allocate (u_geo(npoin))
-     allocate (v_geo(npoin))
-     allocate (u_meso(npoin))
-     allocate (v_meso(npoin))
-     allocate (th_meso(npoin))
-  end if
   !
   !*** Matrix connectivities
   !
   if (kfl_order==1) then 
      nzdom = 3*npoin -2  
      allocate (ja(nzdom))
-!     allocate(amatr(nzdom))
+     allocate(amatr(nzdom))
      ! conectivity matrix
      do ielem = 1, nelem 
         do inode = 1, nnode
@@ -344,28 +332,22 @@
         !     lm =kar*(z+rough)*l_max/(kar*(z+rough)+l_max)
         !     epsil_ini(ipoin) =  ((cmu*keyva_ini(ipoin)*keyva_ini(ipoin))**(0.75d0))/lm
         epsil_ini(ipoin) = ustar*ustar*ustar/(kar*(z+rough))
-
         ! temperature initizalization
-        if (kfl_thmod.ne.0) then
-           if (z.lt.ztemin) then
-              tempe_ini(ipoin) =  tewal +  gradbo*z
-           else
-              tempe_ini(ipoin) =  tewal +  gradbo*ztemin + gradto*(z-ztemin)
-           end if
+        if (z.lt.ztemin) then
+           tempe_ini(ipoin) =  tewal +  gradbo*z
         else
-           tempe_ini(ipoin)= 0.0_rp
+           tempe_ini(ipoin) =  tewal +  gradbo*ztemin + gradto*(z-ztemin)
         end if
+        
         ! GABLS2 and Cycle problem type
         if (kfl_case==1.or.kfl_case==2) then
-           call gabls2_ini(ipoin)
+           call gabls2_ini
         end if
 
-        ! GABLS3 problem type 
-        ! Interpolation,  TKE and EPS creation
-        ! correct that, because is overwritting
-        if (kfl_case.eq.3) &
-             call gabls3_ini(ipoin)
-        
+        ! GABLS3 problem type and TKE and EPS creation
+        if (kfl_case.eq.3) then
+           call gabls3_ini
+        end if
 
         ! GABLS1
         if (kfl_case.eq.4) then  !initial conditions
@@ -402,7 +384,7 @@
   else ! Restart Initial conditions
      call read_restart
   end if
-  
+
   ! For fixed temperature at top
   tetop = tempe_ini(npoin)
 
@@ -443,8 +425,6 @@
         open(lun_conve(5), FILE='Wind2.tem.cvg',status='unknown')
         open(13, FILE='Surface_temperatures.txt',status='unknown')
      end if
-     open(lun_3d, FILE='Output3d',status='unknown')
-     
      write(lun_conve(1),101)
      write(lun_conve(2),102)
      write(lun_conve(3),201)
@@ -457,7 +437,6 @@
         open(lun_globa, FILE='plotglobal', status='unknown' )
         write(lun_globa,'(a)')  '#1: time          2:ustar          3:heatfl       4:tstar    5: tewal    6: maxle  7: MOlength  8: htpbl  9: ugeos(1)  10: ugeos(2)  11: ugeos_module  12:veloc(npoin,1)   13: veloc(npoin,1)  14: veloc_module(npoin)'
      end if
-     write(lun_3d,401)
   else
      open(lun_conve(1), FILE='Wind2.ns1.cvg',status='unknown',access="append")
      open(lun_conve(2), FILE='Wind2.ns2.cvg',status='unknown',access="append")
@@ -509,9 +488,7 @@
           call netCDF_Postpr
   end if
 #endif
-  ustar_can = ustar
   if (kfl_trtem)  call postpr
-  if (kfl_thmod.eq.0)  lenmy = l_max
   !
   !*** Formats
   !
@@ -556,8 +533,4 @@
        &      '       Current','     Temper','   Temper'/,&          
        & '$ ','       step','  iteration','  iteration',&
        &      '          time','      residual', '   norm')
-
-401 format('$ ', '      #1 hours  2: coord          3:velocx          4:velocy',&
-       & '     5:key        6: mixlen       7:temp ' &
-)
 end subroutine turnon

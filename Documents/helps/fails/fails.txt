@@ -1,0 +1,29 @@
+1) ALYA NASTIN: COMPUTE GROUPS FOR DEFLATION
+POINTER ALREADY ASSOCIATED: 0 PERMRgraphs_permut
+RUNEND MESSAGE|
+------>MOD_MEMORY: POINTER ALREADY ASSOCIATED
+
+1b) Fakemo does not have mod_ecoute  and then you have error when linking 
+
+Solution 1 & 1b
+your configure file may be out of date - typical when one uses unixg or unix_deb folders
+
+
+---------------------------------------
+
+2) par_metis error when running with i8 and debug
+
+solution eliminate checks (-ftrapuv -check all,noarg_temp_created -traceback -debug full -warn all,nodec,nointerfaces -fp-stack-check -ansi-alias)
+
+compile that subroutine by hand (copy paste  mpif90 ...... par_metis.f90) eliminating checks.
+mv par_metis.o to Objects_g
+
+continue with make
+
+
+---------------------------------------
+
+
+
+
+ 

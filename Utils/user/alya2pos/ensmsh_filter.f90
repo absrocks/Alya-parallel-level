@@ -9,7 +9,6 @@ subroutine ensmsh_filter(&
   use def_kintyp, only          :  tipoe_ens,nppti_ens,ncoun_pos
   use def_kintyp, only          :  pelpo,lelpo
   use def_elmtyp
-  use def_kintyp, only          :  nmax_ensi
 
   implicit none
   integer(ip),    intent(in)    :: kfl_bound
@@ -141,7 +140,7 @@ subroutine ensmsh_filter(&
   ncoun_pos = 0
   nppti_ens = 0
   varnu_pos = 0
-  do istpp=1,nmax_ensi
+  do istpp=1,100
      varna_pos(1,istpp) = 'NULL'
      varna_pos(2,istpp) = 'NULL'
   end do

@@ -26,13 +26,13 @@
      real(8)               ::  gpcod, wvalu, tvalu, bvalu(2), shave(nnode), grvel(2), adiag, hessi(nnode), hevel(2)
      real(8)               ::  gpmut, produ, diffu, react, force, tract, vnorm, tnume,tdeno, prodm, prodt
      real(8)               ::  error, c1p, lm, epsil_aux(npoin), key_aux(npoin), pert, tau, resid
-     integer               ::  itera,  maxin(5), inico, finco, index, iz, jz, kz, ipoin, ielem
-     real(8)               ::  B, ui, dtrac, accum, grmut, eta, DC, WW, uaste, A0, As, grkey, greps
+     integer               ::  itera,  maxin(5), inico, finco, index, iz, jz, kz
+     real(8)               ::  B, ui, dtrac, accum, grmut, eta, DC, W, uaste, A0, As, grkey, greps
      real(8)               ::  grtem, linke, linre, rfact , C3, zbyLm, F, qwall, sqkey, Cg, alpha, richg, difkw, modve
      real(8)               ::  percn, dracn, LADEN, n, zm, lam, sp, sd, betap, betad, C4, C5, &
                                isone,  ladta(11), codta(11), facto,cmuch,  umtar, gpdhf(nnode), S
      logical               :: flctr
-     real(8)               :: phi_m, phi_h, phi_e, logfu, hconv  !, logft
+     real(8)               :: phi_m, phi_h, phi_e, logfu, hconv, htflx_can  !, logft
      real(8), save         :: prgra,  umean(2), divhf(4000)
      real(8)               :: gpvis = 1.5e-5
      !NEW variables for GABLS3 case type (implemented by JBR)
@@ -43,13 +43,13 @@
      real(8)               ::  eta_can = 0.6 ! extintion coefficient
      real(8)               ::  perio, a_damp, leng_damp
      perio = 24.0*3600.0
-!     hflx_rad = 0.0d0 ! 200.0/rhocp
-   !  hflx_rad = 0.2
-!     hflx_rad = 200.0/rhocp*sin(2.0*pi/perio*ctime)
-!     call interp_radiat(hflx_rad) ;  hflx_rad = - hflx_rad /rhocp
+     htflx_can =200.0/rhocp
+   !  htflx_can = 0.2
+!     htflx_can = 200.0/rhocp*sin(2.0*pi/perio*ctime)
+   !  call interp_radiat(htflx_can) ;  htflx_can = - htflx_can /rhocp
     
-!     call interp_ugeos(ugeos)
-     ! print *,  ctime, hflx_rad
+   !  call interp_ugeos(ugeos)
+     ! print *,  ctime, htflx_can
      !
      !  ***intialization of variables
      !
@@ -153,10 +153,9 @@
         qwall =  rhocp*gpmut*(tempe(2,1)- tempe(1,1))/(coord(2)-coord(1))/sigte ! qwall positive in stable atm
         if (kfl_bouco_vel.eq.2) then ! wall law
            if (.not.kfl_abl2) ustar2=ustar
-           ! it is important that qwall depends on ustar2, because in recirculation or wind direction changes veloc is zero, and therefore hconv = 0
            qwall = rhocp*ustar2*kar/(mo_prand*log(1.0+dwall/rough))* (tempe(1,1)-tewal)
         end if
-        lmoni =  rhocp*teref*ustar_can*ustar_can*ustar_can/(kar*gravi*qwall)
+        lmoni =  rhocp*teref*ustar*ustar*ustar/(kar*gravi*qwall)
         !
         !Monin-Obukhov length clipping (implemented by JBR)
         !if (lmoni.lt.-1.0d-6.and.lmoni.gt.-1.0d0) lmoni = -1.0d0
@@ -181,10 +180,7 @@
         !
         ! Construct the system matrix and right-hand-side.
         !
-!        amatr=0.0d0  ! matrix initialization
-        avect=0.0d0
-        cvect=0.0d0
-        diago=0.0d0
+        amatr=0.0d0  ! matrix initialization
         rhsid=0.0d0  ! RHS initialization
         
         ! Loop over elements
@@ -343,7 +339,7 @@
               ! REALIZABLE MODEL
               if (kfl_model==2) then !Realizable model               
                  uaste = sqrt(grvel(1)*grvel(1)+grvel(2)*grvel(2))
-                 WW=0.0d0
+                 W=0.0d0
                  As=1.5d0*sqrt(2.0d0)
                  cmu = 1.0d0/(A0+As*uaste*gpkey(3)/gpeps(3))    
                  grmut = 0.0d0
@@ -521,10 +517,7 @@
                     dracn = cdcan*LADEN*modve
                     react = react + dracn
                     percn = dracn ! stabilization term (into tau and perturbation functions)
-                    if (gpcod.lt.1.2*heica) then
-                       ustar_can = sqrt( gpmut*sqrt(grvel(1)*grvel(1) + grvel(2)*grvel(2)))
-                       hflx_can = gpmut/sigte*grtem
-                    end if
+                    if (gpcod.lt.1.2*heica) ustar_can = sqrt( gpmut*sqrt(grvel(1)*grvel(1) + grvel(2)*grvel(2)))
                  end if
                  
                  if (kfl_local) dtinv = (4.0d0*diffu/chale/chale + pert)*safet
@@ -715,9 +708,8 @@
                     force = force + densi*(1.0d0/3600.0d0)*(gpcod/coord(npoin))*(gpth_meso-gptem(2))  
                  end if
                  !
-                 if (kfl_canop.and.gpcod.lt.heica) then ! heat source/sink term due to canopy (heatflux divergence)
-                                                        ! Canopy is considered as uniform
-                    force = force - hflx_rad*eta_can*LAI/heica*exp(-eta_can*LAI*(heica-gpcod)/heica)
+                 if (kfl_canop.and.gpcod.lt.heica) then ! source or sink term due to canopy
+                    force = force - htflx_can*eta_can*LAI/heica*exp(-eta_can*LAI*(heica-gpcod)/heica)
                  end if
               end select
 
@@ -791,28 +783,18 @@
 !!$                 divhf(ipoin)= divhf(ipoin) + gpdhf(inode)  
 !!$              end do
 !!$           end if
-           ! ELEMENTAL ASSEMBLY
-!       
-!          diago(ielem)   cvect(ielem)  <==  elmat(1, 1), elmat(1,2)
-!          avect(ielem+1) diago(ielem+1)<==  elmat(2,1),elmat(2,2)
-!
-           diago(ielem  ) = diago(ielem  ) + elmat(1,1)
-           diago(ielem+1) = diago(ielem+1) + elmat(2,2)
-           avect(ielem+1) = avect(ielem+1) + elmat(2,1)
-           cvect(ielem  ) = cvect(ielem  ) + elmat(1,2)
-           rhsid(ielem:ielem+1)= rhsid(ielem:ielem+1) + elrhs(1:2)    
-!!$           do inode =1, nnode
-!!$              ipoin = lnods(inode, ielem)
-!!$              do jnode =1, nnode   
-!!$                 jpoin = lnods(jnode, ielem)
-!!$                 izdom = ia(ipoin)
-!!$                 do while (ja(izdom).ne.jpoin) 
-!!$                    izdom= izdom +1
-!!$                 end do
-!!$                 amatr(izdom) = amatr(izdom) + elmat(inode, jnode)
-!!$              end do
-!!$              rhsid(ipoin)= rhsid(ipoin) + elrhs(inode)                           
-!!$           end do
+           do inode =1, nnode
+              ipoin = lnods(inode, ielem)
+              do jnode =1, nnode   
+                 jpoin = lnods(jnode, ielem)
+                 izdom = ia(ipoin)
+                 do while (ja(izdom).ne.jpoin) 
+                    izdom= izdom +1
+                 end do
+                 amatr(izdom) = amatr(izdom) + elmat(inode, jnode)
+              end do
+              rhsid(ipoin)= rhsid(ipoin) + elrhs(inode)                           
+           end do
 
         end do elements
         
@@ -838,8 +820,6 @@
               !
               if (kfl_thmod.gt.0) then  ! thermal coupling 
                  eta = dwall/lmoni  ! dimensionless height parameter
-                 eta = max(-2.0,  eta)                 
-                 eta = min(eta, 1.0)
                  if (lmoni.lt.-1.0d-6.and..not.kfl_canop) then     ! unstable 
                     phi_m = (1.0 -mo_gamm1*eta)**(-0.25)
                     phi_h = mo_prand*(1.0 -mo_gamm2*eta)**(-0.5)
@@ -880,17 +860,12 @@
                  end if
               else if (iunkn.eq.5) then ! wall law for temper
                  ustar2 = cmu0**0.25*sqrt(keyva(1, 1))*(phi_m/phi_e)**0.25
-                 if (.not.kfl_abl2) ustar2=ustar
-                 if (kfl_hflx_wall) then ! imposinf a heat flux
-                    tract = hflx_wall
-                    dtrac = 0.0d0
-                 else
-                    hconv = densi*ustar2*kar/(logft*mo_prand)              
-                    tract = hconv*tewal ! right h side coeff
-                    dtrac = hconv       ! matrix assembly
-                 end if
-                 ! Uncomment for adiabatic condition 
-!                 tract = 0.0 ! hflx_rad*exp(-0.6*6.0*(heica-coord(1))/heica) !   0.0 ! -60.0/1000
+                 if (.not.kfl_abl2) ustar2=ustar              
+                 hconv = densi*ustar2*kar/(logft*mo_prand)              
+                 tract = hconv*tewal ! right h side coeff
+                 dtrac = hconv       ! matrix assembly
+                 ! for adiabatic uncoment
+!                 tract = 0.0 ! htflx_can*exp(-0.6*6.0*(heica-coord(1))/heica) !   0.0 ! -60.0/1000
 !                 dtrac = 0.0
               end if
            end if
@@ -906,8 +881,7 @@
            !       tract \approx    dtrat*u -rho*ustar*ustar*(ui/un)**3
            
            rhsid(1) = rhsid(1) + tract
-!           amatr(1) = amatr(1) + dtrac
-           diago(1) = diago(1) + dtrac
+           amatr(1) = amatr(1) + dtrac
         end if
         
            !
@@ -936,8 +910,6 @@
         elseif (iunkn.eq.4) then   ! wall and top epTsilon values
            if (kfl_thcou) then
               eta = dwall/lmoni
-              eta = max(-2.0,  eta)                 
-              eta = min(eta, 1.0)
               if (lmoni.lt.-1.0d-6) then !unstable
                  phi_m   = (1.0 -mo_gamm1*eta)**(-0.25)
                  phi_e = 1.0d0 - eta
@@ -972,19 +944,50 @@
 !           end if           
 !           tvalu = tetop
         end if
-        if (wvalu.gt.-1.0) then  ! Dirichlet at bottom
-           cvect(1) = 0.0d0
-           rhsid(1) = wvalu*diago(1)
+
+        inico= 2
+        finco= 1
+        if (wvalu.gt.-1.0) then 
+           inico = 1
+           finco = 1
+           bvalu(1)= wvalu   
         end if
-        if (tvalu.gt.-1.0) then  ! Dirichlet at top
-           avect(nelem+1) = 0.0d0
-           rhsid(nelem+1) = tvalu*diago(nelem+1)
+        if (tvalu.gt.-1.0) then
+           finco = 2 
+           bvalu(2)= tvalu
         end if
-        
+    
+        do inode = inico, finco
+           ipoin = 1                    ! bottom dirichlet cond
+           if (inode==2) ipoin =npoin   ! top dirichlet cond
+           do izdom = ia(ipoin), ia(ipoin+1) -1
+              jpoin = ja(izdom)
+              if (jpoin.eq.ipoin) then
+                 adiag = amatr(izdom)
+              else
+                 amatr(izdom) =0.0
+              end if
+           end do
+           rhsid(ipoin) = bvalu(inode)*adiag
+        end do
+        !  write(*,*) 'going to solve'
         !
         ! Solve the algebraic system.
         !
-
+        !  write (*,*) 'going to solve...'
+        ! converts csr matrix to tri diagonal matrix
+        avect(1) = 0.0d0    ! subdiagonal
+        diago(1) = amatr(1) ! diagonal
+        cvect(1) = amatr(2) ! supdiagonal
+        do ipoin = 2, npoin -1
+           avect(ipoin) = amatr (ia (ipoin))
+           diago(ipoin) = amatr (ia (ipoin) +1)
+           cvect(ipoin) = amatr (ia (ipoin) +2)      
+        end do
+        avect(npoin) = amatr (ia (npoin))
+        diago(npoin) = amatr (ia (npoin) +1)
+        cvect(npoin) = 0.0d0
+        !       write(*,*) 'calling solver'
         call solvtr(avect, diago, cvect,rhsid, unkno, npoin)
         !          call solvpa(ia, ja, amatr, rhsid, unkno, npoin, 1, &
         !                       1, .false., 1)
@@ -1015,16 +1018,16 @@
               keyva(ipoin, 1) = (0.7d0*unkno(ipoin)+0.3d0*keyva(ipoin,1))
               !           lm =kar*(coord(ipoin)+rough)*l_max/(kar*(coord(ipoin)+rough)+l_max)
               !           epsil(ipoin,1) =  ((cmu*keyva(ipoin,1)*keyva(ipoin,1))**(0.75d0))/lm
-               if(kfl_thmod.eq.1)  &
-                   keyva(ipoin, 1)= max(keyva(ipoin, 1), keyam) !.and.coord(ipoin).gt.10.0)
+              if(kfl_thmod.eq.1)  keyva(ipoin, 1)= max(keyva(ipoin, 1), keyam) !.and.coord(ipoin).gt.10.0)
            end do
         case (4)
            do ipoin =1, npoin
               tnume= tnume + (epsil(ipoin, 1) - unkno(ipoin))*(epsil(ipoin, 1) - unkno(ipoin))
               tdeno= tdeno + unkno(ipoin)*unkno(ipoin)
               epsil(ipoin, 1) =(0.7d0*unkno(ipoin)+0.3d0*epsil(ipoin,1))
-              if(kfl_thmod.eq.1) & ! limits to k and eps
+              if(kfl_thmod.eq.1) then ! limits to k ans eps
                  epsil(ipoin, 1)= max(epsil(ipoin, 1), epsam)             
+              end if
            end do
         case (5)    ! transient temper equation
            do ipoin =1, npoin
@@ -1055,7 +1058,6 @@
         ipoin =2
         vnorm= sqrt(veloc(ipoin,1,1)*veloc(ipoin,1,1)+veloc(ipoin,2,1)*veloc(ipoin,2,1))
         ustar= sqrt(gpmut*vnorm/coord(ipoin))
-        ustar2 = ustar
         !     write (*,*) 'ustar=', usta
      end if
      if (.not.kfl_canop) ustar_can = ustar

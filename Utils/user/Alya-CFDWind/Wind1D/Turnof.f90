@@ -5,8 +5,7 @@ subroutine Turnof
   implicit none
   real(8) :: viscot, tempa, tempz, richf, grvel(2), prodt, prodm, phi_e, phi_m, thvel, thtem
   real(8) :: thvte, thmut, zbylm,tstar,  theps, gpnut, mixle, stres, deltz, grtem, htflx
-  real(8) :: WW, uaste, A0, As, cmu_p
-  integer :: ipoin
+  real(8) :: W, uaste, A0, As, cmu_p
 
   richf = 0.0d0
   tempa = 0.0d0
@@ -52,7 +51,7 @@ subroutine Turnof
      end if
      if (kfl_model==2) then ! realizable
         uaste = sqrt(grvel(1)*grvel(1)+grvel(2)*grvel(2))
-        WW=0.0d0
+        W=0.0d0
         As=1.5d0*sqrt(2.0d0)
         cmu = 1.0d0/(A0+As*uaste*keyva(ipoin,1)/epsil(ipoin,1))
      end if
@@ -161,7 +160,7 @@ subroutine Turnof
   deallocate (keyva)
   deallocate (epsil)
   deallocate (shape)
-!  deallocate (amatr)
+  deallocate (amatr)
   deallocate (ja)
   deallocate (ia)
 

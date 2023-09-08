@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jube>
+   
+    <parameterset name="plat_depend_param_set"> 
+    <!-- job submit platform dependent-->
+      <parameter name="submit">bsub &lt; </parameter>
+      <parameter name="submit_script">job.sh</parameter>
+      <parameter name="machine_dir">MN</parameter>
+      <parameter name="mod2load"> intel/16.0.1 impi/5.1.2.150 HDF5/1.8.16-mpi SZIP/2.1</parameter>
+    </parameterset>
+
+</jube>
+

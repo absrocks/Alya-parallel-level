@@ -23,13 +23,13 @@ subroutine lev_iniun0()
   implicit none
   integer(4)               :: istat
   real(rp)                 :: fx,dummy
-  real(rp)                 :: x,y,z,xc,xc1,xc2,yc,zc,rc,distx,disty,distz
+  real(rp)                 :: x,y,z,xc,yc,zc,rc,distx,disty,distz
   real(rp)                 :: xi,xj,yi,yj,a,b,c,d
   real(rp),  allocatable   :: interfx(:),interfy(:) 
   real(rp),  allocatable   :: phi(:)
   real(rp)                 :: vx,vy,vz,rho
   real(rp)                 :: zmed,ztop,zbot
-  real(rp)                 :: xmin_jump, xmax_jump, xjump, h1, h2, mramp, ylevel, ylevel_max, h, xo, omega, A1
+  real(rp)                 :: xmin_jump, xmax_jump, xjump, h1, h2, mramp, ylevel, ylevel_max, h, omega, A1!, pi
   integer(ip)              :: kfl_value,ipoin,i,j,inter,k,ipoin1,nptot
   integer(ip)              :: icond, idime, ivcod, kdime
 
@@ -60,49 +60,12 @@ subroutine lev_iniun0()
         !
         ! Prescribed height at z
         !
-        ! do ipoin=1,npoin
-        !    fleve(ipoin,3)     = height_lev - coord(ndime,ipoin) + 1.0e-8_rp
-        !    !fleve(ipoin,3)     = height_lev - coord(ndime,ipoin) 
-        !    bvess_lev(1,ipoin,1) = fleve(ipoin,3) 
-        ! end do
-        
-        ! JCCG Japan Case
-        xc1 = -101.61_rp
-        xc2 = 0_rp
-        zc  = height_lev
-        a   = 1.0_rp
         do ipoin=1,npoin
-           x=coord(1,ipoin)
-           y=coord(2,ipoin)
-           z=coord(3,ipoin)
-
-           distz=(z-zc)
-
-           if ( x < xc1 ) then
-              distx=(x-xc1)
-              c = -(x-xc1) + zc
-              if ( z < zc ) then
-                 fleve(ipoin,3)= distx+1e-08_rp
-              else
-                 fleve(ipoin,3)=-sqrt(distz*distz+distx*distx)+1e-08_rp
-              end if
-              
-           else if ( x>=xc1 .and. x<=xc2 ) then
-
-              fleve(ipoin,3) = height_lev - coord(ndime,ipoin) + 1.0e-8_rp
-              
-           else if ( x > xc2 ) then
-
-              distx=(x-xc2)
-              c = (x-xc2) + zc
-              if ( z < zc ) then
-                 fleve(ipoin,3)=-x+1e-08_rp
-              else
-                 fleve(ipoin,3)=-sqrt(distz*distz+distx*distx)+1e-08
-              end if
-           end if
-           bvess_lev(1,ipoin,1) = fleve(ipoin,3)
+           fleve(ipoin,3)     = height_lev - coord(ndime,ipoin) + 1.0e-8_rp
+           !fleve(ipoin,3)     = height_lev - coord(ndime,ipoin) 
+           bvess_lev(1,ipoin,1) = fleve(ipoin,3) 
         end do
+
 
      else if(kfl_inlev_lev==-2) then
         !
@@ -522,61 +485,10 @@ subroutine lev_iniun0()
         !
         ! Dam Break 3D   
         !
-        if( ndime == 2 ) then
-
-           yc=0.5_rp
-           xc=0.5_rp
-           a=1.0_rp
-           b=yc-xc
-
-           do ipoin=1,npoin
-              x=coord(1,ipoin)
-              y=coord(2,ipoin)
-
-              distx=-(x-xc)
-              disty=-(y-yc)
-
-              c=a*x+b
-
-              if(y<c) then
-                 fleve(ipoin,3)= distx+1e-08
-              else
-                 fleve(ipoin,3)= disty+1e-08
-              endif
-
-           end do
-        else
-           zc=0.5_rp
-           xc=0.25_rp
-           a=1.0_rp
-           b=zc-xc
-
-           do ipoin=1,npoin
-              x=coord(1,ipoin)
-              y=coord(2,ipoin)
-              z=coord(3,ipoin)
-
-              distx=-(x-xc)
-              distz=-(z-zc)
-
-              c=a*x+b
-
-              if(z<c) then
-                 fleve(ipoin,3)= distx+1e-08
-              else
-                 fleve(ipoin,3)= distz+1e-08
-              endif
-
-           end do
-        end if
-     else if(kfl_inlev_lev==86) then
-        !
-        ! 3D dam break
-        !
-	zc= lev_dam_break(1) !5.0_rp  !3.0_rp
-	xc= lev_dam_break(2) !-3.0_rp !-1.5_rp
-        a = lev_dam_break(3) ! 1._rp  !1.0_rp
-        b=zc-a*xc
+        zc=0.5_rp
+        xc=0.25_rp
+        a=1.0_rp
+        b=zc-xc
 
         do ipoin=1,npoin
            x=coord(1,ipoin)
@@ -587,42 +499,15 @@ subroutine lev_iniun0()
            distz=-(z-zc)
 
            c=a*x+b
-           if(z>=c) then
-              fleve(ipoin,3)= distz+1e-08
-           else
+
+           if(z<c) then
               fleve(ipoin,3)= distx+1e-08
-              endif
-        enddo
+           else
+              fleve(ipoin,3)= distz+1e-08
+           endif
 
-     else if(kfl_inlev_lev==106) then
-        !
-	h = lev_dam_break(4) !-0.02_rp ! fixed depth of water
-        zc= lev_dam_break(1) !5.0_rp  !3.0_rp
-        xc= lev_dam_break(2) !-3.0_rp !-1.5_rp
-        a = lev_dam_break(3) ! 1._rp  !1.0_rp
-        !xo = lev_dam_break(5) !-2.5_rp
+        end do
 
-        b=zc-a*xc
-
-        do ipoin=1,npoin
-           x=coord(1,ipoin)
-           y=coord(2,ipoin)
-           z=coord(3,ipoin)
-
-           distx=-(x-xc)
-           distz=-(z-zc)
-
-	   c=a*(x)+b
-           if(x<=xc) then
-              fleve(ipoin,3)= (zc -coord(ndime,ipoin) +1e-08_rp)
-           elseif (x>xc) then
-              fleve(ipoin,3)= (h -coord(ndime,ipoin) +1e-08_rp)
-           !if (z<=zc .and. z>3*h) then
-            !  fleve(ipoin,3)=xc-x+1e-08_rp
-           !end if
-        end if
-     end do
-     
      else if(kfl_inlev_lev==14) then
         !
         ! Dam Break 3D   
@@ -640,17 +525,13 @@ subroutine lev_iniun0()
            distx=(x-xc)
            distz=-(z-zc)
 
-           c=a*x+b
+           c=-a*x+b
 
-           if (x < -3.79) then
-              fleve(ipoin,3) = 0.6 - coord(ndime,ipoin) + 1.0e-8_rp
-           else if (x >= -3.79 .AND. x<=-3.8 .AND. y>= 0.225) then
-              fleve(ipoin,3) = 0.6012 - coord(ndime,ipoin) + 1.0e-8_rp
-           else if ( x > -3.8 ) then
-              fleve(ipoin,3) = 0.06 - coord(ndime,ipoin) + 1.0e-8_rp
-
+           if(z<c) then
+              fleve(ipoin,3)= distx+1e-08
+           else
+              fleve(ipoin,3)= distz+1e-08
            endif
-
 
         end do
 
@@ -766,6 +647,23 @@ subroutine lev_iniun0()
            distz=-(z-zc)
            fleve(ipoin,3) = distz+1e-08
            bvess_lev(1,ipoin,1) = distz+1e-08
+
+        enddo
+     else if(kfl_inlev_lev==109) then
+
+        yc=0.0_rp
+
+        do ipoin=1,npoin
+
+           x=coord(1,ipoin)
+           y=coord(2,ipoin)
+           z=coord(3,ipoin)
+
+           yc = sin(2*x*3.14)*0.2+0.5
+
+           disty=-(y-yc)
+           fleve(ipoin,3) = disty+1e-08
+           bvess_lev(1,ipoin,1) = disty+1e-08
 
         enddo
 
@@ -969,8 +867,8 @@ subroutine lev_iniun0()
         !
         ! Dam Break 3D MARIN
         !
-        zc=0.15_rp
-        xc=0.8_rp
+        zc=0.55_rp
+        xc=1.228_rp
         a=1.0_rp
         b=zc-xc
 
@@ -1067,70 +965,8 @@ subroutine lev_iniun0()
               bvess_lev(1,ipoin,1) = -(y-ylevel_max)+1e-08
 
            end if
-
         end do
-
-        if (.not.associated(veloc)) call runend('lev_iniunk: veloc not associated')
-
-        vy=0.0_rp
-        do ipoin=1,npoin
-           y=coord(2,ipoin)
-           x=coord(1,ipoin)
-
-           if( x <= xmin_jump ) then !0.2950 is the x-coordinate where the jump starts
-
-              yc = h1
-              if( y <= yc) then !0.2950 is the x-coordinate where the jump starts
-                 vx               = 1.5_rp
-                 veloc(1,ipoin,1) = vx
-                 veloc(1,ipoin,2) = vx
-                 veloc(1,ipoin,3) = vx
-              else !air
-                 vx               = 0.0_rp
-                 veloc(1,ipoin,1) = vx
-                 veloc(1,ipoin,2) = vx
-                 veloc(1,ipoin,3) = vx
-              end if
-
-           else if( x > xmin_jump .and. x < xmax_jump ) then
-
-              ylevel = min(mramp*(x - xmin_jump) + h1, h2)
-              if( y <= ylevel) then !water under the ramp
-                 vx               = 0.0 !1.5_rp*h1/ylevel  !continuity
-                 veloc(1,ipoin,1) = vx
-                 veloc(1,ipoin,2) = vx
-                 veloc(1,ipoin,3) = vx
-
-              else !air
-                 vx               = 0.0
-                 veloc(1,ipoin,1) = vx
-                 veloc(1,ipoin,2) = vx
-                 veloc(1,ipoin,3) = vx
-              end if
-
-           else
-              ylevel_max = mramp*xmax_jump;
-
-              yc = h2
-              if( y <= yc) then
-                 vx               = 0.643000 !U_out
-                 veloc(1,ipoin,1) = vx
-                 veloc(1,ipoin,2) = vx
-                 veloc(1,ipoin,3) = vx
-              else !air
-                 vx               = 0.0
-                 veloc(1,ipoin,1) = vx
-                 veloc(1,ipoin,2) = vx
-                 veloc(1,ipoin,3) = vx
-
-              end if
-
-           end if
-
-           veloc(2,ipoin,1)=vy
-           veloc(2,ipoin,2)=vy
-           veloc(2,ipoin,3)=vy
-        enddo
+        
 
      else if(kfl_inlev_lev==32) then
         !
@@ -1323,8 +1159,90 @@ subroutine lev_iniun0()
 
         end do
 
-     end if
+     else if(kfl_inlev_lev==86) then
+        !
+        ! 3D dam break
+        !
+        zc= lev_dam_break(1) !5.0_rp  !3.0_rp
+        xc= lev_dam_break(2) !-3.0_rp !-1.5_rp
+        a = lev_dam_break(3) ! 1._rp  !1.0_rp
+        b=zc-a*xc
 
+        do ipoin=1,npoin
+           x=coord(1,ipoin)
+           y=coord(2,ipoin)
+           z=coord(3,ipoin)
+
+           distx=-(x-xc)
+           distz=-(z-zc)
+
+           c=a*x+b
+           if(z>=c) then
+              fleve(ipoin,3)= distz+1e-08
+           else
+              fleve(ipoin,3)= distx+1e-08
+           endif
+        enddo
+
+     else if(kfl_inlev_lev==87) then
+        !
+        ! 3D dam break
+        !
+        zc= 1.0_rp
+
+        do ipoin=1,npoin
+           x=coord(1,ipoin)
+           y=coord(2,ipoin)
+           z=coord(3,ipoin)
+
+           ! distx=-(x-xc)
+           distz=-(z-zc)
+           fleve(ipoin,3)= distz+1e-08
+        enddo
+
+     else if(kfl_inlev_lev==100) then
+        !
+        ! Equilibrium interface SM testing
+        !
+        !xmin_jump = 3.0_rp
+        !xmax_jump = 5.0_rp
+        h        = 0.4_rp
+        !pi = 3.1415927_rp
+        xc = 4.0_rp
+        A1 = 0.071_rp
+        omega = sqrt((3*9.81*A1)/4*h);
+
+        do ipoin=1,npoin
+           y=coord(2,ipoin)
+           x=coord(1,ipoin)
+
+           ylevel = (A1/(cosh(omega*(-(x-xc)/sqrt(9.81*h)))**2))+0.2
+           fleve(ipoin,3)     = -(y-ylevel)+1e-08 !A1/(COSH(omega*(-(x-xc)/sqrt(9.81*h)))**2)
+           bvess_lev(1,ipoin,1) = -(y-ylevel)+1e-08 !A1/(COSH(omega*(-(x-xc)/sqrt(9.81*h)))**2)
+
+        end do
+        
+     else if(kfl_inlev_lev==102) then
+        !                                                                                                                                                                                                 
+        ! Equilibrium interface SM testing                                                                                                                                                                
+      
+	h  = 0.4
+	xc = -4.5
+        A1 = 0.071
+	!omega = sqrt((3*9.81*A1)/4*h); ! Larsen_et_al
+        omega = sqrt((3*A1)/4*h**3); ! Jin_et_al
+
+        do ipoin=1,npoin
+           y=coord(2,ipoin)
+           x=coord(1,ipoin)
+
+           !ylevel = (A1/(cosh(omega*(-(x-xc)/sqrt(9.81*h)))**2)) ! Larsen_et_al
+           ylevel = (A1/(cosh(omega*(x-xc)))**2) ! Jin_et_al
+           fleve(ipoin,3)     = -(y-ylevel)+1e-08 !A1/(COSH(omega*(-(x-xc)/sqrt(9.81*h)))**2)                                                                                                             
+           bvess_lev(1,ipoin,1) = -(y-ylevel)+1e-08 !A1/(COSH(omega*(-(x-xc)/sqrt(9.81*h)))**2)                                                                                                           
+
+        end do
+     end if
   end if
 
 end subroutine lev_iniun0

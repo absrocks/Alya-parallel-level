@@ -24,8 +24,8 @@ contains
   integer(ip),    intent(in)           :: lexis(*)
   integer(ip),    intent(in)           :: ltype(*)
   integer(ip),    intent(in)           :: leinv(*)
-  integer(ip),             intent(in)  :: gisca(*)
-  integer(ip),    pointer, intent(in)  :: lelch(:)
+  integer(ip),    intent(in)           :: gisca(*)
+  integer(ip),    intent(in)           :: lelch(*)
   integer(ip),    intent(inout)        :: ieles
   integer(ip),    intent(in)           :: ipois
   real(rp),       intent(in)           :: coord(ndime,*)
@@ -38,9 +38,7 @@ contains
   !
   ! Element range
   !
-  if(      ndimb == 0 ) then
-     return
-  else if(      ndimb == 1 ) then
+  if(      ndimb == 1 ) then
      iesta =  2
      iesto =  9
   else if( ndimb == 2 ) then
@@ -48,7 +46,7 @@ contains
      iesto = 29
   else if( ndimb == 3 ) then
      iesta = 30
-     iesto = 52
+     iesto = 50
   end if
   !
   ! Mesh
@@ -62,7 +60,7 @@ contains
         ! Header
         !
         write(lunit,1)&
-             adjustl(trim(dumml)),max(2_ip,ndime),&
+             adjustl(trim(dumml)),ndime,&
              adjustl(trim(cetop(ielty))),nnode(ielty)
         !
         ! Coordinates
@@ -98,21 +96,12 @@ contains
               end if
            end do
         else
-           if( associated(lelch) ) then
-              do ielem = 1,nelem
-                 if( abs(ltype(ielem)) == ielty .and. lelch(ielem) /= 17_ip ) then
-                    write(lunit,4) leinv(ielem)+ieles,&
-                         (lnods(inode,ielem)+ipois,inode=1,nnode(ielty)),gisca(ielem)
-                 end if
-              end do
-           else
-              do ielem = 1,nelem
-                 if( abs(ltype(ielem)) == ielty ) then
-                    write(lunit,4) leinv(ielem)+ieles,&
-                         (lnods(inode,ielem)+ipois,inode=1,nnode(ielty)),gisca(ielem)
-                 end if
-              end do              
-           end if
+           do ielem = 1,nelem
+              if( abs(ltype(ielem)) == ielty .and. lelch(ielem) /= 17_ip ) then
+                 write(lunit,4) leinv(ielem)+ieles,&
+                      (lnods(inode,ielem)+ipois,inode=1,nnode(ielty)),gisca(ielem)
+              end if
+           end do
         end if
         write(lunit,2) 'end elements'
         write(lunit,2) ''
@@ -145,21 +134,12 @@ contains
            ! Connectivity
            !
            write(lunit,2) 'elements'
-           if( associated(lelch) ) then
-              do ielem = 1,nelem
-                 if( abs(ltype(ielem)) == ielty .and. lelch(ielem) == 17_ip) then
-                    write(lunit,4) leinv(ielem)+ieles,&
-                         (lnods(inode,ielem)+ipois,inode=1,nnode(ielty)),gisca(ielem)
-                 end if
-              end do
-           else
-              do ielem = 1,nelem
-                 if( abs(ltype(ielem)) == ielty ) then
-                    write(lunit,4) leinv(ielem)+ieles,&
-                         (lnods(inode,ielem)+ipois,inode=1,nnode(ielty)),gisca(ielem)
-                 end if
-              end do              
-           end if
+           do ielem = 1,nelem
+              if( abs(ltype(ielem)) == ielty .and. lelch(ielem) == 17_ip) then
+                 write(lunit,4) leinv(ielem)+ieles,&
+                      (lnods(inode,ielem)+ipois,inode=1,nnode(ielty)),gisca(ielem)
+              end if
+           end do
            write(lunit,2) 'end elements'
            write(lunit,2) ''
         end if

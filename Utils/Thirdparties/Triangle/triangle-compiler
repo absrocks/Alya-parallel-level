@@ -1,0 +1,4 @@
+echo "Creating triangle library for Alya..."
+echo "cc -DTRILIBRARY -O -c triangle.c"
+cc -DTRILIBRARY -O -c triangle.c
+echo "Done!"

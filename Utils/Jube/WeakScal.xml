@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jube>
+  <benchmark name="Alya Benchmark" outpath="weakscalruns">
+    <comment>Performance analyses for the Alya code</comment>
+    
+    <!-- compiler configurations -->
+    <parameterset name="compile_set">
+      <!--parameter name="flags"> -O2 -no-vec -no-simd, -O2 -xHost, -O2 -xHost -ipo </parameter-->
+      <parameter name="flags"> -O2 -xHost </parameter>
+    </parameterset>
+
+    <!-- job configurations -->
+    <parameterset name="job_set">
+      <parameter name="meshSubdiv" type="int">0,1,2 </parameter>
+      <parameter name="nodes" mode="python" type="int">[1,8,64][$meshSubdiv]</parameter> 
+      <parameter name="tpn" type="int">16</parameter> <!-- tasks per node -->
+      <parameter name="tasks" mode="python" type="int">[16,128,1024][$meshSubdiv]</parameter> 
+      <parameter name="problemname" type="character">case-000</parameter> 
+      <parameter name="case_dir" type="character">/gpfs/scratch/bsc21/bsc21816/ALYA/bench4jube_1melem/case-000</parameter> 
+    </parameterset>
+
+    <!-- link to the build files -->
+    <fileset name="build_files">
+      <link name="bin">../Executables/unix</link>
+      <link name="libs">../Thirdparties</link>
+    </fileset>
+
+    <!-- replace compiler flags -->
+    <substituteset name="subs_comp">
+      <!-- files -->
+      <iofile in="dir/bin/configure.in/config_ifort.in" out="dir/bin/config.in" />
+      <!-- can this be done with pattern? -->
+      <sub source="FOPT      = -O1" dest="FOPT = $flags" />
+      <sub source="#CSALYA   := $(CSALYA) -DNDIMEPAR" dest="CSALYA   :=$(CSALYA) -DNDIMEPAR" />
+    </substituteset>
+    
+
+    <!-- modify sources-->
+    <substituteset name="subs_sour">
+      <!-- files -->
+      <iofile in="dir/bin/../../Sources/modules/nastin/nsi_turbul.f90" out="dir/bin/../../Sources/modules/nastin/nsi_turbul.f90" />
+      <sub source="!#define ransopenint" dest="#define ransopenint" />
+      <sub source="usa def_turbul" dest="use def_turbul" />
+    </substituteset>
+
+    <!-- modify input file-->
+    <substituteset name="subs_kerdat">
+      <!-- files -->
+      <iofile in="${case_dir}/${problemname}.ker.dat"
+      out="${problemname}.ker.dat" />
+      <sub source="DIVISION=0" dest="DIVISION=$meshSubdiv" />
+    </substituteset>
+
+
+
+    <!-- replace job script -->
+    <substituteset name="subs_job">
+      <!-- files -->
+      <iofile in="$jube_benchmark_home/$machine_dir/job.sh" out="job.sh" />
+      <!-- can this be done with pattern? -->
+      <sub source="#NODES#" dest="$nodes " />
+      <sub source="#TASKPNODE#" dest="$tpn" />
+      <sub source="#TASKS#" dest="$tasks" />
+      <sub source="#PROBLEMNAME#" dest="$problemname" />
+    </substituteset>
+
+    <!-- prepare the directory -->
+    <!-- different compilers (gnu/intel/parastation) can be used here -->
+    <step name="dir">
+      <use>build_files</use>
+      <use from="platform.xml">plat_depend_param_set</use>
+      <!-- load modules -->
+      <do>module purge</do>
+      <do>module load $mod2load</do>
+      <!-- build libraries -->
+      <do>cd libs/metis-4.0; make</do>
+    </step>
+
+    <!-- compile the applications -->
+    <step name="app" depend="dir">
+      <use>compile_set,subs_sour,subs_comp</use>
+      <!-- compilation -->
+      <do work_dir="dir/bin">./configure -x parall nastin turbul</do>
+      <do work_dir="dir/bin">make clean; make -j 12</do>
+      <do work_dir="dir/bin">svn log ../../ | head -30 &gt; svnlog</do>
+      <do work_dir="dir/bin">svn diff ../../ &gt; svndiff</do>
+      <do>cp dir/bin/Alya.x .</do>
+    </step>
+
+    <!-- setup and submit the jobs -->
+    <step name="job" depend="app">
+      <use>job_set,subs_job, subs_kerdat</use>
+      <use from="platform.xml">plat_depend_param_set</use>
+      <!-- prepare the test case -->
+      <do>mkdir case; cp -r $case_dir/* case/</do>
+      <do>mv ${problemname}.ker.dat case/ </do>
+      <do>mv job.sh case/</do>
+      <!-- submit the job -->
+      <do work_dir="case">$submit $submit_script</do> 
+    </step>
+
+
+    <!-- RESULTS -->
+    <!-- optional benchmark comment -->
+    <comment>Results Analyse</comment>
+
+    <patternset name="pattern">
+      <pattern name="CPU_time" type="float">TOTAL CPU TIME:[ \t]* $jube_pat_fp</pattern>
+      <pattern name="Start_ops" type="float">STARTING OPERATIONS:[ \t]* $jube_pat_fp</pattern>
+      <pattern name="NSI_total" type="float">NASTIN MODULE:[ \t]*$jube_pat_fp \(</pattern>
+      <pattern name="NSI_mat" type="float">NASTIN MODULE:[^-]*?Matrix construction: [^-]*?Maximum: [ \t]*$jube_pat_fp</pattern>
+      <pattern name="NSI_sol" type="float">NASTIN MODULE:[^-]*?Algebraic solver:[^-]*?Maximum: [ \t]*$jube_pat_fp</pattern>
+      <pattern name="TUR_total" type="float">TURBUL MODULE:[ \t]* $jube_pat_fp \(</pattern>
+      <pattern name="TUR_mat" type="float">TURBUL MODULE:[^-]*?Matrix construction:[^-]*?Maximum:[ \t]* $jube_pat_fp</pattern>
+      <pattern name="TUR_sol" type="float">TURBUL MODULE:[^-]*?Algebraic solver:[^-]*?Maximum:[ \t]* $jube_pat_fp</pattern>
+    </patternset>
+
+
+    
+    <!-- Analyse -->
+    <analyser name="analyse">
+      <use>pattern</use> <!-- use existing patternset -->
+      <analyse step="job">
+        <file>case/case-000.log</file> <!-- file which should be scanned -->
+      </analyse>
+    </analyser>
+    
+    <!-- Create result table -->
+    <result>
+      <use>analyse</use> <!-- use existing analyser -->
+      <table name="result" style="pretty">
+	<column>nodes</column>
+	<column>tasks</column>
+        <column>CPU_time</column>
+        <column>Start_ops</column>
+        <column>NSI_total</column>
+        <column>NSI_mat</column>
+        <column>NSI_sol</column>
+        <column>TUR_total</column>
+        <column>TUR_mat</column>
+        <column>TUR_sol</column>
+      </table>
+    </result>
+
+
+  </benchmark>
+</jube>
+

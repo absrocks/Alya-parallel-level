@@ -1,0 +1,30 @@
+ROOT          :=$(shell pwd)
+ROOT_LIBPLE   :=$(ROOT)/LIBPLE
+ROOT_LIBPLEPP :=$(ROOT)/LIBPLEPP
+
+all: ple plepp
+
+.PHYTON: clean ple plepp
+
+clean:
+	@$(MAKE) -C $(ROOT_LIBPLE)                    clean
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Fortran clean
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp     clean
+
+ple:
+	@cd $(ROOT_LIBPLE); rm -rf  Execs
+	@$(MAKE) -C $(ROOT_LIBPLE) clean
+	@cd $(ROOT_LIBPLE); ./configure --enable-static CC=mpicc  --prefix=$(ROOT_LIBPLE)/Execs
+	@$(MAKE) -C $(ROOT_LIBPLE)/src CFLAGS_OPT=''
+	@$(MAKE) -C $(ROOT_LIBPLE) install
+
+plepp:
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp     test02 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CPPCOMPILER=mpicxx CCOMPILER=mpicc FCOMPILER=mpif90
+	#@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp      test04 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CPPCOMPILER=mpicxx CCOMPILER=mpicc FCOMPILER=mpif90
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp      test06 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CPPCOMPILER=mpicxx CCOMPILER=mpicc FCOMPILER=mpif90
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Cpp      test08 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CPPCOMPILER=mpicxx CCOMPILER=mpicc FCOMPILER=mpif90
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Fortran  test02 HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CPPCOMPILER=mpicxx CCOMPILER=mpicc FCOMPILER=mpif90
+
+pyplepp:
+	@$(MAKE) -C $(ROOT_LIBPLEPP)/Wrappers/Python Commdomm HOME=$(ROOT_LIBPLEPP) ROOT_PLE=$(ROOT_LIBPLE)/Execs CXX=mpic++ CC=mpicc FC=mpif90
+

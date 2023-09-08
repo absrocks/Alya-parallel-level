@@ -1,0 +1,28 @@
+#!/bin/bash
+# one host is 16, two hosts is 32
+# #BSUB -n 32 
+#BSUB -n 16
+#BSUB -o alya-mics-%J.out
+#BSUB -e alya-mics-%J.err
+#BSUB -q mic
+#BSUB -J banc-mics
+#BSUB -W 03:00
+
+source /opt/intel/impi/4.1.1.036/bin64/mpivars.sh
+export I_MPI_MIC=enable
+export I_MPI_HYDRA_BOOTSTRAP=ssh
+export OMP_NUM_THREADS=1 
+procs_per_mic=64
+
+declare -a hosts=(`cat $LSB_DJOB_HOSTFILE | tr ' ' '\n' | uniq`)
+my_mpirun="mpirun -genv I_MPI_DEBUG 4 -genv OMP_NUM_THREADS 1"
+
+for host in ${hosts[*]};
+do
+ my_mpirun+=" : -n $procs_per_mic -host $host-mic0 /gpfs/projects/bsc21/WORK-MARIANO/SVN/Alya-mics-svn/Executables/unix/Alya.x  banc";
+### my_mpirun+=" : -n $procs_per_mic -host $host-mic1 ./Alya.x-mics banc";
+done
+
+echo "ssh $host-mic0 \"cd $PWD; $my_mpirun\""
+ssh $host-mic0 "cd $PWD; $my_mpirun"
+

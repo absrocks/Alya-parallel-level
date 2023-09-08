@@ -1,0 +1,75 @@
+%
+% Alya_for_dummies: main file
+%
+
+\documentclass[11pt,a4paper,oneside]{book}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx,wrapfig}
+
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usetikzlibrary{arrows, positioning, shapes.geometric}
+\usetikzlibrary{arrows, shapes, snakes, automata, backgrounds, petri}
+% Define the layers to draw the diagram
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%Define boxes to write code
+\usepackage{xcolor}
+\usepackage{listings}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{%
+	\parbox{\textwidth}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}\vskip-4pt}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstset{frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep,breaklines=true}
+
+
+
+\title{\bf Alya for developers \\for dummies by dummies}
+
+\author{CASE Ph.D students}
+
+\date{\today}
+
+\begin{document}
+	
+%\maketitle
+
+\thispagestyle{empty}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1.2\textwidth]{./Images/Cover.png}
+\end{figure}
+
+\tableofcontents
+
+%Chapter1
+\input{./Chapters/Ch_Description.tex}
+
+
+%Chapter2
+\input{./Chapters/Ch_Hints.tex}
+
+
+%Chapter3
+\input{./Chapters/Ch_Code.tex}
+
+%Chapter5
+\input{./Chapters/Ch_Modules.tex}
+
+
+%Chapter4
+\input{./Chapters/Ch_Cases.tex}
+
+
+
+
+\end{document}

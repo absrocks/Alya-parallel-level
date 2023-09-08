@@ -1,0 +1,180 @@
+%\noindent %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Diagram} %%%%%%%%%%%%%%%
+\textsf{}
+
+\tikzstyle{every node}=[draw=black,thick,anchor=west]
+\tikzstyle{selected}=[draw=red,fill=red!30]
+\tikzstyle{optional}=[dashed,fill=gray!50]
+\begin{tikzpicture}[%
+  grow via three points={one child      at (0.5,-0.7) and
+                                      two children at (0.5,-0.7) and (0.5,-1.4)},
+  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  %
+  %\node [block]                              (b01) {---};
+  \node [selected](b02) {Alya} 
+    child { node {Turnon}}		
+    child { node {Iniunk}}
+    child 
+    { 
+      node [selected] {Times}
+      child { node {Timste}}
+      child 
+      { 
+        node [selected] {Blocks}
+        child { node {Begste}}
+        child 
+        { 
+          node [selected] {Coupling}
+          child { node {Doiter}}
+          child { node {Concou}}
+        }
+        child [missing] {}				
+        child [missing] {}				
+        child { node {Conblk}}
+      }
+      child [missing] {}				
+      child [missing] {}				
+      child [missing] {}				
+      child [missing] {}				
+      child [missing] {}							
+      child [missing] {}							
+      child { node {Endste}}
+    }
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}	    
+    child [missing] {}	    
+    child [missing] {}				
+    child [missing] {}				
+    child { node {}};
+\end{tikzpicture}
+
+
+%  !   + current_code                                      %___________current_task 
+%  !   |_Alya                                       ______|_____
+%  !     |_call Turnon()                            ITASK_TURNON 02  
+%  !     |_call Iniunk()                            ITASK_INIUNK 03 
+%  !     |_time: do while
+%  !       |_call Timste()                          ITASK_TIMSTE 04 
+%  !       |_do 
+%  !       | |_call Begste()                        ITASK_BEGSTE 05 
+%  !       |    |_block: do while                                     _
+%  !       |       |_coupling_modules: do while                      / TASK_BEGITE  14 
+%  !       |       | |_call Doiter()                ITASK_DOITER 06-|  
+%  !       |       | |_call Concou()                ITASK_CONCOU 07  \_ITASK_ENDITE 15 
+%  !       |       |_call Conblk()                  ITASK_CONBLK 08 
+%  !       |       |_call Newmsh()                  ITASK_NEWMSH 09 
+%  !       |_call Endste()                          ITASK_ENDSTE 10 
+%  !          __
+%  ! BLOCK 3_   | 
+%  !   1 X   |  |--current_block  -> CPLNG%blocks_list 
+%  !   2 Y Z |  |     
+%  !   3 W  _|-----current_module -> CPLNG%moduls_list 
+%  ! END_BLOCK__|
+
+\begin{algorithm}
+\caption{Alya}
+%
+\begin{algorithmic}[1]
+  %\Start
+  \State \Call{Turnon}{ } \Comment{ITASK\_TURNON 02}
+  \State \Call{Iniunk}{ } \Comment{ITASK\_INIUNK 03}
+  %\End
+  \While{Times}
+  \State \Call{Timste}{ } \Comment{ITASK\_TIMSTE 04}
+  \While{Blocks}
+  \State \Call{Begste}{ } \Comment{ITASK\_BEGSTE 05}
+  \While{Coupling}
+  \State \Call{Doiter}{ } \Comment{ITASK\_DOITER 06}
+  \State \Call{Concou}{ } \Comment{ITASK\_CONCOU 07}
+  \EndWhile
+  \State \Call{Conblk}{ } \Comment{ITASK\_CONBLK 08}
+  \EndWhile
+  \State \Call{Endste}{ } \Comment{ITASK\_ENDSTE 10}
+  \EndWhile
+\end{algorithmic}
+%
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Blocks}
+%\label{your label for references later in your document}
+%
+\begin{algorithmic}[1]
+  \State BLOCK 3     %_| 
+  \State 1 X          %|  |--current_block  -> CPLNG%blocks_list 
+  \State 2 Y Z        %|  |     
+  \State 3 W          %|-----current_module -> CPLNG%moduls_list 
+  \State END\_BLOCK  %_|
+\end{algorithmic}
+%
+\end{algorithm}
+
+
+
+%\begin{algorithm}
+%\caption{Begste}
+%%\label{your label for references later in your document}
+%%
+%\begin{algorithmic}[1]
+%  \State BLOCK 3     %_| 
+%  \State 1 X          %|  |--current_block  -> CPLNG%blocks_list 
+%  \State 2 Y Z        %|  |     
+%  \State 3 W          %|-----current_module -> CPLNG%moduls_list 
+%  \State END\_BLOCK  %_|
+%\end{algorithmic}
+%%
+%\end{algorithm}
+
+
+
+%\begin{algorithm}
+%\end{algorithm}
+
+%% Define block styles
+%\tikzstyle{decision} = [diamond, draw, fill=blue!20,text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+%\tikzstyle{block}     = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=4em]
+%\tikzstyle{line}        = [draw, -latex']
+%\tikzstyle{cloud}     = [draw, ellipse,fill=red!20, node distance=3cm,minimum height=2em]
+
+%\begin{tikzpicture}[node distance = 2cm, auto]
+%    % Place nodes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \node [block]                                                                      (init)         {initialize model};
+%    \node [cloud,         left of = init]                                         (expert)    {expert};
+%    \node [cloud,       right of = init]                                         (system)   {system};
+%    \node [block,     below of = init]                                         (identify)   {identify candidate models};
+%    \node [block,     below of = identify]                                   (evaluate) {evaluate candidate models};
+%    \node [block,         left of = evaluate, node distance=3cm]  (update)    {update model};
+%    \node [decision, below of = evaluate]                                  (decide)     {is best candidate better?};
+%    \node [block,     below of = decide, node distance=3cm]     (stop)        {stop};
+%    % Draw edges %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \path [line]             (init)          -- (identify);
+%    \path [line]             (identify)   -- (evaluate);
+%    \path [line]             (evaluate)  -- (decide);
+%    \path [line]             (decide)     -| node [near start] {yes} (update);
+%    \path [line]             (update)    |- (identify);
+%    \path [line]             (decide)     -- node {no}(stop);
+%    \path [line,dashed] (expert)     -- (init);
+%    \path [line,dashed] (system)    -- (init);
+%    \path [line,dashed] (system)    |- (evaluate);
+%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\end{tikzpicture}
+
+% \newpage
+%\begin{tikzpicture}[node distance = 2cm, auto]
+%    % Place nodes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \node [block]                                     (b01)  {Turnon};
+%    \node [block,     below of = b01]       (b02)  {Iniunk};
+%    \node [block,     below of = b02]       (b03)  {Timste};
+%    \node [block,     below of = b03]       (b04)  {Begste};
+%    \node [block,     below of = b04]       (b05)  {Doiter};
+%    \node [block,     below of = b05]       (b06)  {Concou};
+%    \node [block,     below of = b06]       (b07)  {Conblk};
+%    \node [block,     below of = b07]       (b08)  {Endste};
+%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\end{tikzpicture}
