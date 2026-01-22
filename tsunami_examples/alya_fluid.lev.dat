@@ -1,0 +1,52 @@
+$------------------------------------------------------------------------
+PHYSICAL_PROBLEM
+  CONVECTIVE_TERM: ON
+  THICKNESS=       0.25 $approx. 3 timex the characteristic grid spacing around the interface
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------------------
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:          Implicit
+  TIME_INTEGRATION:        Trapezoidal, ORDER: 1, EULER=0
+  SAFETY_FACTOR=           250.0 
+  STEADY_STATE_TOLERANCE=  -1e-8  
+  MAXIMUM_NUMBER_OF_IT:    1
+  ALGEBRAIC_SOLVER:        GMRES, KRYLOV=30, TOLER=1.0E-8, ITERAT=260 , ADAPTI, RATIO=0.005
+  PRECOND:                 DIAGONAL
+  SUSSMAN_REDISTANCE
+    ALGEBRAIC_SOLVER:      GMRES, KRYLOV=40, TOLER=1.0E-6, ITERAT=40 
+    PRECONDITIONING:       DIAGONAL
+  END_SUSSMAN_REDISTANCE
+  REDISTANCIATION :        INITI=0,FREQU=10,TYPE_REDIST=1,ZONAL=0,NBITE=50
+  GEOMETRICAL_DISTANCE:    OTHER
+  VOLUME_CORRECTION :      ON
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCES_AT      STEP  = 0
+  POSTPROCESS LEVELSET
+$  GAUGE, NUMBER=3
+$     2 2.0 -0.047
+$     2 2.515 -0.047
+$     2 3.02 -0.047  
+$  END_GAUGE 
+  OUTPUT SOLVER
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------------------
+BOUNDARY_CONDITIONS
+
+  PARAMETERS
+    INITIAL, FUNCTION=86  3.5 6.0 1.0 $flat surface
+$    INITIAL VALUE_FUNCTION = 2
+  END_PARAMETERS
+
+  CODES, NODES
+ $      1 1 4.0
+ $     11 1 4.0
+ $  1 & 2 1 4.0
+ $ 11 & 2 1 4.0
+ $  1 & 4 1 4.0
+ $ 11 & 4 1 4.0
+   END_CODES
+
+END_BOUNDARY_CONDITIONS
+$------------------------------------------------------------------------

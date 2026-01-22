@@ -1,0 +1,12 @@
+This output was generated with the 27 version of Ansa2Alya from the following file 
+/home/abhishek/Desktop/tsunami_cylinders/single_cyl_20_4_8_d_0.4_vol_latest.ansa
+The model was NOT scaled
+BOUNDARY_CODES
+    1    cyl
+    2    cyl_bot
+END_BOUNDARY_CODES
+CODES, NODES
+1
+1  &  2
+2
+END_CODES

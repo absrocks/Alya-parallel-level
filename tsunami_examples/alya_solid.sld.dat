@@ -1,0 +1,70 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+PROPERTIES
+  $ RAYLEIGH_DUMPING, RAYALPHA= 500.0, RAYBETA = 10
+  DENSITY=             0.5e3
+  CONSTITUTIVE_MODEL   ISOLIN  2.0e9  0.3
+  $ GRAVITY: NORM=90.0, GX=1, GY=1.0, GZ=1
+END_PROPERTIES
+$------------------------------------------------------------
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+$
+$ IMPLICIT 
+$
+NUMERICAL_TREATMENT
+  TIME_TREATMENT:    IMPLICIT
+  $ TIME_INTEGRATION:  NEWMARK, NEWBE=0.25, NEWGA=0.5, NEWAL=0.0        $ Average acceleration
+  $ TIME_INTEGRATION:  NEWMARK, NEWBE=0.5625, NEWGA=1.0, NEWAL=0.0      $ Super diffusive
+  TIME_INTEGRATION:  NEWMARK, NEWBE=0.5, NEWGA=1.0, NEWAL=0.0         $ Diffusive
+  ALGEBRAIC_SOLVER:  
+  $    SOLVER:               GMRES, KRYLOV=30
+     SOLVER:               DEFLATEDCG, COARSE: SPARSE
+     CONVERGENCE:          ITERA=1000, TOLER=1.0e-8, ADAPTIVE, RATIO=0.001
+     OUTPUT:               CONVERGENCE
+  $    PRECONDITIONER:       BLOCK_DIAGONAL 
+     PRECONDITIONER:       DIAGONAL
+  $    PRECONDITIONER:       RAS
+     OPTIONS:              ZERO_FIXITY
+  END_ALGEBRAIC_SOLVER        
+
+  SUBITERATIONS
+     UPDISP
+     $ PSEUDOTIMESTEP, FACTOR=0.5
+     CONVERGENCE_TOLER    1e-4
+     MAXIMUM_ITERATION    20
+  END_SUBITERATIONS
+
+  NORM_OF_CONVERGENCE:      MOMENTUM
+  $ NORM_OF_CONVERGENCE:      LAGGED_ALGEBRAIC_RESIDUAL
+  ROTATION:                 ON
+  SAFETY_FACTOR:            25
+  STEADY_STATE_TOLERANCE    -1
+
+END_NUMERICAL_TREATMENT
+
+$------------------------------------------------------------
+OUTPUT_&_POST-PROCESS  
+  $ POSTPROCESS SIGMA,          STEPS =20
+  $ POSTPROCESS SEQVM
+  POSTPROCESS DISPLACEMENT,   STEPS = 1
+  WITNESS_POINTS
+    DISPX
+    DISPY
+  END_WITNESS_POINTS
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, TRANSIENT
+$------------------------------------------------------------
+CODES, NODES
+        1    000  0.000000 0.000000  0.000000    
+      1 & 2  111  0.000000 0.000000  0.000000
+	2    111  0.000000 0.000000  0.000000    $ base of the cylinder
+END_CODES
+
+
+$------------------------------------------------------------
+$------------------------------------------------------------
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------

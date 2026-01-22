@@ -1,0 +1,44 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   fensap
+  CODE:                   2
+  POSTPROCESS:            DOMAIN
+  $ LIVE_INFO:              FILE
+  RUN_TYPE:               NO_CONTINUE, PRELIMINARY, FREQUENCY=50
+
+  $RUN_TYPE:               INITIAL, PRELIMINARY, FREQUENCY=1000
+  
+  $RUN_TYPE                CONTINUE, PRELIMINARY, FREQUENCY=500
+END_RUN_DATA 
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  TIME_COUPLING:          Global, prescribed 
+  $TIME_COUPLING:          Global, from_critical 
+  TIME_INTERVAL=          0.0, 2
+  TIME_STEP_SIZE=         5e-04
+  NUMBER_OF_STEPS=        10000000
+
+  NASTIN_MODULE:          ON
+  END_NASTIN_MODULE
+
+  ALEFOR_MODULE:          ON
+  END_ALEFOR_MODULE
+
+  LEVELS_MODULE:          ON 
+  END_LEVELS_MODULE
+ 
+  BLOCK, 1
+     $1 LEVELS NASTIN
+     1 ALEFOR LEVELS NASTIN
+  END_BLOCK
+
+  PARALL_SERVICE:         ON
+    OUTPUT_FILE:          NO
+    POSTPROCESS:          MASTER
+    PARTITION_TYPE:       FACES
+  END_PARALL_SERVICE
+
+  HDFPOS_SERVICE:         OFF
+  END_HDFPOS_SERVICE
+END_PROBLEM_DATA
+$-------------------------------------------------------------------

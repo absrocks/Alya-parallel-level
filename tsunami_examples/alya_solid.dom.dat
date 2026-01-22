@@ -1,0 +1,33 @@
+$--------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS= 6969
+  ELEMENTS=     35135
+  SPACE_DIMENSIONS=       3
+  TYPES_OF_ELEMS=   TET04,PEN06
+  BOUNDARIES= 1964
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS:   4,6
+  GROUPS=100
+  EXTRAPOLATE ON
+  BOUNDARY_ELEMENT OFF
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+  INCLUDE   ./alya_solid.geo.dat
+$  INCLUDE   ./solido.mpio.geo
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE   ./alya_solid.fix.dat
+  END_BOUNDARIES
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE   ./alya_solid.fix.dat
+  END_ON_BOUNDARIES
+END_BOUNDARIES_CONDITIONS
+$--------------------------------------------------

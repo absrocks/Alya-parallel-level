@@ -1,0 +1,137 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+$------------------------------------------------------------ 
+PROBLEM_DEFINITION  
+  TEMPORAL_DERIVATIVES:     ON  
+  CONVECTIVE_TERM:          SKEWSYM
+  VISCOUS_TERM:             DIVERGENCE
+  $TURBULENCE_COUPLING:      LESMO, VRMAN, PARAM=0.05
+  TURBULENCE_COUPLING:     LES_MODEL, SMAGO , PARAMETER = 0.18
+  GRAVITY:                  NORM: 9.81, GX: 0.0, GY: 0.0, GZ: -1.0
+END_PROBLEM_DEFINITION  
+$------------------------------------------------------------
+ PROPERTIES
+    
+ END_PROPERTIES
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  STABILIZATION:           ASGS, NOTA1
+  STABILITY CONSTANTS:     3.0,1.0,1.0,0.08333
+  ELEMENT_LENGTH:          MINIM
+  TIME_INTEGRATION         BDF, ORDER: 2$ , EULER=0
+  STEADY_STATE_TOLER       1e-6
+  NORM_OF_CONVERGENCE      LAGGED_ALGEBRAIC_RESIDUAL
+  MAXIMUM_NUMBER_OF_IT     6
+  CONVERGENCE_TOLERANCE    1e-3    ! ortomin
+  SAFETY_FACTOR            100
+  ALGORITHM                SCHUR
+    SOLVER                 ORTHOMIN, CONTINUITY_PRESERVING
+    PRECONDITIONER         DT
+    ELEMENT_LENGTH         minimum
+    TAU_STRATEGY           Codina
+    CORRECTION             open
+  END_ALGORITHM
+
+  MOMENTUM
+    ALGEBRAIC_SOLVER
+      SOLVER:                GMRES, KRYLOV=10
+      CONVERGENCE:           ITERA=500, TOLER=1.0e-10, ADAPTIVE, RATIO=1e-3
+      PRECONDITIONER:        DIAGONAL
+    END_ALGEBRAIC_SOLVER
+  END_MOMENTUM
+  CONTINUITY
+    ALGEBRAIC_SOLVER
+       SOLVER:               DEFLATED_CG, COARSE: SPARSE
+       CONVERGENCE:          ITERA=500, TOLER=1.0e-10, ADAPTIVE, RATIO=1e-3
+       PRECONDITIONER:       DIAGONAL
+    END_ALGEBRAIC_SOLVER
+  END_CONTINUITY
+
+  DIRICHLET_CONDITION:       MATRIX
+  INTERNAL_FORCE:            RESIDUAL
+
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS_AT      STEP  = 0
+  POSTPROCESS VELOCITY
+  $POSTPROCESS PRESS
+  POSTPROCESS AVVEL
+  POSTPROCESS TURBUL
+  $POSTPROCESS YPLUS
+  $POSTPROCESS TANGE
+  $ POSTPROCESS VISCOSITY
+  $ POSTPROCESS INTFO
+  $ POSTPROCESS LAMB2
+  BOUNDARY_SET
+    FORCE
+  END_BOUNDARY_SET
+  $ WITNESS_POINTS
+  $   COORX
+  $   COORY
+  $   COORZ
+  $ END_WITNESS
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+BOUNDARY_CONDITIONS, NON_CONSTANT
+  PARAMETERS
+    FIX_PRESSURE= On, ON_NODE=933, VALUE=0.0
+    INITIAL:   CONSTANT, VALUE=0.0,0.0,0.0
+    $ VARIATION: NON_CONSTANT
+    $ INITIAL: VALUE = 1
+  END_PARAMETERS
+  CODES, NODES
+      $ --------
+      $ inflow
+      $ --------
+     3          100  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    3 & 1      111  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    3 & 2      101  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    3 & 5      110  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    3 & 6      110  0.000000 0.000000 0.000000
+    3 & 1 & 5  111  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    3 & 2 & 5  111  0.000000 0.000000 0.000000
+    3 & 1 & 6  111  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    3 & 2 & 6  111  0.000000 0.000000 0.000000
+      $ --------
+      $ outflow
+      $ --------
+    4          100  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    4 & 1      111  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    4 & 2      101  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    4 & 5      110  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    4 & 6      110  0.000000 0.000000 0.000000
+    4 & 1 & 5  111  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    4 & 2 & 5  111  0.000000 0.000000 0.000000
+    4 & 1 & 6  111  0.000000 0.000000 0.000000 $, TIME_FUNCTION=PARAB
+    4 & 2 & 6  111  0.000000 0.000000 0.000000
+      $ --------
+      $ top
+      $ --------
+    2      001  0.000000 0.000000 0.000000
+      $ --------
+      $ back & front
+      $ -------- 
+      5    010  0.000000 0.000000 0.000000
+      6    010  0.000000 0.000000 0.000000
+    5 & 1  111  0.000000 0.000000 0.000000
+    6 & 1  111  0.000000 0.000000 0.000000
+    5 & 2  011  0.000000 0.000000 0.000000
+    6 & 2  011  0.000000 0.000000 0.000000
+      $ --------
+      $ bottom
+      $ --------
+    1      111  0.000000 0.000000 0.000000
+      $ --------
+      $ cylinder
+      $ --------
+    7      111  0.000000 0.000000 0.000000
+  1 & 7    111  0.000000 0.000000 0.000000
+  END_CODES  
+  $CODES, BOUNDARIES
+  $1 7 $ to enable the wall model
+  $END_CODES
+END_BOUNDARY_CONDITIONS  
+$------------------------------------------------------------ 
+

@@ -1,0 +1,77 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+
+  COUPLING
+    NASTIN ALEFOR
+  END_COUPLING
+
+  PROPERTIES
+    MATERIAL= 1
+      DENSITY:    BIFLUID, VALUE = 1000, 1
+      VISCOSITY:  BIFLUID, VALUE = 1.0e-3, 1.9e-5
+      $TURBULENCE: VRMAN, PARAMETERS=0.05 ,UPDP1=ENDSTE,UPDP2=NEVER
+      TURBULENCE: SMAGO, PARAMETER = 0.18 $$ WALE, SMAGO or SIGMA. Por consistencia, pon el mismo que en nastin
+    END_MATERIAL
+  END_PROPERTIES
+  ;
+  $WALL_LAW: REICHARDT , VARIABLE, MULTI =2.0 $CHECK WHAT THIS IS FOR
+  $WALL_EXCHANGE_LOCATION
+  TIME_AVERAGING, PERIOD = 1.0
+  
+END_PHYSICAL_PROBLEM  
+$------------------------------------------------------------
+NUMERICAL_TREATMENT 
+
+  MESH
+    DIVISION=0
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   50,50,50
+  END_ELSEST
+  $
+  $ PARAB: 
+  $      param(1) = tiempo inicial
+  $      param(2) = tiempo final
+  $            y  = param(3) * t*t + param(4) * t + param(5)
+  $ 
+  $ TIME_FUNCTIONS
+  $    FUNCTION=PARAB, PARAB, PARAMETERS= 0.0, 25.0, 0.0, 0.132, 2.48
+  $ END_TIME_FUNCTIONS
+
+ $  SPACE_&_TIME_FUNCTIONS
+ $   sqrt(9.81/0.4)*0.071/(cosh(sqrt(3*9.81*0.071/(4*0.4))*(t-((x-4)/(sqrt(9.81*0.4)))))**2)
+ $   FUNCTION=BC, DIMENSION=3
+ $   0
+ $   0
+ $   0
+ $   END_FUNCTION
+ $ END_SPACE_&_TIME_FUNCTIONS
+   
+  $ WALL_DISTANCE
+  $   ALGEBRAIC_SOLVER:        DEFLATED_CG, ITERA= 1000,TOLER= 1e-8
+  $   PRECONDITIONING:         DIAGONAL
+  $   CODES, BOUNDARIES
+  $     1 1
+  $     2 1
+  $     3 1
+  $    11 1 
+  $   END_CODES
+  $ END_WALL_DISTANCE
+   
+END_NUMERICAL_TREATMENT  
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  START_POSTPROCESS STEP=0
+  STEPS=50
+  POSTPROCESS DENSI
+  POSTPROCESS TURBULENCE
+  $POSTPROCESS PRESS
+  $POSTPROCESS CODNO
+  $POSTPROCESS CODBO
+  MESH BOUND
+  $ POSTPROCESS VISCOSITY,  STEPS=5
+  $ POSTPROCESS TURBULENCE
+END_OUTPUT_&_POST_PROCESS  
+$------------------------------------------------------------

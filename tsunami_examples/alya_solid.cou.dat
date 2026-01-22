@@ -1,0 +1,79 @@
+$ ----------------------------------------------
+$ Input file for configuration of Alya coupling
+$-----------------------------------------------
+PHYSICAL_PROBLEM
+  NUMBER_COUPLINGS= 2              $ How many couplings exist
+  COUPLING=1
+     TARGET, MODULE:    SOLIDZ     $ Which module will receive values
+     SOURCE, MODULE:    NASTIN     $ Which module will send values
+     TARGET, CODE:      1          $ Which code will receive values
+     SOURCE, CODE:      2          $ Which code will send values
+     $
+     $ Values will be exchanged in the nodes with the boundary code given
+     $
+     WHERE_TYPE:        CODE, NUMBER=1
+     $
+     $ Indicate what kind of values will be exchanged, RESIDUAL stands for 
+     $ the residual of the discretized equation (Ax-b) and UNKNOWN stands 
+     $ for the unknown of the discretized equation (x)
+     $
+     WHAT=              RESIDUAL
+     $
+     $ Indicate the name of the variable to exchange, this is useful in the 
+     $ plugin subroutine inside each module.You can define your own variables!
+     $
+     VARIABLE=          MOMENTUM
+     $
+     $ Relaxation parameter for the quantity to exchange
+     $
+     RELAXATION=        0.05
+     SCHEME:            AITKEN
+     TEMPORAL_PREDICT:  OFF
+     $
+     $ Define how to calculate the values to exchange, you can interpolate 
+     $ on boundaries, elements or in the whole mesh
+     $
+     TYPE:              BOUNDARY_INTERPOLATION
+     $
+     $ Fix the point of communication between codes, SEND_AND_COMPUTE defines 
+     $ when the source code will send the message and RECEIVE_AND_ASSEMBLE 
+     $ defines when the target code will receive it
+     $
+     SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY:   1 
+     RECEIVE_ASSEMBLE:  BEGZON BEFORE, FREQUENCY:   1
+  END_COUPLING
+  COUPLING=2
+     TARGET, MODULE:    ALEFOR
+     SOURCE, MODULE:    SOLIDZ
+     TARGET, CODE:      2
+     SOURCE, CODE:      1
+     WHERE_TYPE:        CODE, NUMBER=7
+     WHAT=              UNKNOWN
+     VARIABLE=          ALEFOR
+     TYPE:              BOUNDARY_INTERPOLATION
+     RELAXATION:        1.0
+     $ SCHEME:            AITKEN
+     TEMPORAL_PREDICT:  OFF
+     SEND_AND_COMPUTE:  ENDZON BEFORE, FREQUENCY:   1
+     RECEIVE_ASSEMBLE:  ENDZON BEFORE, FREQUENCY:   1
+ END_COUPLING
+
+END_PHYSICAL_PROBLEM 
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  $
+  $ You can have different blocks to couple different sections of Alya.
+  $
+  BLOCK, NUMBER=1
+    $
+    $ Here you tell which couplings are in each block, the maximum number 
+    $ of coupling iterations to be performed and the convergence criteria 
+    $ for the coupling
+    $
+    COUPLINGS=  1,2
+    ITERATIONS= 10
+    TOLERANCE= 1.0e-3
+  END_BLOCK
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------

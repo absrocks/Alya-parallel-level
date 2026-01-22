@@ -1,0 +1,32 @@
+$--------------------------------------------------
+DIMENSIONS
+  NODAL_POINTS= 883583
+  ELEMENTS=     4723682
+  SPACE_DIMENSIONS=       3
+  TYPES_OF_ELEMS=   TET04,PEN06
+  BOUNDARIES= 89852
+END_DIMENSIONS
+$--------------------------------------------------
+STRATEGY
+  DOMAIN_INTEGRATION_POINTS:   4,6
+  GROUPS=300
+  EXTRAPOLATE: ON
+  BOUNDARIES_ELEMENTS= OFF
+END_STRATEGY
+$--------------------------------------------------
+GEOMETRY
+  INCLUDE  ./alya_fluid.geo.dat
+END_GEOMETRY
+$--------------------------------------------------
+SETS
+  BOUNDARIES
+    INCLUDE  ./alya_fluid.fix.dat
+  END_BOUNDARIES
+END_SETS
+$--------------------------------------------------
+BOUNDARY_CONDITIONS
+  ON_BOUNDARIES
+    INCLUDE  ./alya_fluid.fix.dat
+  END_ON_BOUNDARIES
+END_BOUNDARIES_CONDITIONS
+$--------------------------------------------------

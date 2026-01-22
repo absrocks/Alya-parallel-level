@@ -1,0 +1,34 @@
+$------------------------------------------------------------
+PHYSICAL_PROBLEM
+  $ COUPLING
+  $ END_COUPLING
+
+END_PHYSICAL_PROBLEM
+$------------------------------------------------------------
+NUMERICAL_TREATMENT
+  MESH
+    DIVISION = 0
+  $   EXTENDED_GRAPH: ON
+  END_MESH
+
+  ELSEST
+    STRATEGY: BIN
+    NUMBER:   50,50
+  END_ELSEST
+
+END_NUMERICAL_TREATMENT
+$------------------------------------------------------------
+OUTPUT_&_POST_PROCESS
+  ON_LAST_MESH
+  STEPS = 100
+$   WITNESS_POINTS, NUMBER= 1
+$     INCLUDE ./solid.wit.dat
+$   END_WITNESS_POINTS
+
+  $ POSTPROCESS SUBDO
+  $ POSTPROCESS CODBO 
+  $ POSTPROCESS CODNO 
+  $ $ POSTPROCESS VELOCITY
+END_OUTPUT_&_POST_PROCESS
+$------------------------------------------------------------
+

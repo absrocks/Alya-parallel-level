@@ -1,0 +1,37 @@
+$-------------------------------------------------------------------
+RUN_DATA
+  ALYA:                   FSI3-SOLID
+  CODE:                   1
+  LIVE_INFO:              screen
+  $ POSTPROCESS:            domain
+  $RUN_TYPE = CONTINUE, PRELIMINARY, FREQUENCY = 200
+  RUN_TYPE = NO_CONTINUE, PRELIMINARY, FREQUENCY = 250
+  $ RUN_TYPE = INITIAL, PRELIMINARY, FREQUENCY = 100
+END_RUN_DATA
+$-------------------------------------------------------------------
+PROBLEM_DATA
+  $ TIME_COUPLING = GLOBAL, FROMCRITICAL
+  $ TIME_INTERVAL = 0.0, 10.0   
+  TIME_COUPLING = GLOBAL, PRESCRIBED
+  TIME_STEP_SIZE = 5e-4 
+  MAXIMUM_NUMBER_GLOBAL=  1
+  NUMBER_OF_STEPS=        400000
+$-------------------------------------------------------------------  
+  SOLIDZ_PROBLEM=        ON
+  END_SOLIDZ
+
+  BLOCK, 1
+      1 SOLIDZ
+  END_BLOCK
+
+  ZONES
+     SOLIDZ 1
+  END_ZONES
+
+   PARALL_SERVICE:        ON
+  OUTPUT_FILE:            NO
+   POSTPROCESS:          MASTER
+   PARTITION:            FACES
+  END_PARALL     
+END_PROBLEM_DATA
+$-------------------------------------------------------------------
